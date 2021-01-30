@@ -1,26 +1,24 @@
 this.options = {
   max_players: 2,
   custom_map: "",
+  friendly_colors: 2,
 };
-function piece(pos, ticked, side) {
-  this.side = side;
+function piece(pos, side) {
   this.pos = pos;
-  this.tick = ticked;
+  this.side = side;
   this.display = {
     id: pos,
-    position: [25 + pos[1] * 8, 5 + pos[0] * 14, 8, 14],
-    clickable: !this.tick,
+    position: [25.5 + pos[1] * 16.4, 5.7 + pos[0] * 26.3, 15.8, 25.5],
+    clickable: true,
     visible: true,
-    components: [
-      { type: "box", position: [0, 0, 100, 100], fill: "#4C4C4C" },
-      !this.tick || {
-        type: "text",
-        position: [0, 0, 100, 100],
-        value: this.tick ? "X" : "O",
-        color: this.side ? "#ff0" : "#0ff",
-      },
-    ],
+    components: [{ type: "box", position: [0, 0, 100, 100], fill: "#4C4C4C" }],
   };
+}
+function setup() {
+  let result = [];
+  for (let i = 0; i < 3; i++)
+    result.push([0, 0, 0].map((a, r) => new piece([i, r], undefined)));
+  return result;
 }
 let board = {
   id: "board",
@@ -41,11 +39,90 @@ let board = {
     { type: "box", position: [0, 65.5, 100, 1], fill: "#25bdb1" },
   ],
 };
-let game = {
+let round = {
   moves: 0,
-  board: [],
+  board: setup(),
+  isWin: function () {
+    let board = round.board.map((i) => i.map((j) => j.side));
+    let checks = [
+      board[0],
+      board[1],
+      board[2],
+      board.map((i) => i[0]),
+      board.map((i) => i[1]),
+      board.map((i) => i[2]),
+      [0, 1, 2].map((i) => board[i][i]),
+      [0, 1, 2].map((i) => board[i][Math.abs(i - 2)]),
+    ];
+    for (let check of checks) {
+      let a = false;
+      for (let i of check) i !== undefined && (a = true);
+      if (a && check[0] == check[1] && check[1] == check[2]) return true;
+    }
+  },
+  winner: false,
 };
 this.tick = function (game) {
-  for (let ship of game.ships) ship.setUIComponent(board);
+  for (let ship of game.ships) {
+    round.board.flat().forEach((i) => {
+      ship.setUIComponent(i.display);
+    });
+    if (!ship.custom.init) ship.setUIComponent(board);
+    if (round.winner) {
+      ship.setUIComponent({
+        id: "winner",
+        position: [0, 50, 25, 10],
+        visible: true,
+        clickable: false,
+        components: [
+          {
+            type: "text",
+            position: [0, 0, 100, 100],
+            value: ship.custom.winner ? "You win!! :D" : "You lose!! :(",
+            color: "#fff",
+          },
+        ],
+      });
+      ship.setUIComponent({ id: "validMoves", visible: false });
+    } else {
+      ship.setUIComponent({
+        id: "validMoves",
+        position: [67, 40, 40, 5],
+        clickable: false,
+        visible: true,
+        components: [
+          {
+            type: "text",
+            position: [0, 0, 100, 100],
+            color: "#fff",
+            value:
+              round.moves % 2 === ship.team ? "Your turn" : "Not your turn",
+          },
+        ],
+      });
+    }
+  }
 };
-this.event = function (event, game) {};
+this.event = function (event, game) {
+  switch (event.name) {
+    case "ui_component_clicked":
+      let box = round.board[event.id[0]][event.id[1]];
+      let ship = event.ship;
+      if (round.moves % 2 === ship.team) {
+        round.moves++;
+        box.display.clickable = false;
+        box.side = ship.team;
+        box.display.components.push({
+          type: "text",
+          position: [0, 0, 100, 100],
+          value: ship.team ? "X" : "O",
+          color: ship.team ? "#ff0" : "#0ff",
+        });
+        round.moves > 4 &&
+          ((round.winner = round.isWin()), (ship.custom.winner = true));
+        round.winner &&
+          round.board.flat().forEach((i) => (i.display.clickable = false));
+      }
+      break;
+  }
+};
