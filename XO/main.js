@@ -68,23 +68,8 @@ this.tick = function (game) {
       ship.setUIComponent(i.display);
     });
     if (!ship.custom.init) ship.setUIComponent(board);
-    if (round.winner) {
-      ship.setUIComponent({
-        id: "winner",
-        position: [0, 50, 25, 10],
-        visible: true,
-        clickable: false,
-        components: [
-          {
-            type: "text",
-            position: [0, 0, 100, 100],
-            value: ship.custom.winner ? "You win!! :D" : "You lose!! :(",
-            color: "#fff",
-          },
-        ],
-      });
-      ship.setUIComponent({ id: "validMoves", visible: false });
-    } else {
+    if (round.winner) ship.gameover({ "": "You lose!! :(" });
+    else {
       ship.setUIComponent({
         id: "validMoves",
         position: [67, 40, 40, 5],
@@ -118,10 +103,8 @@ this.event = function (event, game) {
           value: ship.team ? "X" : "O",
           color: ship.team ? "#ff0" : "#0ff",
         });
-        round.moves > 4 &&
-          ((round.winner = round.isWin()), (ship.custom.winner = true));
-        round.winner &&
-          round.board.flat().forEach((i) => (i.display.clickable = false));
+        round.moves > 4 && (round.winner = round.isWin());
+        if (round.winner) ship.gameover({ "": "You win!! :)" });
       }
       break;
   }
