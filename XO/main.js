@@ -68,6 +68,7 @@ this.tick = function (game) {
       ship.setUIComponent(i.display);
     });
     if (!ship.custom.init) ship.setUIComponent(board);
+    if (round.moves === 9) ship.gameover({ "": "Draw!! :|" });
     if (round.winner) ship.gameover({ "": "You lose!! :(" });
     else {
       ship.setUIComponent({
@@ -93,6 +94,10 @@ this.event = function (event, game) {
     case "ui_component_clicked":
       let box = round.board[event.id[0]][event.id[1]];
       let ship = event.ship;
+      if (event.id === "reset") {
+        round.board = setup();
+        ship.setUIComponent({ id: "reset", visible: false });
+      }
       if (round.moves % 2 === ship.team) {
         round.moves++;
         box.display.clickable = false;
@@ -105,6 +110,7 @@ this.event = function (event, game) {
         });
         round.moves > 4 && (round.winner = round.isWin());
         if (round.winner) ship.gameover({ "": "You win!! :)" });
+        else if (round.moves === 9) ship.gameover({ "": "Draw!! :|" });
       }
       break;
   }
