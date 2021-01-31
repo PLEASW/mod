@@ -41,6 +41,7 @@ let board = {
 };
 let round = {
   moves: 0,
+  rounds: 0,
   board: setup(),
   isWin: function () {
     let board = round.board.map((i) => i.map((j) => j.side));
@@ -67,8 +68,10 @@ this.tick = function (game) {
     round.board.flat().forEach((i) => {
       ship.setUIComponent(i.display);
     });
-    if (!ship.custom.init) ship.setUIComponent(board);
-    if (round.moves === 9) ship.gameover({ "": "Draw!! :|" });
+    if (!ship.custom.init) {
+      ship.setUIComponent(board);
+      ship.custom.init = true;
+    }
     if (round.winner) ship.gameover({ "": "You lose!! :(" });
     else {
       ship.setUIComponent({
@@ -110,7 +113,11 @@ this.event = function (event, game) {
         });
         round.moves > 4 && (round.winner = round.isWin());
         if (round.winner) ship.gameover({ "": "You win!! :)" });
-        else if (round.moves === 9) ship.gameover({ "": "Draw!! :|" });
+        else if (round.moves >= 9) {
+          round.moves = round.rounds % 2;
+          round.rounds++;
+          round.board = setup();
+        }
       }
       break;
   }
