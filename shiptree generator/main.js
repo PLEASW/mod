@@ -179,3 +179,20 @@ let tier7 = [
   Poseidon_706,
   Aries_707,
 ];
+let shiptree = {
+  shiptree: [],
+  tier1: tier1.map((i) => JSON.parse(i)),
+  tier2: tier2.map((i) => JSON.parse(i)),
+  tier3: tier3.map((i) => JSON.parse(i)),
+  tier4: tier4.map((i) => JSON.parse(i)),
+  tier5: tier5.map((i) => JSON.parse(i)),
+  tier6: tier6.map((i) => JSON.parse(i)),
+  tier7: tier7.map((i) => JSON.parse(i)),
+  random_path: function (paths) {},
+};
+this.options = {
+  ships: shiptree.shiptree,
+  reset_tree: true,
+};
+this.tick = function (game) {};
+this.event = function (event, game) {};
