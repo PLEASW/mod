@@ -199,7 +199,6 @@ let shiptree = {
   tier7: tier7.map((i) => JSON.parse(i)),
   random_path: function (paths) {
     let tree = Array(paths).fill([]);
-    console.log(tree);
     for (let i = 0; i < paths; i++) {
       let shipInTier = [];
       for (let j = 0; j < 7; j++) {
