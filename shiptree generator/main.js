@@ -162,12 +162,12 @@ let tier6 = [
   G_Sniper_606,
   A_Speedster_607,
   Advanced_Support_Fighter_608,
-  H_Mercury_609,
+  Condor_609,
   M_Seeker_610,
   Mantis_611,
   Rock_Tower_612,
   Prime_Fighter_613,
-  Barracuda_614_,
+  Barracuda_614,
   O_Defender_615,
 ];
 let tier7 = [
@@ -175,12 +175,11 @@ let tier7 = [
   Warthog_702,
   Pulse_Warrior_703,
   Shadow_X_3_704,
-  A_God_705,
+  Bastion_705,
   Poseidon_706,
   Aries_707,
 ];
 let shiptree = {
-  shiptree: [],
   tier1: tier1.map((i) => JSON.parse(i)),
   tier2: tier2.map((i) => JSON.parse(i)),
   tier3: tier3.map((i) => JSON.parse(i)),
@@ -188,10 +187,13 @@ let shiptree = {
   tier5: tier5.map((i) => JSON.parse(i)),
   tier6: tier6.map((i) => JSON.parse(i)),
   tier7: tier7.map((i) => JSON.parse(i)),
-  random_path: function (paths) {},
+  random_path: function (paths) {
+    let shiptree = [];
+    for (let i = 0; i < paths; i++) {}
+  },
 };
 this.options = {
-  ships: shiptree.shiptree,
+  ships: shiptree.random_path(3),
   reset_tree: true,
 };
 this.tick = function (game) {};
