@@ -352,7 +352,8 @@ var map =
   "99                                                                  99\n" +
   "9999999999999999999999999999999999999999999999999999999999999999999999\n" +
   "9999999999999999999999999999999999999999999999999999999999999999999999";
-let position = {
+// modify it to be acurated numbers
+let boxes = {
   Spawn: [35, 8],
   "Rumble 1": [14, 7],
   "Rumble 2": [55, 7],
@@ -491,6 +492,36 @@ this.event = function (event, game) {
       var component = event.id;
       if (component == "Options") {
         if (ship.custom.option_screen === true) {
+          let [row, lines] = [0, 0];
+          for (let i in boxes) {
+            row++;
+            if (row < 6) {
+              ship.setUIComponent({
+                id: i,
+                position: [7 + row * 12, 31 + lines * 10, 12, 10],
+                visible: true,
+                clickable: true,
+                components: [
+                  {
+                    type: "box",
+                    position: [0, 0, 100, 100],
+                    fill: "rgba(68, 85, 102, 0)",
+                    stroke: "#CDE",
+                    width: 4,
+                  },
+                  {
+                    type: "text",
+                    position: [5, 35, 90, 40],
+                    value: i,
+                    color: "#CDE",
+                  },
+                ],
+              });
+            } else {
+              lines++;
+              row = 0;
+            }
+          }
           for (let i = 0; i < 5; i++) {
             ship.setUIComponent({
               id: ids[i],
@@ -537,6 +568,7 @@ this.event = function (event, game) {
             id: "A-Speedster",
             visible: false,
           });
+          for (let i in boxes) ship.setUIComponent({ id: i, visible: false });
           ship.custom.option_screen = true;
         }
       } else if (component == "Next ship") {
@@ -649,6 +681,10 @@ this.event = function (event, game) {
         ship.emptyWeapons();
       } else if (component == "torp") {
         game.addCollectible({ code: 12, x: ship.x, y: ship.y });
+      }
+      for (let i in boxes) {
+        let [x, y] = boxes[i];
+        if (component === i) ship.set({ x: x, y: y });
       }
       break;
     case "ship_spawned":
