@@ -187,7 +187,9 @@ let shiptree = {
   tier5: tier5.map((i) => JSON.parse(i)),
   tier6: tier6.map((i) => JSON.parse(i)),
   tier7: tier7.map((i) => JSON.parse(i)),
-  random_path: function (paths) {},
+  random_path: function (paths) {
+    for (let i = 0; i < 3; i++) {}
+  },
 };
 this.options = {
   ships: shiptree.random_path(3),
