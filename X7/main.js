@@ -365,6 +365,8 @@ let boxes = {
   "Dense AOW": [52, 38],
   "Open Area": [34, 54],
 };
+for (let i in boxes) boxes[i].reverse();
+console.log(boxes);
 this.options = {
   ships: ships,
   custom_map: map,
