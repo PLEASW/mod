@@ -388,10 +388,16 @@ this.options = {
   mines_self_destroy: false,
   soundtrack: "civilisation.mp3",
 };
-
+let radar = {
+  id: "radar_background",
+  visible: true,
+  clickable: true,
+  component: [{ type: "box", position: [0, 0, 10, 10], fill: "#fff" }],
+};
 this.tick = function (game) {
   if (game.step % 60 === 0) {
     for (let i = 0; i < game.ships.length; i++) {
+      ship.setUIComponent(radar);
       var ship = game.ships[i];
       for (let secondary of secondaries)
         ship.custom.weapons && ship.setUIComponent(secondary);
