@@ -13,3 +13,10 @@ function Pieces(side, pos) {
     components: [{ type: "text", position: [0, 0, 100, 100], value: side }],
   });
 }
+let board = {
+  id: "board",
+  position: [10, 10, 30, 40],
+  visible: true,
+  clickable: false,
+  components: [],
+};
