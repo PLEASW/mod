@@ -4,7 +4,6 @@ this.options = {
   friendly_colors: 2,
   map_name: "XO",
 };
-
 const square = 0.5625;
 const winning = 4;
 // board
@@ -88,6 +87,24 @@ let round = {
       else vertical = 0;
       if (horizontal == winning || vertical == winning) return true;
     }
+    let [right, left] = [[], []];
+    for (let i = 0; i < 10; i++) {
+      if (
+        !(
+          y + i > numberBoxes - 1 ||
+          x + i > numberBoxes - 1 ||
+          y - i < 0 ||
+          x - i < 0
+        )
+      ) {
+        right.push(this.board[y + i][x + i].side);
+        right.push(this.board[y - i][x - i].side);
+        left.push(this.board[y - i][x + i].side);
+        left.push(this.board[y + i][x - i].side);
+      }
+    }
+    for (let i of [right, left])
+      return i.filter((a) => a != side).length == winning;
   },
 };
 this.tick = function (game) {
