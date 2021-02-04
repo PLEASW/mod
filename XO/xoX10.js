@@ -75,7 +75,7 @@ function setup(boxes) {
 let round = {
   moves: 0,
   rounds: 0,
-  board: setup(widthBox),
+  board: setup(numberBoxes),
 };
 this.tick = function (game) {
   for (let ship of game.ships) {
