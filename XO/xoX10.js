@@ -7,7 +7,7 @@ this.options = {
 const square = 0.5625;
 const winning = 4;
 // board
-const numberBoxes = 10;
+const numberBoxes = 15;
 const boardWidth = 90;
 // pixel
 const PieceSize = boardWidth / numberBoxes - 1;
@@ -16,8 +16,8 @@ function Pieces(pos) {
   this.display = {
     id: pos,
     position: [
-      25.5 + pos[1] * (PieceSize + 1) * square,
-      5.95 + pos[0] * (PieceSize + 1),
+      23.5 + pos[1] * (PieceSize + 1) * square,
+      3.95 + pos[0] * (PieceSize + 1),
       PieceSize * square,
       PieceSize,
     ],
@@ -37,7 +37,7 @@ function Pieces(pos) {
 
 let board = {
   id: "board",
-  position: [25, 5, boardWidth * square, boardWidth],
+  position: [23, 3, boardWidth * square, boardWidth],
   visible: true,
   clickable: false,
   components: [
@@ -108,8 +108,8 @@ let round = {
     }
     for (let i of [right, left]) {
       let result = 0;
-      i.forEach((i) => {
-        if (i == side) result++;
+      i.forEach((a) => {
+        if (a == side) result++;
         else result = 0;
       });
       if (result == 4) {
