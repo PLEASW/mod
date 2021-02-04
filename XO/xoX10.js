@@ -10,9 +10,9 @@ const square = 0.5625;
 const numberBoxes = 10;
 const boardWidth = 90;
 // pixel
-const PieceSize = 8;
+const PieceSize = boardWidth / numberBoxes - 1;
 
-function Pieces(pos, side) {
+function Pieces(pos) {
   this.display = {
     id: pos,
     position: [
@@ -26,11 +26,13 @@ function Pieces(pos, side) {
     components: [{ type: "box", position: [0, 0, 100, 100], fill: "#4C4C4C" }],
   };
   this.pos = pos;
-  this.side = side;
+  this.side = undefined;
   this.isClick = function () {
     Object.assign(this.display, {
       clickable: false,
-      components: [{ type: "text", position: [0, 0, 100, 100], value: side }],
+      components: [
+        { type: "text", position: [0, 0, 100, 100], value: this.side },
+      ],
     });
   };
 }
@@ -68,7 +70,7 @@ function setup(boxes) {
     result.push(
       Array(boxes)
         .fill(i)
-        .map((i, r) => new Pieces([i, r], undefined))
+        .map((i, r) => new Pieces([i, r]))
     );
   return result;
 }
@@ -84,5 +86,18 @@ this.tick = function (game) {
       ship.setUIComponent(board);
       ship.custom.init = true;
     }
+  }
+};
+this.event = function (event, game) {
+  switch (event.name) {
+    case "ui_component_clicked":
+      let [y, x] = event.id;
+      // console.log(y,x);
+      if (round.moves % 2 == event.ship.team) {
+        round.moves++;
+        round.board[y][x].side = event.ship.team ? "X" : "O";
+        round.board[y][x].isClick();
+      }
+      break;
   }
 };
