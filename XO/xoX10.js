@@ -85,7 +85,10 @@ let round = {
       else horizontal = 0;
       if (this.board[i][x].side == side) vertical++;
       else vertical = 0;
-      if (horizontal == winning || vertical == winning) return true;
+      if (horizontal == winning || vertical == winning) {
+        this.end = true;
+        return true;
+      }
     }
     let [right, left] = [[], []];
     for (let i = 0; i < 10; i++) {
@@ -104,12 +107,20 @@ let round = {
       }
     }
     for (let i of [right, left])
-      return i.filter((a) => a != side).length == winning;
+      if (i.filter((a) => a != side).length == winning) {
+        this.end = true;
+        return true;
+      }
   },
+  end: false,
 };
 this.tick = function (game) {
   if (game.step % 30 == 0) {
     for (let ship of game.ships) {
+      if (round.end)
+        if (ship.custom.win) ship.gameover({ "You win": ":D" });
+        else ship.gameover({ "You lose": ":(" });
+
       for (let box of round.board.flat()) ship.setUIComponent(box.display);
       if (!ship.custom.init) {
         ship.setUIComponent(board);
@@ -128,9 +139,7 @@ this.event = function (event, game) {
         round.board[y][x].isClick();
         if (round.moves >= winning * 2 - 1) {
           event.ship.custom.win = round.isWin(event.id);
-          event.ship.gameover({});
         }
-        console.log(event.ship.custom.win);
       }
       break;
   }
