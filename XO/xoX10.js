@@ -91,11 +91,13 @@ let round = {
   },
 };
 this.tick = function (game) {
-  for (let ship of game.ships) {
-    for (let box of round.board.flat()) ship.setUIComponent(box.display);
-    if (!ship.custom.init) {
-      ship.setUIComponent(board);
-      ship.custom.init = true;
+  if (game.step % 30 == 0) {
+    for (let ship of game.ships) {
+      for (let box of round.board.flat()) ship.setUIComponent(box.display);
+      if (!ship.custom.init) {
+        ship.setUIComponent(board);
+        ship.custom.init = true;
+      }
     }
   }
 };
@@ -107,8 +109,10 @@ this.event = function (event, game) {
         round.moves++;
         round.board[y][x].side = event.ship.team ? "X" : "O";
         round.board[y][x].isClick();
-        if (round.moves > winning * 2)
+        if (round.moves >= winning * 2 - 1) {
           event.ship.custom.win = round.isWin(event.id);
+          event.ship.gameover({});
+        }
         console.log(event.ship.custom.win);
       }
       break;
