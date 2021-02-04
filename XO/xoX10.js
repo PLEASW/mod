@@ -6,6 +6,7 @@ this.options = {
 };
 
 const square = 0.5625;
+const winning = 4;
 // board
 const numberBoxes = 10;
 const boardWidth = 90;
@@ -25,8 +26,6 @@ function Pieces(pos) {
     visible: true,
     components: [{ type: "box", position: [0, 0, 100, 100], fill: "#4C4C4C" }],
   };
-  this.pos = pos;
-  this.side = undefined;
   this.isClick = function () {
     Object.assign(this.display, {
       clickable: false,
@@ -78,6 +77,18 @@ let round = {
   moves: 0,
   rounds: 0,
   board: setup(numberBoxes),
+  isWin: function (pos) {
+    let [y, x] = pos;
+    let side = this.board[y][x].side;
+    let [horizontal, vertical] = [0, 0];
+    for (let i = 0; i < numberBoxes; i++) {
+      if (this.board[y][i].side == side) horizontal++;
+      else horizontal = 0;
+      if (this.board[i][x].side == side) vertical++;
+      else vertical = 0;
+      if (horizontal == winning || vertical == winning) return true;
+    }
+  },
 };
 this.tick = function (game) {
   for (let ship of game.ships) {
@@ -92,11 +103,13 @@ this.event = function (event, game) {
   switch (event.name) {
     case "ui_component_clicked":
       let [y, x] = event.id;
-      // console.log(y,x);
       if (round.moves % 2 == event.ship.team) {
         round.moves++;
         round.board[y][x].side = event.ship.team ? "X" : "O";
         round.board[y][x].isClick();
+        if (round.moves > winning * 2)
+          event.ship.custom.win = round.isWin(event.id);
+        console.log(event.ship.custom.win);
       }
       break;
   }
