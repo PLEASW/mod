@@ -5,9 +5,11 @@ this.options = {
   map_name: "XO",
 };
 
-const widthBox = 10;
-const width = 90;
 const square = 0.5625;
+// board
+const numberBoxes = 10;
+const boardWidth = 90;
+// pixel
 const PieceSize = 8;
 
 function Pieces(pos, side) {
@@ -35,7 +37,7 @@ function Pieces(pos, side) {
 
 let board = {
   id: "board",
-  position: [25, 5, width * square, width],
+  position: [25, 5, boardWidth * square, boardWidth],
   visible: true,
   clickable: false,
   components: [
@@ -43,20 +45,20 @@ let board = {
       type: "box",
       position: [0, 0, 100, 100],
       fill: "#4C4C4C",
-      width: 15,
+      width: 100 / numberBoxes,
       stroke: "#25bdb1",
     },
   ],
 };
-for (let i = 1; i <= widthBox - 1; i++) {
+for (let i = 1; i <= numberBoxes - 1; i++) {
   board.components.push({
     type: "box",
-    position: [0, 0 + i * (100 / widthBox), 100, 1],
+    position: [0, 0 + i * (100 / numberBoxes), 100, 1],
     fill: "#25bdb1",
   });
   board.components.push({
     type: "box",
-    position: [0 + i * (100 / widthBox), 0, 1, 100],
+    position: [0 + i * (100 / numberBoxes), 0, 1, 100],
     fill: "#25bdb1",
   });
 }
