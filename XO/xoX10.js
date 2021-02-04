@@ -106,11 +106,17 @@ let round = {
         left.push(this.board[y + i][x - i].side);
       }
     }
-    for (let i of [right, left])
-      if (i.filter((a) => a != side).length == winning) {
+    for (let i of [right, left]) {
+      let result = 0;
+      i.forEach((i) => {
+        if (i == side) result++;
+        else result = 0;
+      });
+      if (result == 4) {
         this.end = true;
         return true;
       }
+    }
   },
   end: false,
 };
