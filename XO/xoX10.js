@@ -91,7 +91,7 @@ let round = {
       }
     }
     let [right, left] = [[], []];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < numberBoxes; i++) {
       if (
         !(
           y + i > numberBoxes - 1 ||
@@ -111,7 +111,7 @@ let round = {
       for (let b of i)
         if (b == side) result++;
         else result = 0;
-      if (result == 4) {
+      if (result == winning) {
         this.end = true;
         return true;
       }
