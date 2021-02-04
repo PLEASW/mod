@@ -7,7 +7,7 @@ this.options = {
 const square = 0.5625;
 const winning = 4;
 // board
-const numberBoxes = 15;
+const numberBoxes = 10;
 const boardWidth = 90;
 // pixel
 const PieceSize = boardWidth / numberBoxes - 1;
@@ -101,17 +101,16 @@ let round = {
         )
       ) {
         right.push(this.board[y + i][x + i].side);
-        right.push(this.board[y - i][x - i].side);
+        right.unshift(this.board[y - i][x - i].side);
         left.push(this.board[y - i][x + i].side);
-        left.push(this.board[y + i][x - i].side);
+        left.unshift(this.board[y + i][x - i].side);
       }
     }
     for (let i of [right, left]) {
       let result = 0;
-      i.forEach((a) => {
-        if (a == side) result++;
+      for (let b of i)
+        if (b == side) result++;
         else result = 0;
-      });
       if (result == 4) {
         this.end = true;
         return true;
