@@ -90,7 +90,7 @@ let round = {
         return true;
       }
     }
-    let [right, left] = [, ,].fill([side]);
+    let [right, left] = Array(2).fill([side]);
     for (let i = 1; i < numberBoxes; i++) {
       !(y + i > numberBoxes - 1 || x + i > numberBoxes - 1) &&
         right.push(this.board[y + i][x + i].side == side);
