@@ -90,27 +90,20 @@ let round = {
         return true;
       }
     }
-    let [right, left] = [[], []];
-    for (let i = 0; i < numberBoxes; i++) {
-      if (
-        !(
-          y + i > numberBoxes - 1 ||
-          x + i > numberBoxes - 1 ||
-          y - i < 0 ||
-          x - i < 0
-        )
-      ) {
-        right.push(this.board[y + i][x + i].side);
-        right.unshift(this.board[y - i][x - i].side);
-        left.push(this.board[y - i][x + i].side);
-        left.unshift(this.board[y + i][x - i].side);
-      }
+    let [right, left] = [, ,].fill([side]);
+    for (let i = 1; i < numberBoxes; i++) {
+      !(y + i > numberBoxes - 1 || x + i > numberBoxes - 1) &&
+        right.push(this.board[y + i][x + i].side == side);
+      !(y - i < 0 || x - i < 0) &&
+        right.unshift(this.board[y - i][x - i].side == side);
+      !(y - i < 0 || x + i > numberBoxes - 1) &&
+        left.push(this.board[y - i][x + i].side == side);
+      !(x - i < 0 || y + i > numberBoxes - 1) &&
+        left.unshift(this.board[y + i][x - i].side == side);
     }
     for (let i of [right, left]) {
       let result = 0;
-      for (let b of i)
-        if (b == side) result++;
-        else result = 0;
+      for (let b of i) b ? result++ : (result = 0);
       if (result == winning) {
         this.end = true;
         return true;
