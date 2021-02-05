@@ -103,7 +103,7 @@ let round = {
     }
     for (let i of [right, left]) {
       let result = 0;
-      for (let b of i) b ? result++ : (result = 0);
+      for (let b = 0; b < i.length; b++) i[b] ? result++ : (result = 0);
       if (result == winning) {
         this.end = true;
         return true;
