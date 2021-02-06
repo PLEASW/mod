@@ -90,23 +90,25 @@ let round = {
         return true;
       }
     }
-    let [right, left] = Array(2).fill([side]);
+    let [right, left] = [[side], [side]];
     for (let i = 1; i < numberBoxes; i++) {
       !(y + i > numberBoxes - 1 || x + i > numberBoxes - 1) &&
-        right.push(this.board[y + i][x + i].side == side);
-      !(y - i < 0 || x - i < 0) &&
-        right.unshift(this.board[y - i][x - i].side == side);
+        right.push(this.board[y + i][x + i].side);
+      !(y - i < 0 || x - i < 0) && right.unshift(this.board[y - i][x - i].side);
       !(y - i < 0 || x + i > numberBoxes - 1) &&
-        left.push(this.board[y - i][x + i].side == side);
+        left.push(this.board[y - i][x + i].side);
       !(x - i < 0 || y + i > numberBoxes - 1) &&
-        left.unshift(this.board[y + i][x - i].side == side);
+        left.unshift(this.board[y + i][x - i].side);
     }
     for (let i of [right, left]) {
       let result = 0;
-      for (let b = 0; b < i.length; b++) i[b] ? result++ : (result = 0);
-      if (result == winning) {
-        this.end = true;
-        return true;
+      for (let b = 0; b < i.length; b++) {
+        if (i[b] == side) result++;
+        else result = 0;
+        if (result == winning) {
+          this.end = true;
+          return true;
+        }
       }
     }
   },
@@ -115,15 +117,15 @@ let round = {
 this.tick = function (game) {
   if (game.step % 30 == 0) {
     for (let ship of game.ships) {
-      if (round.end)
-        if (ship.custom.win) ship.gameover({ "You win": ":D" });
-        else ship.gameover({ "You lose": ":(" });
-
       for (let box of round.board.flat()) ship.setUIComponent(box.display);
       if (!ship.custom.init) {
         ship.setUIComponent(board);
         ship.custom.init = true;
+        round.board = setup(numberBoxes);
       }
+      if (round.end)
+        if (ship.custom.win) ship.gameover({ "You win": ":D" });
+        else ship.gameover({ "You lose": ":(" });
     }
   }
 };
