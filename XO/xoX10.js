@@ -5,9 +5,9 @@ this.options = {
   map_name: "XO",
 };
 const square = 0.5625;
-const winning = 4;
+const winning = 3;
 // board
-const numberBoxes = 10;
+const numberBoxes = 3;
 const boardWidth = 90;
 // pixel
 const PieceSize = boardWidth / numberBoxes - 1;
@@ -123,9 +123,10 @@ this.tick = function (game) {
         ship.custom.init = true;
         round.board = setup(numberBoxes);
       }
-      if (round.end)
+      if (round.end) {
         if (ship.custom.win) ship.gameover({ "You win": ":D" });
         else ship.gameover({ "You lose": ":(" });
+      }
     }
   }
 };
@@ -137,10 +138,13 @@ this.event = function (event, game) {
         round.moves++;
         round.board[y][x].side = event.ship.team ? "X" : "O";
         round.board[y][x].isClick();
-        if (round.moves >= winning * 2 - 1) {
+        if (round.moves >= winning * 2 - 1)
           event.ship.custom.win = round.isWin(event.id);
-        }
       }
+      break;
+    case "ship_spawned":
+      round.board = setup(numberBoxes);
+      round.end = false;
       break;
   }
 };
