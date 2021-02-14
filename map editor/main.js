@@ -29,30 +29,95 @@ this.options = {
   radar_zoom: 10,
   invulnerable_ships: true,
 };
+let scoreboard = {
+  id: "scoreboard",
+  components: [, ,],
+};
 this.tick = function (game) {
   if (game.step % 60 === 0) {
     for (let ship of game.ships) {
+      scoreboard.components[0] = {
+        type: "text",
+        position: [0, 0, 50, 10],
+        value: `x : ${Math.trunc((mapSize * 5 + ship.x) / 10)}`,
+        color: "#fff",
+      };
+      scoreboard.components[1] = {
+        type: "text",
+        position: [50, 0, 50, 10],
+        value: `y : ${Math.trunc((mapSize * 5 - ship.y - 1) / 10)}`,
+        color: "#fff",
+      };
+      ship.setUIComponent(scoreboard);
+      !ship.custom.size && (ship.custom.size = 9);
       ship.setUIComponent({
-        id: "place asteroid",
-        position: [0, 0, 0, 0],
-        shortcut: "Q",
+        id: "reset",
+        position: [70, 39, 10, 15],
         clickable: true,
-        visible: 1,
+        visible: true,
+        components: [
+          { type: "box", position: [0, 0, 100, 100], fill: "#2f3136" },
+          {
+            type: "text",
+            position: [0, 0, 90, 100],
+            value: "reset",
+            color: "#c7d6de",
+            align: "left",
+          },
+        ],
       });
+      for (let i of ["Place", "Delete"])
+        ship.setUIComponent({
+          id: i + " asteroid",
+          position: [87, 39 + ["Place", "Delete"].indexOf(i) * 7.5, 15, 7.5],
+          clickable: true,
+          visible: 1,
+          components: [
+            { type: "box", position: [0, 0, 100, 100], fill: "#2f3136" },
+            {
+              type: "text",
+              position: [0, 0, 90, 100],
+              value: i,
+              color: "#c7d6de",
+              align: "left",
+            },
+          ],
+        });
+      for (let i = 0; i < 10; i++)
+        ship.setUIComponent({
+          id: i,
+          position: [0 + i * 8, 0, 8, 5],
+          clickable: 1,
+          visible: 1,
+          components: [
+            { type: "box", position: [0, 0, 100, 100], fill: "#2f3136" },
+            {
+              type: "text",
+              position: [0, 0, 100, 100],
+              value: !i ? "random" : i,
+              color: "#c7d6de",
+            },
+          ],
+        });
     }
   }
 };
 this.event = function (event, game) {
   switch (event.name) {
     case "ui_component_clicked":
-      console.log(event.ship.x, event.ship.y);
-      let b = mapSize / 2;
-      let [x, y] = [
-        ~~(event.ship.x / (b * 2) + b),
-        ~~(event.ship.y / (b * 2) + b),
+      var [x, y] = [
+        Math.trunc((mapSize * 5 + event.ship.x) / 10),
+        Math.trunc((mapSize * 5 - event.ship.y - 1) / 10),
       ];
-      console.log(y, x);
-      asteoidField.a[y][x] = 9;
+      if (event.id === "Place asteroid") {
+        event.ship.custom.random &&
+          (event.ship.custom.size = ~~(Math.random() * 9 + 1));
+        asteoidField.a[y][x] = event.ship.custom.size;
+      } else if (typeof event.id == "number") {
+        event.ship.custom.random = !event.id;
+        event.ship.custom.size = event.id;
+      } else if (event.id == "Delete asteroid") asteoidField.a[y][x] = 0;
+      else if (event.id == "reset") asteoidField.a = reset(mapSize);
       game.setCustomMap(asteoidField.b(asteoidField.a));
       break;
   }
