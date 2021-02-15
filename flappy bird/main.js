@@ -1,5 +1,79 @@
 this.options = {
-  shield_regen_factor: -(10 ** 308),
+  map_size: 20,
+  custom_map: "",
 };
-this.tick = function (game) {};
-this.event = function (event, game) {};
+
+var object = {
+  id: "pilow",
+  obj:
+    "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/starblast-1613356396592.obj",
+  diffuse:
+    "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_diffuse.png",
+  emissive:
+    "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_emissive3.png",
+  emissiveColor: "#00ffff",
+  physics: {
+    mass: 1000,
+    shape: [
+      0.21,
+      0,
+      0,
+      0.226,
+      0.196,
+      0.269,
+      0.262,
+      0.328,
+      0.396,
+      0.546,
+      0.785,
+      1.61,
+      4.205,
+      4.205,
+      1.61,
+      0.785,
+      0.546,
+      0.396,
+      0.328,
+      0.262,
+      0.269,
+      0.196,
+      0.226,
+      0,
+      0,
+      0.21,
+      0,
+      0,
+      0.226,
+      0.196,
+      0.269,
+      0.262,
+      0.328,
+      0.396,
+      0.546,
+      0.785,
+      1.61,
+      4.205,
+      4.205,
+      1.61,
+      0.785,
+      0.546,
+      0.396,
+      0.328,
+      0.262,
+      0.269,
+      0.196,
+      0.226,
+      0,
+      0,
+    ],
+    fixed: true,
+  },
+};
+
+game.setObject({
+  id: "pilow",
+  type: object,
+  position: { x: 0, y: 100, z: 0 },
+  rotation: { x: 0, y: 0, z: 0 },
+  scale: { x: 30, y: 30, z: 30 },
+});
