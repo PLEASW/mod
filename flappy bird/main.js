@@ -3,19 +3,17 @@ this.options = {
   custom_map: "",
 };
 const square = 0.5625;
-const a = 10;
-let bird = {
-  x: 0,
-  y: 0,
-  shape: [x, y, x + 5, y + 5],
-  //    x,y ______ x + 5
-  //       |      |
-  //       |      |
-  // y + 5 |______|
-  display: {
+const g = 10;
+function Bird(x, y, width) {
+  this.x = x;
+  this.y = y;
+  this.shape = [];
+  this.display = {
     id: "bird",
-    position: [x, y, 5 * square, 5],
+    position: [this.x, this.y, width * square, width],
     visible: true,
     components: [{ type: "box", position: [0, 0, 100, 100], fill: "#fff" }],
-  },
-};
+  };
+}
+this.tick = function (game) {};
+this.event = function (event, game) {};
