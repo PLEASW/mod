@@ -30,10 +30,10 @@ function Pipe(id, width = 5) {
     position: [this.x, 0, this.width, 100],
     visible: true,
     components: [
-      { type: "box", position: [0, 0, 100, this.y - 15], fill: "#36393f" },
+      { type: "box", position: [0, 0, 100, this.y - 17], fill: "#36393f" },
       {
         type: "box",
-        position: [0, this.y + 15, 100, 100 - this.y + 20],
+        position: [0, this.y + 17, 100, 100 - this.y + 20],
         fill: "#36393f",
       },
     ],
@@ -50,12 +50,13 @@ this.tick = function (game) {
   for (let ship of game.ships) {
     if (!ship.custom.init) {
       ship.custom.init = true;
-      ship.custom.pipes = [];
+      ship.custom.pipes = [new Pipe()];
+      ship.custom.pipes.y = 70;
       ship.custom.bird = new Bird();
       ship.setUIComponent(button);
       ship.setUIComponent({
         id: "starting",
-        position: [0, 80, 100, 20],
+        position: [0, 70, 100, 20],
         visible: true,
         components: [
           {
@@ -66,10 +67,13 @@ this.tick = function (game) {
           },
         ],
       });
-    } else {
+    }
+    if (ship.custom.start) {
       let bird = ship.custom.bird;
       let pipes = ship.custom.pipes;
-      if (game.step % 60 === 0) pipes.push(new Pipe(~~(game.step / 60)));
+      if (game.step % 60 === 0 && game.step > ship.custom.start + 5 * 60) {
+        pipes.push(new Pipe(~~(game.step / 60)));
+      }
       if (!(bird.y > 100 - bird.width) || bird.vy + bird.ay * tick < 0) {
         bird.y += bird.vy * tick;
         bird.vy += bird.ay * tick;
@@ -81,7 +85,7 @@ this.tick = function (game) {
       bird.display.position[0] = bird.x;
       bird.display.position[1] = bird.y;
       for (let pipe of pipes) {
-        pipe.x -= 50 * tick;
+        pipe.x -= 40 * tick;
         if (pipe.x <= -pipe.width) {
           pipes.shift();
           pipe.display.visible = false;
@@ -101,6 +105,7 @@ this.event = function (event, game) {
       ship.setUIComponent({ id: "starting", visible: false });
       ship.custom.bird.ay = -500;
       ship.custom.bird.vy = 0;
+      if (!ship.custom.start) ship.custom.start = game.step;
       break;
   }
 };
