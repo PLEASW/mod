@@ -17,7 +17,9 @@ function Bird(width = 5) {
     id: "bird",
     position: [this.x, this.y, this.width * square, this.width],
     visible: true,
-    components: [{ type: "box", position: [0, 0, 100, 100], fill: "#51a5c7" }],
+    components: [
+      { type: "round", position: [0, 0, 100, 100], fill: "#51a5c7" },
+    ],
   };
 }
 function Pipe(id, width = 5) {
@@ -50,8 +52,7 @@ this.tick = function (game) {
   for (let ship of game.ships) {
     if (!ship.custom.init) {
       ship.custom.init = true;
-      ship.custom.pipes = [new Pipe()];
-      ship.custom.pipes.y = 70;
+      ship.custom.pipes = [];
       ship.custom.bird = new Bird();
       ship.setUIComponent(button);
       ship.setUIComponent({
@@ -71,9 +72,8 @@ this.tick = function (game) {
     if (ship.custom.start) {
       let bird = ship.custom.bird;
       let pipes = ship.custom.pipes;
-      if (game.step % 60 === 0 && game.step > ship.custom.start + 5 * 60) {
-        pipes.push(new Pipe(~~(game.step / 60)));
-      }
+      if (game.step % 60 === 0 && game.step > ship.custom.start + 5 * 60)
+        pipes.push(new Pipe(~~((game.step - 5 * 60) / 60)));
       if (!(bird.y > 100 - bird.width) || bird.vy + bird.ay * tick < 0) {
         bird.y += bird.vy * tick;
         bird.vy += bird.ay * tick;
@@ -86,6 +86,13 @@ this.tick = function (game) {
       bird.display.position[1] = bird.y;
       for (let pipe of pipes) {
         pipe.x -= 40 * tick;
+        if (
+          bird.x + bird.width == pipe.x ||
+          (bird.x > pipe.x && bird.x < pipe.x + pipe.width)
+        )
+          (bird.y < pipe.y - 17 || bird.y + bird.width > pipe.y + 17) &&
+            ship.gameover({ Score: ship.score });
+        ship.set({ score: pipe.display.id });
         if (pipe.x <= -pipe.width) {
           pipes.shift();
           pipe.display.visible = false;
