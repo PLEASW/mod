@@ -9,58 +9,38 @@ this.options = {
   release_crystal: true,
   weapons_store: true,
 };
-let scoreboard = {
-  id: "scoreboard",
-  components: [],
-};
 let aliens = [10, 11, 14, 16, 17, 18];
+
+let damage = 50,
+  laser_speed = 100,
+  rate = 1.2;
+
 this.tick = function (game) {
-  if (game.aliens.length < 25) {
-    game.addAlien({
-      code: aliens[1],
-      level: 2,
-      x: Math.random() * this.options.map_size,
-      y: Math.random() * this.options.map_size,
-      crystal_drop: 20,
-      weapon_drop: ~~(Math.random * 100),
-    });
-    game.custom.time_squawn = game.step;
-  }
-  let ships_in_scoreboard = [];
   game.ships.forEach((ship, i) => {
-    ships_in_scoreboard.push({
-      type: "player",
-      id: i,
-      position: [0, i * 10, 50, 10],
-    });
     if (!ship.custom.init) {
-      ship.set({ stats: 88888888 });
       ship.custom.init = true;
-      ship.custom.aliens_killed = 0;
-      ship.custom.deaths = 0;
-      ship.custom.time_survired = [];
-      ship.custom.resquawn = game.step;
+      ship.custom.scoreboard = {
+        id: "scoreboard",
+        components: [],
+      };
     }
   });
-  if (game.step > game.custom.time_squawn + 10)
-    for (let alien of game.aliens) {
-      if (!alien.custom.init) {
-        alien.custom.init = true;
-        alien.set({
-          damage: 100,
-          laser_speed: 100,
-          rate: 1.2,
-        });
-      }
+  if (game.step % 30 === 0) {
+    if (game.aliens.length < 25) {
+      game.addAlien({
+        code: aliens[0],
+        level: 2,
+        x: Math.trunc(Math.random() * this.options.map_size),
+        y: Math.trunc(Math.random() * this.options.map_size),
+      });
+      game.custom.aliens_squawn = game.step;
     }
+    if (game.step > game.custom.aliens_squawn + 10)
+      game.aliens.forEach((alien, i) => {});
+  }
 };
 this.event = function (event, game) {
   let ship = event.ship;
   switch (event.name) {
-    case "ship_spawned":
-      ship.set({ stats: 66666666 });
-      break;
-    default:
-      break;
   }
 };
