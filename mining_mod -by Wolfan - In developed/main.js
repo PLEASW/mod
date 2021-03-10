@@ -38,13 +38,14 @@ this.tick = function (game) {
       if (ship.type > ship.custom.tier_allow * 100 && ship.crystals == ship_cargo[Math.trunc(ship.type / 100) - 1])
         upgrades.forEach(i => ship.setUIComponent(i));
       else upgrades.forEach(i => ship.setUIComponent({ id: i.id, visible: false }));
-      if (ship.type > ship.custom.gem_donate * 100) ship.custom.gem_donate++; // amount of gem donate each tier
+
       if (ship.custom.donated) {
         if (ship.custom.donate > base_cargo) { // check if the gem donate reach the highest value
           if (ship.custom.tier_allow < 6)
             (ship.custom.donate -= base_cargo, base_cargo *= 2, scoreboard.components[3].value = base_cargo);
           ship.custom.tier_allow++;
         }
+        ship.custom.gem_donate = Math.trunc(ship.type / 100); // amount of gem donate each tier
         let crystals = ship.crystals > ship.custom.gem_donate ? ship.custom.gem_donate : ship.crystals;
         ship.custom.credit += crystals; ship.custom.donate += crystals;
         ship.set({ idle: true, vx: 0, vy: 0, score: ship.score + crystals, crystals: ship.crystals - crystals });
