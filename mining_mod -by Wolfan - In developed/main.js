@@ -38,7 +38,6 @@ this.tick = function (game) {
       if (ship.type > ship.custom.tier_allow * 100 && ship.crystals == ship_cargo[Math.trunc(ship.type / 100) - 1])
         upgrades.forEach(i => ship.setUIComponent(i));
       else upgrades.forEach(i => ship.setUIComponent({ id: i.id, visible: false }));
-
       if (ship.custom.donated) {
         if (ship.custom.donate > base_cargo) { // check if the gem donate reach the highest value
           if (ship.custom.tier_allow < 6)
