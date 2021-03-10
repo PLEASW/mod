@@ -13,7 +13,7 @@ let upgrades = [
   { id: "9", position: [25, 0, 40, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [25, 0, 40, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
 ];
-let donate = {
+const donate = {
   id: "donate", position: [92, 46.5, 8, 7], visible: true, clickable: true, shortcut: "W",
   components: [{ type: "box", position: [0, 0, 100, 100], fill: "#18645b34" }, { type: "text", position: [0, 0, 100, 100], value: "W", color: "#099" }]
 };
