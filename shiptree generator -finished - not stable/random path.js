@@ -1017,7 +1017,6 @@ if (chance < 0.05) {
       }
     }
   }
-  for (var i = 0; i <= 7; i += 1) {}
   game.setObject({
     id: "waifu",
     type: waifu,
