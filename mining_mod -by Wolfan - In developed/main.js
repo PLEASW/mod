@@ -39,10 +39,9 @@ this.tick = function (game) {
       if (ship.type > ship.custom.gem_donate * 100) ship.custom.gem_donate = Math.trunc(ship.type / 100); // amount of gem donate each tier
       if (ship.custom.donated) {
         if (ship.custom.donate > base_cargo) { // check if the gem donate reach the highest value
-          ship.custom.donate -= base_cargo;
-          ship.custom.tier_allow < 6 ?
-            (ship.custom.tier_allow++, base_cargo *= 2, scoreboard.components[3].value = base_cargo)
-            : ship.custom.tier_allow++;
+          ship.custom.tier_allow++;
+          if (ship.custom.tier_allow < 6)
+            (ship.custom.donate -= base_cargo, base_cargo *= 2, scoreboard.components[3].value = base_cargo);
         }
         let crystals = ship.crystals > ship.custom.gem_donate ? ship.custom.gem_donate : ship.crystals;
         ship.custom.credit += crystals; ship.custom.donate += crystals;
