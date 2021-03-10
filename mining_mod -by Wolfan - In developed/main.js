@@ -21,7 +21,7 @@ let scoreboard = {
     { type: "box", position: [1, 0, 5, 0], fill: "#000" }, // progress bar
     { type: "text", position: [7, 0, 7, 7], value: 0, color: "#fff" }, // starter value
     { type: "text", position: [7, 93, 100, 8], value: base_cargo, color: "#fff", align: 'left' } // max value
-  ],
+  ]
 };
 this.tick = function (game) {
   if (game.step % 10 === 0) {
