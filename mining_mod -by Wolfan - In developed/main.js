@@ -1,7 +1,5 @@
-// setup
 let base_cargo = 100; //  gem upgrade for tier 3
 const ship_cargo = Array(7).fill(0).map((i, r) => (r + 1) ** 2 * 20);
-
 this.options = {
   weapons_store: false,
   crystal_value: 10,
