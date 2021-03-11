@@ -7,7 +7,7 @@ this.options = {
   release_crystal: true,
   asteroids_strength: 0.1
 };
-let upgrades = [
+const upgrades = [
   { id: "9", position: [25, 0, 40, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [25, 0, 40, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
 ];
