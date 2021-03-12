@@ -91,9 +91,9 @@ this.event = function (event, game) {
         components: []
       }
       if (ship.custom.donate) {
-
+        ship.setUIComponent(healing_button)
       } else {
-
+        ship.setUIComponent({ id: 'healing', visible: false })
       }
       break;
   }
