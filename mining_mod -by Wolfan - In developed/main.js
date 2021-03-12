@@ -14,14 +14,14 @@ const upgrades = [
 const donate = {
   id: "donate", position: [92, 46.5, 8, 7], visible: true, clickable: true, shortcut: "W",
   components:
-    [{ type: "box", position: [0, 0, 100, 100], fill: "#" },
+    [{ type: "box", position: [0, 0, 100, 100], fill: "#00ffe650" },
     { type: "text", position: [0, 0, 100, 100], value: "W", color: "#0ff" }]
 };
 const scoreboard = function () {
   return {
     id: "scoreboard", components: [
-      { type: "box", position: [0, 93, 100, 7], fill: "f0ad4e" }, // full bar
-      { type: "box", position: [0, 94, 0, 5], fill: "#ff0" }, // progress bar
+      { type: "box", position: [0, 93, 100, 7], fill: "#f0ad4e" }, // full bar
+      { type: "box", position: [0, 94, 0, 5], fill: "#f00" }, // progress bar
       { type: "text", position: [0, 84, 7, 7], value: 0, color: '#fff' }, // starter value
       { type: "text", position: [50, 84, 50, 8], value: base_cargo, align: 'right', color: '#fff' } // max value
     ]
@@ -41,12 +41,14 @@ const weapons = {
 };
 this.tick = function (game) {
   // disable upgrade
-  if (game.step % 30 === 0) for (let ship of game.ships)
-    if (ship.type > ship.custom.tier_allow * 100 && ship.crystals == ship_cargo[Math.trunc(ship.type / 100) - 1])
-      upgrades.forEach(i => ship.setUIComponent(i));
-    else upgrades.forEach(i => ship.setUIComponent({ id: i.id, visible: false }));
+  if (game.step % 30 === 0) {
+    for (let ship of game.ships)
+      if (ship.type > ship.custom.tier_allow * 100 && ship.crystals == ship_cargo[Math.trunc(ship.type / 100) - 1])
+        upgrades.forEach(i => ship.setUIComponent(i));
+      else upgrades.forEach(i => ship.setUIComponent({ id: i.id, visible: false }));
+    var ships = game.ships.sort((a, b) => a.score > b.score ? 1 : -1).slice(0, 7);
+  }
   if (game.step % 60 === 0) {
-    let ships = game.ships.sort().slice(0, 7);
     for (let ship of game.ships) {
       if (!ship.custom.init) {
         // mining
