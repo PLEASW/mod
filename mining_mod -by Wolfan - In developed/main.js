@@ -27,18 +27,6 @@ const scoreboard = function () {
     ]
   };
 }
-const weapons = {
-  'rockets': [],
-  'missiles': [],
-  'torpedo': [],
-  'light mines': [],
-  'heavy mines': [],
-  'Mining pod': [],
-  'Attack pod': [],
-  'Defense pod': [],
-  'Energy refill': [],
-  'Shield refill': []
-};
 this.tick = function (game) {
   // disable upgrade
   if (game.step % 30 === 0) {
@@ -48,7 +36,7 @@ this.tick = function (game) {
       else upgrades.forEach(i => ship.setUIComponent({ id: i.id, visible: false }));
     var ships = game.ships.sort((a, b) => b.score - a.score).slice(0, 7);
   }
-  if (game.step % 60 === 0) {
+  if (game.step % 45 === 0) {
     for (let ship of game.ships) {
       if (!ship.custom.init) {
         // mining
@@ -86,8 +74,9 @@ this.tick = function (game) {
         ship.custom.credit += crystals;
         ship.custom.donate += crystals;
         ship.custom.scoreboard.components[1].position[2] = (ship.custom.donate / ship.custom.base_cargo) * 100;
-        ship.set({ idle: true, vx: 0, vy: 0, score: ship.score + crystals, crystals: ship.crystals - crystals });
-      } else ship.set({ idle: false });
+        ship.set({ score: ship.score + crystals, crystals: ship.crystals - crystals })
+        ship.idle && ship.set({ idle: true, vx: 0, vy: 0 });
+      } else !ship.idle && ship.set({ idle: false });
     };
   }
 };
@@ -96,6 +85,11 @@ this.event = function (event, game) {
   switch (event.id) {
     case "donate":
       ship.custom.donated = !ship.custom.donated;
+      if (ship.custom.donate) {
+
+      } else {
+
+      }
       break;
   }
 };
