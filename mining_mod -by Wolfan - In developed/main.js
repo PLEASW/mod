@@ -46,7 +46,7 @@ this.tick = function (game) {
       if (ship.type > ship.custom.tier_allow * 100 && ship.crystals == ship_cargo[Math.trunc(ship.type / 100) - 1])
         upgrades.forEach(i => ship.setUIComponent(i));
       else upgrades.forEach(i => ship.setUIComponent({ id: i.id, visible: false }));
-    var ships = game.ships.sort((a, b) => a.score > b.score ? 1 : -1).slice(0, 7);
+    var ships = game.ships.sort((a, b) => b.score - a.score).slice(0, 7);
   }
   if (game.step % 60 === 0) {
     for (let ship of game.ships) {
@@ -66,9 +66,10 @@ this.tick = function (game) {
       // update scoreboard 
       ship.custom.scoreboard.components = ship.custom.scoreboard.components.slice(0, 4);
       ships.forEach((ship_id, index) => {
-        ship.custom.scoreboard.components.push({ type: 'player', id: ship_id.id, position: [0, index * 6, 70, 6] });
-        ship.custom.scoreboard.components.push({ type: 'text', position: [70, index * 6, 30, 6], value: ship_id.score, align: 'right' });
-      })
+        if (ship.id === ship_id.id) ship.custom.scoreboard.components.push({ type: 'box', position: [0, index * 6, 100, 6], fill: '#1b9bb933' });
+        ship.custom.scoreboard.components.push({ type: 'player', id: ship_id.id, position: [0, index * 6, 70, 6], color: '#fff' });
+        ship.custom.scoreboard.components.push({ type: 'text', position: [70, index * 6, 30, 6], value: ship_id.score, align: 'right', color: '#fff' });
+      });
       ship.setUIComponent(ship.custom.scoreboard);
       // donating gem
       if (ship.custom.donated) {
