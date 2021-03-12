@@ -14,13 +14,13 @@ const upgrades = [
 const donate = {
   id: "donate", position: [92, 46.5, 8, 7], visible: true, clickable: true, shortcut: "W",
   components:
-    [{ type: "box", position: [0, 0, 100, 100], fill: "#f0ad4e" },
+    [{ type: "box", position: [0, 0, 100, 100], fill: "#" },
     { type: "text", position: [0, 0, 100, 100], value: "W", color: "#0ff" }]
 };
 const scoreboard = function () {
   return {
     id: "scoreboard", components: [
-      { type: "box", position: [0, 93, 100, 7], fill: "#242526" }, // full bar
+      { type: "box", position: [0, 93, 100, 7], fill: "f0ad4e" }, // full bar
       { type: "box", position: [0, 94, 0, 5], fill: "#ff0" }, // progress bar
       { type: "text", position: [0, 84, 7, 7], value: 0, color: '#fff' }, // starter value
       { type: "text", position: [50, 84, 50, 8], value: base_cargo, align: 'right', color: '#fff' } // max value
