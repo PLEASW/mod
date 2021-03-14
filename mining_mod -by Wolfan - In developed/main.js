@@ -54,9 +54,10 @@ this.tick = function (game) {
       // update scoreboard 
       ship.custom.scoreboard.components = ship.custom.scoreboard.components.slice(0, 4);
       ships.forEach((ship_id, index) => {
-        if (ship.id === ship_id.id) ship.custom.scoreboard.components.push({ type: 'box', position: [0, index * 6, 100, 6], fill: '#1b9bb933' });
-        ship.custom.scoreboard.components.push({ type: 'player', id: ship_id.id, position: [0, index * 6, 70, 6], color: '#fff' });
-        ship.custom.scoreboard.components.push({ type: 'text', position: [70, index * 6, 30, 6], value: ship_id.score, align: 'right', color: '#fff' });
+        const height = 7;
+        if (ship.id === ship_id.id) ship.custom.scoreboard.components.push({ type: 'box', position: [0, index * height, 100, height], fill: '#1b9bb933' });
+        ship.custom.scoreboard.components.push({ type: 'player', id: ship_id.id, position: [0, index * height, 70, height], color: '#fff' });
+        ship.custom.scoreboard.components.push({ type: 'text', position: [70, index * height, 30, height], value: ship_id.score, align: 'right', color: '#fff' });
       });
       ship.setUIComponent(ship.custom.scoreboard);
       // donating gem
