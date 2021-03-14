@@ -34,9 +34,9 @@ this.tick = function (game) {
       if (ship.type > ship.custom.tier_allow * 100 && ship.crystals == ship_cargo[Math.trunc(ship.type / 100) - 1])
         upgrades.forEach(i => ship.setUIComponent(i));
       else upgrades.forEach(i => ship.setUIComponent({ id: i.id, visible: false }));
-    var ships = game.ships.sort((a, b) => b.score - a.score).slice(0, 7);
   }
   if (game.step % 45 === 0) {
+    var ships = game.ships.sort((a, b) => b.score - a.score).slice(0, 7);
     for (let ship of game.ships) {
       if (!ship.custom.init) {
         // mining
@@ -74,9 +74,8 @@ this.tick = function (game) {
         ship.custom.credit += crystals;
         ship.custom.donate += crystals;
         ship.custom.scoreboard.components[1].position[2] = (ship.custom.donate / ship.custom.base_cargo) * 100;
-        ship.set({ score: ship.score + crystals, crystals: ship.crystals - crystals })
-        ship.idle && ship.set({ idle: true, vx: 0, vy: 0 });
-      } else !ship.idle && ship.set({ idle: false });
+        ship.set({ idle: true, vx: 0, vy: 0, score: ship.score + crystals, crystals: ship.crystals - crystals });
+      } else ship.set({ idle: false });
     };
   }
 };
@@ -85,15 +84,15 @@ this.event = function (event, game) {
   switch (event.id) {
     case "donate":
       ship.custom.donated = !ship.custom.donated;
-      let weaponses = ['Rockets', 'Missiles', 'Torpedoes', 'Heavy mines', 'Space mines', 'Mining pods', 'Attack pods', 'Defend pods']
+      let weaponses = ['Rockets', 'Missiles', 'Torpedoes', 'Heavy mines', 'Space mines', 'Mining pods', 'Attack pods', 'Defend pods'];
       let healing_button = {
         id: 'healing', position: [0, 50, 10, 10], clickable: true, visible: true,
         components: []
-      }
-      if (ship.custom.donate) {
-        ship.setUIComponent(healing_button)
+      };
+      if (ship.custom.donated) {
+        ship.setUIComponent(healing_button);
       } else {
-        ship.setUIComponent({ id: 'healing', visible: false })
+        ship.setUIComponent({ id: 'healing', visible: false });
       }
       break;
   }
