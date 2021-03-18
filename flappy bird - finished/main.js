@@ -14,12 +14,8 @@ function Bird(width = 5) {
   this.width = width;
   this.shape = [];
   this.display = {
-    id: "bird",
-    position: [this.x, this.y, this.width * square, this.width],
-    visible: true,
-    components: [
-      { type: "round", position: [0, 0, 100, 100], fill: "#51a5c7" },
-    ],
+    id: "bird", position: [this.x, this.y, this.width * square, this.width], visible: true,
+    components: [{ type: "round", position: [0, 0, 100, 100], fill: "#51a5c7" }],
   };
 }
 function Pipe(id, width = 5) {
@@ -33,11 +29,7 @@ function Pipe(id, width = 5) {
     visible: true,
     components: [
       { type: "box", position: [0, 0, 100, this.y - 17], fill: "#36393f" },
-      {
-        type: "box",
-        position: [0, this.y + 17, 100, 100 - this.y + 20],
-        fill: "#36393f",
-      },
+      { type: "box", position: [0, this.y + 17, 100, 100 - this.y + 20], fill: "#36393f" },
     ],
   };
 }
