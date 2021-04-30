@@ -117,69 +117,16 @@ var Poseidon_706 =
 var Aries_707 =
   '{"name":"Aries","level":7,"model":7,"size":4.5,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}},"bodies":{"arm":{"section_segments":6,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90,85],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,15,20,20,15,0],"height":[0,10,12,8,12,12,8,12,10,5,0],"texture":[4,63,4,4,4,4,4,63,3],"propeller":true},"arm45":{"section_segments":6,"angle":45,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,10,25,20,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"arm90":{"section_segments":6,"angle":90,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,10,25,20,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"arm135":{"section_segments":6,"angle":-45,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,10,25,20,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"cockpit":{"section_segments":20,"offset":{"x":0,"y":-10,"z":8},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0],"y":[-50,-35,-25,-15,0,15,25,35,70],"z":[0,0,0,0,0,0,0,0,0]},"width":[0,15,20,25,20,10,15,15,0],"height":[0,10,13,15,15,15,12,10,0],"texture":[6,15,15,1,4,3,3,15]},"topcockpit":{"section_segments":16,"offset":{"x":0,"y":-23,"z":7},"position":{"x":[0,0,0,0,0,0,0],"y":[-30,-10,0,10,30],"z":[0,0,0,0,0]},"width":[0,12,15,10,0],"height":[0,20,22,18,0],"texture":[9]},"cannon":{"section_segments":6,"offset":{"x":0,"y":-63,"z":0},"position":{"x":[0,0,0,0,0,0],"y":[-25,-30,-20,0,10,12],"z":[0,0,0,0,0,0]},"width":[0,10,8,7,6,0],"height":[0,5,5,7,6,0],"texture":[6,6,6,10,12],"laser":{"damage":[150,150],"rate":0.7,"type":1,"speed":[110,110],"number":1,"error":0}},"sidecannons":{"section_segments":6,"offset":{"x":45,"y":-45,"z":7},"position":{"x":[0,0,0,0,0,0],"y":[0,-30,-20,0,10,12],"z":[0,0,0,0,-5,-10]},"width":[0,3,5,7,6,0],"height":[0,3,5,7,6,0],"texture":[6,6,15,4,4],"angle":-45,"laser":{"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"error":0}},"backsidecannons":{"section_segments":6,"offset":{"x":45,"y":45,"z":7},"position":{"x":[0,0,0,0,0,0],"y":[0,-30,-20,0,10,12],"z":[0,0,0,0,-5,-10]},"width":[0,3,5,7,6,0],"height":[0,3,5,7,6,0],"texture":[6,6,15,4,4],"angle":225,"laser":{"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"error":0}}},"wings":{"side_joins":{"offset":{"x":0,"y":0,"z":5},"length":[40,30],"width":[50,30,0],"angle":[30,-10],"position":[0,0,50],"texture":[1,11],"bump":{"position":10,"size":20}}},"typespec":{"name":"Aries","level":7,"model":7,"code":707,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}},"shape":[8.386,8.406,7.816,4.278,7.535,7.919,8.431,8.279,7.842,6.772,7.119,7.875,8.096,8.1,7.875,7.119,6.772,7.842,8.279,8.431,7.919,7.535,3.408,7.88,8.184,8.116,8.184,7.88,3.408,7.535,7.919,8.431,8.279,7.842,6.772,7.119,7.875,8.096,8.1,7.875,7.119,6.772,7.842,8.279,8.431,7.919,7.535,4.278,7.816,8.406],"lasers":[{"x":0,"y":-8.37,"z":0,"angle":0,"damage":[150,150],"rate":0.7,"type":1,"speed":[110,110],"number":1,"spread":0,"error":0,"recoil":0},{"x":5.959,"y":-5.959,"z":0.63,"angle":-45,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-5.959,"y":-5.959,"z":0.63,"angle":45,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":5.959,"y":5.959,"z":0.63,"angle":225,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-5.959,"y":5.959,"z":0.63,"angle":-225,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0}],"radius":8.431}}';
 
-let tier1 = [Gnat_101, Fly_102];
-let tier2 = [Jester_201, Delta_Fighter_202, H_Sniper_203, Trident_204];
-let tier3 = [
-  Pulse_Fighter_301,
-  Renegade_302,
-  Side_Fighter_303,
-  Shadow_X_1_304,
-  Y_Defender_305,
-  Piranha_306,
-  Flounder_307,
-];
-let tier4 = [
-  Vanguard_401,
-  Mercury_402,
-  X_Warrior_403,
-  Stalker_404,
-  Side_Interceptor_405,
-  Gale_406,
-  Pioneer_407,
-  Crusader_408,
-  Mite_Defender_409,
-];
-let tier5 = [
-  U_Sniper_501,
-  Valkyrie_502,
-  FuryStar_503,
-  T_Warrior_504,
-  Mosquito_505,
-  Aetos_506,
-  Shadow_X_2_507,
-  Seeker_508,
-  Howler_509,
-  Settler_510,
-  Nail_511,
-  Bat_Defender_512,
-];
-let tier6 = [
-  Payload_601,
-  Advanced_Fighter_602,
-  Scorpion_603,
-  Gallus_X_604,
-  Marauder_605,
-  G_Sniper_606,
-  A_Speedster_607,
-  Advanced_Support_Fighter_608,
-  Condor_609,
-  M_Seeker_610,
-  Mantis_611,
-  Rock_Tower_612,
-  Prime_Fighter_613,
-  Barracuda_614,
-  O_Defender_615,
-];
-let tier7 = [
-  Odyssey_701,
-  Warthog_702,
-  Pulse_Warrior_703,
-  Shadow_X_3_704,
-  Bastion_705,
-  Poseidon_706,
-  Aries_707,
-];
-let shiptree = {
+let ships = [
+  Gnat_101, Fly_102,
+  Jester_201, Delta_Fighter_202, H_Sniper_203, Trident_204, Pulse_Fighter_301,
+  Renegade_302, Side_Fighter_303, Shadow_X_1_304, Y_Defender_305, Piranha_306, Flounder_307,
+  Vanguard_401, Mercury_402, X_Warrior_403, Stalker_404, Side_Interceptor_405, Gale_406, Pioneer_407, Crusader_408, Mite_Defender_409,
+  U_Sniper_501, Valkyrie_502, FuryStar_503, T_Warrior_504, Mosquito_505, Aetos_506, Shadow_X_2_507, Seeker_508, Howler_509, Settler_510, Nail_511, Bat_Defender_512,
+  Payload_601, Advanced_Fighter_602, Scorpion_603, Gallus_X_604, Marauder_605, G_Sniper_606, A_Speedster_607, Advanced_Support_Fighter_608, Condor_609, M_Seeker_610, Mantis_611, Rock_Tower_612, Prime_Fighter_613, Barracuda_614, O_Defender_615,
+  Odyssey_701, Warthog_702, Pulse_Warrior_703, Shadow_X_3_704, Bastion_705, Poseidon_706, Aries_707,
+]
+const shiptree = {
   mod: function (ship, handler) {
     typeof handler == "function" &&
       [[], ["typespec"]].forEach((i) => {
@@ -190,9 +137,21 @@ let shiptree = {
     return ship;
   },
   shipLength: [1, 2, 4, 6, 7, 8, 4],
-  0: tier1.map((i) => JSON.parse(i)),
-  1: tier2.map((i) => JSON.parse(i)),
-  2: tier3.map((i) => JSON.parse(i)),
+  ships: Array(7).fill(0).map((i, r) => {
+    let ship = [];
+  }),
+  0: ships.map(i => {
+    let ship = JSON.parse(i);
+    if (ship.code < 200) return ship
+  }),
+  1: ships.map(i => {
+    let ship = JSON.parse(i);
+    if (ship.code < 200) return ship
+  }),
+  2: ships.map(i => {
+    let ship = JSON.parse(i);
+    if (ship.code < 200) return ship
+  }),
   3: tier4.map((i) => JSON.parse(i)),
   4: tier5.map((i) => JSON.parse(i)),
   5: tier6.map((i) => JSON.parse(i)),
@@ -317,5 +276,5 @@ this.options = {
   ships: shiptree.random_path(3),
   reset_tree: true,
 };
-this.tick = function (game) {};
-this.event = function (event, game) {};
+this.tick = function (game) { };
+this.event = function (event, game) { };
