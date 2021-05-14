@@ -26,12 +26,7 @@ function Pieces(pos) {
     components: [{ type: "box", position: [0, 0, 100, 100], fill: "#4C4C4C" }],
   };
   this.isClick = function () {
-    Object.assign(this.display, {
-      clickable: false,
-      components: [
-        { type: "text", position: [0, 0, 100, 100], value: this.side },
-      ],
-    });
+    Object.assign(this.display, { clickable: false, components: [{ type: "text", position: [0, 0, 100, 100], value: this.side },], });
   };
 }
 
