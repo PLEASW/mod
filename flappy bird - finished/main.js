@@ -48,17 +48,8 @@ this.tick = function (game) {
       ship.custom.bird = new Bird();
       ship.setUIComponent(button);
       ship.setUIComponent({
-        id: "starting",
-        position: [0, 70, 100, 20],
-        visible: true,
-        components: [
-          {
-            type: "text",
-            position: [0, 0, 100, 100],
-            value: "Press W to begin",
-            color: "#fff",
-          },
-        ],
+        id: "starting", position: [0, 70, 100, 20], visible: true,
+        components: [{ type: "text", position: [0, 0, 100, 100], value: "Press W to begin", color: "#fff" }],
       });
     }
     if (ship.custom.start) {
