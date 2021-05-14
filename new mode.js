@@ -52,6 +52,7 @@ Team mode
       ally mining land 
 */
 this.options = {
+    auto_assign_teams: true,
     root_mode: 'team',
     max_players: 30,
     crystal_value: 3,
@@ -66,12 +67,5 @@ this.options = {
     station_crystal_capacity: 0.5,
     friendly_colors: 3
 };
-function Map() { }
-Leader = function () {
-    this.Spectator = {}
-    this.map = {}
-    this.stats = {}
-}
-Strategist = function () { }
 this.tick = function (game) { };
 this.event = function (event, game) { };
