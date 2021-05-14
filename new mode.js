@@ -66,5 +66,12 @@ this.options = {
     station_crystal_capacity: 0.5,
     friendly_colors: 3
 };
+function Map() { }
+Leader = function () {
+    this.Spectator = {}
+    this.map = {}
+    this.stats = {}
+}
+Strategist = function () { }
 this.tick = function (game) { };
 this.event = function (event, game) { };
