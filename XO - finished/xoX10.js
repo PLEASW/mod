@@ -51,25 +51,13 @@ let board = {
   ],
 };
 for (let i = 1; i <= numberBoxes - 1; i++) {
-  board.components.push({
-    type: "box",
-    position: [0, 0 + i * (100 / numberBoxes), 100, 1],
-    fill: "#25bdb1",
-  });
-  board.components.push({
-    type: "box",
-    position: [0 + i * (100 / numberBoxes), 0, 1, 100],
-    fill: "#25bdb1",
-  });
+  board.components.push({ type: "box", position: [0, 0 + i * (100 / numberBoxes), 100, 1], fill: "#25bdb1", });
+  board.components.push({ type: "box", position: [0 + i * (100 / numberBoxes), 0, 1, 100], fill: "#25bdb1", });
 }
 function setup(boxes) {
   let result = [];
   for (let i = 0; i < boxes; i++)
-    result.push(
-      Array(boxes)
-        .fill(i)
-        .map((i, r) => new Pieces([i, r]))
-    );
+    result.push(Array(boxes).fill(i).map((i, r) => new Pieces([i, r])));
   return result;
 }
 let round = {
