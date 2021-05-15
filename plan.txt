@@ -13,9 +13,9 @@ Team mode
         Give commands
           Max: 50 char/command
           frequency: 2min  
-        Always full cargo 
+        Always full cargo         👌
           frequency: 7.5min
-        Have spectator done 
+        Have spectator            👌 
           time: ~2min
           frequency: 5min
         Has advance team members stats 

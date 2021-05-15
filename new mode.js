@@ -53,25 +53,21 @@ const Spectator = {
 const LEADER = {
   // spectator
   spectator: Spectator,
-  spectator_delay: 20 * 60,
-  time_uses_spectator: 10 * 60,
-  end_time_spectator: 0,
-  spectator_activated: 0,
-  spectator_allowed_time: 0,
+  spectator_delay: 0,       // button cooldown
+  time_uses_spectator: 0,   // how long effect
+  end_time_spectator: 0,          //time end the spectator
+  spectator_activated: 0,         // time activated button
+  spectator_allowed_time: 0,      // time end the spectator 
   is_spectator: false,
   // gem
   gem: Gem,
-  gem_delay: 20 * 60,
+  gem_delay: 0,             // button cooldown
   gem_activated: 0,
   gem_cooldown_time: 0,
   value: 0,
   // players list
   allies: [],
   enemy: [],
-  // jobs
-  Leader: (ship) => {
-
-  }
 };
 this.tick = function (game) {
   if (game.step % 60 === 0) {
@@ -82,6 +78,9 @@ this.tick = function (game) {
         ship.setUIComponent(ship.custom.spectator);
         ship.setUIComponent(ship.custom.gem);
         ship.custom.leader = true;
+        ship.custom.spectator_delay = 5 * 60 ** 2;
+        ship.custom.time_uses_spectator = 1.5 * 60 ** 2;
+        ship.custom.gem_cooldown_time = 5 * 60 ** 2;
       }
     });
   }
@@ -103,6 +102,7 @@ this.tick = function (game) {
           ship.set(ship.custom.stats);
           ship.custom.is_spectator = false;
         }
+        // gem effect
         if (game.step < ship.custom.gem_cooldown_time) {
           let time = ship.custom.gem_cooldown_time - game.step;
           ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
