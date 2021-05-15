@@ -75,19 +75,21 @@ function sortTeam(game, number = 2) {
   }
   return result;
 }
-function Leader() {
+var LEADER = () => {
+  this.spectator = {
+    id: 'spectator',
+    position: [],
+    clickable: true,
+    visible: true,
+    components: [],
+  };
+  this.spectator_delay = 5 * 60 ** 2;
+  this.spectator_activated = 0;
+  this.spectator_allowed = 0;
+  this.list = [];
+  this.enemy = [];
+};
 
-}
-/*
-10
-15
-20
-30
-  Button function
-60  
-  update players list
-120
-*/
 var team1, team2;
 this.tick = function (game) {
   game.step % 60 === 0 && ([team1, team2] = sortTeam(game));
@@ -95,7 +97,17 @@ this.tick = function (game) {
 
   }
 };
-this.event = function (event, game) { };
+this.event = function (event, game) {
+  switch (event.name) {
+    case 'ship_destroyed':
+
+      break;
+    case 'ship_spawned':
+      break
+    default:
+      break;
+  }
+};
 
 
 
