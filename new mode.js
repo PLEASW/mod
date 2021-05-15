@@ -28,26 +28,33 @@ const Gem = {
   id: 'gem',
   position: [66.4, 0, 6.6, 4],
   clickable: true,
-  visible: true,
   components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
     { type: "text", position: [0, 5, 100, 80], value: "Gem", color: "#cde" },
-    { type: "box", position: [0, 85, 100, 10], fill: '#0ff' },  // bar
-    { type: "box", position: [0, 85, 0, 10], fill: '#f00' }    // progress bar
+    { type: "box", position: [0, 85, 100, 15], fill: '#0ff' },  // bar
+    { type: "box", position: [0, 85, 0, 15], fill: '#f00' }    // progress bar
   ]
 };
 const Spectator = {
   id: 'spectator',
   position: [73, 0, 6.6, 4],
   clickable: true,
-  visible: true,
   components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
     { type: "text", position: [5, 5, 90, 75], value: "Spectator", color: "#cde" },
     // button cooldown 
     { type: "box", position: [0, 85, 100, 15], fill: '#0ff' },  // bar 
-    { type: "box", position: [0, 85, 0, 7.5], fill: '#f00' }, // progress cooldown
-    { type: "box", position: [0, 92.5, 0, 7.5], fill: '#FFA500' } // progress effect
+    { type: "box", position: [0, 85, 0, 7.5], fill: '#FFA500' }, // progress effect
+    { type: "box", position: [0, 92.5, 0, 7.5], fill: '#f00' } // progress cooldown
+  ]
+};
+const Map_Toogle = {
+  id: 'map toogle',
+  position: [59.8, 0, 6.6, 4],
+  clickable: true,
+  components: [
+    { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
+    { type: "text", position: [0, 5, 100, 90], value: "Map", color: "#cde" },
   ]
 };
 const LEADER = {
@@ -68,6 +75,16 @@ const LEADER = {
   // players list
   allies: [],
   enemy: [],
+  // map
+  view_map: false,
+  map: {
+    id: 'map',
+    position: [25, 5, 85 * 0.5625, 85],
+    components: [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0, 255, 255, 0.5)' }
+    ]
+  },
+  toggle_map: Map_Toogle
 };
 this.tick = function (game) {
   if (game.step % 60 === 0) {
@@ -80,7 +97,8 @@ this.tick = function (game) {
         ship.custom.leader = true;
         ship.custom.spectator_delay = 5 * 60 ** 2;
         ship.custom.time_uses_spectator = 1.5 * 60 ** 2;
-        ship.custom.gem_cooldown_time = 5 * 60 ** 2;
+        ship.custom.gem_delay = 5 * 60 ** 2;
+        ship.setUIComponent(ship.custom.toggle_map);
       }
     });
   }
@@ -137,6 +155,12 @@ this.event = function (event, game) {
         custom.gem_activated = game.step;
         custom.gem_cooldown_time = game.step + custom.gem_delay;
       }
+      break;
+    case 'map toogle':
+      custom.view_map = !custom.view_map;
+      if (custom.view_map) {
+        ship.setUIComponent(custom.map);
+      } else ship.setUIComponent({ id: 'map', visible: false });
       break;
   }
   switch (event.name) {
