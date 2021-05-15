@@ -78,7 +78,7 @@ function sortTeam(game, number = 2) {
   }
   return result;
 }
-const Give_Gem = {
+const Gem = {
   id: 'gem',
   position: [],
   clickable: true,
@@ -112,11 +112,31 @@ const LEADER = {
   spectator_activated: 0,
   spectator_allowed_time: 0,
   is_spectator: false,
+  effect_active: (game) => {
+    if (game.step <= ship.custom.spectator_allowed_time) {
+      let time = ship.custom.spectator_allowed_time - game.step;
+      ship.custom.spectator.components[3].position[2] = (time / ship.custom.spectator_delay) * 100;
+    }
+    if (game.step <= ship.custom.end_time_spectator) {
+      let time = ship.custom.end_time_spectator - game.step;
+      ship.custom.spectator.components[4].position[2] = (time / ship.custom.time_uses_spectator) * 100;
+    }
+    ship.setUIComponent(ship.custom.spectator);
+  },
+  end_time_spectator: function (game) {
+    if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
+      ship.set(ship.custom.stats);
+      ship.custom.is_spectator = false;
+    }
+  },
+  // gem
+  gem: Gem,
+  gem_delay: 20 * 60,
+  gem_activated: 0,
   // players list
   allies: [],
   enemy: []
 };
-
 this.tick = function (game) {
   game.step % 60 === 0 && ([team1, team2] = sortTeam(game));
   if (game.step % 60 === 0) {
@@ -130,20 +150,8 @@ this.tick = function (game) {
   }
   game.ships.forEach((ship, index) => {
     if (ship.custom.leader) {
-      if (game.step <= ship.custom.spectator_allowed_time) {
-        let time = ship.custom.spectator_allowed_time - game.step;
-        ship.custom.spectator.components[3].position[2] = (time / ship.custom.spectator_delay) * 100;
-      }
-      if (game.step <= ship.custom.end_time_spectator) {
-        let time = ship.custom.end_time_spectator - game.step;
-        ship.custom.spectator.components[4].position[2] = (time / ship.custom.time_uses_spectator) * 100;
-      }
-      ship.setUIComponent(ship.custom.spectator);
-      if (game.step % 60 === 0) console.log(ship.custom.spectator.components[2].position[2]);
-      if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
-        ship.set(ship.custom.stats);
-        ship.custom.is_spectator = false;
-      }
+      ship.custom.effect_active(game); // add effect time bar
+      ship.custom.end_time_spectator(game);
     }
   });
 };
