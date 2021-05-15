@@ -52,20 +52,20 @@ Team mode
       ally mining land 
 */
 this.options = {
-    auto_assign_teams: true,
-    root_mode: 'team',
-    max_players: 30,
-    crystal_value: 3,
-    starting_ship: 800,
-    asteroids_strength: 0.5,
-    speed_mod: 1.25,
-    release_crystal: true,
-    mines_self_destroy: false,
-    projectile_speed: 1.2,
-    hues: [180, 120, 360],
-    station_size: 1,
-    station_crystal_capacity: 0.5,
-    friendly_colors: 3
+  auto_assign_teams: true,
+  root_mode: 'team',
+  max_players: 30,
+  crystal_value: 3,
+  starting_ship: 800,
+  asteroids_strength: 0.5,
+  speed_mod: 1.25,
+  release_crystal: true,
+  mines_self_destroy: false,
+  projectile_speed: 1.2,
+  hues: [180, 120, 360],
+  station_size: 1,
+  station_crystal_capacity: 0.5,
+  friendly_colors: 3
 };
 this.tick = function (game) { };
 this.event = function (event, game) { };
