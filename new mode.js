@@ -85,7 +85,7 @@ const LEADER = {
     id: 'map',
     position: [25, 5, 85 * 0.5625, 85],
     components: [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0, 0, 0, 0.5)' }
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }
     ]
   },
   toggle_map: ToogleMap
@@ -98,11 +98,11 @@ this.tick = function (game) {
         Object.assign(ship.custom, LEADER);
         ship.setUIComponent(ship.custom.spectator);
         ship.setUIComponent(ship.custom.gem);
+        ship.setUIComponent(ship.custom.toggle_map);
         ship.custom.leader = true;
         ship.custom.spectator_delay = 5 * 60 ** 2;
         ship.custom.time_uses_spectator = 1.5 * 60 ** 2;
         ship.custom.gem_delay = 5 * 60 ** 2;
-        ship.setUIComponent(ship.custom.toggle_map);
       }
     });
   }
@@ -150,6 +150,7 @@ this.event = function (event, game) {
       } else if (custom.is_spectator) {
         ship.set(custom.stats);
         custom.is_spectator = false;
+        custom.end_time_spectator = game.step;
         for (let upgrade of upgrades) ship.setUIComponent({ id: upgrade.id, visble: false });
       }
       break;
@@ -165,7 +166,6 @@ this.event = function (event, game) {
     case 'map toogle':
       custom.view_map = !custom.view_map;
       if (custom.view_map) {
-        console.log(custom.map);
         ship.setUIComponent(custom.map);
       } else ship.setUIComponent({ id: 'map', visible: false });
       break;
