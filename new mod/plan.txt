@@ -12,12 +12,12 @@ Team mode
       1 leader
         Give commands
           Max: 50 char/command
-          frequency: 2min  
+          cooldown: 2min  
         Always full cargo         👌
-          frequency: 7.5min
+          cooldown: 7.5min
         Have spectator            👌 
           time: ~2min
-          frequency: 5min
+          cooldown: 5min
         Has advance team members stats 
           Ship, lives, stats, name, rank, frags, death, position
         More advance information from enemy 
@@ -31,9 +31,9 @@ Team mode
           ship,stat,name
         Have spectator options
           time: ~2\3min
-          frequency: 3min
+          cooldown: 3min
         can have x gem/minute
-          frequency: 10min
+          cooldown: 10min
           value: 1/2 cargo
       5 - 7 players
         Can have mining pods for free:
