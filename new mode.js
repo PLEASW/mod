@@ -23,7 +23,11 @@ function sortTeam(game, number = 2) {
     result[i] = game.ships.map(ship => { if (ship.team === i) return ship; }).filter((value, index, array) => value !== undefined);
   }
   return result;
-}
+};
+const upgrades = [
+  { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
+  { id: "0", position: [45, 0, 20, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
+];
 const Gem = {
   id: 'gem',
   position: [66.4, 0, 6.6, 4],
@@ -48,7 +52,7 @@ const Spectator = {
     { type: "box", position: [0, 92.5, 0, 7.5], fill: '#f00' } // progress cooldown
   ]
 };
-const Map_Toogle = {
+const ToogleMap = {
   id: 'map toogle',
   position: [59.8, 0, 6.6, 4],
   clickable: true,
@@ -81,10 +85,10 @@ const LEADER = {
     id: 'map',
     position: [25, 5, 85 * 0.5625, 85],
     components: [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0, 255, 255, 0.5)' }
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0, 0, 0, 0.5)' }
     ]
   },
-  toggle_map: Map_Toogle
+  toggle_map: ToogleMap
 };
 this.tick = function (game) {
   if (game.step % 60 === 0) {
@@ -142,9 +146,11 @@ this.event = function (event, game) {
         custom.end_time_spectator = game.step + custom.time_uses_spectator;
         custom.is_spectator = true;
         ship.set({ type: 102, collider: false });
+        for (let upgrade of upgrades) ship.setUIComponent(upgrade);
       } else if (custom.is_spectator) {
         ship.set(custom.stats);
         custom.is_spectator = false;
+        for (let upgrade of upgrades) ship.setUIComponent({ id: upgrade.id, visble: false });
       }
       break;
     case 'gem':
@@ -159,6 +165,7 @@ this.event = function (event, game) {
     case 'map toogle':
       custom.view_map = !custom.view_map;
       if (custom.view_map) {
+        console.log(custom.map);
         ship.setUIComponent(custom.map);
       } else ship.setUIComponent({ id: 'map', visible: false });
       break;
