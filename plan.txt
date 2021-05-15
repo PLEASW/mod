@@ -1,0 +1,53 @@
+
+Team mode
+  Winning: 
+    Kill Base                             *****
+    Kill a amount of enemies/aliens       **
+    Race to tier 7 first                  ***
+    Capture unspecific objects            * 
+    Steal something from enemy            * 
+    Kill a ship                           *****
+  Players:
+    10 players:
+      1 leader
+        Give commands
+          Max: 50 char/command
+          frequency: 2min  
+        Always full cargo 
+          frequency: 7.5min
+        Have spectator done 
+          time: ~2min
+          frequency: 5min
+        Has advance team members stats 
+          Ship, lives, stats, name, rank, frags, death, position
+        More advance information from enemy 
+          ship, stats, frags, death, rank, position 
+        Has entire map
+      2 strategist 
+        Give suggest to leader
+        Has list of Enemies
+          name, score
+        Stats of each players 
+          ship,stat,name
+        Have spectator options
+          time: ~2\3min
+          frequency: 3min
+        can have x gem/minute
+          frequency: 10min
+          value: 1/2 cargo
+      5 - 7 players
+        Can have mining pods for free:
+          3 pods/times
+          every deaths
+        Follow Leader Commands
+        Suspect enemy leader
+  Rule: 
+    Strategist, Leader: can be normal ships
+    The game end when: 
+      Leader dead
+      Base destroy
+      Team has less than 7 players  
+    Some important Factor:
+      Map draw enemies land
+      ally mining land 
+    Player kills 10 enemies will have a free torpedo
