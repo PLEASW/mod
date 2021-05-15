@@ -84,9 +84,7 @@ const LEADER = {
   map: {
     id: 'map',
     position: [25, 5, 85 * 0.5625, 85],
-    components: [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }
-    ]
+    components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }]
   },
   toggle_map: ToogleMap
 };
