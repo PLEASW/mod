@@ -112,7 +112,7 @@ const LEADER = {
   spectator_activated: 0,
   spectator_allowed_time: 0,
   is_spectator: false,
-  effect_active: (game) => {
+  effect_active: game => {
     if (game.step <= ship.custom.spectator_allowed_time) {
       let time = ship.custom.spectator_allowed_time - game.step;
       ship.custom.spectator.components[3].position[2] = (time / ship.custom.spectator_delay) * 100;
@@ -123,7 +123,7 @@ const LEADER = {
     }
     ship.setUIComponent(ship.custom.spectator);
   },
-  end_time_spectator: function (game) {
+  end_time_spectator: game => {
     if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
       ship.set(ship.custom.stats);
       ship.custom.is_spectator = false;
