@@ -78,7 +78,7 @@ function sortTeam(game, number = 2) {
   }
   return result;
 }
-const Give_Gem = {
+const Gem = {
   id: 'gem',
   position: [],
   clickable: true,
@@ -130,6 +130,7 @@ this.tick = function (game) {
   }
   game.ships.forEach((ship, index) => {
     if (ship.custom.leader) {
+      // effect cooldown bar
       if (game.step <= ship.custom.spectator_allowed_time) {
         let time = ship.custom.spectator_allowed_time - game.step;
         ship.custom.spectator.components[3].position[2] = (time / ship.custom.spectator_delay) * 100;
@@ -139,6 +140,7 @@ this.tick = function (game) {
         ship.custom.spectator.components[4].position[2] = (time / ship.custom.time_uses_spectator) * 100;
       }
       ship.setUIComponent(ship.custom.spectator);
+      // remove effect after time
       if (game.step % 60 === 0) console.log(ship.custom.spectator.components[2].position[2]);
       if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
         ship.set(ship.custom.stats);
@@ -152,13 +154,13 @@ this.event = function (event, game) {
     case 'spectator':
       let ship = event.ship;
       let custom = ship.custom;
-      !custom.is_spectator && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals });
+      !custom.is_spectator && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals, invulnerable: 120 });
       if (!custom.is_spectator && game.step >= custom.spectator_allowed_time) {
         custom.spectator_activated = game.step;
         custom.spectator_allowed_time = game.step + custom.spectator_delay;
         custom.end_time_spectator = game.step + custom.time_uses_spectator;
         custom.is_spectator = true;
-        ship.set({ type: 102, collider: false, shield: ship.shield, crystals: ship.crystals, generator: ship.generator, invulnerable: 120 });
+        ship.set({ type: 102, collider: false });
       } else if (custom.is_spectator) {
         ship.set(custom.stats);
         custom.is_spectator = false;
