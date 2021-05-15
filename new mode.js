@@ -15,7 +15,7 @@ Team mode
           frequency: 2min  
         Always full cargo 
           frequency: 7.5min
-        Have spectator 
+        Have spectator done 
           time: ~2min
           frequency: 5min
         Has advance team members stats 
@@ -46,8 +46,8 @@ Team mode
     The game end when: 
       Leader dead
       Base destroy
-      Team has less than 6 players  
-    Some important Factors:
+      Team has less than 7 players  
+    Some important Factor:
       Map draw enemies land
       ally mining land 
     Player kills 10 enemies will have a free torpedo
@@ -78,47 +78,99 @@ function sortTeam(game, number = 2) {
   }
   return result;
 }
-const spectator = {
-  id: 'spectator',
-  position: [71.5, 0, 6.6, 4],
+const Give_Gem = {
+  id: 'gem',
+  position: [],
   clickable: true,
   visible: true,
   components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
-    { type: "text", position: [5, 10, 90, 80], value: "Options", color: "#cde" },
+    { type: "text", position: [0, 5, 100, 90], value: "Spectator", color: "#cde" }
+  ]
+};
+const Spectator = {
+  id: 'spectator',
+  position: [73, 0, 6.6, 4],
+  clickable: true,
+  visible: true,
+  components: [
+    { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
+    { type: "text", position: [5, 5, 90, 75], value: "Spectator", color: "#cde" },
+    // button cooldown 
+    { type: "box", position: [0, 85, 100, 15], fill: '#0ff' },  // bar 
+    { type: "box", position: [0, 85, 0, 7.5], fill: '#f00' }, // progress cooldown
+    { type: "box", position: [0, 92.5, 0, 7.5], fill: '#FFA500' } // progress effect
+
   ]
 };
 const LEADER = {
-  spectator_delay: 5 * 60 ** 2,
+  // spectator
+  spectator: Spectator,
+  spectator_delay: 20 * 60,
+  time_uses_spectator: 10 * 60,
+  end_time_spectator: 0,
   spectator_activated: 0,
-  spectator_allowed: 0,
-  list: [],
+  spectator_allowed_time: 0,
+  is_spectator: false,
+  // players list
+  allies: [],
   enemy: []
 };
 
-var team1, team2;
 this.tick = function (game) {
   game.step % 60 === 0 && ([team1, team2] = sortTeam(game));
   if (game.step % 60 === 0) {
     game.ships.forEach((ship, index) => {
       if (!ship.custom.leader) {
         Object.assign(ship.custom, LEADER);
-        ship.setUIComponent(spectator);
+        ship.setUIComponent(ship.custom.spectator);
         ship.custom.leader = true;
       }
     });
   }
+  game.ships.forEach((ship, index) => {
+    if (ship.custom.leader) {
+      if (game.step <= ship.custom.spectator_allowed_time) {
+        let time = ship.custom.spectator_allowed_time - game.step;
+        ship.custom.spectator.components[3].position[2] = (time / ship.custom.spectator_delay) * 100;
+      }
+      if (game.step <= ship.custom.end_time_spectator) {
+        let time = ship.custom.end_time_spectator - game.step;
+        ship.custom.spectator.components[4].position[2] = (time / ship.custom.time_uses_spectator) * 100;
+      }
+      ship.setUIComponent(ship.custom.spectator);
+      if (game.step % 60 === 0) console.log(ship.custom.spectator.components[2].position[2]);
+      if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
+        ship.set(ship.custom.stats);
+        ship.custom.is_spectator = false;
+      }
+    }
+  });
 };
 this.event = function (event, game) {
   switch (event.id) {
-
+    case 'spectator':
+      let ship = event.ship;
+      let custom = ship.custom;
+      !custom.is_spectator && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals });
+      if (!custom.is_spectator && game.step >= custom.spectator_allowed_time) {
+        custom.spectator_activated = game.step;
+        custom.spectator_allowed_time = game.step + custom.spectator_delay;
+        custom.end_time_spectator = game.step + custom.time_uses_spectator;
+        custom.is_spectator = true;
+        ship.set({ type: 102, collider: false, shield: ship.shield, crystals: ship.crystals, generator: ship.generator, invulnerable: 120 });
+      } else if (custom.is_spectator) {
+        ship.set(custom.stats);
+        custom.is_spectator = false;
+      }
+      break;
   }
   switch (event.name) {
     case 'ship_destroyed':
 
       break;
     case 'ship_spawned':
-      break
+      break;
     default:
       break;
   }
