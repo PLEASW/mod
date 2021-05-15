@@ -50,6 +50,7 @@ Team mode
     Some important Factor:
       Map draw enemies land
       ally mining land 
+    Player kills 10 enemies will have a free torpedo
 */
 this.options = {
   auto_assign_teams: true,
@@ -62,10 +63,75 @@ this.options = {
   release_crystal: true,
   mines_self_destroy: false,
   projectile_speed: 1.2,
-  hues: [180, 120, 360],
+  hues: [180, 360],//[180, 120, 360],
   station_size: 1,
   station_crystal_capacity: 0.5,
-  friendly_colors: 3
+  friendly_colors: 2
 };
-this.tick = function (game) { };
+function sortTeam(game, number = 2) {
+  let result = new Array(number).fill(0).map(i => Array);
+  for (let i = 0; i < number; i++) {
+    result[i] = game.ships.map(ship => { if (ship.team === i) return ship; }).filter((value, index, array) => value !== undefined);
+  }
+  return result;
+}
+function Leader() {
+
+}
+/*
+10
+15
+20
+30
+  Button function
+60  
+  update players list
+120
+*/
+var team1, team2;
+this.tick = function (game) {
+  game.step % 60 === 0 && ([team1, team2] = sortTeam(game));
+  if (game.step % 30 === 0) {
+
+  }
+};
 this.event = function (event, game) { };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
