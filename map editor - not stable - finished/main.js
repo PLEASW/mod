@@ -91,8 +91,7 @@ this.event = function (event, game) {
         Math.trunc((mapSize * 5 - event.ship.y - 1) / 10),
       ];
       if (event.id === "Place asteroid") {
-        event.ship.custom.random &&
-          (event.ship.custom.size = ~~(Math.random() * 9 + 1));
+        event.ship.custom.random && (event.ship.custom.size = ~~(Math.random() * 9 + 1));
         asteoidField.a[y][x] = event.ship.custom.size;
       } else if (typeof event.id == "number") {
         event.ship.custom.random = !event.id;
