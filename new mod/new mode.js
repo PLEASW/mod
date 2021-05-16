@@ -1,21 +1,21 @@
 var Spectator_102 = '{"name":"Spectator","level":1,"model":2,"size":0.025,"zoom":0.075,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":2,"code":102,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"shape":[0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001],"lasers":[],"radius":0.001}}';
 var ships = [Spectator_102];
 this.options = {
-  auto_assign_teams: true,
-  ships: ships,
   root_mode: 'team',
   max_players: 30,
+  starting_ship: 101,
   crystal_value: 3,
-  starting_ship: 800,
   asteroids_strength: 0.5,
+  ships: ships,
+  friendly_colors: 2,
   speed_mod: 1.25,
+  auto_assign_teams: true,
   release_crystal: true,
   mines_self_destroy: false,
   projectile_speed: 1.2,
   hues: [180, 360],//[180, 120, 360],
   station_size: 1,
   station_crystal_capacity: 0.5,
-  friendly_colors: 2
 };
 function sortTeam(game, number = 2) {
   let result = new Array(number).fill(0).map(i => Array);
@@ -70,65 +70,80 @@ const LEADER = {
   spectator_activated: 0,         // time activated button
   spectator_allowed_time: 0,      // time end the spectator 
   is_spectator: false,
+
   // gem
   gem: Gem,
   gem_delay: 0,             // button cooldown
   gem_activated: 0,
   gem_cooldown_time: 0,
   value: 0,
+
   // players list
   allies: [],
   enemy: [],
+
   // map
   view_map: false,
   map: {
-    id: 'map',
-    position: [25, 5, 85 * 0.5625, 85],
+    id: 'map', position: [25, 5, 85 * 0.5625, 85],
     components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }]
   },
   toggle_map: ToogleMap
 };
+function SetupLeader(ship) {
+  if (!ship.custom.leader) {
+    Object.assign(ship.custom, LEADER);
+
+    ship.setUIComponent(ship.custom.spectator);
+    ship.setUIComponent(ship.custom.gem);
+    ship.setUIComponent(ship.custom.toggle_map);
+
+    ship.custom.leader = true;
+    ship.custom.spectator_delay = 5 * 60 ** 2;
+    ship.custom.time_uses_spectator = 1.5 * 60 ** 2;
+    ship.custom.gem_delay = 5 * 60 ** 2;
+  }
+}
+function LeaderCode(ship) {
+  if (ship.custom.leader) {
+    // effect cooldown bar
+    if (game.step <= ship.custom.end_time_spectator) {
+      let time = ship.custom.end_time_spectator - game.step;
+      ship.custom.spectator.components[3].position[2] = (time / ship.custom.time_uses_spectator) * 100;
+    } else ship.custom.spectator.components[3].position[2] = 0;
+
+    if (game.step <= ship.custom.spectator_allowed_time) {
+      let time = ship.custom.spectator_allowed_time - game.step;
+      ship.custom.spectator.components[4].position[2] = (time / ship.custom.spectator_delay) * 100;
+    } else ship.custom.spectator.components[4].position[2] = 0;
+
+    ship.setUIComponent(ship.custom.spectator);
+
+    // remove effect after time
+    if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
+      ship.set(ship.custom.stats);
+      ship.custom.is_spectator = false;
+    }
+
+    // gem effect
+    if (game.step < ship.custom.gem_cooldown_time) {
+      let time = ship.custom.gem_cooldown_time - game.step;
+      ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
+    } else ship.custom.gem.components[3].position[2] = 0;
+
+    ship.setUIComponent(ship.custom.gem);
+  }
+}
 this.tick = function (game) {
   if (game.step % 60 === 0) {
     ([team1, team2] = sortTeam(game));
     game.ships.forEach((ship, index) => {
-      if (!ship.custom.leader) {
-        Object.assign(ship.custom, LEADER);
-        ship.setUIComponent(ship.custom.spectator);
-        ship.setUIComponent(ship.custom.gem);
-        ship.setUIComponent(ship.custom.toggle_map);
-        ship.custom.leader = true;
-        ship.custom.spectator_delay = 5 * 60 ** 2;
-        ship.custom.time_uses_spectator = 1.5 * 60 ** 2;
-        ship.custom.gem_delay = 5 * 60 ** 2;
-      }
+      SetupLeader(ship);
     });
   }
   if (game.step % 45 === 0) {
     game.ships.forEach((ship, index) => {
-      if (ship.custom.leader) {
-        // effect cooldown bar
-        if (game.step <= ship.custom.spectator_allowed_time) {
-          let time = ship.custom.spectator_allowed_time - game.step;
-          ship.custom.spectator.components[3].position[2] = (time / ship.custom.spectator_delay) * 100;
-        } else ship.custom.spectator.components[3].position[2] = 0;
-        if (game.step <= ship.custom.end_time_spectator) {
-          let time = ship.custom.end_time_spectator - game.step;
-          ship.custom.spectator.components[4].position[2] = (time / ship.custom.time_uses_spectator) * 100;
-        } else ship.custom.spectator.components[4].position[2] = 0;
-        ship.setUIComponent(ship.custom.spectator);
-        // remove effect after time
-        if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
-          ship.set(ship.custom.stats);
-          ship.custom.is_spectator = false;
-        }
-        // gem effect
-        if (game.step < ship.custom.gem_cooldown_time) {
-          let time = ship.custom.gem_cooldown_time - game.step;
-          ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
-        } else ship.custom.gem.components[3].position[2] = 0;
-        ship.setUIComponent(ship.custom.gem);
-      }
+      LeaderCode(ship);
     });
   }
 };
@@ -138,17 +153,24 @@ this.event = function (event, game) {
   switch (event.id) {
     case 'spectator':
       !custom.is_spectator && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals, invulnerable: 120 });
+
       if (!custom.is_spectator && game.step >= custom.spectator_allowed_time) {
+
         custom.spectator_activated = game.step;
         custom.spectator_allowed_time = game.step + custom.spectator_delay;
         custom.end_time_spectator = game.step + custom.time_uses_spectator;
         custom.is_spectator = true;
+
         ship.set({ type: 102, collider: false });
         for (let upgrade of upgrades) ship.setUIComponent(upgrade);
+
       } else if (custom.is_spectator) {
+
         ship.set(custom.stats);
+
         custom.is_spectator = false;
         custom.end_time_spectator = game.step;
+
         for (let upgrade of upgrades) ship.setUIComponent({ id: upgrade.id, visble: false });
       }
       break;
