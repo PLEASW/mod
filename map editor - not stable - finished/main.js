@@ -55,13 +55,7 @@ this.tick = function (game) {
         visible: true,
         components: [
           { type: "box", position: [0, 0, 100, 100], fill: "#2f3136" },
-          {
-            type: "text",
-            position: [0, 0, 90, 100],
-            value: "reset",
-            color: "#c7d6de",
-            align: "left",
-          },
+          { type: "text", position: [0, 0, 90, 100], value: "reset", color: "#c7d6de", align: "left" },
         ],
       });
       for (let i of ["Place", "Delete"])
@@ -72,13 +66,7 @@ this.tick = function (game) {
           visible: 1,
           components: [
             { type: "box", position: [0, 0, 100, 100], fill: "#2f3136" },
-            {
-              type: "text",
-              position: [0, 0, 90, 100],
-              value: i,
-              color: "#c7d6de",
-              align: "left",
-            },
+            { type: "text", position: [0, 0, 90, 100], value: i, color: "#c7d6de", align: "left" },
           ],
         });
       for (let i = 0; i < 10; i++)
@@ -89,12 +77,7 @@ this.tick = function (game) {
           visible: 1,
           components: [
             { type: "box", position: [0, 0, 100, 100], fill: "#2f3136" },
-            {
-              type: "text",
-              position: [0, 0, 100, 100],
-              value: !i ? "random" : i,
-              color: "#c7d6de",
-            },
+            { type: "text", position: [0, 0, 100, 100], value: !i ? "random" : i, color: "#c7d6de" },
           ],
         });
     }
