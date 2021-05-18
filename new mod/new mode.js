@@ -322,12 +322,91 @@ var maps = [
   "2 6451185457673428262521638 23317371 34317814528335826 54548852 637 586568656317\n" +
   "88 12 6735472121 572 4 7216444 173668 7661342 36135817788438135663 82836163735 5\n" +
   "648861712783 2 478834 81635143574637477224211233215278488682 675448  61765126313",
+
+  "             79      57      35      9                69      46      24      89\n" +
+  "     93      79      57      257      2               68      46      94      89\n" +
+  "     93      79       79      47      24      8       68      46       46      9\n" +
+  "      35      93      79      47      24      82       82      68      36       \n" +
+  "      35      93    93 9       6        6       4       9                       \n" +
+  "            35      93                                       82      68         \n" +
+  "             57      35                              9       894      89      58\n" +
+  "     79      57      25                               46      94      79      57\n" +
+  "     79      47      24                                6      93      79      57\n" +
+  "     79      46       46                                       3    9  93    9  \n" +
+  "      92       8                                                     36      93 \n" +
+  "            9                                                        35      93 \n" +
+  "    25      82                                                7      35       35\n" +
+  "    24       24                                                9      57      35\n" +
+  "     46      24                                                       57    5 25\n" +
+  "     46      24                                                     79      57  \n" +
+  "                                                                    793      79 \n" +
+  "    92                                                               93      79 \n" +
+  "    82      6                                                        93      69 \n" +
+  "    82      6                                                        92    9 682\n" +
+  "    82                       3       9       79                       24    3582\n" +
+  "     94                       5       3        3                            25  \n" +
+  "   46                                                                       24  \n" +
+  "   46                                                                        46 \n" +
+  "    68                                                                       46 \n" +
+  "    68                                                                       46 \n" +
+  "    58                       9       79      47      24                    68  8\n" +
+  "     7                5       3                                             82  \n" +
+  "                                                                            82  \n" +
+  "                                                                            82  \n" +
+  " 5793                                                                        94 \n" +
+  " 579                7               2       8       68                       94 \n" +
+  "93 9                79      47       4       24       2                    46   \n" +
+  "93                                                                         46   \n" +
+  "93                                                                          68  \n" +
+  " 35                                                                         58  \n" +
+  " 35                      46                                                 57  \n" +
+  " 25               82      68        8       6       46      93               79 \n" +
+  "7  7                                 2       8                5                 \n" +
+  "7                                                                               \n" +
+  "79                                                                              \n" +
+  "69                                                                          35  \n" +
+  " 82               6      94      89      57       57                        35  \n" +
+  " 82                                3                        79               5  \n" +
+  "                                                                                \n" +
+  "                                                                                \n" +
+  "                                                                                \n" +
+  "46                      5                3       9       79                     \n" +
+  "46                       79      57       5       3                        6    \n" +
+  "  8                                                                             \n" +
+  "                                                                                \n" +
+  "2                                                                        82     \n" +
+  "2                                                       2                82     \n" +
+  "94      8               3       93      79       79      4                2    8\n" +
+  "93      79               57       5       3       9                            8\n" +
+  "                                                                        4       \n" +
+  "                                                                        46      \n" +
+  "8      3                                                                46      \n" +
+  "8      35                                       2                        68     \n" +
+  "7       57                      69      46       4                     82 8    6\n" +
+  "79       7                                8                            82      6\n" +
+  "      79                                                               89      5\n" +
+  "      79                                                                94      \n" +
+  "5      93      7                                                 6    4 93      \n" +
+  "5      93      79                                               36    4693    94\n" +
+  "5    3593    9369                                                     36  5    3\n" +
+  "      57 5    35 2                                                     58      3\n" +
+  "      57      35                                               89      58      3\n" +
+  "      57      25                                               79      57      3\n" +
+  "      47       47      2                                       793    9479      \n" +
+  "3      69    7946      24                               35      93    9379    7 \n" +
+  "2      68    79 6       4                                     36      93      79\n" +
+  "     93      69                                               35      93       9\n" +
+  "      25      82      68                              5        57      35      9\n" +
+  "      24      82      68      46      9        9       79      57    5735    3 9\n" +
+  "      24      82    8 68       68      36      93      79      57    5725    358\n" +
+  "    4 24       94    2489      58      35      93       9    7  79    79 7    57\n" +
+  "8    6 46    46 4    24 9    82                               93      79      57\n" +
+  "     68      46      94      89       89      57      35      93      79      47\n" +
+  "     68      46       46      94      79      57      35      93      69       6",
 ];
 var Spectator_102 = '{"name":"Spectator","level":1,"model":2,"size":0.025,"zoom":0.075,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":2,"code":102,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"shape":[0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001],"lasers":[],"radius":0.001}}';
 var ships = [Spectator_102];
 let map = maps[Math.trunc(Math.random() * maps.length)];
-const colors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
-const colors_radar = ['rgba(255, 0, 0, 0.1)', 'rgba(0, 255, 255, 0.1)'];
 /* 
 19:9
   width: 45
@@ -354,44 +433,88 @@ this.options = {
   friendly_colors: 2,
   map_size: 80
 };
-function sortTeam(game, number = 2) {
-  let result = new Array(number).fill(0).map(i => Array);
-  for (let i = 0; i < number; i++) {
+
+const colors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
+const colors_radar = ['rgba(255, 0, 0, 0.1)', 'rgba(0, 255, 255, 0.1)'];
+const radar_radius = (this.options.map_size * 10) / this.options.radar_zoom;
+
+const width = 1;
+const radar_width = radar_radius * 10 / this.options.map_size;
+const radar_pos = (radar_width - width) / 2;
+
+function sortTeam(game, teams = 2) {
+  let result = new Array(teams).fill(0).map(i => Array);
+  for (let i = 0; i < teams; i++) {
     result[i] = game.ships.map(ship => { if (ship.team === i) return ship; }).filter((value, index, array) => value !== undefined);
   }
   return result;
 }
-const drawMap = (ships, ship) => [
-  { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' },
-  ships.map(i => {
-    let [x, y] = [
-      (this.options.map_size * 5 + i.x),
-      (this.options.map_size * 5 - i.y - 1)
-    ].map(i => i / this.options.map_size * 10);
-    let width = 1;
-    let radar_width = 90 / this.options.radar_zoom;
-    let radar_pos = (radar_width - width) / 2;
-    let result = [
-      { type: 'box', position: [x, y, width, width], fill: colors[i.team] },
-      i.team === ship.team ? { type: 'box', position: [x - radar_pos, y - radar_pos, radar_width, radar_width], fill: colors_radar[i.team] } : {}
-    ];
-    try {
-      [x, y, width] = result[1].position.slice(0, 3);
-      x2 = width + x > 100 ? -100 + x : x;
-      y2 = width + y > 100 ? -100 + y : y;
-      x3 = x < 0 ? 100 + x : x;
-      y3 = y < 0 ? 100 + y : y;
-      if (x2 != x) result.push({ type: 'box', position: [x2, y, width, width], fill: result[1].fill });
-      if (y2 != y) result.push({ type: 'box', position: [x, y2, width, width], fill: result[1].fill });
-      if (x3 != x) result.push({ type: 'box', position: [x3, y, width, width], fill: result[1].fill });
-      if (y3 != y) result.push({ type: 'box', position: [x, y3, width, width], fill: result[1].fill });
-      if (x2 != x && y2 != y) result.push({ type: 'box', position: [x2, y2, width, width], fill: result[1].fill });
-      if (x2 != x && y3 != y) result.push({ type: 'box', position: [x2, y3, width, width], fill: result[1].fill });
-      if (x3 != x && y2 != y) result.push({ type: 'box', position: [x3, y2, width, width], fill: result[1].fill });
-      if (x3 != x && y3 != y) result.push({ type: 'box', position: [x3, y3, width, width], fill: result[1].fill });
-    } catch (error) { }
-    return result;
-  })].flat(2);
+
+const ships_components = (ships, ship) => ships.map(i => {
+  const [x, y] = [
+    (this.options.map_size * 5 + i.x),
+    (this.options.map_size * 5 - i.y - 1)
+  ].map(i => (i - width * 0.5) / this.options.map_size * 10);
+  let result = [
+    i.team === ship.team ? { type: 'box', position: [x, y, width, width], fill: colors[i.team], ally: true } :
+      { type: 'box', position: [x, y, width, width], fill: colors[i.team], enemy: true },
+  ];
+  return result;
+}).flat();
+
+const radar_components = (radars, ship) => radars.map(radar => {
+  const [x, y] = [
+    (this.options.map_size * 5 + radar.x),
+    (this.options.map_size * 5 - radar.y - 1)
+  ].map(i => (i - width * 0.5) / this.options.map_size * 10);
+  let result = [{ type: 'box', position: [x - radar_pos, y - radar_pos, radar_width, radar_width], fill: colors_radar[ship.team], radar: true }];
+
+  let [x_radar, y_radar] = result[0].position.slice(0, 2);
+
+  let x2 = radar_width + x_radar > 100 ? -100 + x_radar : x_radar;
+  let y2 = radar_width + y_radar > 100 ? -100 + y_radar : y_radar;
+
+  let x3 = x_radar < 0 ? 100 + x_radar : x_radar;
+  let y3 = y_radar < 0 ? 100 + y_radar : y_radar;
+
+  if (x2 != x_radar) result.push({ type: 'box', position: [x2, y_radar, radar_width, radar_width], fill: result[0].fill, radar: true });
+  if (y2 != y_radar) result.push({ type: 'box', position: [x_radar, y2, radar_width, radar_width], fill: result[0].fill, radar: true });
+  if (x3 != x_radar) result.push({ type: 'box', position: [x3, y_radar, radar_width, radar_width], fill: result[0].fill, radar: true });
+  if (y3 != y_radar) result.push({ type: 'box', position: [x_radar, y3, radar_width, radar_width], fill: result[0].fill, radar: true });
+
+  if (x2 != x_radar && y2 != y_radar) result.push({ type: 'box', position: [x2, y2, radar_width, radar_width], fill: result[0].fill, radar: true });
+  if (x2 != x_radar && y3 != y_radar) result.push({ type: 'box', position: [x2, y3, radar_width, radar_width], fill: result[0].fill, radar: true });
+  if (x3 != x_radar && y2 != y_radar) result.push({ type: 'box', position: [x3, y2, radar_width, radar_width], fill: result[0].fill, radar: true });
+  if (x3 != x_radar && y3 != y_radar) result.push({ type: 'box', position: [x3, y3, radar_width, radar_width], fill: result[0].fill, radar: true });
+  return result;
+}).flat(2);
+
+function checkPos(pos1, pos2) {
+  let [x1, y1, width1] = pos1;
+  let [x2, y2] = pos2;
+  if (x1 < x2 && x2 < x1 + width1
+    && y1 < y2 && y2 < y1 + width1) return true;
+  console.log([x1, x1 + width1, y1, y1 + width1], [x2, y2]);
+  return false;
+}
+const drawMap = (ships, ship) => {
+  let result = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }];
+  let allies = ships.filter(value => value.team == ship.team);
+  let enemies = ships.filter(value => value.team != ship.team);
+  let radars = allies.map(function (i) { return { x: i.x, y: i.y, team: i.team, radar: true }; });
+
+  result.push(ships_components(allies, ship));
+  enemies_components = ships_components(enemies, ship);
+  radars_components = radar_components(radars, ship);
+  for (let radar of radars_components) for (let enemy of enemies_components) {
+    try { enemy.checkPos }
+    catch (e) { enemy.checkPos = checkPos(radar.position.slice(0, 3), enemy.position.slice(0, 2)) }
+    console.log(radar.position.slice(0, 3), enemy.position.slice(0, 2));
+  }
+  result.push(radars_components);
+  result.push(enemies.filter(value => value.checkPos));
+  return result.flat(2);
+};
 const upgrades = [
   { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [45, 0, 20, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
@@ -466,7 +589,6 @@ function SetupLeader(ship) {
 }
 function LeaderCode(game, ship) {
   if (ship.custom.leader) {
-    let ships = sortTeam(game).flat();
     // effect cooldown bar
     if (game.step <= ship.custom.end_time_spectator) {
       let time = ship.custom.end_time_spectator - game.step;
@@ -491,22 +613,17 @@ function LeaderCode(game, ship) {
     ship.setUIComponent(ship.custom.gem);
     // map
     if (ship.custom.view_map) {
-      console.log(drawMap(ships, ship))
-      ship.custom.map.components = drawMap(ships, ship);
+      ship.custom.map.components = drawMap(game.ships, ship);
       ship.setUIComponent(ship.custom.map);
     } else ship.setUIComponent({ id: 'map', visible: false });
   }
 }
 this.tick = function (game) {
   if (game.step % 60 === 0) {
-    game.ships.forEach((ship, index) => {
-      SetupLeader(ship);
-    });
+    game.ships.forEach((ship, index) => { SetupLeader(ship); });
   }
   if (game.step % 45 === 0) {
-    game.ships.forEach((ship, index) => {
-      LeaderCode(game, ship);
-    });
+    game.ships.forEach((ship, index) => { LeaderCode(game, ship); });
   }
 };
 this.event = function (event, game) {
