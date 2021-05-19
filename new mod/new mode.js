@@ -404,8 +404,9 @@ var maps = [
   "     68      46      94      89       89      57      35      93      79      47\n" +
   "     68      46       46      94      79      57      35      93      69       6",
 ];
-var Spectator_102 = '{"name":"Spectator","level":1,"model":2,"size":0.025,"zoom":0.075,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":2,"code":102,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"shape":[0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001],"lasers":[],"radius":0.001}}';
-var ships = [Spectator_102];
+
+let Spectator_102 = '{"name":"Spectator","level":1,"model":2,"size":0.025,"zoom":0.075,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":2,"code":102,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"shape":[0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001],"lasers":[],"radius":0.001}}';
+let ships = [Spectator_102];
 let map = maps[Math.trunc(Math.random() * maps.length)];
 
 this.options = {
@@ -429,86 +430,25 @@ this.options = {
   map_size: 80
 };
 
-function sortTeam(game, teams = 2) {
-  let result = new Array(teams).fill(0).map(i => Array);
-  for (let i = 0; i < teams; i++) {
-    result[i] = game.ships.map(ship => { if (ship.team === i) return ship; }).filter((value, index, array) => value !== undefined);
+function sortTeam(game) {
+  let result = [];
+  for (let i = 0; i < this.options.friendly_colors; i++) {
+    result.push(game.ships.map(ship => { if (ship.team === i) return ship; }).filter(value => value !== undefined));
   }
   return result;
 }
 
+const map_size = this.options.map_size;
+const radar_zoom = this.options.radar_zoom;
+
 const colors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
 const colors_radar = ['rgba(255, 0, 0, 0.1)', 'rgba(0, 255, 255, 0.1)'];
-const radar_radius = (this.options.map_size * 10) / this.options.radar_zoom;
+const radar_radius = (map_size * 10) / radar_zoom;
 
 const width = 1;
-const radar_width = radar_radius * 10 / this.options.map_size;
+const radar_width = radar_radius * 10 / map_size;
 const radar_pos = (radar_width - width) / 2;
 
-
-const ships_components = (ships, ship) => ships.map(i => {
-  const [x, y] = [
-    (this.options.map_size * 5 + i.x),
-    (this.options.map_size * 5 - i.y - 1)
-  ].map(i => (i - width * 0.5) / this.options.map_size * 10);
-
-  let result = [
-    i.team === ship.team ?
-      { type: 'box', position: [x, y, width, width], fill: colors[i.team], ally: true } :
-      { type: 'box', position: [x, y, width, width], fill: colors[i.team], enemy: true },
-  ];
-  return result;
-}).flat();
-
-const radar_components = (radars, ship) => radars.map(radar => {
-  const [x, y] = [
-    (this.options.map_size * 5 + radar.x),
-    (this.options.map_size * 5 - radar.y - 1)
-  ].map(i => (i - width * 0.5) / this.options.map_size * 10);
-  let result = [{ type: 'box', position: [x - radar_pos, y - radar_pos, radar_width, radar_width], fill: colors_radar[ship.team], radar: true }];
-
-  let [x_radar, y_radar] = result[0].position.slice(0, 2);
-
-  let x2 = radar_width + x_radar > 100 ? -100 + x_radar : x_radar;
-  let y2 = radar_width + y_radar > 100 ? -100 + y_radar : y_radar;
-
-  let x3 = x_radar < 0 ? 100 + x_radar : x_radar;
-  let y3 = y_radar < 0 ? 100 + y_radar : y_radar;
-
-  if (x2 != x_radar) result.push({ type: 'box', position: [x2, y_radar, radar_width, radar_width], fill: result[0].fill, radar: true });
-  if (y2 != y_radar) result.push({ type: 'box', position: [x_radar, y2, radar_width, radar_width], fill: result[0].fill, radar: true });
-  if (x3 != x_radar) result.push({ type: 'box', position: [x3, y_radar, radar_width, radar_width], fill: result[0].fill, radar: true });
-  if (y3 != y_radar) result.push({ type: 'box', position: [x_radar, y3, radar_width, radar_width], fill: result[0].fill, radar: true });
-
-  if (x2 != x_radar && y2 != y_radar) result.push({ type: 'box', position: [x2, y2, radar_width, radar_width], fill: result[0].fill, radar: true });
-  if (x2 != x_radar && y3 != y_radar) result.push({ type: 'box', position: [x2, y3, radar_width, radar_width], fill: result[0].fill, radar: true });
-  if (x3 != x_radar && y2 != y_radar) result.push({ type: 'box', position: [x3, y2, radar_width, radar_width], fill: result[0].fill, radar: true });
-  if (x3 != x_radar && y3 != y_radar) result.push({ type: 'box', position: [x3, y3, radar_width, radar_width], fill: result[0].fill, radar: true });
-  return result;
-}).flat(2);
-
-function checkPos(pos1, pos2) {
-  let [x1, y1, width] = pos1;
-  let [x2, y2] = pos2;
-  return (y1 < y2 && y2 < y1 + width) && (x1 < x2 && x2 < x1 + width);
-}
-
-const drawMap = (ships, ship) => {
-  let result = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }];
-  let allies = ships.filter(value => value.team == ship.team);
-  let enemies = ships.filter(value => value.team != ship.team);
-  let radars = allies.map(function (i) { return { x: i.x, y: i.y, team: i.team, radar: true }; });
-
-  result.push(ships_components(allies, ship));
-  enemies_components = ships_components(enemies, ship);
-  radars_components = radar_components(radars, ship);
-
-  for (let radar of radars_components) for (let enemy of enemies_components)
-    if (checkPos(radar.position.slice(0, 3), enemy.position.slice(0, 2)) && !result.includes(enemy)) result.push(enemy);
-
-  result.push(radars_components);
-  return result.flat(2);
-};
 
 const upgrades = [
   { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
@@ -551,82 +491,206 @@ const ToogleMap = {
   ]
 };
 
-const LEADER = {
-  // spectator
-  spectator: Spectator,
-  end_time_spectator: 0,          //time end the spectator
-  spectator_activated: 0,         // time activated button
-  spectator_allowed_time: 0,      // time end the spectator 
-  is_spectator: false,
-  spectator_delay: 5 * 60 * 60,      // button cooldown
-  time_uses_spectator: 1.5 * 60 * 60,   // how long effect
-  // gem
-  gem: Gem,
-  gem_delay: 5 * 60 * 60,             // button cooldown
-  gem_activated: 0,
-  gem_cooldown_time: 0,
-  value: 0,
-  // players list
-  allies: [],
-  enemy: [],
-  // map
-  view_map: false,
-  map: { id: 'map', position: [25, 5, 85 * 0.5625, 85], components: [] },
-  toggle_map: ToogleMap
-};
+const SPECTATOR = {
+  args: {
+    spectator: Spectator,
+    end_time_spectator: 0,          //time end the spectator
+    spectator_activated: 0,         // time activated button
+    spectator_allowed_time: 0,      // time end the spectator 
+    is_spectator: false,
+    spectator_delay: 5 * 60 * 60,
+    stats: {},    // button cooldown
+    time_uses_spectator: 1.5 * 60 * 60,
+  },
+  methods: {
+    ui_cooldown_effect: function (game, ship) {
+      if (game.step <= ship.custom.end_time_spectator) {
+        let time = ship.custom.end_time_spectator - game.step;
+        ship.custom.spectator.components[3].position[2] = (time / ship.custom.time_uses_spectator) * 100;
+      } else if (ship.custom.spectator.components[3].position[2] !== 0)
+        ship.custom.spectator.components[3].position[2] = 0;
+    },
+    ui_button_cooldown: function (game, ship) {
+      if (game.step <= ship.custom.spectator_allowed_time) {
+        let time = ship.custom.spectator_allowed_time - game.step;
+        ship.custom.spectator.components[4].position[2] = (time / ship.custom.spectator_delay) * 100;
+      } else if (ship.custom.spectator.components[4].position[2] !== 0) {
+        ship.custom.spectator.components[4].position[2] = 0;
+        this.remove_effect(ship);
+      }
+    },
+    activate_effect: function (ship) {
+      if (ship.type != 102 && ship.custom.is_spectator) ship.set({ type: 102, collider: false });
+    },
+    remove_effect: ship => {
+      if (game.step >= ship.custom.end_time_spectator) {
+        ship.set(ship.custom.stats);
+        ship.custom.is_spectator = false;
+        for (let upgrade of upgrades) ship.setUIComponent({ id: upgrade.id, visble: false });
+      }
+    },
+    button_clicked: function (ship, custom) {
+      ship.type != 102 && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals, invulnerable: 120 });
+      if (!custom.is_spectator && game.step >= custom.spectator_allowed_time) {
+        custom.is_spectator = true;
 
-function SetupLeader(ship) {
-  if (!ship.custom.leader) {
-    Object.assign(ship.custom, LEADER);
-    ship.setUIComponent(ship.custom.spectator);
-    ship.setUIComponent(ship.custom.gem);
-    ship.setUIComponent(ship.custom.toggle_map);
-    ship.custom.leader = true;
+        custom.spectator_activated = game.step;
+        custom.spectator_allowed_time = game.step + custom.spectator_delay;
+        custom.end_time_spectator = game.step + custom.time_uses_spectator;
+        this.activate_effect(ship);
+
+        for (let upgrade of upgrades) ship.setUIComponent(upgrade);
+      } else if (custom.is_spectator) {
+        ship.custom.end_time_spectator = game.step;
+        this.remove_effect(ship);
+      }
+    },
+    show_activate_button: ship => ship.setUIComponent(ship.custom.spectator)
   }
-}
+};
+const GEM = {
+  args: {
+    gem: Gem,
+    gem_delay: 5 * 60 * 60,             // button cooldown
+    gem_activated: 0,
+    gem_cooldown_time: 0,
+    value: 0,
+  },
+  methods: {
+    show_activate_button: ship => ship.setUIComponent(ship.custom.gem),
+    ui_button_cooldown: function (game, ship) {
+      if (game.step < ship.custom.gem_cooldown_time) {
+        let time = ship.custom.gem_cooldown_time - game.step;
+        ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
+      } else if (ship.custom.gem.components[3].position[2] !== 0)
+        ship.custom.gem.components[3].position[2] = 0;
+    },
+    button_clicked: function (ship, custom) {
+      if (game.step > custom.gem_cooldown_time) {
+        value = custom.leader ? 1 : 0.5;
+        custom.value = Math.trunc(ship.type / 100) ** 2 * 5 * 4 * value;
+        custom.gem_activated = game.step;
+        custom.gem_cooldown_time = game.step + custom.gem_delay;
 
-function LeaderCode(game, ship) {
-  if (ship.custom.leader) {
-    // effect cooldown bar
-    if (game.step <= ship.custom.end_time_spectator) {
-      let time = ship.custom.end_time_spectator - game.step;
-      ship.custom.spectator.components[3].position[2] = (time / ship.custom.time_uses_spectator) * 100;
-    } else ship.custom.spectator.components[3].position[2] = 0;
-
-    if (game.step <= ship.custom.spectator_allowed_time) {
-      let time = ship.custom.spectator_allowed_time - game.step;
-      ship.custom.spectator.components[4].position[2] = (time / ship.custom.spectator_delay) * 100;
-    } else ship.custom.spectator.components[4].position[2] = 0;
-
-    ship.setUIComponent(ship.custom.spectator);
-
-    if (ship.custom.is_spectator) ship.set({ type: 102, collider: false });
-
-    // remove effect after time
-    if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
-      ship.set(ship.custom.stats);
-      ship.custom.is_spectator = false;
+        ship.set({ crystals: ship.crystals + custom.value });
+      }
     }
-    // gem effect
-    if (game.step < ship.custom.gem_cooldown_time) {
-      let time = ship.custom.gem_cooldown_time - game.step;
-      ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
-    } else ship.custom.gem.components[3].position[2] = 0;
+  }
+};
+const MAP = {
+  args: {
+    view_map: false,
+    map: { id: 'map', position: [25, 5, 85 * 0.5625, 85], components: [] },
+    toggle_map: ToogleMap
+  },
+  methods: {
+    button_clicked(custom) { custom.view_map = !custom.view_map; },
+    show_activate_button: ship => ship.setUIComponent(ship.custom.toggle_map),
+    convert_Pos: (x, y) => [(map_size * 5 + x), (map_size * 5 - y - 1)],
+    checkPos(pos1, pos2) {
+      let [x1, y1, width] = pos1;
+      let [x2, y2] = pos2;
+      return (y1 < y2 && y2 < y1 + width) && (x1 < x2 && x2 < x1 + width);
+    },
+    ships_components(ships, ship) {
+      return ships.map(space_ship => {
+        const [x, y] = this.convert_Pos(space_ship.x, space_ship.y).map(i => (i - width * 0.5) / map_size * 10);
 
-    ship.setUIComponent(ship.custom.gem);
-    // map
-    if (ship.custom.view_map) {
-      ship.custom.map.components = drawMap(game.ships, ship);
-      ship.setUIComponent(ship.custom.map);
-    } else ship.setUIComponent({ id: 'map', visible: false });
+        let result = [
+          space_ship.team === ship.team ?
+            { type: 'box', position: [x, y, width, width], fill: colors[space_ship.team] } :
+            { type: 'box', position: [x, y, width, width], fill: colors[space_ship.team] },
+        ];
+        return result;
+      }).flat();
+    },
+    radars_components(radars, ship) {
+      return radars.map(radar => {
+        const [x, y] = this.convert_Pos(radar.x, radar.y).map(i => ((i - width * 0.5) / map_size * 10) - radar_pos);
+
+        let result = [{ type: 'box', position: [x, y, radar_width, radar_width], fill: colors_radar[ship.team] }];
+
+        let x2 = radar_width + x > 100 ? -100 + x : x;
+        let y2 = radar_width + y > 100 ? -100 + y : y;
+
+        let x3 = x < 0 ? 100 + x : x;
+        let y3 = y < 0 ? 100 + y : y;
+
+        if (x2 != x) {
+          result.push({ type: 'box', position: [x2, y, radar_width, radar_width], fill: result[0].fill });
+          if (y2 != y) result.push({ type: 'box', position: [x2, y2, radar_width, radar_width], fill: result[0].fill });
+          if (y3 != y) result.push({ type: 'box', position: [x2, y3, radar_width, radar_width], fill: result[0].fill });
+        }
+        if (y2 != y) result.push({ type: 'box', position: [x, y2, radar_width, radar_width], fill: result[0].fill });
+
+        if (x3 != x) {
+          result.push({ type: 'box', position: [x3, y, radar_width, radar_width], fill: result[0].fill });
+          if (y2 != y) result.push({ type: 'box', position: [x3, y2, radar_width, radar_width], fill: result[0].fill });
+          if (y3 != y) result.push({ type: 'box', position: [x3, y3, radar_width, radar_width], fill: result[0].fill });
+        }
+        if (y3 != y) result.push({ type: 'box', position: [x, y3, radar_width, radar_width], fill: result[0].fill });
+
+        return result;
+      }).flat(2);
+    },
+    drawMap(ships, ship) {
+      let result = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }];
+      let allies = ships.filter(value => value.team == ship.team);
+      let enemies = ships.filter(value => value.team != ship.team);
+      let radars = allies.map(function (i) { return { x: i.x, y: i.y, team: i.team }; });
+
+      result.push(this.ships_components(allies, ship));
+      enemies_components = this.ships_components(enemies, ship);
+      radars_components = this.radars_components(radars, ship);
+
+      for (let radar of radars_components) for (let enemy of enemies_components)
+        if (this.checkPos(radar.position.slice(0, 3), enemy.position.slice(0, 2)) && !result.includes(enemy)) result.push(enemy);
+
+      result.push(radars_components);
+      return result.flat(2);
+    },
+    view_map(ship) {
+      if (ship.custom.view_map) {
+        ship.custom.map.components = this.drawMap(game.ships, ship);
+        ship.setUIComponent(ship.custom.map);
+      } else ship.setUIComponent({ id: 'map', visible: false });
+    }
+  }
+};
+const LEADER = {
+  setup(ship) {
+    if (!ship.custom.leader) {
+      Object.assign(ship.custom, SPECTATOR.args);
+      Object.assign(ship.custom, MAP.args);
+      Object.assign(ship.custom, GEM.args)
+
+      SPECTATOR.methods.show_activate_button(ship);
+      GEM.methods.show_activate_button(ship);
+      MAP.methods.show_activate_button(ship);
+      ship.custom.leader = true;
+    }
+  },
+  methods(game, ship) {
+    if (ship.custom.leader) {
+
+      SPECTATOR.methods.ui_button_cooldown(game, ship);
+      SPECTATOR.methods.ui_cooldown_effect(game, ship);
+      SPECTATOR.methods.remove_effect(ship);
+      SPECTATOR.methods.show_activate_button(ship);
+
+      GEM.methods.ui_button_cooldown(game, ship);
+      GEM.methods.show_activate_button(ship);
+
+      MAP.methods.view_map(ship);
+    }
   }
 }
 this.tick = function (game) {
   if (game.step % 60 === 0) {
-    game.ships.forEach((ship, index) => { SetupLeader(ship); });
+    game.ships.forEach((ship) => { LEADER.setup(ship); });
   }
   if (game.step % 45 === 0) {
-    game.ships.forEach((ship, index) => { LeaderCode(game, ship); });
+    game.ships.forEach((ship) => { LEADER.methods(game, ship); });
   }
 };
 this.event = function (event, game) {
@@ -634,32 +698,13 @@ this.event = function (event, game) {
   let custom = ship.custom;
   switch (event.id) {
     case 'spectator':
-      !custom.is_spectator && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals, invulnerable: 120 });
-      if (!custom.is_spectator && game.step >= custom.spectator_allowed_time) {
-        custom.spectator_activated = game.step;
-        custom.spectator_allowed_time = game.step + custom.spectator_delay;
-        custom.end_time_spectator = game.step + custom.time_uses_spectator;
-        custom.is_spectator = true;
-        ship.set({ type: 102, collider: false });
-        for (let upgrade of upgrades) ship.setUIComponent(upgrade);
-      } else if (custom.is_spectator) {
-        ship.set(custom.stats);
-        custom.is_spectator = false;
-        custom.end_time_spectator = game.step;
-        for (let upgrade of upgrades) ship.setUIComponent({ id: upgrade.id, visble: false });
-      }
+      SPECTATOR.methods.button_clicked(ship, custom);
       break;
     case 'gem':
-      if (game.step > custom.gem_cooldown_time) {
-        value = custom.leader ? 1 : 0.5;
-        custom.value = Math.trunc(ship.type / 100) ** 2 * 5 * 4 * value;
-        ship.set({ crystals: ship.crystals + custom.value });
-        custom.gem_activated = game.step;
-        custom.gem_cooldown_time = game.step + custom.gem_delay;
-      }
+      GEM.methods.button_clicked(ship, custom);
       break;
     case 'map toogle':
-      custom.view_map = !custom.view_map;
+      MAP.methods.button_clicked(custom);
       break;
   }
   switch (event.name) {
@@ -676,9 +721,7 @@ this.event = function (event, game) {
 
 ; (function () {
   var internals_init = function () {
-    if (game.custom.shipDisconnected_init) {
-      return;
-    }
+    if (game.custom.shipDisconnected_init) return;
     const modding = game.modding;
     const internals = Object.values(modding).find(val => val && typeof val.shipDisconnected === "function");
     if (!internals) {
@@ -687,15 +730,9 @@ this.event = function (event, game) {
     }
     if (!internals.shipDisconnected.old) {
       function shipDisconnected({ id } = {}) {
-        if (modding.context.event && id) {
-          var ship = game.findShip(id);
-        }
+        if (modding.context.event && id) var ship = game.findShip(id);
         var result = shipDisconnected.old.apply(this, arguments);
-        if (ship) {
-          try {
-            modding.context.event({ name: "ship_disconnected", ship }, game);
-          } catch (e) { }
-        }
+        if (ship) try { modding.context.event({ name: "ship_disconnected", ship }, game); } catch (e) { }
         return result;
       }
       shipDisconnected.old = internals.shipDisconnected;
