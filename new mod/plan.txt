@@ -22,7 +22,7 @@ Team mode
           Ship, lives, stats, name, rank, frags, death, position
         More advance information from enemy 
           ship, stats, frags, death, rank, position 
-        Has entire map
+        Has entire map            👌 
       2 strategist 
         Give suggest to leader
         Has list of Enemies

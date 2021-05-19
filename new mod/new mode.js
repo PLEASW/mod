@@ -490,12 +490,9 @@ const radar_components = (radars, ship) => radars.map(radar => {
 }).flat(2);
 
 function checkPos(pos1, pos2) {
-  let [x1, y1, width1] = pos1;
+  let [x1, y1, width] = pos1;
   let [x2, y2] = pos2;
-  if (x1 < x2 && x2 < x1 + width1
-    && y1 < y2 && y2 < y1 + width1) return true;
-  console.log([x1, x1 + width1, y1, y1 + width1], [x2, y2]);
-  return false;
+  return (y1 < y2 && y2 < y1 + width) && (x1 < x2 && x2 < x1 + width);
 }
 const drawMap = (ships, ship) => {
   let result = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }];
@@ -506,13 +503,10 @@ const drawMap = (ships, ship) => {
   result.push(ships_components(allies, ship));
   enemies_components = ships_components(enemies, ship);
   radars_components = radar_components(radars, ship);
-  for (let radar of radars_components) for (let enemy of enemies_components) {
-    try { enemy.checkPos }
-    catch (e) { enemy.checkPos = checkPos(radar.position.slice(0, 3), enemy.position.slice(0, 2)) }
-    console.log(radar.position.slice(0, 3), enemy.position.slice(0, 2));
-  }
+  for (let radar of radars_components) for (let enemy of enemies_components)
+    if (checkPos(radar.position.slice(0, 3), enemy.position.slice(0, 2))) result.push(enemy);
+
   result.push(radars_components);
-  result.push(enemies.filter(value => value.checkPos));
   return result.flat(2);
 };
 const upgrades = [
@@ -661,26 +655,52 @@ this.event = function (event, game) {
   }
   switch (event.name) {
     case 'ship_destroyed':
-
       break;
     case 'ship_spawned':
+      break;
+    case "ship_disconnected":
       break;
     default:
       break;
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
+; (function () {
+  var internals_init = function () {
+    if (game.custom.shipDisconnected_init) {
+      return;
+    }
+    const modding = game.modding;
+    const internals = Object.values(modding).find(val => val && typeof val.shipDisconnected === "function");
+    if (!internals) {
+      modding.terminal.error(new Error("Failed to initialize 'ship_disconnected' event: modding internals object not found"));
+      return;
+    }
+    if (!internals.shipDisconnected.old) {
+      function shipDisconnected({ id } = {}) {
+        if (modding.context.event && id) {
+          var ship = game.findShip(id);
+        }
+        var result = shipDisconnected.old.apply(this, arguments);
+        if (ship) {
+          try {
+            modding.context.event({ name: "ship_disconnected", ship }, game);
+          } catch (e) { }
+        }
+        return result;
+      }
+      shipDisconnected.old = internals.shipDisconnected;
+      internals.shipDisconnected = shipDisconnected;
+    }
+    game.custom.shipDisconnected_init = true;
+  }
+  var tick = this.tick;
+  this.tick = function (game) {
+    this.tick = tick;
+    internals_init();
+    this.tick(game);
+  }
+}).call(this);
 
 
 
