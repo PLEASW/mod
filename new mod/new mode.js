@@ -407,12 +407,7 @@ var maps = [
 var Spectator_102 = '{"name":"Spectator","level":1,"model":2,"size":0.025,"zoom":0.075,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":2,"code":102,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"shape":[0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001],"lasers":[],"radius":0.001}}';
 var ships = [Spectator_102];
 let map = maps[Math.trunc(Math.random() * maps.length)];
-/* 
-19:9
-  width: 45
-  height: 25
-radar zoom 4 -> x,y = 100
-*/
+
 this.options = {
   // auto_assign_teams: true,
   custom_map: map,
@@ -434,14 +429,6 @@ this.options = {
   map_size: 80
 };
 
-const colors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
-const colors_radar = ['rgba(255, 0, 0, 0.1)', 'rgba(0, 255, 255, 0.1)'];
-const radar_radius = (this.options.map_size * 10) / this.options.radar_zoom;
-
-const width = 1;
-const radar_width = radar_radius * 10 / this.options.map_size;
-const radar_pos = (radar_width - width) / 2;
-
 function sortTeam(game, teams = 2) {
   let result = new Array(teams).fill(0).map(i => Array);
   for (let i = 0; i < teams; i++) {
@@ -450,13 +437,24 @@ function sortTeam(game, teams = 2) {
   return result;
 }
 
+const colors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
+const colors_radar = ['rgba(255, 0, 0, 0.1)', 'rgba(0, 255, 255, 0.1)'];
+const radar_radius = (this.options.map_size * 10) / this.options.radar_zoom;
+
+const width = 1;
+const radar_width = radar_radius * 10 / this.options.map_size;
+const radar_pos = (radar_width - width) / 2;
+
+
 const ships_components = (ships, ship) => ships.map(i => {
   const [x, y] = [
     (this.options.map_size * 5 + i.x),
     (this.options.map_size * 5 - i.y - 1)
   ].map(i => (i - width * 0.5) / this.options.map_size * 10);
+
   let result = [
-    i.team === ship.team ? { type: 'box', position: [x, y, width, width], fill: colors[i.team], ally: true } :
+    i.team === ship.team ?
+      { type: 'box', position: [x, y, width, width], fill: colors[i.team], ally: true } :
       { type: 'box', position: [x, y, width, width], fill: colors[i.team], enemy: true },
   ];
   return result;
@@ -494,6 +492,7 @@ function checkPos(pos1, pos2) {
   let [x2, y2] = pos2;
   return (y1 < y2 && y2 < y1 + width) && (x1 < x2 && x2 < x1 + width);
 }
+
 const drawMap = (ships, ship) => {
   let result = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' }];
   let allies = ships.filter(value => value.team == ship.team);
@@ -503,16 +502,19 @@ const drawMap = (ships, ship) => {
   result.push(ships_components(allies, ship));
   enemies_components = ships_components(enemies, ship);
   radars_components = radar_components(radars, ship);
+
   for (let radar of radars_components) for (let enemy of enemies_components)
-    if (checkPos(radar.position.slice(0, 3), enemy.position.slice(0, 2))) result.push(enemy);
+    if (checkPos(radar.position.slice(0, 3), enemy.position.slice(0, 2)) && !result.includes(enemy)) result.push(enemy);
 
   result.push(radars_components);
   return result.flat(2);
 };
+
 const upgrades = [
   { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [45, 0, 20, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
 ];
+
 const Gem = {
   id: 'gem',
   position: [66.4, 0, 6.6, 4],
@@ -524,6 +526,7 @@ const Gem = {
     { type: "box", position: [0, 85, 0, 15], fill: '#f00' }    // progress bar
   ]
 };
+
 const Spectator = {
   id: 'spectator',
   position: [73, 0, 6.6, 4],
@@ -537,6 +540,7 @@ const Spectator = {
     { type: "box", position: [0, 92.5, 0, 7.5], fill: '#f00' } // progress cooldown
   ]
 };
+
 const ToogleMap = {
   id: 'map toogle',
   position: [59.8, 0, 6.6, 4],
@@ -546,18 +550,19 @@ const ToogleMap = {
     { type: "text", position: [0, 5, 100, 90], value: "Map", color: "#cde" },
   ]
 };
+
 const LEADER = {
   // spectator
   spectator: Spectator,
-  spectator_delay: 0,       // button cooldown
-  time_uses_spectator: 0,   // how long effect
   end_time_spectator: 0,          //time end the spectator
   spectator_activated: 0,         // time activated button
   spectator_allowed_time: 0,      // time end the spectator 
   is_spectator: false,
+  spectator_delay: 5 * 60 * 60,      // button cooldown
+  time_uses_spectator: 1.5 * 60 * 60,   // how long effect
   // gem
   gem: Gem,
-  gem_delay: 0,             // button cooldown
+  gem_delay: 5 * 60 * 60,             // button cooldown
   gem_activated: 0,
   gem_cooldown_time: 0,
   value: 0,
@@ -569,6 +574,7 @@ const LEADER = {
   map: { id: 'map', position: [25, 5, 85 * 0.5625, 85], components: [] },
   toggle_map: ToogleMap
 };
+
 function SetupLeader(ship) {
   if (!ship.custom.leader) {
     Object.assign(ship.custom, LEADER);
@@ -576,11 +582,9 @@ function SetupLeader(ship) {
     ship.setUIComponent(ship.custom.gem);
     ship.setUIComponent(ship.custom.toggle_map);
     ship.custom.leader = true;
-    ship.custom.spectator_delay = 5 * 60 ** 2;
-    ship.custom.time_uses_spectator = 1.5 * 60 ** 2;
-    ship.custom.gem_delay = 5 * 60 ** 2;
   }
 }
+
 function LeaderCode(game, ship) {
   if (ship.custom.leader) {
     // effect cooldown bar
@@ -588,12 +592,16 @@ function LeaderCode(game, ship) {
       let time = ship.custom.end_time_spectator - game.step;
       ship.custom.spectator.components[3].position[2] = (time / ship.custom.time_uses_spectator) * 100;
     } else ship.custom.spectator.components[3].position[2] = 0;
+
     if (game.step <= ship.custom.spectator_allowed_time) {
       let time = ship.custom.spectator_allowed_time - game.step;
       ship.custom.spectator.components[4].position[2] = (time / ship.custom.spectator_delay) * 100;
     } else ship.custom.spectator.components[4].position[2] = 0;
+
     ship.setUIComponent(ship.custom.spectator);
+
     if (ship.custom.is_spectator) ship.set({ type: 102, collider: false });
+
     // remove effect after time
     if (ship.custom.is_spectator && game.step > ship.custom.end_time_spectator) {
       ship.set(ship.custom.stats);
@@ -604,6 +612,7 @@ function LeaderCode(game, ship) {
       let time = ship.custom.gem_cooldown_time - game.step;
       ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
     } else ship.custom.gem.components[3].position[2] = 0;
+
     ship.setUIComponent(ship.custom.gem);
     // map
     if (ship.custom.view_map) {
