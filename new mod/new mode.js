@@ -523,7 +523,7 @@ const SPECTATOR = {
       if (ship.type != 102 && ship.custom.is_spectator) ship.set({ type: 102, collider: false });
     },
     remove_effect: ship => {
-      if (game.step >= ship.custom.end_time_spectator) {
+      if (game.step >= ship.custom.end_time_spectator && ship.custom.is_spectator) {
         ship.set(ship.custom.stats);
         ship.custom.is_spectator = false;
         for (let upgrade of upgrades) ship.setUIComponent({ id: upgrade.id, visble: false });
@@ -658,18 +658,16 @@ const MAP = {
   }
 };
 const LEADER = {
-  setup(ship) {
+  setup: (ship) => {
     if (!ship.custom.leader) {
-      Object.assign(ship.custom, SPECTATOR.args);
-      Object.assign(ship.custom, MAP.args);
-      Object.assign(ship.custom, GEM.args)
-
+      ship.custom.leader = true;
+      Object.assign(ship.custom, SPECTATOR.args, MAP.args, GEM.args, { leader: true })
       SPECTATOR.methods.show_activate_button(ship);
       GEM.methods.show_activate_button(ship);
       MAP.methods.show_activate_button(ship);
-      ship.custom.leader = true;
-    }
+    };
   },
+
   methods(game, ship) {
     if (ship.custom.leader) {
 
