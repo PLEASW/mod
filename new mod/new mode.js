@@ -657,6 +657,9 @@ const MAP = {
     }
   }
 };
+const PLAYERS_LIST = {
+
+}
 const LEADER = {
   setup: (ship) => {
     if (!ship.custom.leader) {
