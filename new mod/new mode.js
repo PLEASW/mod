@@ -1,3 +1,7 @@
+addBots = number => {
+  for (let i = 0; i < number; i++) Bot.create()
+}
+
 var maps = [
   "                                                   3959344792                   \n" +
   "                                   718986124913973613462771413524               \n" +
@@ -430,13 +434,7 @@ this.options = {
   map_size: 80
 };
 
-function sortTeam(game) {
-  let result = [];
-  for (let i = 0; i < this.options.friendly_colors; i++) {
-    result.push(game.ships.map(ship => { if (ship.team === i) return ship; }).filter(value => value !== undefined));
-  }
-  return result;
-}
+
 
 const map_size = this.options.map_size;
 const radar_zoom = this.options.radar_zoom;
@@ -449,23 +447,12 @@ const width = 1;
 const radar_width = radar_radius * 10 / map_size;
 const radar_pos = (radar_width - width) / 2;
 
+const friendly_colors = this.options.friendly_colors;
 
 const upgrades = [
   { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [45, 0, 20, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
 ];
-
-const Gem = {
-  id: 'gem',
-  position: [66.4, 0, 6.6, 4],
-  clickable: true,
-  components: [
-    { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
-    { type: "text", position: [0, 5, 100, 80], value: "Gem", color: "#cde" },
-    { type: "box", position: [0, 85, 100, 15], fill: '#0ff' },  // bar
-    { type: "box", position: [0, 85, 0, 15], fill: '#f00' }    // progress bar
-  ]
-};
 
 const Spectator = {
   id: 'spectator',
@@ -481,13 +468,35 @@ const Spectator = {
   ]
 };
 
+const Gem = {
+  id: 'gem',
+  position: [66.3, 0, 6.6, 4],
+  clickable: true,
+  components: [
+    { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
+    { type: "text", position: [0, 5, 100, 80], value: "Gem", color: "#cde" },
+    { type: "box", position: [0, 85, 100, 15], fill: '#0ff' },  // bar
+    { type: "box", position: [0, 85, 0, 15], fill: '#f00' }    // progress bar
+  ]
+};
+
 const ToogleMap = {
   id: 'map toogle',
-  position: [59.8, 0, 6.6, 4],
+  position: [59.6, 0, 6.6, 4],
   clickable: true,
   components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
     { type: "text", position: [0, 5, 100, 90], value: "Map", color: "#cde" },
+  ]
+};
+
+const Players_List = {
+  id: 'players list',
+  position: [73, 4.1, 6.6, 4],
+  clickable: true,
+  components: [
+    { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
+    { type: "text", position: [0, 5, 100, 90], value: "Players", color: "#cde" },
   ]
 };
 
@@ -500,9 +509,26 @@ const SPECTATOR = {
     is_spectator: false,
     spectator_delay: 5 * 60 * 60,
     stats: {},    // button cooldown
-    time_uses_spectator: 1.5 * 60 * 60,
+    time_uses_spectator: .5 * 60 * 60,
   },
   methods: {
+    show_activate_button: ship => ship.setUIComponent(ship.custom.spectator),
+    button_clicked: function (ship, custom) {
+      ship.type != 102 && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals, invulnerable: 120 });
+      if (!custom.is_spectator && game.step >= custom.spectator_allowed_time) {
+        custom.is_spectator = true;
+
+        custom.spectator_activated = game.step;
+        custom.spectator_allowed_time = game.step + custom.spectator_delay;
+        custom.end_time_spectator = game.step + custom.time_uses_spectator;
+
+        this.activate_effect(ship);
+        for (let upgrade of upgrades) ship.setUIComponent(upgrade);
+      } else if (custom.is_spectator) {
+        ship.custom.end_time_spectator = game.step;
+        this.remove_effect(ship);
+      }
+    },
     ui_cooldown_effect: function (game, ship) {
       if (game.step <= ship.custom.end_time_spectator) {
         let time = ship.custom.end_time_spectator - game.step;
@@ -528,24 +554,7 @@ const SPECTATOR = {
         ship.custom.is_spectator = false;
         for (let upgrade of upgrades) ship.setUIComponent({ id: upgrade.id, visble: false });
       }
-    },
-    button_clicked: function (ship, custom) {
-      ship.type != 102 && (custom.stats = { type: ship.type, stats: ship.stats, collider: true, shield: ship.shield, generator: ship.generator, crystals: ship.crystals, invulnerable: 120 });
-      if (!custom.is_spectator && game.step >= custom.spectator_allowed_time) {
-        custom.is_spectator = true;
-
-        custom.spectator_activated = game.step;
-        custom.spectator_allowed_time = game.step + custom.spectator_delay;
-        custom.end_time_spectator = game.step + custom.time_uses_spectator;
-        this.activate_effect(ship);
-
-        for (let upgrade of upgrades) ship.setUIComponent(upgrade);
-      } else if (custom.is_spectator) {
-        ship.custom.end_time_spectator = game.step;
-        this.remove_effect(ship);
-      }
-    },
-    show_activate_button: ship => ship.setUIComponent(ship.custom.spectator)
+    }
   }
 };
 const GEM = {
@@ -558,13 +567,6 @@ const GEM = {
   },
   methods: {
     show_activate_button: ship => ship.setUIComponent(ship.custom.gem),
-    ui_button_cooldown: function (game, ship) {
-      if (game.step < ship.custom.gem_cooldown_time) {
-        let time = ship.custom.gem_cooldown_time - game.step;
-        ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
-      } else if (ship.custom.gem.components[3].position[2] !== 0)
-        ship.custom.gem.components[3].position[2] = 0;
-    },
     button_clicked: function (ship, custom) {
       if (game.step > custom.gem_cooldown_time) {
         value = custom.leader ? 1 : 0.5;
@@ -574,6 +576,13 @@ const GEM = {
 
         ship.set({ crystals: ship.crystals + custom.value });
       }
+    },
+    ui_button_cooldown: function (game, ship) {
+      if (game.step < ship.custom.gem_cooldown_time) {
+        let time = ship.custom.gem_cooldown_time - game.step;
+        ship.custom.gem.components[3].position[2] = (time / ship.custom.gem_delay) * 100;
+      } else if (ship.custom.gem.components[3].position[2] !== 0)
+        ship.custom.gem.components[3].position[2] = 0;
     }
   }
 };
@@ -584,8 +593,8 @@ const MAP = {
     toggle_map: ToogleMap
   },
   methods: {
-    button_clicked(custom) { custom.view_map = !custom.view_map; },
     show_activate_button: ship => ship.setUIComponent(ship.custom.toggle_map),
+    button_clicked(custom) { custom.view_map = !custom.view_map; },
     convert_Pos: (x, y) => [(map_size * 5 + x), (map_size * 5 - y - 1)],
     checkPos(pos1, pos2) {
       let [x1, y1, width] = pos1;
@@ -658,16 +667,46 @@ const MAP = {
   }
 };
 const PLAYERS_LIST = {
+  args: {
+    players_list: Players_List,
+    allies: [],
+    enemies: []
+  },
+  methods: {
+    sortTeam: (ships) => {
+      let result = {};
+      for (let i = 0; i < friendly_colors; i++)
+        result[i] = ships.filter(value => value.team == i).sort((a, b) => a.id - b.id);
+      return result;
+    },
+    show_activate_button: ship => ship.setUIComponent(ship.custom.players_list),
+    ally_component(ship) {
+      return {
+        id: ship.id,
+        position: [],
+        clickable: true,
+        components: [{ type: 'player', id: ship.id, position: [0, 0, 100, 100] }]
+      }
+    },
+    enemy_component(enemy, ship) { },
+    button_clicked: (ships, ship, custom) => {
+      let sides = PLAYERS_LIST.methods.sortTeam(ships);
+      for (let team in sides)
+        if (team == ship.team) custom.allies = sides[team];
+        else custom.enemies = sides[team];
 
+    },
+  }
 }
 const LEADER = {
   setup: (ship) => {
     if (!ship.custom.leader) {
       ship.custom.leader = true;
-      Object.assign(ship.custom, SPECTATOR.args, MAP.args, GEM.args, { leader: true })
+      Object.assign(ship.custom, SPECTATOR.args, MAP.args, GEM.args, PLAYERS_LIST.args, { leader: true })
       SPECTATOR.methods.show_activate_button(ship);
       GEM.methods.show_activate_button(ship);
       MAP.methods.show_activate_button(ship);
+      PLAYERS_LIST.methods.show_activate_button(ship)
     };
   },
 
@@ -706,6 +745,9 @@ this.event = function (event, game) {
       break;
     case 'map toogle':
       MAP.methods.button_clicked(custom);
+      break;
+    case 'players list':
+      PLAYERS_LIST.methods.button_clicked(game.ships, ship, custom);
       break;
   }
   switch (event.name) {
