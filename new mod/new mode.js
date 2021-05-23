@@ -22,7 +22,8 @@ this.options = {
   station_size: 1,
   station_crystal_capacity: 0.5,
   friendly_colors: 2,
-  map_size: 80
+  map_size: 80,
+  map_density: 2
 };
 
 const map_size = this.options.map_size;
@@ -88,8 +89,19 @@ const Players_List = {
     { type: "text", position: [0, 5, 100, 90], value: "Players", color: "#cde" },
   ]
 };
-const disable_uis = (ids, ship) => { for (let id of ids) ship.setUIComponent({ id: id, visible: false }) };
 
+const disable_uis = (ids, ship) => { for (let id of ids) ship.setUIComponent({ id: id, visible: false }) };
+const make_list = function (values, number) {
+  let result = [], sub = [];
+  for (let item of values) {
+    sub.push(item);
+    if (sub.length == number || values.indexOf(item) == values.length - 1) {
+      result.push(sub);
+      sub = [];
+    }
+  }
+  return result;
+}
 const SPECTATOR = {
   args: {
     spectator: Spectator,
@@ -176,18 +188,6 @@ const GEM = {
     }
   }
 };
-const make_list = function (values, number) {
-  let result = [];
-  let sub = [];
-  for (let item of values) {
-    sub.push(item);
-    if (sub.length == number || values.indexOf(item) == values.length - 1) {
-      result.push(sub);
-      sub = [];
-    }
-  }
-  return result;
-}
 
 const MAP = {
   args: {
@@ -277,8 +277,7 @@ const PLAYERS_LIST = {
     allies: [],
     enemies: [],
     view_players: false,
-    allies_page: 0,
-    enemies_page: 0
+    page: 0
   },
   methods: {
     show_activate_button: ship => ship.setUIComponent(ship.custom.players_list),
@@ -288,23 +287,23 @@ const PLAYERS_LIST = {
         result[i] = ships.filter(value => value.team == i).sort((a, b) => a.id - b.id);
       return result;
     },
-    ally_component(ship) {
-      console.log(ship)
+    ally_component(ship, owner) {
       return {
-        id: ship.id,
-        position: [],
-        clickable: true,
-        components: [{ type: 'player', id: ship.id, position: [0, 0, 100, 100] }]
+        id: ship.id, position: [], clickable: true,
+        components: [{ type: 'text', value: ship.name, position: [0, 0, 100, 100], color: owner.id == ship.id ? "#cde" : "#fff", align: 'left' }]
       }
     },
-    enemy_component(enemy, ship) {
-      console.log(enemy);
+    enemy_component(enemy) {
       return {
-        id: ship.id,
-        position: [],
-        clickable: true,
-        components: [{ type: 'player', id: ship.id, position: [0, 0, 100, 100] }]
+        id: ship.id, position: [], clickable: true,
+        components: [{ type: 'text', value: enemy.name, position: [0, 0, 100, 100], color: "#cde", align: 'left' }]
       }
+    },
+    add_buttons(components, ship) {
+      components.forEach((component, index => {
+        components.position = component.position = [30, 20 + index * 6, 30, 6];
+        ship.setUIComponent(component);
+      }))
     },
     button_clicked: (ships, ship, custom) => {
       if (!custom.view_map) {
@@ -337,8 +336,20 @@ const PLAYERS_LIST = {
             position: [25, 20.1, 40.1, 60],
             components: [{ type: 'box', position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 }]
           })
+          ship.setUIComponent({
+            id: 'next',
+            position: [25, 45, 5, 10],
+            clickable: true,
+            components: [{ type: 'text', position: [0, 0, 100, 100], value: '<', color: '#cde' }]
+          })
+          ship.setUIComponent({
+            id: 'back',
+            position: [60.1, 45, 5, 10],
+            clickable: true,
+            components: [{ type: 'text', position: [0, 0, 100, 100], value: '>', color: '#cde' }]
+          })
           custom.view_map = false;
-        } else disable_uis(['enemies', 'allies', 'box'], ship);
+        } else disable_uis(['enemies', 'allies', 'box', 'next', 'back'], ship);
       }
     },
   }
@@ -380,6 +391,7 @@ this.tick = function (game) {
 this.event = function (event, game) {
   let ship = event.ship;
   let custom = ship.custom;
+  let ship_ids = game.ships.map(i => i.id)
   switch (event.id) {
     case 'spectator':
       SPECTATOR.methods.button_clicked(ship, custom);
@@ -393,13 +405,25 @@ this.event = function (event, game) {
     case 'players list':
       PLAYERS_LIST.methods.button_clicked(game.ships, ship, custom);
       break;
+    case 'back':
+      if (custom.page < custom.allies.length - 1) custom.page++;
+      else custom.page = 0;
+      disable_uis(ship_ids, ship);
+      break;
+    case 'next':
+      if (custom.page > 0) custom.page--;
+      else custom.page = custom.allies.length - 1;
+      disable_uis(ship_ids, ship);
+      break
     case 'allies':
-      let allies_components = custom.allies[custom.allies_page].map(ally => PLAYERS_LIST.methods.ally_component(ally))
-
+      disable_uis(ship_ids, ship);
+      let allies_components = custom.allies[custom.page].map(ally => PLAYERS_LIST.methods.ally_component(ally, ship));
+      PLAYERS_LIST.methods.add_buttons(allies_components, ship);
       break;
     case 'enemies':
-      let enemies_components = custom.enemies[custom.enemies_page].map(enemy => PLAYERS_LIST.methods.enemy_component(enemy, ship))
-      // console.log(enemies_components);
+      disable_uis(ship_ids, ship);
+      let enemies_components = custom.enemies[custom.page].map(enemy => PLAYERS_LIST.methods.enemy_component(enemy, ship));
+      PLAYERS_LIST.methods.add_buttons(enemies_components, ship);
       break;
   }
   switch (event.name) {
