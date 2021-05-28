@@ -36,7 +36,7 @@ Team mode
           cooldown: 10min
           value: 1/2 cargo
       5 - 7 players
-        Can have mining pods for free:
+        Can have mining pods for free:  
           3 pods/times
           every deaths
         Follow Leader Commands
