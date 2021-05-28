@@ -35,15 +35,7 @@ let board = {
   position: [23, 3, boardWidth * square, boardWidth],
   visible: true,
   clickable: false,
-  components: [
-    {
-      type: "box",
-      position: [0, 0, 100, 100],
-      fill: "#4C4C4C",
-      width: 100 / numberBoxes,
-      stroke: "#25bdb1",
-    },
-  ],
+  components: [{ type: "box", position: [0, 0, 100, 100], fill: "#4C4C4C", width: 100 / numberBoxes, stroke: "#25bdb1", },],
 };
 for (let i = 1; i <= numberBoxes - 1; i++) {
   board.components.push({ type: "box", position: [0, 0 + i * (100 / numberBoxes), 100, 1], fill: "#25bdb1", });
