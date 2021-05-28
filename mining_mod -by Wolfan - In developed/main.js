@@ -86,15 +86,9 @@ this.event = function (event, game) {
     case "donate":
       ship.custom.donated = !ship.custom.donated;
       let weaponses = ['Rockets', 'Missiles', 'Torpedoes', 'Heavy mines', 'Space mines', 'Mining pods', 'Attack pods', 'Defend pods'];
-      let healing_button = {
-        id: 'healing', position: [0, 50, 10, 10], clickable: true, visible: true,
-        components: []
-      };
-      if (ship.custom.donated) {
-        ship.setUIComponent(healing_button);
-      } else {
-        ship.setUIComponent({ id: 'healing', visible: false });
-      }
+      let healing_button = { id: 'healing', position: [0, 50, 10, 10], clickable: true, visible: true, components: [] };
+      if (ship.custom.donated) { ship.setUIComponent(healing_button); }
+      else { ship.setUIComponent({ id: 'healing', visible: false }); }
       break;
   }
 };

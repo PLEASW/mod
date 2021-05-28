@@ -69,12 +69,8 @@ this.tick = function (game) {
       bird.display.position[1] = bird.y;
       for (let pipe of pipes) {
         pipe.x -= 40 * tick;
-        if (
-          bird.x + bird.width == pipe.x ||
-          (bird.x > pipe.x && bird.x < pipe.x + pipe.width)
-        )
-          (bird.y < pipe.y - 17 || bird.y + bird.width > pipe.y + 17) &&
-            ship.gameover({ Score: ship.score });
+        if (bird.x + bird.width == pipe.x || (bird.x > pipe.x && bird.x < pipe.x + pipe.width))
+          (bird.y < pipe.y - 17 || bird.y + bird.width > pipe.y + 17) && ship.gameover({ Score: ship.score });
         ship.set({ score: pipe.display.id });
         if (pipe.x <= -pipe.width) {
           pipes.shift();
