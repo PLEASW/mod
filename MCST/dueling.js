@@ -738,9 +738,8 @@ ships.push(Malevolent_694);
 ships.push(Quasar_695);
 ships.push(Scout_Enforcer_696);
 
-let shipList = ships.map((i) => {
-  let ship = JSON.parse(i);
-  return ship.typespec.code;
+const shipList = ships.map(i => {
+  return JSON.parse(i).typespec.code;
 });
 this.options = {
   ships: ships,
@@ -768,69 +767,24 @@ let scoreboard = {
   id: "scoreboard",
   components: [
     { type: "text", position: [0, 0, 100, 10], value: "SHIP", color: "#fff" },
-    {
-      type: "text",
-      position: [0, 10, 50, 10],
-      value: "C: previous",
-      color: "#fff",
-    },
-    {
-      type: "text",
-      position: [50, 10, 50, 10],
-      value: "B: next",
-      color: "#fff",
-    },
-    {
-      type: "text",
-      position: [0, 20, 50, 10],
-      value: "I: restore",
-      color: "#fff",
-    },
-    {
-      type: "text",
-      position: [50, 20, 50, 10],
-      value: "J: reset",
-      color: "#fff",
-    },
+    { type: "text", position: [0, 10, 50, 10], value: "C: previous", color: "#fff", },
+    { type: "text", position: [50, 10, 50, 10], value: "B: next", color: "#fff", },
+    { type: "text", position: [0, 20, 50, 10], value: "I: restore", color: "#fff", },
+    { type: "text", position: [50, 20, 50, 10], value: "J: reset", color: "#fff", },
   ],
 };
 // restore, reset, next ship, previous ship, options
 this.tick = function (game) {
   if (game.step % 1800 === 0) playerList();
   for (let ship of game.ships) {
-    if (ship.stat < ~~(ship.type / 100) * 11111111)
-      ship.set({ stat: 99999999 });
+    if (ship.stat < ~~(ship.type / 100) * 11111111) ship.set({ stat: 99999999 });
     if (!ship.custom.options) {
       ship.setUIComponent(scoreboard);
       ship.custom.options = 1;
-      ship.setUIComponent({
-        id: "next",
-        position: [0, 0, 0, 0],
-        shortcut: "B",
-        visible: 1,
-        clickable: 1,
-      });
-      ship.setUIComponent({
-        id: "previous",
-        position: [0, 0, 0, 0],
-        shortcut: "C",
-        visible: 1,
-        clickable: 1,
-      });
-      ship.setUIComponent({
-        id: "restore",
-        position: [0, 0, 0, 0],
-        shortcut: "I",
-        visible: 1,
-        clickable: 1,
-      });
-      ship.setUIComponent({
-        id: "reset",
-        position: [0, 0, 0, 0],
-        shortcut: "J",
-        visible: 1,
-        clickable: 1,
-      });
+      ship.setUIComponent({ id: "next", position: [0, 0, 0, 0], shortcut: "B", visible: 1, clickable: 1, });
+      ship.setUIComponent({ id: "previous", position: [0, 0, 0, 0], shortcut: "C", visible: 1, clickable: 1, });
+      ship.setUIComponent({ id: "restore", position: [0, 0, 0, 0], shortcut: "I", visible: 1, clickable: 1, });
+      ship.setUIComponent({ id: "reset", position: [0, 0, 0, 0], shortcut: "J", visible: 1, clickable: 1, });
     }
   }
 };
@@ -839,29 +793,14 @@ this.event = function (event, game) {
     case "ui_component_clicked":
       let id = event.id;
       let ship = event.ship;
-      if (id == "restore")
-        ship.set({
-          shield: 999,
-          crystals: (~~(ship.type / 100)) ** 2 * 20,
-          generator: 999,
-        });
+      if (id == "restore") ship.set({ shield: 999, crystals: (~~(ship.type / 100)) ** 2 * 20, generator: 999, });
       else if (id == "reset") ship.set({ type: 101, stats: 99999999 });
       else if (id == "next") {
-        if (ship.type == shipList[shipList.length - 1])
-          ship.set({ type: 101, stats: 99999999 });
-        else
-          ship.set({
-            type: shipList[shipList.indexOf(ship.type) + 1],
-            stats: 99999999,
-          });
+        if (ship.type == shipList[shipList.length - 1]) ship.set({ type: 101, stats: 99999999 });
+        else ship.set({ type: shipList[shipList.indexOf(ship.type) + 1], stats: 99999999, });
       } else if (id == "previous") {
-        if (ship.type == shipList[0])
-          ship.set({ type: shipList[shipList.length - 1], stats: 99999999 });
-        else
-          ship.set({
-            type: shipList[shipList.indexOf(ship.type) - 1],
-            stats: 99999999,
-          });
+        if (ship.type == shipList[0]) ship.set({ type: shipList[shipList.length - 1], stats: 99999999 });
+        else ship.set({ type: shipList[shipList.indexOf(ship.type) - 1], stats: 99999999, });
       }
       break;
   }

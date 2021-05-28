@@ -34,18 +34,8 @@ let scoreboard = {
 this.tick = function (game) {
   if (game.step % 60 === 0) {
     for (let ship of game.ships) {
-      scoreboard.components[0] = {
-        type: "text",
-        position: [0, 0, 50, 10],
-        value: `x : ${Math.trunc((mapSize * 5 + ship.x) / 10)}`,
-        color: "#fff",
-      };
-      scoreboard.components[1] = {
-        type: "text",
-        position: [50, 0, 50, 10],
-        value: `y : ${Math.trunc((mapSize * 5 - ship.y - 1) / 10)}`,
-        color: "#fff",
-      };
+      scoreboard.components[0] = { type: "text", position: [0, 0, 50, 10], value: `x : ${Math.trunc((mapSize * 5 + ship.x) / 10)}`, color: "#fff", };
+      scoreboard.components[1] = { type: "text", position: [50, 0, 50, 10], value: `y : ${Math.trunc((mapSize * 5 - ship.y - 1) / 10)}`, color: "#fff", };
       ship.setUIComponent(scoreboard);
       !ship.custom.size && (ship.custom.size = 9);
       ship.setUIComponent({
