@@ -61,8 +61,6 @@ this.event = function (event, game) {
       } else
         for (let i = 0; i < event.ship.custom.page.length; i++)
           event.ship.setUIComponent({ id: i, visible: false });
-
-
       event.ship.custom.view_players = !event.ship.custom.view_players;
       break;
   }
@@ -70,6 +68,5 @@ this.event = function (event, game) {
     case 'ship_destroyed':
       event.ship.custom.deaths++;
       event.killer.custom.frags++;
-
   }
 };

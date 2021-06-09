@@ -5,7 +5,7 @@ this.options = {
   max_players: 30,
   crystal_value: 2,
   radar_zoom: 5,
-  asteroids_strength: .5,
+  asteroids_strength: 0.5,
   speed_mod: 1.25,
   release_crystal: true,
   mines_self_destroy: false,
@@ -39,17 +39,19 @@ const upgrades = [
 function radar(number) {
   let result = [];
   const width = 100 / number;
-  for (let i = 0; i < number; i++) {
-    result.push({ type: 'box', position: [i * width, 0, width / 50, 100], fill: '#CDE' });
-    result.push({ type: 'box', position: [0, i * width, 100, width / 50], fill: '#CDE' });
-  }
+  for (let i = 0; i < number; i++) for (let j = 0; j < number; j++)
+    result.push({ type: 'box', position: [i * width, j * width, width, width], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 0.5, pos: [i, j] });
+
   return result;
 }
 const radar_background = {
   id: 'radar_background',
-  components: radar(20)
+  components: radar(8)
 };
 this.tick = function (game) {
+  if (game.step === 0) {
+
+  }
   if (game.step % 60 === 0) {
     for (let ship of game.ships) {
       if (!ship.custom.init) {
@@ -57,7 +59,7 @@ this.tick = function (game) {
       }
     }
   }
-}
+};
 this.event = function (game) {
 
-}
+};
