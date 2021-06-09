@@ -19,8 +19,8 @@ this.options = {
   weapons_store: false
 };
 
-const map_size = this.options.map_size;
-const radar_zoom = this.options.radar_zoom;
+const map_size = game.options.map_size;
+const radar_zoom = game.options.radar_zoom;
 
 const colors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
 const radar_radius = (map_size * 10) / radar_zoom;
@@ -29,15 +29,12 @@ const width = 0.75;
 const radar_width = radar_radius * 10 / map_size;
 const radar_pos = (radar_width - width) / 2;
 
-const friendly_colors = this.options.friendly_colors;
+const friendly_colors = game.options.friendly_colors;
 
 const upgrades = [
   { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [45, 0, 20, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
 ];
-const PlAYGROUND = function () {
-
-}
 const RADAR_BACKGROUND = function (ship) {
   this.view_radar = false;
   this.radar = function (number) {
