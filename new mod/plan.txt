@@ -10,7 +10,7 @@ Team mode
   Players:
     10 players:
       1 leader
-        Give commands
+        Give commands             ❌
           Max: 50 char/command
           cooldown: 2min  
         Always full cargo         👌
