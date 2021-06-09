@@ -1,29 +1,22 @@
-addBots = number => {
-  for (let i = 0; i < number; i++) Bot.create()
-}
-
-let Spectator_102 = '{"name":"Spectator","level":1,"model":2,"size":0.025,"zoom":0.075,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"bodies":{"face":{"section_segments":100,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"y":[-2,-2,2,2],"z":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,1,1,0],"height":[0,1,1,0],"vertical":true,"texture":[6]}},"typespec":{"name":"Spectator","level":1,"model":2,"code":102,"specs":{"shield":{"capacity":[1e-30,1e-30],"reload":[1000,1000]},"generator":{"capacity":[1e-30,1e-30],"reload":[1,1]},"ship":{"mass":1,"speed":[200,200],"rotation":[1000,1000],"acceleration":[1000,1000]}},"shape":[0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001,0.001],"lasers":[],"radius":0.001}}';
-let ships = [Spectator_102];
+addBots = number => { for (let i = 0; i < number; i++) Bot.create() };
 
 this.options = {
-  // auto_assign_teams: true,
-  ships: ships,
-  root_mode: 'team',
+  auto_assign_teams: true,
   max_players: 30,
-  crystal_value: 3,
+  crystal_value: 2,
   radar_zoom: 5,
-  starting_ship: 800,
-  asteroids_strength: 3,
+  asteroids_strength: .5,
   speed_mod: 1.25,
   release_crystal: true,
   mines_self_destroy: false,
   projectile_speed: 1.2,
-  hues: [180, 360],//[180, 120, 360],
+  hues: [180, 360],
   station_size: 1,
   station_crystal_capacity: 0.5,
   friendly_colors: 2,
   map_size: 80,
-  map_density: 2
+  map_density: 2,
+  weapons_store: false
 };
 
 const map_size = this.options.map_size;
@@ -43,3 +36,28 @@ const upgrades = [
   { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [45, 0, 20, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
 ];
+function radar(number) {
+  let result = [];
+  const width = 100 / number;
+  for (let i = 0; i < number; i++) {
+    result.push({ type: 'box', position: [i * width, 0, width / 50, 100], fill: '#CDE' });
+    result.push({ type: 'box', position: [0, i * width, 100, width / 50], fill: '#CDE' });
+  }
+  return result;
+}
+const radar_background = {
+  id: 'radar_background',
+  components: radar(20)
+};
+this.tick = function (game) {
+  if (game.step % 60 === 0) {
+    for (let ship of game.ships) {
+      if (!ship.custom.init) {
+        ship.setUIComponent(radar_background);
+      }
+    }
+  }
+}
+this.event = function (game) {
+
+}
