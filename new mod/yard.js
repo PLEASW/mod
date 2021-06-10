@@ -1,3 +1,10 @@
+this.options = {
+  // see documentation for options reference
+  root_mode: "survival",
+  map_size: 30
+};
+const width = 0.75;
+const map_size = 30;
 function createYard(maxpoints, minheight, minwidth, fillAll) {
   var data = { uis: [], game: [] };
   var rand = function (num) { return Math.floor(Math.random() * num); };
@@ -29,4 +36,16 @@ function createYard(maxpoints, minheight, minwidth, fillAll) {
   for (let ui of data.uis) data.game.push(posConvt2(...ui).concat([ui[2], ui[3]].map(i => i / 10 * map_size)))
 
   return data;
+}
+yard = new createYard(60, 7, 6, 0);
+this.tick = function (game) {
+  // do mod stuff here ; see documentation
+  if (game.step % 60 === 0) {
+    game.setUIComponent({
+      id: 'radar_background',
+      components: yard.uis.map(i => {
+        return { type: 'box', position: i, fill: 'rgba(255, 255, 255, 0.2)', width: 0.5, stroke: 'rgba(0 0 0 0)' };
+      })
+    });
+  }
 }
