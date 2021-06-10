@@ -67,10 +67,10 @@ const RADAR_UI = function (ship) {
   };
   ship.setUIComponent(this.button);
   this.posConvt = function (x, y) {
-    return [map_size * 5 + x, map_size * 5 - y - 1];
+    return [x, -y].map((i, b) => (i + map_size * 5 - b) / map_size * 10 - width * 0.5);
   };
   this.ship_component = function (ship = { x: 0, y: 0 }, team = 0) {
-    let [x, y] = this.posConvt(ship.x, ship.y).map(i => (i - width * 0.5) / map_size * 10);
+    let [x, y] = this.posConvt(ship.x, ship.y);
     return { type: 'box', position: [x, y, width, width], fill: colors[ship.team] };
   };
   this.radar_ui = function (ship) {
