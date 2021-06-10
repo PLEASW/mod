@@ -9,8 +9,8 @@ return model =
       vertical: true
       position:
         x: [0,0,0,0,0,0,0]
-        y: [0,0,10,10]
+        y: [0,0,10,10,0]
         z: [0,0,0,0,0,0,0]
-      width: [0,10,10,0]
-      height: [0,10,10,0]
-      texture: [1]
+      width: [900,1000,1000,900,900]
+      height: [900,1000,1000,900,900]
+      texture: 63
