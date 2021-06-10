@@ -23,7 +23,8 @@ function createYard(maxpoints, minheight, minwidth, fillAll) {
   }
   if (starty < 100) addBox([0, starty, 100, 100 - starty]);
   const posConvt2 = function (x, y) {
-    return [x - map_size * 50, map_size * 50 - y - 1];
+    [x, y] = [x, y].map(i => i + width * 0.5);
+    return [x - 50, 50 - y].map((i, b) => i * map_size / 10 - b + width * 0.5);
   };
   for (let ui of data.uis) data.game.push(posConvt2(...ui).concat([ui[2], ui[3]].map(i => i / 10 * map_size)))
 
