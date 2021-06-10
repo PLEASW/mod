@@ -3,6 +3,9 @@ this.options = {
   root_mode: "survival",
   map_size: 30
 };
+removeObject = function (array) {
+  for (let id of array) game.removeObject(id);
+};
 const map_size = 30;
 function createYard(maxpoints, minheight, minwidth, fillAll) {
   var data = { uis: [], game: [] };
@@ -36,23 +39,22 @@ function createYard(maxpoints, minheight, minwidth, fillAll) {
 
   return data;
 }
-const yard = new createYard(60, 7, 6, 0);
-const cube = {
+const yard = new createYard(10, 15, 10, 1);
+var cube = {
   id: "cube",
   obj: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/3d%20objects/starblast-1623317372448.obj",
   diffuse: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_diffuse.png",
-  emissive: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_emissive3.png"
+  diffuseColor: 0x00FFFF,
 };
 yard.game.forEach((a, b) => {
   game.setObject({
     id: b,
     type: cube,
-    position: { x: a[0], y: a[1], z: -10 },
+    position: { x: a[0], y: a[1], z: -15 },
     rotation: { x: 0, y: 0, z: 0 },
-    scale: { x: a[2] / 100 * 2.65, y: a[3] / 100 * 2.65, z: 0 }
+    scale: { x: a[2] / 100 * 21, y: a[3] / 100 * 21, z: 1 },
   });
 });
-//2.65
 this.tick = function (game) {
   // do mod stuff here ; see documentation
   if (game.step % 60 === 0) {
@@ -63,4 +65,4 @@ this.tick = function (game) {
       })
     });
   }
-}
+};
