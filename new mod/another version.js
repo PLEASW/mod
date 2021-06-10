@@ -47,7 +47,7 @@ const RADAR_BACKGROUND = function () {
     id: 'radar_background',
     components: this.radar(10)
   };
-}
+};
 const RADAR_UI = function (ship) {
   this.view_radar = false;
 
@@ -74,7 +74,7 @@ const RADAR_UI = function (ship) {
     return { type: 'box', position: [x, y, width, width], fill: colors[ship.team] };
   };
   this.radar_ui = function (ship) {
-    let result = [this.posConvt(ship.x, ship.y)];
+    let result = [this.posConvt(ship.x, ship.y).map(i => i - radar_width / 2)];
     let [x, y] = result[0];
     let x2 = radar_width + x > 100 ? x - 100 : x;
     let y2 = radar_width + y > 100 ? y - 100 : y;
@@ -103,7 +103,7 @@ const RADAR_UI = function (ship) {
     let enemies = ships.filter(value => value.team !== ship.team);
     for (let enemy of enemies) for (let radar of radars) {
       let component = this.ship_component(enemy, ship.team);
-      if (this.checkPos(radar.concat(radar_radius / 2), this.posConvt(enemy.x, enemy.y))) {
+      if (this.checkPos(radar.map(i => i - width / 2).concat(radar_width), this.posConvt(enemy.x, enemy.y).map(i => i - width / 2))) {
         result.push(component);
         break;
       }
