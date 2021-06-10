@@ -19,8 +19,8 @@ this.options = {
   weapons_store: false
 };
 
-const map_size = game.options.map_size;
-const radar_zoom = game.options.radar_zoom;
+const map_size = this.options.map_size;
+const radar_zoom = this.options.radar_zoom;
 
 const colors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
 const radar_radius = (map_size * 10) / radar_zoom;
@@ -29,14 +29,13 @@ const width = 0.75;
 const radar_width = radar_radius * 10 / map_size;
 const radar_pos = (radar_width - width) / 2;
 
-const friendly_colors = game.options.friendly_colors;
+const friendly_colors = this.options.friendly_colors;
 
 const upgrades = [
   { id: "9", position: [25, 0, 20, 10], visible: true, clickable: true, shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [45, 0, 20, 10], visible: true, clickable: true, shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }
 ];
-const RADAR_BACKGROUND = function (ship) {
-  this.view_radar = false;
+const RADAR_BACKGROUND = function () {
   this.radar = function (number) {
     let result = [];
     const width = 100 / number;
@@ -48,7 +47,10 @@ const RADAR_BACKGROUND = function (ship) {
     id: 'radar_background',
     components: this.radar(10)
   };
-  ship.setUIComponent(this.realRadar);
+}
+const RADAR_UI = function (ship) {
+  this.view_radar = false;
+
   this.uiRadar = {
     id: 'radar',
     position: [25, 5, 85 * 0.5625, 85],
@@ -98,21 +100,31 @@ const RADAR_BACKGROUND = function (ship) {
   this.drawRadar = function (ships = [], ship = {}) {
     let result = ships.filter(a => a.team === ship.team).map(b => this.ship_component(b, ship.team));
     let radars = ships.filter(value => value.team === ship.team).map(a => this.radar_ui(a)).flat();
-    for (let radar of radars) for (let enemy of ships.filter(value => value.team !== ship.team))
-      if (this.checkPos(radar.concat(radar_radius / 2), this.posConvt(enemy.x, enemy.y))) result.push(this.ship_component(enemy, ship.team));
-    return result.concat({ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.5)' });
+    let enemies = ships.filter(value => value.team !== ship.team);
+    for (let enemy of enemies) for (let radar of radars) {
+      let component = this.ship_component(enemy, ship.team);
+      if (this.checkPos(radar.concat(radar_radius / 2), this.posConvt(enemy.x, enemy.y))) {
+        result.push(component);
+        break;
+      }
+    }
+    return result.concat({ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.4)', stroke: "#cde", width: 0.5 });
   };
 };
-
+game.custom = new RADAR_BACKGROUND();
+game.setUIComponent(game.custom.realRadar);
 this.tick = function (game) {
+  if (game.step === 0)
+    game.setUIComponent(game.custom.realRadar);
+
   if (game.step % 60 === 0) {
     for (let ship of game.ships) {
       if (!ship.custom.init) {
-        ship.custom = new RADAR_BACKGROUND(ship);
+        ship.custom = new RADAR_UI(ship);
         ship.custom.init = true;
       }
       if (ship.custom.view_radar) {
-        ship.custom.uiRadar.components = ship.custom.drawRadar(game.ships, ship).concat(ship.custom.radar(10));
+        ship.custom.uiRadar.components = ship.custom.drawRadar(game.ships, ship).concat(game.custom.radar(10));
         ship.setUIComponent(ship.custom.uiRadar);
       } else ship.setUIComponent({ id: 'radar', visible: false });
     }
