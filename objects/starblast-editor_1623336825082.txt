@@ -1,0 +1,16 @@
+return model =
+  bodies:
+    main:
+      section_segments: [45,135,225,315]
+      offset:
+        x: 0
+        y: 0
+        z: 0
+      vertical: true
+      position:
+        x: [0,0,0,0,0,0,0]
+        y: [0,0,10,10]
+        z: [0,0,0,0,0,0,0]
+      width: [0,10,10,0]
+      height: [0,10,10,0]
+      texture: [1]

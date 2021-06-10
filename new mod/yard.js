@@ -33,11 +33,25 @@ function createYard(maxpoints, minheight, minwidth, fillAll) {
     [x, y] = [x, y].map(i => i + width * 0.5);
     return [x - 50, 50 - y].map((i, b) => i * map_size / 10 - b + width * 0.5);
   };
-  for (let ui of data.uis) data.game.push(posConvt2(...ui).concat([ui[2], ui[3]].map(i => i / 10 * map_size)))
+  for (let ui of data.uis) data.game.push(posConvt2(...ui).concat([ui[2], ui[3]]))//.map(i => i / 10 * map_size)))
 
   return data;
 }
-yard = new createYard(60, 7, 6, 0);
+const yard = new createYard(60, 7, 6, 0);
+const cube = {
+  id: "cube",
+  obj: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/3d%20objects/starblast-1623317372448.obj",
+  diffuse: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_diffuse.png"
+};
+yard.game.forEach((a, b) => {
+  game.setObject({
+    id: b,
+    type: cube,
+    position: { x: a[0], y: a[1], z: -10 },
+    rotation: { x: 0, y: 0, z: 0 },
+    scale: { x: 2.65 * a[2] / 100, y: 2.65 * a[3] / 100, z: 1 }
+  });
+})
 this.tick = function (game) {
   // do mod stuff here ; see documentation
   if (game.step % 60 === 0) {

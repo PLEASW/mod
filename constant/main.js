@@ -10,5 +10,5 @@ const posConvt = function (x, y) {
 };
 const posConvt2 = function (x, y) {
   [x, y] = [x, y].map(i => i + width * 0.5);
-  return [x - 50, 50 - y].map((i, b) => i * map_size / 10 - b + width * 0.5);
+  return [x - 50, 50 - y].map((i, b) => i * map_size / 10 - b);
 };
