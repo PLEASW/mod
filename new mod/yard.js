@@ -3,7 +3,6 @@ this.options = {
   root_mode: "survival",
   map_size: 30
 };
-const width = 0.75;
 const map_size = 30;
 function createYard(maxpoints, minheight, minwidth, fillAll) {
   var data = { uis: [], game: [] };
@@ -29,11 +28,11 @@ function createYard(maxpoints, minheight, minwidth, fillAll) {
     randoms.splice(0, 1);
   }
   if (starty < 100) addBox([0, starty, 100, 100 - starty]);
-  const posConvt2 = function (x, y) {
-    [x, y] = [x, y].map(i => i + width * 0.5);
-    return [x - 50, 50 - y].map((i, b) => i * map_size / 10 - b + width * 0.5);
+  const posConvt2 = function (x, y, width, height) {
+    [x, y] = [x + width * 0.5, y + height * 0.5];
+    return [x - 50, 50 - y].map((i, b) => i * map_size / 10 - b).concat([width, height].map(i => i - 0.25));
   };
-  for (let ui of data.uis) data.game.push(posConvt2(...ui).concat([ui[2], ui[3]]))//.map(i => i / 10 * map_size)))
+  for (let ui of data.uis) data.game.push(posConvt2(...ui));
 
   return data;
 }
@@ -41,7 +40,8 @@ const yard = new createYard(60, 7, 6, 0);
 const cube = {
   id: "cube",
   obj: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/3d%20objects/starblast-1623317372448.obj",
-  diffuse: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_diffuse.png"
+  diffuse: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_diffuse.png",
+  emissive: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_emissive3.png"
 };
 yard.game.forEach((a, b) => {
   game.setObject({
@@ -49,9 +49,10 @@ yard.game.forEach((a, b) => {
     type: cube,
     position: { x: a[0], y: a[1], z: -10 },
     rotation: { x: 0, y: 0, z: 0 },
-    scale: { x: 2.65 * a[2] / 100, y: 2.65 * a[3] / 100, z: 1 }
+    scale: { x: a[2] / 100 * 2.65, y: a[3] / 100 * 2.65, z: 0 }
   });
-})
+});
+//2.65
 this.tick = function (game) {
   // do mod stuff here ; see documentation
   if (game.step % 60 === 0) {
