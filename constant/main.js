@@ -6,3 +6,6 @@ const upgrades = [
 ];
 const radar_radius = (map_size * 10) / radar_zoom;
 game.modding.commands.command_name = function () { }
+const posConvt = function (x, y) {
+  return [map_size * 5 + x, map_size * 5 - y - 1];
+};
