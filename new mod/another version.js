@@ -67,7 +67,7 @@ function createYard(maxpoints, minheight, minwidth, fillAll) {
 
   return data;
 }
-let yard = new createYard(50, 10, 8, 0);
+let yard = new createYard(80, 12, 8, 0);
 const RADAR_BACKGROUND = function () {
   this.radar = function (number) {
     let result = [];
@@ -78,9 +78,9 @@ const RADAR_BACKGROUND = function () {
   };
   this.realRadar = {
     id: 'radar_background',
-    components: this.radar(10).concat(yard.uis.map(i => {
-      return { type: 'box', position: i, fill: 'rgba(255, 255, 255, 0.2)', width: 0.5, stroke: 'rgba(0 0 0 0)' };
-    }))
+    components: yard.uis.map(i => {
+      return { type: 'box', position: i, fill: 'rgba(255, 255, 255, 0.1)', width: 0.5, stroke: 'rgba(0 0 0 0)' };
+    })
   };
 };
 const RADAR_UI = function (ship) {
@@ -143,24 +143,39 @@ const RADAR_UI = function (ship) {
         break;
       }
     }
-    return result.concat({ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.4)', stroke: "#cde", width: 0.5 });
+    return result.concat({ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.2)', stroke: "#cde", width: 1 });
   };
 };
 game.custom = new RADAR_BACKGROUND();
+var cube = {
+  id: "cube",
+  obj: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/3d%20objects/starblast-1623317372448.obj",
+  diffuse: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_diffuse.png",
+  diffuseColor: 0x00FFFF,
+};
+yard.game.forEach((a, b) => {
+  game.setObject({
+    id: b,
+    type: cube,
+    position: { x: a[0], y: a[1], z: -15 },
+    rotation: { x: 0, y: 0, z: 0 },
+    scale: { x: a[2] / 100 * 57, y: a[3] / 100 * 57, z: 1 },
+  });
+});
 game.setUIComponent(game.custom.realRadar);
 this.tick = function (game) {
-  if (game.step === 0)
-    game.setUIComponent(game.custom.realRadar);
+
 
   if (game.step % 60 === 0) {
+    game.setUIComponent(game.custom.realRadar);
     for (let ship of game.ships) {
       if (!ship.custom.init) {
         ship.custom = new RADAR_UI(ship);
         ship.custom.init = true;
       }
       if (ship.custom.view_radar) {
-        ship.custom.uiRadar.components = ship.custom.drawRadar(game.ships, ship).concat(game.custom.radar(10), yard.uis.map(i => {
-          return { type: 'box', position: i, fill: 'rgba(255, 255, 255, 0.2)', width: 0.5, stroke: 'rgba(0 0 0 0)' };
+        ship.custom.uiRadar.components = ship.custom.drawRadar(game.ships, ship).concat(yard.uis.map(i => {
+          return { type: 'box', position: i, fill: 'rgba(255, 255, 255, 0.1)', width: 0.5, stroke: 'rgba(255, 255, 255, 1)' };
         }));
         ship.setUIComponent(ship.custom.uiRadar);
       } else ship.setUIComponent({ id: 'radar', visible: false });
