@@ -175,7 +175,7 @@ this.tick = function (game) {
       }
       if (ship.custom.view_radar) {
         ship.custom.uiRadar.components = ship.custom.drawRadar(game.ships, ship).concat(yard.uis.map(i => {
-          return { type: 'box', position: i, fill: 'rgba(255, 255, 255, 0.1)', width: 0.5, stroke: 'rgba(255, 255, 255, 1)' };
+          return { type: 'box', position: i, fill: 'rgba(255, 255, 255, 0.2)', width: 1, stroke: 'rgba(255, 255, 255, 1)' };
         }));
         ship.setUIComponent(ship.custom.uiRadar);
       } else ship.setUIComponent({ id: 'radar', visible: false });
