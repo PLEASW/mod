@@ -1,16 +1,7 @@
-let options = {
-  map_size: 100,
-  radar_zoom: 5,
-  friendly_colors: 2
-};
-const mapSize = options.map_size;
-const radarZoom = options.radar_zoom;
-const teamColors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
-
 function RADAR(width, team) {
   this.width = width;
   this.team = team;
-  this.components = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255, 255, 255, 0.1)' }];
+  this.components = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.2)', stroke: "#cde", width: 1 }];
   this.radar = { id: 'radar', position: [25, 5, 85 * 0.5625, 85], components: this.components };
 
   radarRadius = (mapSize * 10) / radarZoom, radarWidth = radarRadius * 10 / mapSize;
@@ -59,41 +50,3 @@ function RADAR(width, team) {
     return [allies, enemies].flat();
   };
 }
-let radar1 = new RADAR(0.75, 0);
-let radar2 = new RADAR(0.75, 1);
-function tick(game) {
-  if (game.step % 30 === 0) {
-    radar1.radar.components.concat(radar1.updateShipPosition(game.ships));
-    radar2.radar.components.concat(radar2.updateShipPosition(game.ships));
-    game.ships.forEach((ship, index) => {
-      if (game.step % 60 === 0) {
-        if (!ship.custom.init) {
-          ship.custom.init = true;
-          ship.custom.view_radar = false;
-          ship.setUIComponent({
-            id: 'radar ui', position: [59.6, 0, 6.6, 4], clickable: true,
-            components: [
-              { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#cde", width: 5 },
-              { type: "text", position: [0, 5, 100, 90], value: "Map", color: "#cde" },
-            ]
-          });
-        }
-      }
-      if (ship.custom.view_radar) {
-        console.log(ship.custom.view_radar);
-        for (let radar of [radar2, radar1]) if (radar.team === ship.team)
-          ship.setUIComponent(radar.radar);
-        console.log(radar2, radar1);
-      } else ship.setUIComponent({ id: 'radar', visible: false });
-    });
-  }
-}
-function event(event, game) {
-  let ship = event.ship, id = event.id, name = event.name;
-  switch (id) {
-    case 'radar ui':
-      ship.custom.view_radar = !ship.custom.view_radar;
-  }
-}
-
-Object.assign(this, { options, tick, event })
