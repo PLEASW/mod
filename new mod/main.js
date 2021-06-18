@@ -4,7 +4,7 @@ let options = {
   friendly_colors: 2
 };
 const teamColors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
-const radarComponents = (ships, teamColors, width) => ships.map(ship => {
+const lightRadar = (ships, teamColors, width) => ships.map(ship => {
   return {
     type: 'box',
     position: [ship.x, -ship.y].map((i, b) =>
@@ -22,7 +22,7 @@ function tick(game) {
     game.ships.forEach((ship, index) => {
       radar.components = [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.2)', stroke: "#cde", width: 1 }
-      ].concat(radarComponents(game.ships, teamColors, 0.75));
+      ].concat(lightRadar(game.ships, teamColors, 0.75));
       ship.setUIComponent(radar);
     });
   }

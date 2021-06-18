@@ -79,22 +79,6 @@ function CreateYard2rd(fillAll = false, maxWidth = 25, maxHeight = 25, minHeight
 // do whatever you want with the box's position here
 // `data` is an object storing all boxes' positions
 
-let data = CreateYard2rd();
-var cube = {
-  id: "cube",
-  obj: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/3d%20objects/starblast-1623317372448.obj",
-  diffuse: "https://raw.githubusercontent.com/DoDucMinh1608/mod/master/objects/ship_diffuse.png",
-  diffuseColor: 0x00FFFF,
-};
-data.game.forEach((a, b) => {
-  game.setObject({
-    id: b,
-    type: cube,
-    position: { x: a[0], y: a[1], z: -15 },
-    rotation: { x: 0, y: 0, z: 0 },
-    scale: { x: a[2] / 100 * 57, y: a[3] / 100 * 57, z: 1 },
-  });
-});
 this.tick = function (game) {
   if (game.step % 60 === 0) {
     for (let t of ["map", "radar_background"]) game.setUIComponent({

@@ -1,52 +1,54 @@
-function RADAR(width, team) {
-  this.width = width;
-  this.team = team;
-  this.components = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(100, 100, 100, 0.2)', stroke: "#cde", width: 1 }];
-  this.radar = { id: 'radar', position: [25, 5, 85 * 0.5625, 85], components: this.components };
+// show all ships
+const teamColors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
+const lightRadar = (ships, teamColors, width) => ships.map(ship => {
+  return {
+    type: 'box',
+    position: [ship.x, -ship.y].map((i, b) =>
+      (i + options.map_size * 5 - b) / options.map_size * 10 - width * 0.5).concat([width, width]),
+    fill: teamColors[ship.team]
+  };
+});
 
-  radarRadius = (mapSize * 10) / radarZoom, radarWidth = radarRadius * 10 / mapSize;
-  this.posConvt = function (x, y) {
-    return [x, -y].map((i, b) => (i + mapSize * 5 - b) / mapSize * 10 - this.width * 0.5);
-  };
-  this.ComponentForShip = function (ship) {
-    let [x, y] = posConvt(ship.x, ship.y);
-    return { type: 'box', position: [x, y, this.width, this.width], fill: teamColors[this.team] };
-  };
-  this.checkPos = function ([x, y, width], [X, Y]) {
-    return x < X && X < x + width && y < Y && Y < y + width;
-  };
-  this.radarPosition = function (shipComponent) {
+// radar vision
+const teamColors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
+const radarRadius = (options.map_size * 10) / options.radar_zoom;
+const radarWidth = radarRadius * 10 / options.map_size;
+const MedRadar = function (ships, teamColors, width, team) {
+  function ComponentForShip(ship, width) {
+    return {
+      type: 'box', fill: teamColors[ship.team],
+      position: [ship.x, -ship.y].map((i, b) =>
+        (i + options.map_size * 5 - b) / options.map_size * 10 - width * 0.5).concat([width, width])
+    };
+  }
+  let result = ships.filter(ship => ship.team === team).map(ship => ComponentForShip(ship, width));
+  let radars = result.map(ship => {
     let result = [];
-    let [x, y] = shipComponent.position.slice(0, 2).map(i => i + this.width / 2 - this.radarWidth / 2);
+    let [x, y] = ship.position.slice(0, 2).map(i => i + width / 2 - radarWidth / 2);
     result.push([x, y, radarWidth]);
     let [xTest, yTest] = [
       [radarWidth + x > 100 ? x - 100 : x, x < 0 ? 100 + x : x],
       [radarWidth + y > 100 ? y - 100 : y, y < 0 ? 100 + y : y]
     ];
     for (let X of xTest) {
-      if (X !== x) result.push([X, y]);
+      if (X !== x) result.push([X, y, radarWidth]);
       for (let Y of yTest) {
         if (Y !== y) {
-          result.push([x, Y]);
-          if (X !== x) result.push([X, Y]);
+          result.push([x, Y, radarWidth]);
+          if (X !== x) result.push([X, Y, radarWidth]);
         }
       }
     }
-    return result.map(i => i.concat(radarWidth));
-  };
-  this.customComponent = function (position, color) {
-    return { type: 'box', position: position, fill: color };
-  };
-  this.updateShipPosition = function (ships) {
-    this.radar.components = this.components;
-    let allies = ships.filter(value => value.team === this.team).map(ship => this.ComponentForShip(ship));
-    let radars = allies.map(value => radarPosition(value));
-    let enemies = ships.filter(value => value.team !== this.team).map(ship => this.ComponentForShip(ship));
-    for (let enemy of enemies) for (let radar of radars)
-      if (!this.checkPos(radar, enemy.position.slice(0, 2))) {
-        enemies.filter(item => item !== enemy);
-        break;
-      }
-    return [allies, enemies].flat();
-  };
-}
+    return result;
+  }).flat();
+  let enemies = ships.filter(ship => ship.team !== team).map(ship => ComponentForShip(ship, width));
+  for (let enemy of enemies) for (let radar of radars) {
+    let [x, y, w] = radar, [X, Y] = enemy.position.slice(0, 2);
+    if (x < X && X < x + w && y < Y && Y < y + w) {
+      result.push(enemy);
+      break;
+    }
+  }
+  return result;
+};
+
