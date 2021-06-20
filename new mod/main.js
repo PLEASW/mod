@@ -126,10 +126,25 @@ const radar = {
   position: [25, 5, 85 * 0.5625, 85],
   components: []
 }
-game.custom.yards = createYard().map(i => {
-  let component = decorateBox(i);
-  Object.assign(component, { capture: null });
+const cube = {
+  id: 'cube',
+  obj: '',
+  diffuse: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/be3efd8867d733902d1ef607c30d0a1a0739999d/objects/ship_diffuse.png'
+}
+game.custom.Yards = createYard().map((i, index) => {
+  return component = {
+    ui: decorateBox(i),
+    object: {
+      id: index, type: cube,
+      position: {},
+      rotation: {},
+      scale: {}
+    },
+    capture: null,
+    aliensSpawn: [],
+  };
 })
+
 game.custom.data = [];
 game.custom.team1Capture = [];
 game.custom.team2Capture = [];
