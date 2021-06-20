@@ -173,7 +173,7 @@ game.custom.team2Capture = [];
 const tick = function (game) {
   if (game.step % 30 === 0) {
     // Update the radar for 2 team.
-    var radar1 = Object.assign(radar, { components: MedRadar(game.ships, 0.75, 0).concat(game.custom.Yards) });
+    var radar1 = Object.assign(radar, { components: MedRadar(game.ships, 0.75, 0) });
     var radar2 = Object.assign(radar, { components: MedRadar(game.ships, 0.75, 1) });
   }
 }
