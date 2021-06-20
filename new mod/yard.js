@@ -60,7 +60,7 @@ function createYard(fillAll = true, maxWidth = 25, maxHeight = 25) {
   return data;
 }
 
-
+let data = createYard();
 this.tick = function (game) {
   if (game.step % 60 === 0) {
     for (let t of ["map", "radar_background"]) game.setUIComponent({
