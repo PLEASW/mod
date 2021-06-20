@@ -1,16 +1,34 @@
+Array::add = (mod) -> @map (val) -> val + mod
+Array::mult = (mod) -> @map (val) -> val * mod
+Array::div = (mod) -> @map (val) -> val / mod
+Array::step = (step) -> i for i in @ by step
+Array::fill = (val, len) -> val for i in (
+  if len
+  then [0...len]
+  else if @length == 1
+  then [0...@[0]]
+  else @
+)
+for key of Array::
+  Object.defineProperty Array::, key,
+    enumerable: false
+    
+ring = (l,w,h,j) ->
+  return k =
+    section_segments: [45,135,225,315]
+    offset:
+      x: 0
+      y: 0
+      z: 0
+    position:
+      x: [0,0,0,0,0,0,0,0,0,0]
+      y: [3,3,0,0,0,0,0,3,3,3].div(10).mult(l)
+      z: [0,0,0,0,0,0,0,0,0,0]
+    width: [10-j,10-j,10-j,12,12,12,12,12,10-j,10-j].div(10).mult(w)
+    height: [10-j,10-j,10-j,12,12,12,12,12,10-j,10-j].div(10).mult(h)
+    texture: 63   
+    vertical: true
+
 return model =
   bodies:
-    main:
-      section_segments: [45,135,225,315]
-      offset:
-        x: 0
-        y: 0
-        z: 0
-      vertical: true
-      position:
-        x: [0,0,0,0,0,0,0]
-        y: [0,0,10,10,0]
-        z: [0,0,0,0,0,0,0]
-      width: [900,1000,1000,900,900]
-      height: [900,1000,1000,900,900]
-      texture: 63
+    main: ring(10,10,10,0)

@@ -15,6 +15,11 @@ const options = {
   weapons_store: false,
   radar_zoom: 5,
 }
+// Game function
+const posConvt2 = function (x, y) {
+  [x, y] = [x, y].map(i => i + width * 0.5);
+  return [x - 50, 50 - y].map((i, b) => i * mapSize / 10 - b);
+};
 // Radar
 {
   const teamColors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
@@ -128,20 +133,36 @@ const radar = {
 }
 const cube = {
   id: 'cube',
-  obj: '',
-  diffuse: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/be3efd8867d733902d1ef607c30d0a1a0739999d/objects/ship_diffuse.png'
+  obj: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/d4e661e938d16f801b92642bb963a4f0fc433574/objects/3d%20objects/starblast-1623317372448.obj',
+  diffuse: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/be3efd8867d733902d1ef607c30d0a1a0739999d/objects/ship_diffuse.png',
+  specularColor: 0x000000
+}
+const cubeTeam1 = {
+  id: 'cube',
+  obj: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/d4e661e938d16f801b92642bb963a4f0fc433574/objects/3d%20objects/starblast-1623317372448.obj',
+  diffuse: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/be3efd8867d733902d1ef607c30d0a1a0739999d/objects/ship_diffuse.png',
+  specularColor: 0x00FFFF
+}
+const cubeTeam2 = {
+  id: 'cube',
+  obj: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/d4e661e938d16f801b92642bb963a4f0fc433574/objects/3d%20objects/starblast-1623317372448.obj',
+  diffuse: 'https://raw.githubusercontent.com/DoDucMinh1608/mod/be3efd8867d733902d1ef607c30d0a1a0739999d/objects/ship_diffuse.png',
+  specularColor: 0xFF0000
 }
 game.custom.Yards = createYard().map((i, index) => {
+  let [x, y] = posConvt2(...i.slice(0, 2)),
+    [width, height] = [5893 * index[2] / 100, 5893 * index[3] / 100];
   return component = {
+    position: i,
     ui: decorateBox(i),
     object: {
       id: index, type: cube,
-      position: {},
-      rotation: {},
-      scale: {}
+      position: { x: x, y: y, z: 0 },
+      rotation: { x: 0, y: 0, z: 0 },
+      scale: { x: width, y: height, z: 1 }
     },
-    capture: null,
-    aliensSpawn: [],
+    team: null,
+    aliensSpawn: { x: x + width / 2, y: y + width / 2 },
   };
 })
 
@@ -152,8 +173,8 @@ game.custom.team2Capture = [];
 const tick = function (game) {
   if (game.step % 30 === 0) {
     // Update the radar for 2 team.
-    var radar1 = MedRadar(game.ships, 0.75, 0);
-    var radar2 = MedRadar(game.ships, 0.75, 1);
+    var radar1 = Object.assign(radar, { components: MedRadar(game.ships, 0.75, 0).concat(game.custom.Yards) });
+    var radar2 = Object.assign(radar, { components: MedRadar(game.ships, 0.75, 1) });
   }
 }
 
