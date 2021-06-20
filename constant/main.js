@@ -12,3 +12,4 @@ const posConvt2 = function (x, y) {
   [x, y] = [x, y].map(i => i + width * 0.5);
   return [x - 50, 50 - y].map((i, b) => i * mapSize / 10 - b);
 };
+; (function (params) { })(); // custom command for game object
