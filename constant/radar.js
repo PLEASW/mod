@@ -51,4 +51,3 @@ const MedRadar = function (ships, teamColors, width, team) {
   }
   return result;
 };
-
