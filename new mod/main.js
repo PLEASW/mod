@@ -15,13 +15,12 @@ const options = {
   weapons_store: false,
   radar_zoom: 5,
 }
-// Game function
+// ________________________________________________________________________________________
 const posConvt2 = function (x, y) {
   [x, y] = [x, y].map(i => i + width * 0.5);
   return [x - 50, 50 - y].map((i, b) => i * mapSize / 10 - b);
 };
-// Radar
-
+// ________________________________________________________________________________________
 const teamColors = ['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'];
 const radarRadius = (options.map_size * 10) / options.radar_zoom;
 const radarWidth = radarRadius * 10 / options.map_size;
@@ -63,9 +62,7 @@ const MedRadar = function (ships, width, team, tColors = teamColors) {
   }
   return result;
 };
-
-// Yard
-
+// ________________________________________________________________________________________
 var decorateShownBox = function (position) {
   return { type: "box", position: position, stroke: "#cde", width: 1, fill: "rgba(255, 255, 255, 0.4)" };
 };
@@ -124,8 +121,7 @@ function createYard(fillAll = false, maxWidth = 25, maxHeight = 25) {
   }
   return data;
 }
-
-// game setup
+// ________________________________________________________________________________________
 const radar = {
   id: 'radar',
   position: [25, 5, 85 * 0.5625, 85],
