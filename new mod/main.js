@@ -119,7 +119,6 @@ const options = {
     }
     return data;
   }
-
 }
 // game setup
 const radar = {
