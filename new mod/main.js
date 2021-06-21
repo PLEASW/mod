@@ -21,7 +21,6 @@ const options = {
 const tick = function (game) {
   if (game.step % 30 === 0) {
     if (!!game.ships.length) game.ships[0].setUIComponent(game.MedRadar(['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)', rgba(0, 255, 0, 1)], game.ships[0].team));
-    console.log();
   }
 };
 //-----------------------------------------------------------------------------------------
