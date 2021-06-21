@@ -20,7 +20,7 @@ const options = {
 //-----------------------------------------------------------------------------------------
 const tick = function (game) {
   if (game.step % 30 === 0) {
-    if (!!game.ships.length) game.ships[0].setUIComponent(game.MedRadar(['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)'], game.ships[0].team));
+    if (!!game.ships.length) game.ships[0].setUIComponent(game.MedRadar(['rgba(255, 0, 0, 1)', 'rgba(0, 255, 255, 1)', rgba(0, 255, 0, 1)], game.ships[0].team));
     console.log();
   }
 };
@@ -30,7 +30,7 @@ const event = function (event, game) { }
 Object.assign(this, { options, tick, event });
 //-----------------------------------------------------------------------------------------
 ; (function () {
-  game.MedRadar = function (teamColors, team) {
+  game.radar = function (teamColors, team) {
     if (typeof teamColors !== "object") return [];
     const radarRadius = (game.options.map_size * 10) / game.options.radar_zoom;
     const radarWidth = radarRadius * 10 / game.options.map_size;
@@ -41,8 +41,10 @@ Object.assign(this, { options, tick, event });
           (i + game.options.map_size * 5 - b) / game.options.map_size * 10 - 0.75 * 0.5).concat([0.75, 0.75])
       };
     }
-    let result = [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255, 255, 255, 0.2)' }].concat(game.ships.filter(ship => ship.team === team).map(ship => ComponentForShip(ship)));
-    let radars = result.map(ship => {
+    let result = [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255, 255, 255, 0.2)', stroke: "#cde", width: 2 }
+    ].concat(game.ships.filter(ship => ship.team === team).map(ship => ComponentForShip(ship)));
+    let radars = result.slice(1).map(ship => {
       let result = [];
       let [x, y] = ship.position.slice(0, 2).map(i => i + 0.75 / 2 - radarWidth / 2);
       result.push([x, y, radarWidth]);
@@ -74,8 +76,5 @@ Object.assign(this, { options, tick, event });
       position: [25, 5, 85 * 0.5625, 85],
       components: result
     };
-  };
-  game.hideUI = function (id, ship) {
-    if (typeof id === "string" && typeof ship === "object") ship.setUIComponent({ id: id, visisble: false });
   };
 })();

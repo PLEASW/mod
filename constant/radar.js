@@ -5,7 +5,7 @@
       id: 'radar',
       position: [25, 5, 85 * 0.5625, 85],
       components: [
-        { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255, 255, 255, 0.2)', stroke: "#cde", width: 1 }
+        { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255, 255, 255, 0.2)', stroke: "#cde", width: 2 }
       ].concat(game.ships.map(ship => {
         return {
           type: 'box', fill: teamColors[ship.team],
@@ -30,7 +30,7 @@
       };
     }
     let result = [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255, 255, 255, 0.2)', stroke: "#cde", width: 1 }
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255, 255, 255, 0.2)', stroke: "#cde", width: 2 }
     ].concat(game.ships.filter(ship => ship.team === team).map(ship => ComponentForShip(ship)));
     let radars = result.slice(1).map(ship => {
       let result = [];
