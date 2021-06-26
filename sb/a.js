@@ -6901,2867 +6901,2871 @@
             var i, s, l;
             return null != e && (this.index = e), i = this.canvas.getContext("2d"), i.save(), s = this.index % this.II10I, l = Math.floor(this.index / this.II10I), i.translate(s * this.blocksize, l * this.blocksize), i.scale(this.blocksize, this.blocksize), i.beginPath(), i.rect(0, 0, 1, 1), i.clip(), i.translate(.1, .1), i.scale(.8, .8), t(i), i.restore(), this.index++
         }, t
-    }(), OlOlI = new THREE.Texture((new this.ShipTexture)
-        .canvas), OlOlI.needsUpdate = !0, O11IO = new THREE.Texture((new this.ShipEmissiveTexture)
-            .canvas), O11IO.wrapS = O11IO.wrapT = THREE.RepeatWrapping, O11IO.needsUpdate = !0, Oll11 = new THREE.Texture(new this.ShipEmissiveTexture(null, !0)
-                .canvas), Oll11.wrapS = Oll11.wrapT = THREE.RepeatWrapping, Oll11.needsUpdate = !0, lIO1l = new THREE.Texture((new ShipShieldTexture)
-                    .canvas), lIO1l.minFilter = THREE.LinearFilter, lIO1l.needsUpdate = !0, hasProp = {}.hasOwnProperty, this.I11lI = function () {
-                        function t(t, e, i, s) {
-                            var l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B, L, F, V, N, q, G, U, K;
-                            if (this.data = t, this.hue = null != e ? e : 0, this.finish = null != i ? i : "zinc", this.options = s, null == this.options && (this.options = {
-                                shield: !0,
-                                propulsion: !0,
-                                OOOO1: !0
-                            }), this.hue = Math.max(.01, Math.min(.99, this.hue)), this.geometry = new THREE.Geometry, this.geometry.faceVertexUvs[0] = [], this.quads = [], this.II010 = !1, null != this.data.bodies) {
-                                S = this.data.bodies;
-                                for (m in S) hasProp.call(S, m) && (n = S[m], this.IllIO(n))
-                            }
-                            if (null != this.data.tori) {
-                                T = this.data.tori;
-                                for (m in T) hasProp.call(T, m) && (n = T[m], this.buildTorus(n))
-                            }
-                            if (this.data.wings) {
-                                R = this.data.wings;
-                                for (m in R) hasProp.call(R, m) && (q = R[m], this.l110I(q))
-                            }
-                            if (null != this.data.scale && 1 !== this.data.scale)
-                                for (F = this.data.scale, C = this.geometry.vertices, p = 0, f = C.length; p < f; p++) N = C[p], N.x *= F, N.y *= F, N.z *= F;
-                            for (this.geometry.computeBoundingSphere(), this.geometry.computeBoundingBox(), this.geometry.computeFaceNormals(), A = this.quads, I = 0, g = A.length; I < g; I++) E = A[I], r = E[0], h = E[1], r.normal.lengthSq() > 0 && h.normal.lengthSq() > 0 && (r.normal.add(h.normal), r.normal.normalize(), h.normal = r.normal);
-                            for (j = this.geometry.faces, w = 0, y = j.length; w < y; w++) o = j[w], o.vertexNormals[0] = o.normal, o.vertexNormals[1] = o.normal, o.vertexNormals[2] = o.normal;
-                            if (this.lO101 = new THREE.Group, this.lO101.rotation.order = "ZYX", this.O1lI1 = this.I1O10(), this.Il0I1 = new THREE.Mesh(this.geometry, this.O1lI1), this.l1O0l = 0, this.options.propulsion) {
-                                M = new THREE.Geometry, a = lO01l.l1Ol1(this.hue, .5, 1), this.IIOIO = new THREE.MeshBasicMaterial({
-                                    color: new THREE.Color(a[0] / 255, a[1] / 255, a[2] / 255),
-                                    opacity: 1,
-                                    map: l010l,
-                                    transparent: !0,
-                                    depthWrite: !1,
-                                    side: THREE.DoubleSide,
-                                    blending: THREE.AdditiveBlending
-                                }), H = this.data.bodies;
-                                for (m in H)
-                                    if (hasProp.call(H, m) && (n = H[m], n.propeller)) {
-                                        for (z = 0, K = -200, d = x = 0, D = n.width.length - 1; x <= D; d = x += 1) n.position.y[d] > K && (K = n.position.y[d], z = d);
-                                        for (G = .01 * n.width[z] * 2, u = .01 * n.height[z] * 2, b = 5 * G, K = .01 * (n.position.y[z] + n.offset.y) + b / 4, U = .01 * (n.position.x[z] + n.offset.x), k = 6, d = _ = 0, B = k - 1; _ <= B; d = _ += 1) l = (d + .5) / k * Math.PI, c = M.vertices.length, M.vertices.push(new THREE.Vector3(K - b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K - b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.faces.push(new THREE.Face3(c, c + 1, c + 2)), M.faces.push(new THREE.Face3(c + 2, c + 3, c)), M.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1)]), M.faceVertexUvs[0].push([new THREE.Vector2(1, 1), new THREE.Vector2(1, 0), new THREE.Vector2(0, 0)]);
-                                        if (0 !== n.offset.x)
-                                            for (U = -U, d = V = 0, L = k - 1; V <= L; d = V += 1) l = (d + .5) / k * Math.PI, c = M.vertices.length, M.vertices.push(new THREE.Vector3(K - b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K - b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.faces.push(new THREE.Face3(c, c + 1, c + 2)), M.faces.push(new THREE.Face3(c + 2, c + 3, c)), M.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1)]), M.faceVertexUvs[0].push([new THREE.Vector2(1, 1), new THREE.Vector2(1, 0), new THREE.Vector2(0, 0)])
-                                    } if (null != this.data.scale && 1 !== this.data.scale)
-                                    for (F = this.data.scale, P = M.vertices, O = 0, v = P.length; O < v; O++) N = P[O], N.x *= F, N.y *= F, N.z *= F;
-                                M.verticesNeedUpdate = !0, M.IOl1O = !0, M.computeBoundingSphere(), this.l0110 = M, this.OOl1I = new THREE.Mesh(M, this.IIOIO)
-                            }
-                            this.lO101.add(this.Il0I1), this.options.propulsion && this.lO101.add(this.OOl1I), this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size), this.options.shield && (this.shield_mat = new THREE.MeshBasicMaterial({
-                                map: lIO1l,
-                                color: 0,
-                                blending: THREE.AdditiveBlending,
-                                transparent: !0,
-                                side: THREE.DoubleSide
-                            }), this.shield_mesh = new THREE.Mesh(this.geometry, this.shield_mat), this.shield_mesh.scale.set(1.2, 1.2, 1.2), this.lO101.add(this.shield_mesh), this.shield_mesh.visible = !1), this.options.OOOO1 && "undefined" != typeof lOO0I && null !== lOO0I && (this.OOOO1 = new lOO0I(Math.floor(360 * this.hue))), this.OII1l = 0, this.ll0O0 = 0, this.I0OO1 = new OIl1I
+    }(), OlOlI = new THREE.Texture((new this.ShipTexture).canvas),
+        OlOlI.needsUpdate = !0,
+        O11IO = new THREE.Texture((new this.ShipEmissiveTexture).canvas),
+        O11IO.wrapS = O11IO.wrapT = THREE.RepeatWrapping, O11IO.needsUpdate = !0,
+        Oll11 = new THREE.Texture(new this.ShipEmissiveTexture(null, !0).canvas),
+        Oll11.wrapS = Oll11.wrapT = THREE.RepeatWrapping, Oll11.needsUpdate = !0,
+        lIO1l = new THREE.Texture((new ShipShieldTexture).canvas),
+        lIO1l.minFilter = THREE.LinearFilter, lIO1l.needsUpdate = !0, hasProp = {}.hasOwnProperty,
+        this.I11lI = function () {
+            function t(t, e, i, s) {
+                var l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B, L, F, V, N, q, G, U, K;
+                if (this.data = t, this.hue = null != e ? e : 0, this.finish = null != i ? i : "zinc", this.options = s, null == this.options && (this.options = {
+                    shield: !0,
+                    propulsion: !0,
+                    OOOO1: !0
+                }), this.hue = Math.max(.01, Math.min(.99, this.hue)), this.geometry = new THREE.Geometry, this.geometry.faceVertexUvs[0] = [], this.quads = [], this.II010 = !1, null != this.data.bodies) {
+                    S = this.data.bodies;
+                    for (m in S) hasProp.call(S, m) && (n = S[m], this.IllIO(n))
+                }
+                if (null != this.data.tori) {
+                    T = this.data.tori;
+                    for (m in T) hasProp.call(T, m) && (n = T[m], this.buildTorus(n))
+                }
+                if (this.data.wings) {
+                    R = this.data.wings;
+                    for (m in R) hasProp.call(R, m) && (q = R[m], this.l110I(q))
+                }
+                if (null != this.data.scale && 1 !== this.data.scale)
+                    for (F = this.data.scale, C = this.geometry.vertices, p = 0, f = C.length; p < f; p++) N = C[p], N.x *= F, N.y *= F, N.z *= F;
+                for (this.geometry.computeBoundingSphere(), this.geometry.computeBoundingBox(), this.geometry.computeFaceNormals(), A = this.quads, I = 0, g = A.length; I < g; I++) E = A[I], r = E[0], h = E[1], r.normal.lengthSq() > 0 && h.normal.lengthSq() > 0 && (r.normal.add(h.normal), r.normal.normalize(), h.normal = r.normal);
+                for (j = this.geometry.faces, w = 0, y = j.length; w < y; w++) o = j[w], o.vertexNormals[0] = o.normal, o.vertexNormals[1] = o.normal, o.vertexNormals[2] = o.normal;
+                if (this.lO101 = new THREE.Group, this.lO101.rotation.order = "ZYX", this.O1lI1 = this.I1O10(), this.Il0I1 = new THREE.Mesh(this.geometry, this.O1lI1), this.l1O0l = 0, this.options.propulsion) {
+                    M = new THREE.Geometry, a = lO01l.l1Ol1(this.hue, .5, 1), this.IIOIO = new THREE.MeshBasicMaterial({
+                        color: new THREE.Color(a[0] / 255, a[1] / 255, a[2] / 255),
+                        opacity: 1,
+                        map: l010l,
+                        transparent: !0,
+                        depthWrite: !1,
+                        side: THREE.DoubleSide,
+                        blending: THREE.AdditiveBlending
+                    }), H = this.data.bodies;
+                    for (m in H)
+                        if (hasProp.call(H, m) && (n = H[m], n.propeller)) {
+                            for (z = 0, K = -200, d = x = 0, D = n.width.length - 1; x <= D; d = x += 1) n.position.y[d] > K && (K = n.position.y[d], z = d);
+                            for (G = .01 * n.width[z] * 2, u = .01 * n.height[z] * 2, b = 5 * G, K = .01 * (n.position.y[z] + n.offset.y) + b / 4, U = .01 * (n.position.x[z] + n.offset.x), k = 6, d = _ = 0, B = k - 1; _ <= B; d = _ += 1) l = (d + .5) / k * Math.PI, c = M.vertices.length, M.vertices.push(new THREE.Vector3(K - b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K - b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.faces.push(new THREE.Face3(c, c + 1, c + 2)), M.faces.push(new THREE.Face3(c + 2, c + 3, c)), M.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1)]), M.faceVertexUvs[0].push([new THREE.Vector2(1, 1), new THREE.Vector2(1, 0), new THREE.Vector2(0, 0)]);
+                            if (0 !== n.offset.x)
+                                for (U = -U, d = V = 0, L = k - 1; V <= L; d = V += 1) l = (d + .5) / k * Math.PI, c = M.vertices.length, M.vertices.push(new THREE.Vector3(K - b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U - G / 2 * Math.cos(l), .01 * n.offset.z - u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K + b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.vertices.push(new THREE.Vector3(K - b / 2, U + G / 2 * Math.cos(l), .01 * n.offset.z + u / 2 * Math.sin(l))), M.faces.push(new THREE.Face3(c, c + 1, c + 2)), M.faces.push(new THREE.Face3(c + 2, c + 3, c)), M.faceVertexUvs[0].push([new THREE.Vector2(0, 0), new THREE.Vector2(0, 1), new THREE.Vector2(1, 1)]), M.faceVertexUvs[0].push([new THREE.Vector2(1, 1), new THREE.Vector2(1, 0), new THREE.Vector2(0, 0)])
+                        } if (null != this.data.scale && 1 !== this.data.scale)
+                        for (F = this.data.scale, P = M.vertices, O = 0, v = P.length; O < v; O++) N = P[O], N.x *= F, N.y *= F, N.z *= F;
+                    M.verticesNeedUpdate = !0, M.IOl1O = !0, M.computeBoundingSphere(), this.l0110 = M, this.OOl1I = new THREE.Mesh(M, this.IIOIO)
+                }
+                this.lO101.add(this.Il0I1), this.options.propulsion && this.lO101.add(this.OOl1I), this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size), this.options.shield && (this.shield_mat = new THREE.MeshBasicMaterial({
+                    map: lIO1l,
+                    color: 0,
+                    blending: THREE.AdditiveBlending,
+                    transparent: !0,
+                    side: THREE.DoubleSide
+                }), this.shield_mesh = new THREE.Mesh(this.geometry, this.shield_mat), this.shield_mesh.scale.set(1.2, 1.2, 1.2), this.lO101.add(this.shield_mesh), this.shield_mesh.visible = !1), this.options.OOOO1 && "undefined" != typeof lOO0I && null !== lOO0I && (this.OOOO1 = new lOO0I(Math.floor(360 * this.hue))), this.OII1l = 0, this.ll0O0 = 0, this.I0OO1 = new OIl1I
+            }
+            return t.prototype.dispose = function () {
+                if (this.geometry.dispose(), this.quads = [], this.O1lI1.dispose(), this.options.propulsion && this.IIOIO.dispose(), this.options.propulsion) return this.l0110.dispose()
+            }, t.prototype.bump = function (t) {
+                return this.bumpframe = t, this.bumping = !0
+            }, t.prototype.propstep = function (t) {
+                if (this.options.propulsion) return this.l1O0l = t ? Math.max(.02, Math.min(1, 1.1 * this.l1O0l)) : .94 * this.l1O0l, this.OOl1I.visible = this.l1O0l > .01, this.IIOIO.opacity = (.5 + .5 * Math.random()) * this.l1O0l
+            }, t.prototype.I1O10 = function (t) {
+                var e, i, s;
+                switch (null == t && (t = 10), this.built_material = this.finish, this.finish) {
+                    case "alloy":
+                        this.buildAlloyMaterial();
+                        break;
+                    case "gold":
+                        this.buildGoldMaterial();
+                        break;
+                    case "titanium":
+                        this.buildTitaniumMaterial();
+                        break;
+                    case "carbon":
+                        this.buildCarbonMaterial();
+                        break;
+                    default:
+                        this.buildDefaultMaterial()
+                }
+                return this.base_color = this.material.color.getHex(), s = this.base_color >> 16 & 255, i = this.base_color >> 8 & 255, e = 255 & this.base_color, this.dark_color = Math.floor(s / 2) << 16 | Math.floor(i / 2) << 8 | Math.floor(e / 2), this.material
+            }, t.prototype.buildDefaultMaterial = function (t) {
+                return null == t && (t = 10), this.material = new THREE.MeshLambertMaterial({
+                    map: OlOlI,
+                    color: 16777215,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildX27Material = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 4243711,
+                    shininess: 30,
+                    bumpScale: .1,
+                    color: 5275808,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildAlloyMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 8413264,
+                    shininess: 30,
+                    bumpScale: .1,
+                    color: 10531008,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildTitaniumMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 6316128,
+                    shininess: 20,
+                    bumpScale: .1,
+                    color: 6316128,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildCarbonMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specular: 6316128,
+                    shininess: 5,
+                    bumpScale: .1,
+                    color: 1052688,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: Oll11
+                })
+            }, t.prototype.buildFullColorMaterial = function () {
+                var t;
+                return t = lO01l.hsvToRgbHex(this.hue, 1, 1), this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 12632256,
+                    shininess: 50,
+                    bumpScale: .1,
+                    color: t,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildGoldMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 10506256,
+                    shininess: 50,
+                    bumpScale: .1,
+                    color: 8413232,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildCopperMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 11554864,
+                    shininess: 15,
+                    bumpScale: .1,
+                    color: 10514512,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildDiamondMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specular: 16777215,
+                    opacity: .5,
+                    shininess: 50,
+                    side: THREE.DoubleSide,
+                    bumpScale: .1,
+                    transparent: !0,
+                    color: 8421504,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.I0OIl = function (t) {
+                var e, i;
+                if (this.built_material !== this.finish && (this.I1O10(this.hue), this.Il0I1.material = this.material), this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.invulnerable ? Date.now() % 500 < 250 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && (this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.shield_mesh.visible = !0)) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)) : this.OII1l > 0 && (this.ll0O0 = Math.random() < this.OII1l ? 1 : 0, this.options.shield && (this.shield_mesh.visible = !0), 1 === this.ll0O0 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1))) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)), this.OII1l *= .95, this.OII1l < .1 && (this.OII1l = 0, this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)))), this.bumping && (t > this.bumpframe + 30 ? (this.bumping = !1, this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) : (i = Math.max(0, t - this.bumpframe) / 30, e = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2), this.lO101.scale.set(2 * this.data.size * e, 2 * this.data.size * e, 2 * this.data.size * e))), this.last_frame = t, this.bump_shield && this.options.shield) return t > this.bump_shield_frame + 30 ? (this.bump_shield = !1, this.shield_mesh.scale.set(1.2, 1.2, 1.2)) : (i = Math.max(0, t - this.bump_shield_frame) / 30, e = 1.2 - .1 * Math.cos(Math.pow(i, .5) * Math.PI * 2), this.shield_mesh.scale.set(e, e, e), this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, Math.pow(1 - i, .25))), this.shield_mesh.visible = !0)
+            }, t.prototype.bumpShield = function () {
+                if (null != this.last_frame && !this.bump_shield) return this.bump_shield_frame = this.last_frame, this.bump_shield = !0
+            }, t.prototype.getTextureIndex = function (t, e) {
+                return null == t ? 0 : "number" == typeof t ? t : t[e] || t[t.length - 1]
+            }, t.prototype.addQuad = function (t, e, i, s, l, n, a, o, r, h, u, d) {
+                return this.geometry.faces.push(new THREE.Face3(t, e, i)), this.geometry.faces.push(new THREE.Face3(s, t, i)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(l, n), new THREE.Vector2(a, o), new THREE.Vector2(r, h)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(u, d), new THREE.Vector2(l, n), new THREE.Vector2(r, h)])
+            }, t.prototype.IllIO = function (t, e) {
+                var i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
+                if (null == e && (e = 0), 0 === e) return this.IllIO(t, 1), void (0 !== t.offset.x && this.IllIO(t, -1));
+                for (i = t.angle || 0, o = Math.cos(i / 180 * Math.PI * e), z = Math.sin(i / 180 * Math.PI * e), C = this.geometry.vertices.length, O = Math.min(t.position.x.length, t.position.y.length, t.width.length, t.height.length) - 1, p = 8, c = I = 0, v = p - 1; 0 <= v ? I <= v : I >= v; c = 0 <= v ? ++I : --I) l = c / p * Math.PI * 2;
+                if (null != t.section_segments && ("number" == typeof t.section_segments ? (p = t.section_segments, l = function () {
+                    var t, e, i;
+                    for (i = [], c = t = 0, e = p - 1; 0 <= e ? t <= e : t >= e; c = 0 <= e ? ++t : --t) i.push(c / p * Math.PI * 2);
+                    return i
+                }()) : (p = t.section_segments.length, l = function () {
+                    var e, i, s;
+                    for (s = [], c = e = 0, i = p - 1; 0 <= i ? e <= i : e >= i; c = 0 <= i ? ++e : --e) s.push(t.section_segments[c] / 180 * Math.PI);
+                    return s
+                }())), null == t.position.z)
+                    for (t.position.z = [], c = m = 1, b = t.position.y.length; 1 <= b ? m <= b : m >= b; c = 1 <= b ? ++m : --m) t.position.z.push(0);
+                for (d = f = 0, w = O; f <= w; d = f += 1)
+                    for (H = .01 * t.position.y[d], c = g = 0,
+                        x = p - 1; g <= x; c = g += 1) s = l[c] + Math.PI / 2, A = (.01 * t.position.x[d] + Math.cos(s) * t.width[d] * .01) * e, B = Math.sin(s) * t.height[d] * .01 * e + .01 * t.offset.z + .01 * t.position.z[d], j = o * A + z * H, D = o * H - z * A, D += .01 * t.offset.y, j += .01 * t.offset.x * e, t.vertical ? this.geometry.vertices.push(new THREE.Vector3(-B, j, D)) : this.geometry.vertices.push(new THREE.Vector3(D, j, B));
+                for (d = y = 0, k = O - 1; y <= k; d = y += 1)
+                    for (a = .25 * (t.width[d] + t.width[d + 1] + t.height[d] + t.height[d + 1]) * 6.28, n = Math.abs(t.position.y[d] - t.position.y[d + 1]), E = 1, n > 0 && a / n > 4 && p % 8 == 0 ? E = 4 : n > 0 && a / n > 2 && p % 4 == 0 && (E = 2), c = R = 0, _ = p - 1; R <= _; c = R += 1) c < p / 2 ? (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + d * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + (c + 1) % p, C + (d + 1) * p + c, C + d * p + (c + 1) % p)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]])) : (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + (d + 1) * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + d * p + c, C + d * p + (c + 1) % p, C + (d + 1) * p + (c + 1) % p)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]])), r = (l[c] - l[0] + Math.PI / 2) / Math.PI * E % 1, u = l[(c + 1) % l.length] - l[c], u < 0 && (u += 2 * Math.PI), h = r + u / Math.PI * E, M = this.getTextureIndex(t.texture, d), 15 === M && (M = 13), 63 === M && (M = 31), S = M % 8 * .125, T = .25 * (3 - Math.floor(M / 8) + .1), r = S + .125 * (.1 + .8 * r), h = S + .125 * (.1 + .8 * h), P = T + .2, 31 === M && (S += .125 * this.hue, r = S, h = S), c < p / 2 ? (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T), new THREE.Vector2(r, P), new THREE.Vector2(h, P)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(h, T), new THREE.Vector2(r, T), new THREE.Vector2(h, P)])) : (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T), new THREE.Vector2(r, P), new THREE.Vector2(h, T)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(h, P), new THREE.Vector2(h, T)]))
+            }, t.prototype.buildTorus = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
+                if ("number" == typeof (x = t.segments)) I = x, k = function () {
+                    var t, e, i;
+                    for (i = [], h = t = 0, e = I; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / I * Math.PI * 2);
+                    return i
+                }();
+                else
+                    for (k = [], h = d = 0, f = x.length - 1; 0 <= f ? d <= f : d >= f; h = 0 <= f ? ++d : --d) k[h] = x[h] / 180 * Math.PI;
+                for (T = this.geometry.vertices.length, r = k.length - 1, u = 8, h = O = 0, g = u - 1; 0 <= g ? O <= g : O >= g; h = 0 <= g ? ++O : --O) s = h / u * Math.PI * 2;
+                for (null != t.section_segments && ("number" == typeof t.section_segments ? (u = t.section_segments, s = function () {
+                    var t, e, i;
+                    for (i = [], h = t = 0, e = u - 1; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / u * Math.PI * 2);
+                    return i
+                }()) : (u = t.section_segments.length, s = function () {
+                    var e, i, s;
+                    for (s = [], h = e = 0, i = u - 1; 0 <= i ? e <= i : e >= i; h = 0 <= i ? ++e : --e) s.push(t.section_segments[h] / 180 * Math.PI);
+                    return s
+                }())); t.position.x.length < r + 1;) t.position.x.push(t.position.x[t.position.x.length - 1]);
+                for (; t.position.y.length < r + 1;) t.position.y.push(t.position.y[t.position.y.length - 1]);
+                for (; t.position.z.length < r + 1;) t.position.z.push(t.position.z[t.position.z.length - 1]);
+                for (; t.width.length < r + 1;) t.width.push(t.width[t.width.length - 1]);
+                for (; t.height.length < r + 1;) t.height.push(t.height[t.height.length - 1]);
+                for (o = c = 0, y = r; c <= y; o = c += 1)
+                    for (e = k[o], P = Math.cos(e), R = Math.sin(e), h = p = 0, v = u - 1; p <= v; h = p += 1) i = s[h], C = .01 * (t.offset.x + t.position.x[o] + Math.cos(i) * t.height[o] + t.radius), j = .01 * (t.offset.y + t.position.y[o] + Math.sin(i) * t.width[o]), D = 0, A = P * C + R * D, B = P * D - R * C + .01 * t.offset.z, H = j, this.geometry.vertices.push(new THREE.Vector3(H, A, B));
+                for (o = m = 0, b = r - 1; m <= b; o = m += 1)
+                    for (h = S = 0, w = u - 1; S <= w; h = S += 1) this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + h, T + o * u + h, T + o * u + (h + 1) % u)), this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + (h + 1) % u, T + (o + 1) * u + h, T + o * u + (h + 1) % u)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]]), l = (s[h] - s[0]) / Math.PI % 1, a = s[(h + 1) % s.length] - s[h], a < 0 && (a += 2 * Math.PI), n = l + a / Math.PI, _ = this.getTextureIndex(t.texture, o), 15 === _ && (_ = 13), 63 === _ && (_ = 31), z = _ % 8 * .125, M = .25 * (3 - Math.floor(_ / 8) + .1), l = z + .125 * (l + .1) * .8, n = z + .125 * (n + .1) * .8, E = M + .2, 31 === _ && (z += .125 * this.hue, l = z, n = z), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(l, M), new THREE.Vector2(l, E), new THREE.Vector2(n, E)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(n, M), new THREE.Vector2(l, M), new THREE.Vector2(n, E)])
+            }, t.prototype.l110I = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M;
+                for (_ = this.geometry.vertices.length, u = Math.min(t.length.length, t.width.length - 1, t.angle.length, t.position.length - 1), null == t.offset && (t.offset = {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                }), z = 0, M = 0, l = n = 0, O = u; n <= O; l = n += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * -t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z += o * e, M += o * m);
+                for (l = a = 0, c = u - 1; a <= c; l = a += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 5, _ + 4 * l + 3, _ + 4 * l + 7)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 3)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 6, _ + 4 * l + 7, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(v, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, x), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)])));
+                for (_ = this.geometry.vertices.length, z = 0, M = 0, l = r = 0, p = u; r <= p; l = r += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z -= o * e, M += o * m);
+                for (l = h = 0, I = u - 1; h <= I; l = h += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 7)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 7, _ + 4 * l + 6)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(b, k)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(v, k)])))
+            }, t.prototype.computeBounds = function () {
+                var t, e, i, s, l, n, a, o;
+                for (l = 0, i = 0, n = 0, s = 0, a = this.geometry.vertices, t = 0, e = a.length; t < e; t++) o = a[t], l = Math.min(l, o.x), n = Math.min(n, o.y), i = Math.max(i, o.x), s = Math.max(s, o.y);
+                return this.bounds = {
+                    minx: l,
+                    maxx: i,
+                    miny: n,
+                    maxy: s,
+                    width: i - l,
+                    height: s - n,
+                    cx: (l + i) / 2,
+                    cy: (n + s) / 2
+                }
+            }, t.prototype.shapePoint = function (t, e, i) {
+                var s, l, n;
+                return n = i.length, s = Math.atan2(e, -t), s = Math.round((s + 2 * Math.PI) / (2 * Math.PI) * n) % n, l = Math.sqrt(t * t + e * e), i[s] = Math.max(i[s], l)
+            }, t.prototype.Il111 = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g;
+                for (null == t && (t = 50), c = [], s = n = 0, u = t - 1; 0 <= u ? n <= u : n >= u; s = 0 <= u ? ++n : --n) c[s] = 0;
+                for (d = this.geometry.faces, a = 0, o = d.length; a < o; a++)
+                    for (i = d[a], p = this.geometry.vertices[i.a], I = this.geometry.vertices[i.b], m = this.geometry.vertices[i.c], s = r = 0; r <= 99; s = r += 1) e = s / 100, f = p.x * e + I.x * (1 - e), g = p.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + I.x * (1 - e), g = m.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + p.x * (1 - e), g = m.y * e + p.y * (1 - e), this.shapePoint(f, g, c);
+                for (s = h = 0, O = c.length - 1; h <= O; s = h += 1) c[s] *= 2 * this.data.size;
+                for (l in c) c[l] = parseFloat(c[l].toFixed(3));
+                return c
+            }, t.prototype.lOOII = function (e) {
+                var i, s, l, n, a, o, r;
+                return null == e && (e = 128), r = new THREE.Scene, i = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.material.emissive.setHex(16777215), this.material.emissiveMap = lIO1l, this.material.side = THREE.DoubleSide, this.material.color.setHex(0), this.IIOIO.opacity = 0, r.add(this.lO101), this.lO101.position.set(e / 2, e / 2, -1e3), this.computeBounds(), o = .9 * Math.min(e / this.bounds.width, e / this.bounds.height), l = o * this.bounds.cy, n = o * this.bounds.cx, this.lO101.position.set(e / 2 - l, e / 2 - n, -1e3), a = o, this.lO101.scale.set(a, a, a), this.lO101.rotation.z = Math.PI / 2, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), t.I0O01.setSize(e, e), t.I0O01.render(r, i), s = document.createElement("canvas"), s.width = e, s.height = e, s.getContext("2d")
+                    .drawImage(t.I0O01.domElement, 0, 0), s
+            }, t.prototype.get3DImage = function (e, i) {
+                var s, l, n, a, o;
+                return null == e && (e = 128), null == i && (i = 0), o = new THREE.Scene, s = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.IIOIO.opacity = 1, this.finish = "alloy", this.I1O10(), this.Il0I1.material = this.material, o.add(this.lO101), n = new THREE.DirectionalLight, n.position.set(2, -1, 1), o.add(n), this.lO101.position.set(e / 2, e / 2, -1e3), a = .25 * e, this.lO101.scale.set(-a, a, a), this.lO101.rotation.z = Math.PI / 2 + i, this.lO101.rotation.x = Math.PI / 4, this.lO101.rotation.order = "XYZ", t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), t.I0O01.setSize(e, e), t.I0O01.render(o, s), l = document.createElement("canvas"), l.width = e, l.height = e, l.getContext("2d")
+                    .drawImage(t.I0O01.domElement, 0, 0), l
+            }, t.prototype.getIcon = function (e) {
+                var i, s, l, n, a, o, r;
+                return null == e && (e = 64), r = new THREE.Scene, i = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.material = new THREE.MeshBasicMaterial({
+                    color: 16777215,
+                    side: THREE.DoubleSide
+                }), this.Il0I1.material = this.material, this.IIOIO.opacity = 0, r.add(this.lO101), this.computeBounds(), o = .9 * Math.min(e / this.bounds.width, e / this.bounds.height), l = o * this.bounds.cy, n = o * this.bounds.cx, this.lO101.position.set(e / 2 - l, e / 2 - n, -1e3), a = o, this.lO101.scale.set(a, a, a), this.lO101.rotation.z = Math.PI / 2, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), t.I0O01.setSize(e, e), t.I0O01.render(r, i), s = document.createElement("canvas"), s.width = e, s.height = e, s.getContext("2d")
+                    .drawImage(t.I0O01.domElement, 0, 0), s
+            }, t.prototype.getHorizontalThumbnail = function (e, i) {
+                var s, l, n, a, o, r, h, u, d, O, c, p, I, m;
+                for (null == e && (e = 128), null == i && (i = 0), p = new THREE.Scene, s = new THREE.OrthographicCamera(0, 2 * e, 0, e, 1, 3e3), this.IIOIO.opacity = .5, p.add(this.lO101), this.lO101.position.set(e, e / 2, -1e3), c = .4 * e, this.lO101.scale.set(c, -c, c), d = new THREE.DirectionalLight(16777215), d.position.set(1, -.5, 3), p.add(d), this.lO101.rotation.z = Math.PI, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), t.I0O01.setSize(2 * e, e), t.I0O01.render(p, s), l = document.createElement("canvas"), l.width = 2 * e, l.height = e, l.getContext("2d")
+                    .drawImage(t.I0O01.domElement, 0, 0), n = l.getContext("2d"), n.translate(e, e / 2), n.rotate(-Math.PI / 2), n.translate(0, e / 2), n.scale(e / 15, e / 15), m = lIIl0.getShape(parseInt(i)), o = 0, h = m.length; o < h; o++) {
+                    for (I = m[o], n.beginPath(), a = n.createRadialGradient(0, 0, 0, 0, 0, 2), a.addColorStop(0, "hsl(" + Math.floor(360 * this.hue) + ",100%,100%)"), a.addColorStop(1, "hsl(" + Math.floor(360 * this.hue) + ",80%,40%)"), n.fillStyle = a, r = 0, u = I.length; r < u; r++) O = I[r], n.lineTo(O[1], O[0]);
+                    n.closePath(), n.fill()
+                }
+                return l
+            }, t.prototype.getThumbnail = function (e, i) {
+                var s, l, n, a, o, r, h, u, d, O, c, p, I, m;
+                for (null == e && (e = 128), null == i && (i = 0), p = new THREE.Scene, s = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.IIOIO.opacity = .5, p.add(this.lO101), this.lO101.position.set(e / 2, e / 2, -1e3), c = .4 * e, this.lO101.scale.set(c, -c, c), d = new THREE.PointLight(16777215, 1, 0), d.position.set(.3 * e, .3 * e, e - 1e3), p.add(d), this.lO101.rotation.z = Math.PI / 2, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), t.I0O01.setSize(e, e), t.I0O01.render(p, s), l = document.createElement("canvas"), l.width = e, l.height = e, l.getContext("2d")
+                    .drawImage(t.I0O01.domElement, 0, 0), n = l.getContext("2d"), n.translate(e / 2, e / 8), n.scale(e / 20, e / 20), m = lIIl0.getShape(parseInt(i)), o = 0, h = m.length; o < h; o++) {
+                    for (I = m[o], n.beginPath(), a = n.createRadialGradient(0, 0, 0, 0, 0, 2), a.addColorStop(0, "hsl(" + Math.floor(360 * this.hue) + ",100%,100%)"), a.addColorStop(1, "hsl(" + Math.floor(360 * this.hue) + ",80%,40%)"), n.fillStyle = a, r = 0, u = I.length; r < u; r++) O = I[r], n.lineTo(O[1], O[0]);
+                    n.closePath(), n.fill()
+                }
+                return l
+            }, t.exportThumbnail = function (e, i, s, l, n) {
+                var a;
+                return null == e && (e = 101), null == i && (i = 0), null == s && (s = "zinc"), null == l && (l = 0), null == n && (n = 128), a = new t(lIO1I.ships_by_code[e], i / 360, s), a.getThumbnail(n, l)
+            }, t.exportHorizontalThumbnail = function (e, i, s, l, n) {
+                var a;
+                return null == e && (e = 101), null == i && (i = 0), null == s && (s = "zinc"), null == l && (l = 0), null == n && (n = 128), a = new t(lIO1I.ships_by_code[e], i / 360, s), a.getHorizontalThumbnail(n, l)
+            }, t.icons_buffer = [], t.getShipIcon = function (e) {
+                var i, s;
+                return null == t.icons_buffer[e] && null != (s = lIO1I.ships_by_code[e]) && (i = new t(s, 0), t.icons_buffer[e] = i.getIcon(), i.dispose()), t.icons_buffer[e]
+            }, t
+        }(), this.createPropTexture = function () {
+            var t, e, i, s;
+            return t = document.createElement("canvas"), t.width = 64, t.height = 64, e = t.getContext("2d"), e.clearRect(0, 0, t.width, t.height), e.save(), e.translate(t.width / 2, .75 * t.height), e.scale(t.width / 2, .75 * -t.height), i = e.createRadialGradient(0, 0, 0, 0, 0, 1), i.addColorStop(0, "rgba(255,255,255,1)"), i.addColorStop(1, "rgba(255,255,255,0)"), e.fillStyle = i, e.fillRect(-1, -1, 2, 2), i = e.createLinearGradient(0, -1, 0, 1), i.addColorStop(0, "rgba(255,255,255,1)"), i.addColorStop(1, "rgba(255,255,255,0)"), e.fillStyle = i, e.globalCompositeOperation = "destination-in", e.fillRect(-1, -1, 2, 2), e.restore(), s = new THREE.Texture(t), s.needsUpdate = !0, s
+        }, l010l = this.createPropTexture(), this.lOO0I = function () {
+            function t(t) {
+                this.hue = null != t ? t : 0, this.name = "", this.shield = 0, this.IIOOO = 8, this.canvas = document.createElement("canvas"), this.canvas.width = 256, this.canvas.height = 64, this.texture = new THREE.Texture(this.canvas), this.texture.minFilter = THREE.LinearFilter, this.score = 0, this.IIOOO = 0, this.shield = 0, this.healing = !1, this.rank = 0, this.level = 1, this.II010 = !1, this.O1I0O = new THREE.PlaneGeometry(1, 1), this.material = new THREE.MeshBasicMaterial({
+                    color: 16777215,
+                    map: this.texture,
+                    transparent: !0,
+                    depthWrite: !1,
+                    depthTest: !1
+                }), this.Il0I1 = new THREE.Mesh(this.O1I0O, this.material), this.Il0I1.scale.set(10, 2.5, 1), this.anonymous = !1, this.target = !1, this.OlOOI()
+            }
+            return t.computeHue = function (t) {
+                var e, i, s, l;
+                for (l = 0, e = i = 0, s = t.length - 1; i <= s; e = i += 1) l += 111 * t.charCodeAt(e);
+                return l % 360
+            }, t.prototype.I0OIl = function (t, e, i, s) {
+                var l, n, a, o, r;
+                if (this.anonymous = t.mode.anonymous_ships, this.anonymous && (this.hue = (t.hue + 180) % 360), o = Math.min(100, Math.round(100 * i.shield / s.shield_capacity)), l = Math.min(100, Math.round(100 * i.IIOOO / s.crystals_capacity)), a = Math.floor(i.type / 100), this.II010 = i.II010, n = i.healing && i.hue === t.O1110.OII0I.status.hue, this.shipid = i.id, this.friendly = i.friendly, r = t.mode.isTarget(i.id), this.target === r && this.name === e && i.score === this.score && o === this.shield && l === this.IIOOO && i.rank === this.rank && a === this.level && this.healing === n || (this.name = e, this.IIOOO = l, this.score = i.score, this.rank = i.rank, this.shield = o, this.healing = n, this.level = a, this.target = r, this.OlOOI(t)), t.is_mobile_app && null != this.Il0I1) return this.Il0I1.scale.set(1.5 * (n ? 12.5 : 10), 3.75, 1)
+            }, t.prototype.OlOOI = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I;
+                return this.background = "hsla(" + this.hue + ",50%,30%,.25)", this.medium = "hsla(" + this.hue + ",40%,50%,.5)", this.color = "hsla(" + this.hue + ",40%,75%,1)", l = this.canvas.getContext("2d"), l.clearRect(0, 0, this.canvas.width, this.canvas.height), l.save(), s = !1, e = !1, i = !1, null != t && null != t.names && null != t.mode && null != t.mode.team_stats && null != (a = t.names.getData(this.shipid)) && a.friendly && (s = null != t.mode.team_stats[a.friendly] && t.mode.team_stats[a.friendly].killer.id === this.shipid, e = null != t.mode.team_stats[a.friendly] && t.mode.team_stats[a.friendly].contributor.id === this.shipid, i = null != t.mode.team_stats[a.friendly] && t.mode.team_stats[a.friendly].healer.id === this.shipid), p = 10, r = 2.5, this.healing && (p = 12.5), (s || e || i) && (r = 3.75), l.scale(10 / p, 2.5 / r), this.Il0I1.scale.set(p, r, 1), l.fillStyle = this.background, O = this.canvas.width, c = O / 32, O / 64, o = this.canvas.height, l.fillStyle = "hsl(" + this.hue + ",50%,80%)", d = Math.round(this.canvas.width / 512 * 32), l.font = d + "pt Play", l.textAlign = "left", l.textBaseline = "middle", this.anonymous || (l.fillText(this.name, 2 * c, o / 6), l.fillText("" + this.score, 2 * c, 3 * o / 6), l.textAlign = "right", l.fillText("Lv" + this.level, O - 2 * c, o / 6), l.fillText("#" + this.rank, O - 2 * c, 3 * o / 6)), I = O - 2 * c, l.fillStyle = "rgba(0,0,0,.5)", l.fillRect(2 * c - 1, .65 * o - 1, I + 2, .15 * o + 2), l.fillRect(2 * c - 1, .85 * o - 1, I + 2, .15 * o + 2), l.fillStyle = "hsla(180,100%,75%,.75)", l.fillRect(2 * c, .65 * o, I * this.shield / 100, .15 * o), l.fillStyle = "hsla(0,100%,75%,.75)", l.fillRect(2 * c, .85 * o, I * this.IIOOO / 100, .15 * o), null == this.shipid || null == t || this.anonymous || null != (n = t.names.getCustom(this.shipid)) && (r = Math.round(.7 * o), h = IIl10.lOOII(n.badge, n.laser, n.finish, r, n.hue), h.complete && l.drawImage(h, O / 2 - r, .6 * o - r / 2, 2 * r, r)), this.target && (l.fillStyle = "#F66", l.strokeStyle = "#000", l.lineWidth = 6, l.font = Math.round(.9 * this.canvas.height) + "pt FontAwesome", l.textAlign = "center", l.textBaseline = "middle", l.strokeText("", this.canvas.width / 2, this.canvas.height / 2), l.fillText("", this.canvas.width / 2, this.canvas.height / 2)), this.healing && (l.font = Math.round(.6 * this.canvas.height) + "pt FontAwesome", l.fillStyle = "hsla(180,100%,75%,.75)", l.textAlign = "center", l.textBaseline = "middle", l.fillText("", 9 * this.canvas.width / 8, this.canvas.height / 2)), u = 2 * c, l.textAlign = "left", l.textBaseline = "middle", l.fillStyle = "#FFF", l.font = Math.round(.35 * this.canvas.height) + "pt SBGlyphs", s && (l.fillText("[", u, 1.25 * this.canvas.height), u += .8 * this.canvas.height), e && (l.fillText("D", u, 1.25 * this.canvas.height), u += .8 * this.canvas.height), i && (l.fillText("", u, 1.25 * this.canvas.height), u += .8 * this.canvas.height), l.restore(), this.texture.needsUpdate = !0
+            }, t
+        }(), this.llOlO = function () {
+            function t(t, e, i) {
+                this.O0IOO = t, this.type = null != e ? e : lll01.types_by_code[101], this.IIlO1 = null != i && i, this.status = new OllOl, this.status.type = this.type.code, this.Ol0O1 = new I1II0(this.O0IOO), this.instance = new ShipInstance(this.type), this.levels_mem = 0, this.l1110 = {
+                    l1lOl: !1,
+                    left: !1,
+                    right: !1,
+                    strafe_left: !1,
+                    strafe_right: !1,
+                    release_crystal: !1,
+                    up: !1,
+                    l1lI0: !1,
+                    lO010: 0,
+                    guided: !1,
+                    glide: !1,
+                    angle: 0,
+                    r: 0,
+                    lI1l1: 0
+                }, this.l1l1I = 0, this.Oll0l = 0, this.lO1lI = 0, this.OO11l = 0, this.llOl0 = Date.now(), this.OlO00 = .02, this.OI11I = .2, this.Il01l = 0, this.IIIIO = 0, this.IOl0O = 3, this.O111l = 0, this.IOIIl = 0, this.last_pulse_shot = 0, this.pods = new Pods(this.O0IOO, this)
+            }
+            return t.prototype.setType = function (t) {
+                return this.type = t, this.instance = new ShipInstance(this.type), this.levels_mem = -1
+            }, t.prototype.lIIO0 = function () {
+                var t, e, i, s, l, n;
+                if (this.status.levels !== this.levels_mem && (this.instance.read(this.status.levels), this.instance.updateParameters(), this.levels_mem = this.status.levels, this.O0IOO.OII0I === this && this.O0IOO.lI0Ol.beep()), this.l1110.lO010 = this.status.lO010, this.l1110.guided = this.status.guided, this.status.guided && (this.l1110.angle = this.status.angle), this.Ol0O1.lIIO0(this.instance, this.status), this.status.lO010 > 0 && (this.l1110.lI1l1 = this.status.lI1l1), this.Ol0O1.lO0Ol(this.instance, this.l1110), this.IIlO1 && (this.l1110.lI1l1 = this.status.lI1l1, this.l1110.strafe_left = this.status.strafe_left, this.l1110.strafe_right = this.status.strafe_right), s = 10 * this.l1110.lI1l1, this.l1110.strafe_left ? s += Math.PI / 6 : this.l1110.strafe_right && (s -= Math.PI / 6), this.Oll0l += (s - this.l1l1I) * this.OlO00, this.Oll0l *= 1 - this.OI11I, this.l1l1I += this.Oll0l, l = Math.cos(this.status.r), n = Math.sin(this.status.r), t = this.status.I0I0l - this.O111l, e = this.status.l0I10 - this.IOIIl, i = l * t + n * e, this.O111l = this.status.I0I0l, this.IOIIl = this.status.l0I10, this.OO11l += (100 * -i - this.lO1lI) * this.OlO00, this.OO11l *= 1 - this.OI11I, this.lO1lI += this.OO11l, null != this.pods) return this.pods.lIIO0(this.O0IOO.O1110.IlI0I.O11ll)
+            }, t.prototype.lI1O1 = function () {
+                return this.send = !0
+            }, t.prototype.IlIIl = function () {
+                var t;
+                return this.IIIIO++, this.send ? this.IIIIO >= this.IOl0O ? (this.IIIIO === this.IOl0O && (this.IOl0O = Math.min(12, this.IOl0O + 1)), this.IIIIO = 0, this.send = !1, t = (this.l1110.angle + 360) % 360, this.l1110.up && (t += 4096), this.l1110.l1lOl && (t += 8192), this.l1110.glide && (t += 16384), this.l1110.strafe_left && (t += 32768), this.l1110.strafe_right && (t += 65536), this.l1110.release_crystal && (t += 131072), null != this.O0IOO.lOOO0 && this.O0IOO.lOOO0.lI1O1(t), this.log()) : void 0 : this.IOl0O = Math.max(1, this.IOl0O - 1)
+            }, t.prototype.log = function () {
+                return this.Il01l++
+            }, t.prototype.isPulseType = function () {
+                var t, e, i, s, l, n, a, o;
+                if (null == this.instance.pulse_type) {
+                    for (t = null, a = this.instance.lasers, e = 0, l = a.length; e < l; e++) s = a[e], s.damage >= 15 && (null == t || s.damage > t.damage) && (t = s);
+                    if (null != t)
+                        for (this.instance.pulse_type = !0, this.instance.pulse_laser = t, o = this.instance.lasers, i = 0, n = o.length; i < n; i++)(s = o[i]) !== t && s.damage > t.damage / 2 && (this.instance.pulse_type = !1);
+                    else null != this.type.specs.ship.dash ? this.instance.pulse_type = !0 : this.instance.pulse_type = !1
+                }
+                return this.instance.pulse_type
+            }, t.prototype.pulsePower = function () {
+                return null != this.instance.pulse_laser ? this.instance.pulse_laser.damage : null != this.instance.dash_initial_energy ? this.instance.dash_initial_energy : 0
+            }, t.prototype.pulseRate = function () {
+                return null != this.instance.pulse_laser ? this.instance.pulse_laser.type.rate : 1
+            }, t
+        }(), this.Gamepad = function () {
+            function t(t, e) {
+                var i;
+                this.O11OO = t, this.index = null != e ? e : 0, null != navigator.getGamepads && (i = navigator.getGamepads(), this.index < i.length && null != i[this.index] && (this.pad = i[this.index]), this.interval = setInterval(function (t) {
+                    return function () {
+                        return t.check()
+                    }
+                }(this), 16))
+            }
+            return t.prototype.stop = function () {
+                if (null != this.interval && clearInterval(this.interval), null != this.next) return this.next.stop()
+            }, t.prototype.check = function () {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m;
+                if (u = navigator.getGamepads(), this.index < u.length && (this.pad = u[this.index]), this.index + 1 < u.length && null == this.next && (this.next = new t(this.O11OO, this.index + 1)), null != this.pad) {
+                    if (null == this.status) {
+                        for (this.status = {
+                            buttons: [],
+                            joysticks: []
+                        }, d = this.pad.buttons, s = l = 0, o = d.length; l < o; s = ++l) i = d[s], this.status.buttons.push(!1);
+                        for (s = n = 0, O = this.pad.axes.length - 2; n <= O; s = n += 2) this.status.joysticks.push(-1)
+                    }
+                    for (c = this.pad.buttons, s = a = 0, r = c.length; a < r; s = ++a) i = c[s], i.pressed !== this.status.buttons[s] && (this.status.buttons[s] = i.pressed, this.O11OO.gamepadButtonStatus(s, i.pressed));
+                    for (s = h = 0, p = this.pad.axes.length - 2; h <= p && !(s / 2 >= this.status.joysticks.length); s = h += 2) {
+                        if (e = -1, I = this.pad.axes[s], m = this.pad.axes[s + 1], Math.sqrt(I * I + m * m) >= .5)
+                            for (e = -Math.atan2(m, I), e = Math.round(e / Math.PI * 180); e < 0;) e += 360;
+                        e !== this.status.joysticks[s / 2] && (this.status.joysticks[s / 2] = e, this.O11OO.gamepadJoystickStatus(s / 2, e))
+                    }
+                }
+            }, t.drawButton = function (t, e, i, s, l, n, a) {
+                var o, r, h, u, d;
+                switch (null == a && (a = !1), o = "hsl(" + n + ",20%,20%)", r = "hsla(" + n + ",50%,80%,1)", t) {
+                    case "menu":
+                        h = "Fontawesome", u = 1, l = Math.round(l), t = "";
+                        break;
+                    default:
+                        h = "Play", u = t.length, l = Math.round(l), 1 === u && (d = 1.2 * l)
+                }
+                switch (d = null != d ? d : l, e.font = d + "pt " + h, e.fillStyle = a ? r : o, u) {
+                    case 1:
+                        e.beginPath(), e.arc(i, s, 1.1 * l, 0, 2 * Math.PI, !0), e.closePath(), e.fill();
+                        break;
+                    default:
+                        OpenChatButton.roundRect(e, i - 2 * l, s - l, 4 * l, 2 * l, .5 * l), e.fill()
+                }
+                return e.textBaseline = "middle", e.textAlign = "center", e.fillStyle = a ? "#000" : r, e.fillText(t, i, s)
+            }, t.drawDPad = function (t, e, i, s, l, n, a) {
+                switch (null == n && (n = null), null == a && (a = "#444"), t.fillStyle = "#888", t.beginPath(), OpenChatButton.roundRect(t, e - s / 2, i - 1 * s / 6, s, s / 3, s / 16), t.fill(), t.beginPath(), OpenChatButton.roundRect(t, e - s / 6, i - s / 2, s / 3, s, s / 16), t.fill(), t.fillStyle = "#FFF", l) {
+                    case "bottom":
+                        return t.save(), t.beginPath(), t.rect(e - s / 2, i + s / 6, s, s / 3), t.clip(), OpenChatButton.roundRect(t, e - s / 6, i - s / 2, s / 3, s, s / 16), t.fill(), t.fillStyle = a, t.font = Math.round(s / 6) + "pt FontAwesome", t.textAlign = "center", t.textBaseline = "middle", n = n || "", t.fillText(n, e, i + 2 * s / 6), t.restore();
+                    case "top":
+                        return t.save(), t.beginPath(), t.rect(e - s / 2, i - s / 2, s, s / 3), t.clip(), OpenChatButton.roundRect(t, e - s / 6, i - s / 2, s / 3, s, s / 16), t.fill(), t.fillStyle = a, t.font = Math.round(s / 6) + "pt FontAwesome", t.textAlign = "center", t.textBaseline = "middle", n = n || "", t.fillText(n, e, i - 2 * s / 6), t.restore();
+                    case "leftright":
+                        return t.save(), OpenChatButton.roundRect(t, e - s / 2, i - s / 6, s, s / 3, s / 16), t.fill(), t.fillStyle = "#444", t.font = Math.round(s / 6) + "pt FontAwesome", t.textAlign = "center", t.textBaseline = "middle", t.fillText("", e - 2 * s / 6, i), t.fillText("", e + 2 * s / 6, i), t.restore()
+                }
+            }, t
+        }(), this.O0101 = function () {
+            function t(t, e) {
+                this.O0IOO = t, this.ship = e, this.map = {
+                    38: "up",
+                    40: "l1lI0",
+                    37: "left",
+                    39: "right",
+                    40: "l1lI0",
+                    32: "l1lOl"
+                }, this.left = !1, this.right = !1, this.endup = 0, this.control_pressed = !1, this.inc = 1, this.last_keyboard_action = 0, this.last_gamepad_action = 0, this.pad_status = {
+                    up: !1,
+                    l1lOl: !1,
+                    angle: 0,
+                    rcs: !1,
+                    lb: !1
+                }, this.element = this.O0IOO.display.I0O01.domElement, this.next_wheel_action = 0, document.addEventListener("mousewheel", function (t) {
+                    return function (e) {
+                        return t.mouseWheel(e)
+                    }
+                }(this), !1), document.addEventListener("DOMMouseScroll", function (t) {
+                    return function (e) {
+                        return t.mouseWheel(e)
+                    }
+                }(this), !1), document.onkeydown = function (t) {
+                    return function (e) {
+                        var i, s, l;
+                        if (e = e || window.event, i = e.keyCode, null != t.navigation_listener) switch (i) {
+                            case 13:
+                                return e.preventDefault(), t.navigation_listener.gamepadNavigation("ok");
+                            case 27:
+                                return e.preventDefault(), t.navigation_listener.gamepadNavigation("cancel");
+                            case 38:
+                                return e.preventDefault(), t.navigation_listener.gamepadNavigation("up");
+                            case 40:
+                                return e.preventDefault(), t.navigation_listener.gamepadNavigation("l1lI0");
+                            case 37:
+                                return e.preventDefault(), t.navigation_listener.gamepadNavigation("left");
+                            case 39:
+                                return e.preventDefault(), t.navigation_listener.gamepadNavigation("right")
                         }
-                        return t.prototype.dispose = function () {
-                            if (this.geometry.dispose(), this.quads = [], this.O1lI1.dispose(), this.options.propulsion && this.IIOIO.dispose(), this.options.propulsion) return this.l0110.dispose()
-                        }, t.prototype.bump = function (t) {
-                            return this.bumpframe = t, this.bumping = !0
-                        }, t.prototype.propstep = function (t) {
-                            if (this.options.propulsion) return this.l1O0l = t ? Math.max(.02, Math.min(1, 1.1 * this.l1O0l)) : .94 * this.l1O0l, this.OOl1I.visible = this.l1O0l > .01, this.IIOIO.opacity = (.5 + .5 * Math.random()) * this.l1O0l
-                        }, t.prototype.I1O10 = function (t) {
-                            var e, i, s;
-                            switch (null == t && (t = 10), this.built_material = this.finish, this.finish) {
-                                case "alloy":
-                                    this.buildAlloyMaterial();
-                                    break;
-                                case "gold":
-                                    this.buildGoldMaterial();
-                                    break;
-                                case "titanium":
-                                    this.buildTitaniumMaterial();
-                                    break;
-                                case "carbon":
-                                    this.buildCarbonMaterial();
-                                    break;
-                                default:
-                                    this.buildDefaultMaterial()
-                            }
-                            return this.base_color = this.material.color.getHex(), s = this.base_color >> 16 & 255, i = this.base_color >> 8 & 255, e = 255 & this.base_color, this.dark_color = Math.floor(s / 2) << 16 | Math.floor(i / 2) << 8 | Math.floor(e / 2), this.material
-                        }, t.prototype.buildDefaultMaterial = function (t) {
-                            return null == t && (t = 10), this.material = new THREE.MeshLambertMaterial({
-                                map: OlOlI,
-                                color: 16777215,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildX27Material = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 4243711,
-                                shininess: 30,
-                                bumpScale: .1,
-                                color: 5275808,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildAlloyMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 8413264,
-                                shininess: 30,
-                                bumpScale: .1,
-                                color: 10531008,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildTitaniumMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 6316128,
-                                shininess: 20,
-                                bumpScale: .1,
-                                color: 6316128,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildCarbonMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specular: 6316128,
-                                shininess: 5,
-                                bumpScale: .1,
-                                color: 1052688,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: Oll11
-                            })
-                        }, t.prototype.buildFullColorMaterial = function () {
-                            var t;
-                            return t = lO01l.hsvToRgbHex(this.hue, 1, 1), this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 12632256,
-                                shininess: 50,
-                                bumpScale: .1,
-                                color: t,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildGoldMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 10506256,
-                                shininess: 50,
-                                bumpScale: .1,
-                                color: 8413232,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildCopperMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 11554864,
-                                shininess: 15,
-                                bumpScale: .1,
-                                color: 10514512,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildDiamondMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specular: 16777215,
-                                opacity: .5,
-                                shininess: 50,
-                                side: THREE.DoubleSide,
-                                bumpScale: .1,
-                                transparent: !0,
-                                color: 8421504,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.I0OIl = function (t) {
-                            var e, i;
-                            if (this.built_material !== this.finish && (this.I1O10(this.hue), this.Il0I1.material = this.material), this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.invulnerable ? Date.now() % 500 < 250 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && (this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.shield_mesh.visible = !0)) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)) : this.OII1l > 0 && (this.ll0O0 = Math.random() < this.OII1l ? 1 : 0, this.options.shield && (this.shield_mesh.visible = !0), 1 === this.ll0O0 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1))) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)), this.OII1l *= .95, this.OII1l < .1 && (this.OII1l = 0, this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)))), this.bumping && (t > this.bumpframe + 30 ? (this.bumping = !1, this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) : (i = Math.max(0, t - this.bumpframe) / 30, e = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2), this.lO101.scale.set(2 * this.data.size * e, 2 * this.data.size * e, 2 * this.data.size * e))), this.last_frame = t, this.bump_shield && this.options.shield) return t > this.bump_shield_frame + 30 ? (this.bump_shield = !1, this.shield_mesh.scale.set(1.2, 1.2, 1.2)) : (i = Math.max(0, t - this.bump_shield_frame) / 30, e = 1.2 - .1 * Math.cos(Math.pow(i, .5) * Math.PI * 2), this.shield_mesh.scale.set(e, e, e), this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, Math.pow(1 - i, .25))), this.shield_mesh.visible = !0)
-                        }, t.prototype.bumpShield = function () {
-                            if (null != this.last_frame && !this.bump_shield) return this.bump_shield_frame = this.last_frame, this.bump_shield = !0
-                        }, t.prototype.getTextureIndex = function (t, e) {
-                            return null == t ? 0 : "number" == typeof t ? t : t[e] || t[t.length - 1]
-                        }, t.prototype.addQuad = function (t, e, i, s, l, n, a, o, r, h, u, d) {
-                            return this.geometry.faces.push(new THREE.Face3(t, e, i)), this.geometry.faces.push(new THREE.Face3(s, t, i)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(l, n), new THREE.Vector2(a, o), new THREE.Vector2(r, h)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(u, d), new THREE.Vector2(l, n), new THREE.Vector2(r, h)])
-                        }, t.prototype.IllIO = function (t, e) {
-                            var i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
-                            if (null == e && (e = 0), 0 === e) return this.IllIO(t, 1), void (0 !== t.offset.x && this.IllIO(t, -1));
-                            for (i = t.angle || 0, o = Math.cos(i / 180 * Math.PI * e), z = Math.sin(i / 180 * Math.PI * e), C = this.geometry.vertices.length, O = Math.min(t.position.x.length, t.position.y.length, t.width.length, t.height.length) - 1, p = 8, c = I = 0, v = p - 1; 0 <= v ? I <= v : I >= v; c = 0 <= v ? ++I : --I) l = c / p * Math.PI * 2;
-                            if (null != t.section_segments && ("number" == typeof t.section_segments ? (p = t.section_segments, l = function () {
-                                var t, e, i;
-                                for (i = [], c = t = 0, e = p - 1; 0 <= e ? t <= e : t >= e; c = 0 <= e ? ++t : --t) i.push(c / p * Math.PI * 2);
-                                return i
-                            }()) : (p = t.section_segments.length, l = function () {
-                                var e, i, s;
-                                for (s = [], c = e = 0, i = p - 1; 0 <= i ? e <= i : e >= i; c = 0 <= i ? ++e : --e) s.push(t.section_segments[c] / 180 * Math.PI);
-                                return s
-                            }())), null == t.position.z)
-                                for (t.position.z = [], c = m = 1, b = t.position.y.length; 1 <= b ? m <= b : m >= b; c = 1 <= b ? ++m : --m) t.position.z.push(0);
-                            for (d = f = 0, w = O; f <= w; d = f += 1)
-                                for (H = .01 * t.position.y[d], c = g = 0,
-                                    x = p - 1; g <= x; c = g += 1) s = l[c] + Math.PI / 2, A = (.01 * t.position.x[d] + Math.cos(s) * t.width[d] * .01) * e, B = Math.sin(s) * t.height[d] * .01 * e + .01 * t.offset.z + .01 * t.position.z[d], j = o * A + z * H, D = o * H - z * A, D += .01 * t.offset.y, j += .01 * t.offset.x * e, t.vertical ? this.geometry.vertices.push(new THREE.Vector3(-B, j, D)) : this.geometry.vertices.push(new THREE.Vector3(D, j, B));
-                            for (d = y = 0, k = O - 1; y <= k; d = y += 1)
-                                for (a = .25 * (t.width[d] + t.width[d + 1] + t.height[d] + t.height[d + 1]) * 6.28, n = Math.abs(t.position.y[d] - t.position.y[d + 1]), E = 1, n > 0 && a / n > 4 && p % 8 == 0 ? E = 4 : n > 0 && a / n > 2 && p % 4 == 0 && (E = 2), c = R = 0, _ = p - 1; R <= _; c = R += 1) c < p / 2 ? (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + d * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + (c + 1) % p, C + (d + 1) * p + c, C + d * p + (c + 1) % p)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]])) : (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + (d + 1) * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + d * p + c, C + d * p + (c + 1) % p, C + (d + 1) * p + (c + 1) % p)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]])), r = (l[c] - l[0] + Math.PI / 2) / Math.PI * E % 1, u = l[(c + 1) % l.length] - l[c], u < 0 && (u += 2 * Math.PI), h = r + u / Math.PI * E, M = this.getTextureIndex(t.texture, d), 15 === M && (M = 13), 63 === M && (M = 31), S = M % 8 * .125, T = .25 * (3 - Math.floor(M / 8) + .1), r = S + .125 * (.1 + .8 * r), h = S + .125 * (.1 + .8 * h), P = T + .2, 31 === M && (S += .125 * this.hue, r = S, h = S), c < p / 2 ? (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T), new THREE.Vector2(r, P), new THREE.Vector2(h, P)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(h, T), new THREE.Vector2(r, T), new THREE.Vector2(h, P)])) : (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T), new THREE.Vector2(r, P), new THREE.Vector2(h, T)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(h, P), new THREE.Vector2(h, T)]))
-                        }, t.prototype.buildTorus = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
-                            if ("number" == typeof (x = t.segments)) I = x, k = function () {
-                                var t, e, i;
-                                for (i = [], h = t = 0, e = I; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / I * Math.PI * 2);
-                                return i
-                            }();
-                            else
-                                for (k = [], h = d = 0, f = x.length - 1; 0 <= f ? d <= f : d >= f; h = 0 <= f ? ++d : --d) k[h] = x[h] / 180 * Math.PI;
-                            for (T = this.geometry.vertices.length, r = k.length - 1, u = 8, h = O = 0, g = u - 1; 0 <= g ? O <= g : O >= g; h = 0 <= g ? ++O : --O) s = h / u * Math.PI * 2;
-                            for (null != t.section_segments && ("number" == typeof t.section_segments ? (u = t.section_segments, s = function () {
-                                var t, e, i;
-                                for (i = [], h = t = 0, e = u - 1; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / u * Math.PI * 2);
-                                return i
-                            }()) : (u = t.section_segments.length, s = function () {
-                                var e, i, s;
-                                for (s = [], h = e = 0, i = u - 1; 0 <= i ? e <= i : e >= i; h = 0 <= i ? ++e : --e) s.push(t.section_segments[h] / 180 * Math.PI);
-                                return s
-                            }())); t.position.x.length < r + 1;) t.position.x.push(t.position.x[t.position.x.length - 1]);
-                            for (; t.position.y.length < r + 1;) t.position.y.push(t.position.y[t.position.y.length - 1]);
-                            for (; t.position.z.length < r + 1;) t.position.z.push(t.position.z[t.position.z.length - 1]);
-                            for (; t.width.length < r + 1;) t.width.push(t.width[t.width.length - 1]);
-                            for (; t.height.length < r + 1;) t.height.push(t.height[t.height.length - 1]);
-                            for (o = c = 0, y = r; c <= y; o = c += 1)
-                                for (e = k[o], P = Math.cos(e), R = Math.sin(e), h = p = 0, v = u - 1; p <= v; h = p += 1) i = s[h], C = .01 * (t.offset.x + t.position.x[o] + Math.cos(i) * t.height[o] + t.radius), j = .01 * (t.offset.y + t.position.y[o] + Math.sin(i) * t.width[o]), D = 0, A = P * C + R * D, B = P * D - R * C + .01 * t.offset.z, H = j, this.geometry.vertices.push(new THREE.Vector3(H, A, B));
-                            for (o = m = 0, b = r - 1; m <= b; o = m += 1)
-                                for (h = S = 0, w = u - 1; S <= w; h = S += 1) this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + h, T + o * u + h, T + o * u + (h + 1) % u)), this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + (h + 1) % u, T + (o + 1) * u + h, T + o * u + (h + 1) % u)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]]), l = (s[h] - s[0]) / Math.PI % 1, a = s[(h + 1) % s.length] - s[h], a < 0 && (a += 2 * Math.PI), n = l + a / Math.PI, _ = this.getTextureIndex(t.texture, o), 15 === _ && (_ = 13), 63 === _ && (_ = 31), z = _ % 8 * .125, M = .25 * (3 - Math.floor(_ / 8) + .1), l = z + .125 * (l + .1) * .8, n = z + .125 * (n + .1) * .8, E = M + .2, 31 === _ && (z += .125 * this.hue, l = z, n = z), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(l, M), new THREE.Vector2(l, E), new THREE.Vector2(n, E)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(n, M), new THREE.Vector2(l, M), new THREE.Vector2(n, E)])
-                        }, t.prototype.l110I = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M;
-                            for (_ = this.geometry.vertices.length, u = Math.min(t.length.length, t.width.length - 1, t.angle.length, t.position.length - 1), null == t.offset && (t.offset = {
+                        if (16 === i && null != t.O0IOO.display.screen.lIll0.weapons_bar && t.O0IOO.display.screen.lIll0.weapons_bar.shiftSelection(), 18 === i && (t.alt_pressed = !0), 87 === i && null != t.O0IOO.display.screen.lIll0.weapons_bar && (t.O0IOO.display.screen.lIll0.weapons_bar.toggleStore(), e.preventDefault()), "KeyA" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && (t.ship.l1110.strafe_left || (t.ship.l1110.strafe_left = !0, t.ship.lI1O1())), "KeyD" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && (t.ship.l1110.strafe_right || (t.ship.l1110.strafe_right = !0, t.ship.lI1O1())), "KeyV" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.release_crystal && (t.ship.l1110.release_crystal || (t.ship.l1110.release_crystal = !0, t.ship.lI1O1())), 122 === i && (t.O0IOO.is_app || (t.O0IOO.lI11l.toggleFullScreen(), e.preventDefault())), null != t.map[i]) {
+                            if ("left" !== t.map[i] && "right" !== t.map[i] || (t.last_keyboard_action = Date.now()), e.preventDefault(), "left" !== t.map[i] && "right" !== t.map[i] || t[t.map[i]] || (t[t.map[i]] = !0, t.O0IOO.using_keyboard = .2 + .8 * t.O0IOO.using_keyboard, t.IlOIO()), 38 !== i && 32 !== i || t.ship.l1110[t.map[i]] || (t.ship.l1110[t.map[i]] = !0, t.ship.lI1O1()), "l1lI0" === t.map[i] && !t[t.map[i]]) return t[t.map[i]] = !0, t.ship.l1110.angle = (t.ship.l1110.angle + 180) % 360, t.ship.lI1O1(), s = .5 * t.O0IOO.display.width + .25 * t.O0IOO.display.height * Math.cos(-t.ship.l1110.angle / 180 * Math.PI), l = t.O0IOO.display.height * (.5 + .25 * Math.sin(-t.ship.l1110.angle / 180 * Math.PI)), t.O0IOO.display.screen.lIll0.cursor.set(s, l)
+                        } else {
+                            if (17 === i && null != t.O0IOO.mode && t.O0IOO.mode.options.rcs_toggle && !t.control_pressed) return t.control_pressed = !0, t.ship.l1110.glide ? (t.ship.l1110.glide = !1, t.ship.lI1O1()) : (t.ship.l1110.glide = !0, t.ship.lI1O1(), t.glide_pressed_time = Date.now());
+                            if (9 === i && (t.alt_pressed = !1), 9 === i && e.shiftKey) return;
+                            if (13 === i && e.altKey && t.O0IOO.is_app) return t.O0IOO.lI11l.toggleFullScreen(), void e.preventDefault();
+                            if (!e.altKey && t.O0IOO.keyPressed(i)) return e.preventDefault()
+                        }
+                    }
+                }(this), document.onkeyup = function (t) {
+                    return function (e) {
+                        var i;
+                        if (e = e || window.event, e.preventDefault(), i = e.keyCode,
+                            18 === i && t.alt_pressed && null != t.O0IOO.display.screen.lIll0.weapons_bar && (t.O0IOO.display.screen.lIll0.weapons_bar.l1lOl(), e.preventDefault()), "KeyA" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && t.ship.l1110.strafe_left && (t.ship.l1110.strafe_left = !1, t.ship.lI1O1()), "KeyD" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && t.ship.l1110.strafe_right && (t.ship.l1110.strafe_right = !1, t.ship.lI1O1()), "KeyV" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.release_crystal && t.ship.l1110.release_crystal && (t.ship.l1110.release_crystal = !1, t.ship.lI1O1()), null != t.map[i]) {
+                            if (t[t.map[i]] = !1, t.ship.l1110[t.map[i]]) return t.ship.l1110[t.map[i]] = !1, t.ship.lI1O1()
+                        } else if (17 === e.keyCode) {
+                            if (t.control_pressed = !1, Date.now() > t.glide_pressed_time + 300 && t.ship.l1110.glide) return t.ship.l1110.glide = !1, t.ship.lI1O1()
+                        } else if (t.O0IOO.keyReleased(i)) return e.preventDefault()
+                    }
+                }(this), this.O0IOO.display.screen.control_listener = this, this.element.addEventListener("mouseout", function (t) {
+                    return function (e) {
+                        return t.doMouseOut(e)
+                    }
+                }(this)), this.element.addEventListener("oncontextmenu", function (t) {
+                    return function (t) {
+                        return !1
+                    }
+                }()), this.l1lll = null, this.Il101 = 0, this.O0O1I = 0, this.lOO0O = 0, this.first = !1, this.touchmoved = !1, this.nextauto = 0
+            }
+            return t.prototype.setNavigationListener = function (t) {
+                var e;
+                return e = this.navigation_listener, this.navigation_listener = null, null != e && e.gamepadNavigation("interrupted"), this.navigation_listener = t
+            }, t.prototype.lI110 = function (t) {
+                var e, i;
+                for (e = 1, i = t; e <= i; e += 1) this.IlOIO();
+                0 !== this.endup && this.O0IOO.O1110.IlI0I.O11ll >= this.endup && (this.endup = 0, null === this.l1lll && this.ship.l1110.up && (this.ship.l1110.up = !1, this.ship.lI1O1()))
+            }, t.prototype.IlOIO = function () {
+                var t, e;
+                if (this.O0IOO.settings.check("gamepad_control") && null == this.gamepad && (this.gamepad = new Gamepad(this)), this.autoPilot(), this.left ? (this.inc = Math.min(6, this.inc + .3), this.ship.l1110.angle = Math.round((this.ship.l1110.angle + this.inc) % 360), this.ship.lI1O1(), t = .5 * this.O0IOO.display.width + .25 * this.O0IOO.display.height * Math.cos(-this.ship.l1110.angle / 180 * Math.PI), e = this.O0IOO.display.height * (.5 + .25 * Math.sin(-this.ship.l1110.angle / 180 * Math.PI)), this.O0IOO.display.screen.lIll0.cursor.set(t, e)) : this.right ? (this.inc = Math.min(6, this.inc + .3), this.ship.l1110.angle = Math.round((this.ship.l1110.angle + 360 - this.inc) % 360), this.ship.lI1O1(), t = .5 * this.O0IOO.display.width + .25 * this.O0IOO.display.height * Math.cos(-this.ship.l1110.angle / 180 * Math.PI), e = this.O0IOO.display.height * (.5 + .25 * Math.sin(-this.ship.l1110.angle / 180 * Math.PI)), this.O0IOO.display.screen.lIll0.cursor.set(t, e)) : this.inc = Math.max(1, this.inc - 1), null != this.aim_id && Date.now() > this.aim_time + 200) return this.aim_x < this.O0IOO.display.width / 2 ? (this.startJoystick(this.aim_x, this.aim_y, this.aim_id), this.aim_id = null) : (this.lOO0O = this.aim_id, this.aim_id = null, this.ship.l1110.l1lOl = !0, this.ship.lI1O1()), this.O0IOO.display.screen.lIll0.cursor.set(-1e4, -1e4)
+            }, t.prototype.gamepadButtonStatus = function (t, e) {
+                if (this.O0IOO.is_app && (this.O0IOO.using_gamepad = !0), null != this.navigation_listener && e) switch (t) {
+                    case 0:
+                        if (this.navigation_listener.gamepadNavigation("ok")) return;
+                        break;
+                    case 1:
+                        if (this.navigation_listener.gamepadNavigation("cancel")) return;
+                        break;
+                    case 12:
+                        if (this.navigation_listener.gamepadNavigation("up")) return;
+                        break;
+                    case 13:
+                        if (this.navigation_listener.gamepadNavigation("l1lI0")) return;
+                        break;
+                    case 14:
+                        if (this.navigation_listener.gamepadNavigation("left")) return;
+                        break;
+                    case 15:
+                        if (this.navigation_listener.gamepadNavigation("right")) return
+                }
+                switch (t) {
+                    case 0:
+                        return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.l1lOl = e, this.ship.lI1O1();
+                    case 1:
+                        if (e && (this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), null != this.O0IOO.display.screen.lIll0.weapons_bar)) return this.O0IOO.display.screen.lIll0.weapons_bar.l1lOl();
+                        break;
+                    case 2:
+                        if (e && (this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), null != this.O0IOO.display.screen.lIll0.weapons_bar)) return this.O0IOO.display.screen.lIll0.weapons_bar.toggleStore();
+                        break;
+                    case 3:
+                        if (e && (this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), null != this.O0IOO.display.screen.lIll0.weapons_bar)) return this.O0IOO.display.screen.lIll0.weapons_bar.shiftSelection();
+                        break;
+                    case 7:
+                        return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.up = e, this.ship.lI1O1();
+                    case 6:
+                        return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.glide = e, this.ship.lI1O1();
+                    case 4:
+                        if (null != this.O0IOO.mode && this.O0IOO.mode.options.strafe > 0) return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.strafe_left = e, this.ship.lI1O1();
+                        if (null != this.O0IOO.mode && this.O0IOO.mode.options.release_crystal && !this.ship.l1110.release_crystal === e) return this.ship.l1110.release_crystal = e, this.ship.lI1O1();
+                        break;
+                    case 5:
+                        if (null != this.O0IOO.mode && this.O0IOO.mode.options.strafe > 0) return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.strafe_right = e, this.ship.lI1O1();
+                        if (e) return this.O0IOO.keyPressed(9);
+                        break;
+                    case 8:
+                        if (e) return this.O0IOO.keyPressed("Z".charCodeAt(0));
+                        break;
+                    case 9:
+                        if (this.O0IOO.is_app && e && !this.O0IOO.display.screen.lIll0.hidden) return this.O0IOO.display.screen.lIll0.toggleOptions();
+                        break;
+                    case 11:
+                        if (this.O0IOO.is_app && e) return this.O0IOO.display.screen.lIll0.chatpanel.gamepadChatClick();
+                        break;
+                    case 12:
+                        if (e) return this.O0IOO.display.screen.lIll0.shipUpgradesNavigation();
+                        break;
+                    case 13:
+                        if (e) return this.O0IOO.display.screen.lIll0.statsUpgradesNavigation()
+                }
+            }, t.prototype.gamepadJoystickStatus = function (t, e) {
+                var i, s;
+                switch (this.O0IOO.is_app && (this.O0IOO.using_gamepad = !0), t) {
+                    case 0:
+                        if (e >= 0) return this.angle = e, this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.angle = this.angle, this.ship.lI1O1(), i = .5 * this.O0IOO.display.width + .35 * this.O0IOO.display.height * Math.cos(-this.ship.l1110.angle / 180 * Math.PI), s = this.O0IOO.display.height * (.5 + .35 * Math.sin(-this.ship.l1110.angle / 180 * Math.PI)), this.O0IOO.display.screen.lIll0.cursor.set(i, s);
+                        break;
+                    case 1:
+                        if (this.O0IOO.is_app) return this.O0IOO.display.screen.lIll0.chatpanel.gamepadChat(e >= 0, e)
+                }
+            }, t.prototype.mouseDown = function (t, e, i) {
+                if (null == this.navigation_listener || !this.navigation_listener.block_ship_control) return this.mousepressed = !0, 1 === i.which && (this.ship.l1110.l1lOl = !0, this.ship.lI1O1()), 2 === i.which && null != this.O0IOO.display.screen.lIll0.weapons_bar && this.O0IOO.display.screen.lIll0.weapons_bar.l1lOl(), 3 === i.which && (this.ship.l1110.up = !0, this.ship.lI1O1()), !0
+            }, t.prototype.mouseMove = function (t, e, i) {
+                if (!(Date.now() < this.last_keyboard_action + 1e3 || Date.now() < this.last_gamepad_action + 1e3 || (this.O0IOO.display.screen.lIll0.cursor.set(t, e), null != this.navigation_listener && this.navigation_listener.block_ship_control))) {
+                    for (t -= this.O0IOO.display.width / 2, e -= this.O0IOO.display.height / 2, this.angle = -Math.atan2(e, t), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
+                    return this.angle !== this.ship.l1110.angle && (this.O0IOO.using_keyboard *= .9, this.ship.l1110.angle = this.angle, this.ship.lI1O1()), !0
+                }
+            }, t.prototype.doMouseOut = function (t) {
+                return this.O0IOO.display.screen.lIll0.figures.hideMouse()
+            }, t.prototype.mouseUp = function (t, e, i) {
+                return 1 === i.which && (this.ship.l1110.l1lOl = !1, this.ship.lI1O1()), 3 === i.which && (this.ship.l1110.up = !1, this.ship.lI1O1()), !0
+            }, t.prototype.joystickRatio = function () {
+                return 667 / Math.max(screen.width, screen.height) * .8
+            }, t.prototype.joystickRadius = function () {
+                return this.O0IOO.display.height / 8 * this.joystickRatio()
+            }, t.prototype.O0O01 = function (t, e, i) {
+                return this.touchmoved = !1, this.O0IOO.display.height, this.joystickRadius(), null === this.l1lll ? (this.aim_time = Date.now(), this.aim_x = t, this.aim_y = e, this.aim_id = i, this.O0IOO.display.screen.lIll0.cursor.set(this.aim_x, this.aim_y)) : t < this.O0IOO.display.width / 2 ? this.startJoystick(t, e, i) : (this.lOO0O = i, this.ship.l1110.l1lOl = !0, this.ship.lI1O1()), !0
+            }, t.prototype.startJoystick = function (t, e, i) {
+                var s, l, n, a;
+                return this.auto = !1, a = this.joystickRadius(), n = this.O0IOO.display.height, s = this.ship.l1110.angle, s = -s * Math.PI / 180, l = a / 2, this.l1lll = i, this.Il101 = t - Math.cos(s) * l, this.O0O1I = e - Math.sin(s) * l, this.ship.l1110.up = !1, this.ship.lI1O1(), this.O0IOO.display.screen.lIll0.arrow.set(s, 0), this.O0IOO.display.screen.lIll0.joystick.set(this.Il101 / n, this.O0O1I / n, t / n, e / n), this.O0IOO.display.screen.lIll0.cursor.set(-1e4, -1e4)
+            }, t.prototype.lOOlO = function (t, e, i) {
+                var s, l, n, a, o, r, h, u;
+                if (this.touchmoved = !0, l = this.O0IOO.display.height, n = this.joystickRadius(), this.l1lll === i) {
+                    for (t -= this.Il101, e -= this.O0O1I, s = Math.sqrt(t * t + e * e), o = t / s, r = e / s, h = this.Il101 + Math.min(1.5 * n, s) * o, u = this.O0O1I + Math.min(1.5 * n, s) * r, this.O0IOO.display.screen.lIll0.joystick.set(this.Il101 / l, this.O0O1I / l, h / l, u / l), a = s > this.joystickRadius(), this.angle = -Math.atan2(e, t), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
+                    this.O0IOO.display.screen.lIll0.arrow.set(-this.angle / 360 * Math.PI * 2, s / (l / 8)), this.angle === this.ship.l1110.angle && a === this.ship.l1110.up || (this.ship.l1110.angle = this.angle, this.ship.l1110.up = a, this.ship.lI1O1())
+                }
+                return !0
+            }, t.prototype.autoPilot = function () {
+                var t, e, i, s;
+                if (this.nextauto = Math.max(this.nextauto - 1, 0), this.auto && 0 === this.nextauto) {
+                    if (this.nextauto = 10, e = this.ll1lO - this.O0IOO.O1110.OII0I.status.x, i = this.IO0Il - this.O0IOO.O1110.OII0I.status.y, e < -this.O0IOO.l000O && (e += this.O0IOO.size), e > this.O0IOO.l000O && (e -= this.O0IOO.size), i < -this.O0IOO.l000O && (i += this.O0IOO.size), i > this.O0IOO.l000O && (i -= this.O0IOO.size), Math.sqrt(e * e + i * i) < 8) return this.auto = !1, this.ship.l1110.up = !1, this.ship.lI1O1();
+                    for (this.angle = Math.atan2(i, e), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
+                    t = (this.angle - this.ship.status.angle + 360) % 360, t = Math.min(t, 360 - t), s = t < 10 || this.ship.l1110.up, this.angle === this.ship.l1110.angle && s === this.ship.l1110.up || (this.ship.l1110.angle = this.angle, this.ship.l1110.up = s, this.ship.lI1O1())
+                }
+            }, t.prototype.I1O0I = function (t, e, i) {
+                if (this.aim_id === i) {
+                    for (this.aim_id = null, this.O0IOO.display.screen.lIll0.cursor.set(this.aim_x, this.aim_y), t = this.aim_x - this.O0IOO.display.width / 2, e = this.aim_y - this.O0IOO.display.height / 2, this.angle = -Math.atan2(e, t), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
+                    if (this.angle !== this.ship.l1110.angle) return this.ship.l1110.angle = this.angle, this.ship.lI1O1()
+                } else {
+                    if (this.l1lll === i) return this.l1lll = null, this.ship.l1110.up = !1, this.ship.lI1O1(), this.O0IOO.display.screen.lIll0.joystick.pressed = !1;
+                    if (this.lOO0O === i) return this.lOO0O = null, this.ship.l1110.l1lOl = !1, this.ship.lI1O1()
+                }
+            }, t.prototype.mouseWheel = function (t) {
+                if (null != this.O0IOO.display.screen.lIll0.weapons_bar && !(Date.now() < this.next_wheel_action)) return this.next_wheel_action = Date.now() + 200, t.wheelDelta < 0 || t.detail > 0 ? this.O0IOO.display.screen.lIll0.weapons_bar.selectDown() : this.O0IOO.display.screen.lIll0.weapons_bar.selectUp()
+            }, t
+        }(), this.StationModules = function () {
+            function t() {
+                this.modules = [], this.structures = [], this.structures_n = [], this.structures_ns = [], this.structures_ne = [], this.structures_nes = [], this.structures_nesw = [], this.deposits = [], this.spawnings = [], this.types_by_id = {}
+            }
+            return t.prototype.add = function (t) {
+                switch (this.modules.push(t), this.types_by_id[t.id] = t, t.type) {
+                    case "structure":
+                        switch (this.structures.push(t), t.hook) {
+                            case "N":
+                                return this.structures_n.push(t);
+                            case "NE":
+                                return this.structures_ne.push(t);
+                            case "NS":
+                                return this.structures_ns.push(t);
+                            case "NES":
+                                return this.structures_nes.push(t);
+                            case "NESW":
+                                return this.structures_nesw.push(t);
+                            default:
+                                return this.structures_ns.push(t)
+                        }
+                        break;
+                    case "deposit":
+                        return this.deposits.push(t);
+                    case "spawning":
+                        return this.spawnings.push(t)
+                }
+            }, t.prototype.IlO01 = function () {
+                return this.modules[Math.floor(Math.random() * this.modules.length)]
+            }, t.prototype.getDeposit = function () {
+                return this.deposits[Math.floor(Math.random() * this.deposits.length)]
+            }, t.prototype.getSpawning = function () {
+                return this.spawnings[Math.floor(Math.random() * this.spawnings.length)]
+            }, t.prototype.getStructure = function (t) {
+                switch (t) {
+                    case "N":
+                        return this.structures_n[Math.floor(Math.random() * this.structures_n.length)];
+                    case "NS":
+                        return this.structures_ns[Math.floor(Math.random() * this.structures_ns.length)];
+                    case "NE":
+                        return this.structures_ne[Math.floor(Math.random() * this.structures_ne.length)];
+                    case "NES":
+                        return this.structures_nes[Math.floor(Math.random() * this.structures_nes.length)];
+                    default:
+                        return this.structures_nesw[Math.floor(Math.random() * this.structures_nesw.length)]
+                }
+            }, t
+        }(), STATION_MODULES = new this.StationModules, STATION_MODULES.add({
+            type: "deposit",
+            id: "d1",
+            generate: function (t) {
+                return {
+                    type: "deposit",
+                    size: .5,
+                    tori: {
+                        main: {
+                            radius: 60,
+                            segments: 16,
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: -40,
+                                z: 0
+                            },
+                            position: {
+                                x: [0],
+                                y: [0],
+                                z: [0]
+                            },
+                            width: [10],
+                            height: [10],
+                            texture: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 63, 63, 2]
+                        },
+                        main2: {
+                            radius: 60,
+                            segments: 16,
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: -70,
+                                z: 0
+                            },
+                            position: {
+                                x: [0],
+                                y: [0],
+                                z: [0]
+                            },
+                            width: [10],
+                            height: [10],
+                            texture: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 63, 2, 2, 63, 2]
+                        }
+                    },
+                    bodies: {
+                        hook: {
+                            section_segments: 16,
+                            offset: {
                                 x: 0,
                                 y: 0,
                                 z: 0
-                            }), z = 0, M = 0, l = n = 0, O = u; n <= O; l = n += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * -t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z += o * e, M += o * m);
-                            for (l = a = 0, c = u - 1; a <= c; l = a += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 5, _ + 4 * l + 3, _ + 4 * l + 7)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 3)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 6, _ + 4 * l + 7, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(v, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, x), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)])));
-                            for (_ = this.geometry.vertices.length, z = 0, M = 0, l = r = 0, p = u; r <= p; l = r += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z -= o * e, M += o * m);
-                            for (l = h = 0, I = u - 1; h <= I; l = h += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 7)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 7, _ + 4 * l + 6)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(b, k)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(v, k)])))
-                        }, t.prototype.computeBounds = function () {
-                            var t, e, i, s, l, n, a, o;
-                            for (l = 0, i = 0, n = 0, s = 0, a = this.geometry.vertices, t = 0, e = a.length; t < e; t++) o = a[t], l = Math.min(l, o.x), n = Math.min(n, o.y), i = Math.max(i, o.x), s = Math.max(s, o.y);
-                            return this.bounds = {
-                                minx: l,
-                                maxx: i,
-                                miny: n,
-                                maxy: s,
-                                width: i - l,
-                                height: s - n,
-                                cx: (l + i) / 2,
-                                cy: (n + s) / 2
-                            }
-                        }, t.prototype.shapePoint = function (t, e, i) {
-                            var s, l, n;
-                            return n = i.length, s = Math.atan2(e, -t), s = Math.round((s + 2 * Math.PI) / (2 * Math.PI) * n) % n, l = Math.sqrt(t * t + e * e), i[s] = Math.max(i[s], l)
-                        }, t.prototype.Il111 = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g;
-                            for (null == t && (t = 50), c = [], s = n = 0, u = t - 1; 0 <= u ? n <= u : n >= u; s = 0 <= u ? ++n : --n) c[s] = 0;
-                            for (d = this.geometry.faces, a = 0, o = d.length; a < o; a++)
-                                for (i = d[a], p = this.geometry.vertices[i.a], I = this.geometry.vertices[i.b], m = this.geometry.vertices[i.c], s = r = 0; r <= 99; s = r += 1) e = s / 100, f = p.x * e + I.x * (1 - e), g = p.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + I.x * (1 - e), g = m.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + p.x * (1 - e), g = m.y * e + p.y * (1 - e), this.shapePoint(f, g, c);
-                            for (s = h = 0, O = c.length - 1; h <= O; s = h += 1) c[s] *= 2 * this.data.size;
-                            for (l in c) c[l] = parseFloat(c[l].toFixed(3));
-                            return c
-                        }, t.prototype.lOOII = function (e) {
-                            var i, s, l, n, a, o, r;
-                            return null == e && (e = 128), r = new THREE.Scene, i = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.material.emissive.setHex(16777215), this.material.emissiveMap = lIO1l, this.material.side = THREE.DoubleSide, this.material.color.setHex(0), this.IIOIO.opacity = 0, r.add(this.lO101), this.lO101.position.set(e / 2, e / 2, -1e3), this.computeBounds(), o = .9 * Math.min(e / this.bounds.width, e / this.bounds.height), l = o * this.bounds.cy, n = o * this.bounds.cx, this.lO101.position.set(e / 2 - l, e / 2 - n, -1e3), a = o, this.lO101.scale.set(a, a, a), this.lO101.rotation.z = Math.PI / 2, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), t.I0O01.setSize(e, e), t.I0O01.render(r, i), s = document.createElement("canvas"), s.width = e, s.height = e, s.getContext("2d")
-                                .drawImage(t.I0O01.domElement, 0, 0), s
-                        }, t.prototype.get3DImage = function (e, i) {
-                            var s, l, n, a, o;
-                            return null == e && (e = 128), null == i && (i = 0), o = new THREE.Scene, s = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.IIOIO.opacity = 1, this.finish = "alloy", this.I1O10(), this.Il0I1.material = this.material, o.add(this.lO101), n = new THREE.DirectionalLight, n.position.set(2, -1, 1), o.add(n), this.lO101.position.set(e / 2, e / 2, -1e3), a = .25 * e, this.lO101.scale.set(-a, a, a), this.lO101.rotation.z = Math.PI / 2 + i, this.lO101.rotation.x = Math.PI / 4, this.lO101.rotation.order = "XYZ", t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), t.I0O01.setSize(e, e), t.I0O01.render(o, s), l = document.createElement("canvas"), l.width = e, l.height = e, l.getContext("2d")
-                                .drawImage(t.I0O01.domElement, 0, 0), l
-                        }, t.prototype.getIcon = function (e) {
-                            var i, s, l, n, a, o, r;
-                            return null == e && (e = 64), r = new THREE.Scene, i = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.material = new THREE.MeshBasicMaterial({
-                                color: 16777215,
-                                side: THREE.DoubleSide
-                            }), this.Il0I1.material = this.material, this.IIOIO.opacity = 0, r.add(this.lO101), this.computeBounds(), o = .9 * Math.min(e / this.bounds.width, e / this.bounds.height), l = o * this.bounds.cy, n = o * this.bounds.cx, this.lO101.position.set(e / 2 - l, e / 2 - n, -1e3), a = o, this.lO101.scale.set(a, a, a), this.lO101.rotation.z = Math.PI / 2, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), t.I0O01.setSize(e, e), t.I0O01.render(r, i), s = document.createElement("canvas"), s.width = e, s.height = e, s.getContext("2d")
-                                .drawImage(t.I0O01.domElement, 0, 0), s
-                        }, t.prototype.getHorizontalThumbnail = function (e, i) {
-                            var s, l, n, a, o, r, h, u, d, O, c, p, I, m;
-                            for (null == e && (e = 128), null == i && (i = 0), p = new THREE.Scene, s = new THREE.OrthographicCamera(0, 2 * e, 0, e, 1, 3e3), this.IIOIO.opacity = .5, p.add(this.lO101), this.lO101.position.set(e, e / 2, -1e3), c = .4 * e, this.lO101.scale.set(c, -c, c), d = new THREE.DirectionalLight(16777215), d.position.set(1, -.5, 3), p.add(d), this.lO101.rotation.z = Math.PI, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), t.I0O01.setSize(2 * e, e), t.I0O01.render(p, s), l = document.createElement("canvas"), l.width = 2 * e, l.height = e, l.getContext("2d")
-                                .drawImage(t.I0O01.domElement, 0, 0), n = l.getContext("2d"), n.translate(e, e / 2), n.rotate(-Math.PI / 2), n.translate(0, e / 2), n.scale(e / 15, e / 15), m = lIIl0.getShape(parseInt(i)), o = 0, h = m.length; o < h; o++) {
-                                for (I = m[o], n.beginPath(), a = n.createRadialGradient(0, 0, 0, 0, 0, 2), a.addColorStop(0, "hsl(" + Math.floor(360 * this.hue) + ",100%,100%)"), a.addColorStop(1, "hsl(" + Math.floor(360 * this.hue) + ",80%,40%)"), n.fillStyle = a, r = 0, u = I.length; r < u; r++) O = I[r], n.lineTo(O[1], O[0]);
-                                n.closePath(), n.fill()
-                            }
-                            return l
-                        }, t.prototype.getThumbnail = function (e, i) {
-                            var s, l, n, a, o, r, h, u, d, O, c, p, I, m;
-                            for (null == e && (e = 128), null == i && (i = 0), p = new THREE.Scene, s = new THREE.OrthographicCamera(0, e, 0, e, 1, 3e3), this.IIOIO.opacity = .5, p.add(this.lO101), this.lO101.position.set(e / 2, e / 2, -1e3), c = .4 * e, this.lO101.scale.set(c, -c, c), d = new THREE.PointLight(16777215, 1, 0), d.position.set(.3 * e, .3 * e, e - 1e3), p.add(d), this.lO101.rotation.z = Math.PI / 2, t.I0O01 || (t.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), t.I0O01.setSize(e, e), t.I0O01.render(p, s), l = document.createElement("canvas"), l.width = e, l.height = e, l.getContext("2d")
-                                .drawImage(t.I0O01.domElement, 0, 0), n = l.getContext("2d"), n.translate(e / 2, e / 8), n.scale(e / 20, e / 20), m = lIIl0.getShape(parseInt(i)), o = 0, h = m.length; o < h; o++) {
-                                for (I = m[o], n.beginPath(), a = n.createRadialGradient(0, 0, 0, 0, 0, 2), a.addColorStop(0, "hsl(" + Math.floor(360 * this.hue) + ",100%,100%)"), a.addColorStop(1, "hsl(" + Math.floor(360 * this.hue) + ",80%,40%)"), n.fillStyle = a, r = 0, u = I.length; r < u; r++) O = I[r], n.lineTo(O[1], O[0]);
-                                n.closePath(), n.fill()
-                            }
-                            return l
-                        }, t.exportThumbnail = function (e, i, s, l, n) {
-                            var a;
-                            return null == e && (e = 101), null == i && (i = 0), null == s && (s = "zinc"), null == l && (l = 0), null == n && (n = 128), a = new t(lIO1I.ships_by_code[e], i / 360, s), a.getThumbnail(n, l)
-                        }, t.exportHorizontalThumbnail = function (e, i, s, l, n) {
-                            var a;
-                            return null == e && (e = 101), null == i && (i = 0), null == s && (s = "zinc"), null == l && (l = 0), null == n && (n = 128), a = new t(lIO1I.ships_by_code[e], i / 360, s), a.getHorizontalThumbnail(n, l)
-                        }, t.icons_buffer = [], t.getShipIcon = function (e) {
-                            var i, s;
-                            return null == t.icons_buffer[e] && null != (s = lIO1I.ships_by_code[e]) && (i = new t(s, 0), t.icons_buffer[e] = i.getIcon(), i.dispose()), t.icons_buffer[e]
-                        }, t
-                    }(), this.createPropTexture = function () {
-                        var t, e, i, s;
-                        return t = document.createElement("canvas"), t.width = 64, t.height = 64, e = t.getContext("2d"), e.clearRect(0, 0, t.width, t.height), e.save(), e.translate(t.width / 2, .75 * t.height), e.scale(t.width / 2, .75 * -t.height), i = e.createRadialGradient(0, 0, 0, 0, 0, 1), i.addColorStop(0, "rgba(255,255,255,1)"), i.addColorStop(1, "rgba(255,255,255,0)"), e.fillStyle = i, e.fillRect(-1, -1, 2, 2), i = e.createLinearGradient(0, -1, 0, 1), i.addColorStop(0, "rgba(255,255,255,1)"), i.addColorStop(1, "rgba(255,255,255,0)"), e.fillStyle = i, e.globalCompositeOperation = "destination-in", e.fillRect(-1, -1, 2, 2), e.restore(), s = new THREE.Texture(t), s.needsUpdate = !0, s
-                    }, l010l = this.createPropTexture(), this.lOO0I = function () {
-                        function t(t) {
-                            this.hue = null != t ? t : 0, this.name = "", this.shield = 0, this.IIOOO = 8, this.canvas = document.createElement("canvas"), this.canvas.width = 256, this.canvas.height = 64, this.texture = new THREE.Texture(this.canvas), this.texture.minFilter = THREE.LinearFilter, this.score = 0, this.IIOOO = 0, this.shield = 0, this.healing = !1, this.rank = 0, this.level = 1, this.II010 = !1, this.O1I0O = new THREE.PlaneGeometry(1, 1), this.material = new THREE.MeshBasicMaterial({
-                                color: 16777215,
-                                map: this.texture,
-                                transparent: !0,
-                                depthWrite: !1,
-                                depthTest: !1
-                            }), this.Il0I1 = new THREE.Mesh(this.O1I0O, this.material), this.Il0I1.scale.set(10, 2.5, 1), this.anonymous = !1, this.target = !1, this.OlOOI()
-                        }
-                        return t.computeHue = function (t) {
-                            var e, i, s, l;
-                            for (l = 0, e = i = 0, s = t.length - 1; i <= s; e = i += 1) l += 111 * t.charCodeAt(e);
-                            return l % 360
-                        }, t.prototype.I0OIl = function (t, e, i, s) {
-                            var l, n, a, o, r;
-                            if (this.anonymous = t.mode.anonymous_ships, this.anonymous && (this.hue = (t.hue + 180) % 360), o = Math.min(100, Math.round(100 * i.shield / s.shield_capacity)), l = Math.min(100, Math.round(100 * i.IIOOO / s.crystals_capacity)), a = Math.floor(i.type / 100), this.II010 = i.II010, n = i.healing && i.hue === t.O1110.OII0I.status.hue, this.shipid = i.id, this.friendly = i.friendly, r = t.mode.isTarget(i.id), this.target === r && this.name === e && i.score === this.score && o === this.shield && l === this.IIOOO && i.rank === this.rank && a === this.level && this.healing === n || (this.name = e, this.IIOOO = l, this.score = i.score, this.rank = i.rank, this.shield = o, this.healing = n, this.level = a, this.target = r, this.OlOOI(t)), t.is_mobile_app && null != this.Il0I1) return this.Il0I1.scale.set(1.5 * (n ? 12.5 : 10), 3.75, 1)
-                        }, t.prototype.OlOOI = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I;
-                            return this.background = "hsla(" + this.hue + ",50%,30%,.25)", this.medium = "hsla(" + this.hue + ",40%,50%,.5)", this.color = "hsla(" + this.hue + ",40%,75%,1)", l = this.canvas.getContext("2d"), l.clearRect(0, 0, this.canvas.width, this.canvas.height), l.save(), s = !1, e = !1, i = !1, null != t && null != t.names && null != t.mode && null != t.mode.team_stats && null != (a = t.names.getData(this.shipid)) && a.friendly && (s = null != t.mode.team_stats[a.friendly] && t.mode.team_stats[a.friendly].killer.id === this.shipid, e = null != t.mode.team_stats[a.friendly] && t.mode.team_stats[a.friendly].contributor.id === this.shipid, i = null != t.mode.team_stats[a.friendly] && t.mode.team_stats[a.friendly].healer.id === this.shipid), p = 10, r = 2.5, this.healing && (p = 12.5), (s || e || i) && (r = 3.75), l.scale(10 / p, 2.5 / r), this.Il0I1.scale.set(p, r, 1), l.fillStyle = this.background, O = this.canvas.width, c = O / 32, O / 64, o = this.canvas.height, l.fillStyle = "hsl(" + this.hue + ",50%,80%)", d = Math.round(this.canvas.width / 512 * 32), l.font = d + "pt Play", l.textAlign = "left", l.textBaseline = "middle", this.anonymous || (l.fillText(this.name, 2 * c, o / 6), l.fillText("" + this.score, 2 * c, 3 * o / 6), l.textAlign = "right", l.fillText("Lv" + this.level, O - 2 * c, o / 6), l.fillText("#" + this.rank, O - 2 * c, 3 * o / 6)), I = O - 2 * c, l.fillStyle = "rgba(0,0,0,.5)", l.fillRect(2 * c - 1, .65 * o - 1, I + 2, .15 * o + 2), l.fillRect(2 * c - 1, .85 * o - 1, I + 2, .15 * o + 2), l.fillStyle = "hsla(180,100%,75%,.75)", l.fillRect(2 * c, .65 * o, I * this.shield / 100, .15 * o), l.fillStyle = "hsla(0,100%,75%,.75)", l.fillRect(2 * c, .85 * o, I * this.IIOOO / 100, .15 * o), null == this.shipid || null == t || this.anonymous || null != (n = t.names.getCustom(this.shipid)) && (r = Math.round(.7 * o), h = IIl10.lOOII(n.badge, n.laser, n.finish, r, n.hue), h.complete && l.drawImage(h, O / 2 - r, .6 * o - r / 2, 2 * r, r)), this.target && (l.fillStyle = "#F66", l.strokeStyle = "#000", l.lineWidth = 6, l.font = Math.round(.9 * this.canvas.height) + "pt FontAwesome", l.textAlign = "center", l.textBaseline = "middle", l.strokeText("", this.canvas.width / 2, this.canvas.height / 2), l.fillText("", this.canvas.width / 2, this.canvas.height / 2)), this.healing && (l.font = Math.round(.6 * this.canvas.height) + "pt FontAwesome", l.fillStyle = "hsla(180,100%,75%,.75)", l.textAlign = "center", l.textBaseline = "middle", l.fillText("", 9 * this.canvas.width / 8, this.canvas.height / 2)), u = 2 * c, l.textAlign = "left", l.textBaseline = "middle", l.fillStyle = "#FFF", l.font = Math.round(.35 * this.canvas.height) + "pt SBGlyphs", s && (l.fillText("[", u, 1.25 * this.canvas.height), u += .8 * this.canvas.height), e && (l.fillText("D", u, 1.25 * this.canvas.height), u += .8 * this.canvas.height), i && (l.fillText("", u, 1.25 * this.canvas.height), u += .8 * this.canvas.height), l.restore(), this.texture.needsUpdate = !0
-                        }, t
-                    }(), this.llOlO = function () {
-                        function t(t, e, i) {
-                            this.O0IOO = t, this.type = null != e ? e : lll01.types_by_code[101], this.IIlO1 = null != i && i, this.status = new OllOl, this.status.type = this.type.code, this.Ol0O1 = new I1II0(this.O0IOO), this.instance = new ShipInstance(this.type), this.levels_mem = 0, this.l1110 = {
-                                l1lOl: !1,
-                                left: !1,
-                                right: !1,
-                                strafe_left: !1,
-                                strafe_right: !1,
-                                release_crystal: !1,
-                                up: !1,
-                                l1lI0: !1,
-                                lO010: 0,
-                                guided: !1,
-                                glide: !1,
-                                angle: 0,
-                                r: 0,
-                                lI1l1: 0
-                            }, this.l1l1I = 0, this.Oll0l = 0, this.lO1lI = 0, this.OO11l = 0, this.llOl0 = Date.now(), this.OlO00 = .02, this.OI11I = .2, this.Il01l = 0, this.IIIIO = 0, this.IOl0O = 3, this.O111l = 0, this.IOIIl = 0, this.last_pulse_shot = 0, this.pods = new Pods(this.O0IOO, this)
-                        }
-                        return t.prototype.setType = function (t) {
-                            return this.type = t, this.instance = new ShipInstance(this.type), this.levels_mem = -1
-                        }, t.prototype.lIIO0 = function () {
-                            var t, e, i, s, l, n;
-                            if (this.status.levels !== this.levels_mem && (this.instance.read(this.status.levels), this.instance.updateParameters(), this.levels_mem = this.status.levels, this.O0IOO.OII0I === this && this.O0IOO.lI0Ol.beep()), this.l1110.lO010 = this.status.lO010, this.l1110.guided = this.status.guided, this.status.guided && (this.l1110.angle = this.status.angle), this.Ol0O1.lIIO0(this.instance, this.status), this.status.lO010 > 0 && (this.l1110.lI1l1 = this.status.lI1l1), this.Ol0O1.lO0Ol(this.instance, this.l1110), this.IIlO1 && (this.l1110.lI1l1 = this.status.lI1l1, this.l1110.strafe_left = this.status.strafe_left, this.l1110.strafe_right = this.status.strafe_right), s = 10 * this.l1110.lI1l1, this.l1110.strafe_left ? s += Math.PI / 6 : this.l1110.strafe_right && (s -= Math.PI / 6), this.Oll0l += (s - this.l1l1I) * this.OlO00, this.Oll0l *= 1 - this.OI11I, this.l1l1I += this.Oll0l, l = Math.cos(this.status.r), n = Math.sin(this.status.r), t = this.status.I0I0l - this.O111l, e = this.status.l0I10 - this.IOIIl, i = l * t + n * e, this.O111l = this.status.I0I0l, this.IOIIl = this.status.l0I10, this.OO11l += (100 * -i - this.lO1lI) * this.OlO00, this.OO11l *= 1 - this.OI11I, this.lO1lI += this.OO11l, null != this.pods) return this.pods.lIIO0(this.O0IOO.O1110.IlI0I.O11ll)
-                        }, t.prototype.lI1O1 = function () {
-                            return this.send = !0
-                        }, t.prototype.IlIIl = function () {
-                            var t;
-                            return this.IIIIO++, this.send ? this.IIIIO >= this.IOl0O ? (this.IIIIO === this.IOl0O && (this.IOl0O = Math.min(12, this.IOl0O + 1)), this.IIIIO = 0, this.send = !1, t = (this.l1110.angle + 360) % 360, this.l1110.up && (t += 4096), this.l1110.l1lOl && (t += 8192), this.l1110.glide && (t += 16384), this.l1110.strafe_left && (t += 32768), this.l1110.strafe_right && (t += 65536), this.l1110.release_crystal && (t += 131072), null != this.O0IOO.lOOO0 && this.O0IOO.lOOO0.lI1O1(t), this.log()) : void 0 : this.IOl0O = Math.max(1, this.IOl0O - 1)
-                        }, t.prototype.log = function () {
-                            return this.Il01l++
-                        }, t.prototype.isPulseType = function () {
-                            var t, e, i, s, l, n, a, o;
-                            if (null == this.instance.pulse_type) {
-                                for (t = null, a = this.instance.lasers, e = 0, l = a.length; e < l; e++) s = a[e], s.damage >= 15 && (null == t || s.damage > t.damage) && (t = s);
-                                if (null != t)
-                                    for (this.instance.pulse_type = !0, this.instance.pulse_laser = t, o = this.instance.lasers, i = 0, n = o.length; i < n; i++)(s = o[i]) !== t && s.damage > t.damage / 2 && (this.instance.pulse_type = !1);
-                                else null != this.type.specs.ship.dash ? this.instance.pulse_type = !0 : this.instance.pulse_type = !1
-                            }
-                            return this.instance.pulse_type
-                        }, t.prototype.pulsePower = function () {
-                            return null != this.instance.pulse_laser ? this.instance.pulse_laser.damage : null != this.instance.dash_initial_energy ? this.instance.dash_initial_energy : 0
-                        }, t.prototype.pulseRate = function () {
-                            return null != this.instance.pulse_laser ? this.instance.pulse_laser.type.rate : 1
-                        }, t
-                    }(), this.Gamepad = function () {
-                        function t(t, e) {
-                            var i;
-                            this.O11OO = t, this.index = null != e ? e : 0, null != navigator.getGamepads && (i = navigator.getGamepads(), this.index < i.length && null != i[this.index] && (this.pad = i[this.index]), this.interval = setInterval(function (t) {
-                                return function () {
-                                    return t.check()
-                                }
-                            }(this), 16))
-                        }
-                        return t.prototype.stop = function () {
-                            if (null != this.interval && clearInterval(this.interval), null != this.next) return this.next.stop()
-                        }, t.prototype.check = function () {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m;
-                            if (u = navigator.getGamepads(), this.index < u.length && (this.pad = u[this.index]), this.index + 1 < u.length && null == this.next && (this.next = new t(this.O11OO, this.index + 1)), null != this.pad) {
-                                if (null == this.status) {
-                                    for (this.status = {
-                                        buttons: [],
-                                        joysticks: []
-                                    }, d = this.pad.buttons, s = l = 0, o = d.length; l < o; s = ++l) i = d[s], this.status.buttons.push(!1);
-                                    for (s = n = 0, O = this.pad.axes.length - 2; n <= O; s = n += 2) this.status.joysticks.push(-1)
-                                }
-                                for (c = this.pad.buttons, s = a = 0, r = c.length; a < r; s = ++a) i = c[s], i.pressed !== this.status.buttons[s] && (this.status.buttons[s] = i.pressed, this.O11OO.gamepadButtonStatus(s, i.pressed));
-                                for (s = h = 0, p = this.pad.axes.length - 2; h <= p && !(s / 2 >= this.status.joysticks.length); s = h += 2) {
-                                    if (e = -1, I = this.pad.axes[s], m = this.pad.axes[s + 1], Math.sqrt(I * I + m * m) >= .5)
-                                        for (e = -Math.atan2(m, I), e = Math.round(e / Math.PI * 180); e < 0;) e += 360;
-                                    e !== this.status.joysticks[s / 2] && (this.status.joysticks[s / 2] = e, this.O11OO.gamepadJoystickStatus(s / 2, e))
-                                }
-                            }
-                        }, t.drawButton = function (t, e, i, s, l, n, a) {
-                            var o, r, h, u, d;
-                            switch (null == a && (a = !1), o = "hsl(" + n + ",20%,20%)", r = "hsla(" + n + ",50%,80%,1)", t) {
-                                case "menu":
-                                    h = "Fontawesome", u = 1, l = Math.round(l), t = "";
-                                    break;
-                                default:
-                                    h = "Play", u = t.length, l = Math.round(l), 1 === u && (d = 1.2 * l)
-                            }
-                            switch (d = null != d ? d : l, e.font = d + "pt " + h, e.fillStyle = a ? r : o, u) {
-                                case 1:
-                                    e.beginPath(), e.arc(i, s, 1.1 * l, 0, 2 * Math.PI, !0), e.closePath(), e.fill();
-                                    break;
-                                default:
-                                    OpenChatButton.roundRect(e, i - 2 * l, s - l, 4 * l, 2 * l, .5 * l), e.fill()
-                            }
-                            return e.textBaseline = "middle", e.textAlign = "center", e.fillStyle = a ? "#000" : r, e.fillText(t, i, s)
-                        }, t.drawDPad = function (t, e, i, s, l, n, a) {
-                            switch (null == n && (n = null), null == a && (a = "#444"), t.fillStyle = "#888", t.beginPath(), OpenChatButton.roundRect(t, e - s / 2, i - 1 * s / 6, s, s / 3, s / 16), t.fill(), t.beginPath(), OpenChatButton.roundRect(t, e - s / 6, i - s / 2, s / 3, s, s / 16), t.fill(), t.fillStyle = "#FFF", l) {
-                                case "bottom":
-                                    return t.save(), t.beginPath(), t.rect(e - s / 2, i + s / 6, s, s / 3), t.clip(), OpenChatButton.roundRect(t, e - s / 6, i - s / 2, s / 3, s, s / 16), t.fill(), t.fillStyle = a, t.font = Math.round(s / 6) + "pt FontAwesome", t.textAlign = "center", t.textBaseline = "middle", n = n || "", t.fillText(n, e, i + 2 * s / 6), t.restore();
-                                case "top":
-                                    return t.save(), t.beginPath(), t.rect(e - s / 2, i - s / 2, s, s / 3), t.clip(), OpenChatButton.roundRect(t, e - s / 6, i - s / 2, s / 3, s, s / 16), t.fill(), t.fillStyle = a, t.font = Math.round(s / 6) + "pt FontAwesome", t.textAlign = "center", t.textBaseline = "middle", n = n || "", t.fillText(n, e, i - 2 * s / 6), t.restore();
-                                case "leftright":
-                                    return t.save(), OpenChatButton.roundRect(t, e - s / 2, i - s / 6, s, s / 3, s / 16), t.fill(), t.fillStyle = "#444", t.font = Math.round(s / 6) + "pt FontAwesome", t.textAlign = "center", t.textBaseline = "middle", t.fillText("", e - 2 * s / 6, i), t.fillText("", e + 2 * s / 6, i), t.restore()
-                            }
-                        }, t
-                    }(), this.O0101 = function () {
-                        function t(t, e) {
-                            this.O0IOO = t, this.ship = e, this.map = {
-                                38: "up",
-                                40: "l1lI0",
-                                37: "left",
-                                39: "right",
-                                40: "l1lI0",
-                                32: "l1lOl"
-                            }, this.left = !1, this.right = !1, this.endup = 0, this.control_pressed = !1, this.inc = 1, this.last_keyboard_action = 0, this.last_gamepad_action = 0, this.pad_status = {
-                                up: !1,
-                                l1lOl: !1,
-                                angle: 0,
-                                rcs: !1,
-                                lb: !1
-                            }, this.element = this.O0IOO.display.I0O01.domElement, this.next_wheel_action = 0, document.addEventListener("mousewheel", function (t) {
-                                return function (e) {
-                                    return t.mouseWheel(e)
-                                }
-                            }(this), !1), document.addEventListener("DOMMouseScroll", function (t) {
-                                return function (e) {
-                                    return t.mouseWheel(e)
-                                }
-                            }(this), !1), document.onkeydown = function (t) {
-                                return function (e) {
-                                    var i, s, l;
-                                    if (e = e || window.event, i = e.keyCode, null != t.navigation_listener) switch (i) {
-                                        case 13:
-                                            return e.preventDefault(), t.navigation_listener.gamepadNavigation("ok");
-                                        case 27:
-                                            return e.preventDefault(), t.navigation_listener.gamepadNavigation("cancel");
-                                        case 38:
-                                            return e.preventDefault(), t.navigation_listener.gamepadNavigation("up");
-                                        case 40:
-                                            return e.preventDefault(), t.navigation_listener.gamepadNavigation("l1lI0");
-                                        case 37:
-                                            return e.preventDefault(), t.navigation_listener.gamepadNavigation("left");
-                                        case 39:
-                                            return e.preventDefault(), t.navigation_listener.gamepadNavigation("right")
-                                    }
-                                    if (16 === i && null != t.O0IOO.display.screen.lIll0.weapons_bar && t.O0IOO.display.screen.lIll0.weapons_bar.shiftSelection(), 18 === i && (t.alt_pressed = !0), 87 === i && null != t.O0IOO.display.screen.lIll0.weapons_bar && (t.O0IOO.display.screen.lIll0.weapons_bar.toggleStore(), e.preventDefault()), "KeyA" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && (t.ship.l1110.strafe_left || (t.ship.l1110.strafe_left = !0, t.ship.lI1O1())), "KeyD" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && (t.ship.l1110.strafe_right || (t.ship.l1110.strafe_right = !0, t.ship.lI1O1())), "KeyV" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.release_crystal && (t.ship.l1110.release_crystal || (t.ship.l1110.release_crystal = !0, t.ship.lI1O1())), 122 === i && (t.O0IOO.is_app || (t.O0IOO.lI11l.toggleFullScreen(), e.preventDefault())), null != t.map[i]) {
-                                        if ("left" !== t.map[i] && "right" !== t.map[i] || (t.last_keyboard_action = Date.now()), e.preventDefault(), "left" !== t.map[i] && "right" !== t.map[i] || t[t.map[i]] || (t[t.map[i]] = !0, t.O0IOO.using_keyboard = .2 + .8 * t.O0IOO.using_keyboard, t.IlOIO()), 38 !== i && 32 !== i || t.ship.l1110[t.map[i]] || (t.ship.l1110[t.map[i]] = !0, t.ship.lI1O1()), "l1lI0" === t.map[i] && !t[t.map[i]]) return t[t.map[i]] = !0, t.ship.l1110.angle = (t.ship.l1110.angle + 180) % 360, t.ship.lI1O1(), s = .5 * t.O0IOO.display.width + .25 * t.O0IOO.display.height * Math.cos(-t.ship.l1110.angle / 180 * Math.PI), l = t.O0IOO.display.height * (.5 + .25 * Math.sin(-t.ship.l1110.angle / 180 * Math.PI)), t.O0IOO.display.screen.lIll0.cursor.set(s, l)
-                                    } else {
-                                        if (17 === i && null != t.O0IOO.mode && t.O0IOO.mode.options.rcs_toggle && !t.control_pressed) return t.control_pressed = !0, t.ship.l1110.glide ? (t.ship.l1110.glide = !1, t.ship.lI1O1()) : (t.ship.l1110.glide = !0, t.ship.lI1O1(), t.glide_pressed_time = Date.now());
-                                        if (9 === i && (t.alt_pressed = !1), 9 === i && e.shiftKey) return;
-                                        if (13 === i && e.altKey && t.O0IOO.is_app) return t.O0IOO.lI11l.toggleFullScreen(), void e.preventDefault();
-                                        if (!e.altKey && t.O0IOO.keyPressed(i)) return e.preventDefault()
-                                    }
-                                }
-                            }(this), document.onkeyup = function (t) {
-                                return function (e) {
-                                    var i;
-                                    if (e = e || window.event, e.preventDefault(), i = e.keyCode,
-                                        18 === i && t.alt_pressed && null != t.O0IOO.display.screen.lIll0.weapons_bar && (t.O0IOO.display.screen.lIll0.weapons_bar.l1lOl(), e.preventDefault()), "KeyA" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && t.ship.l1110.strafe_left && (t.ship.l1110.strafe_left = !1, t.ship.lI1O1()), "KeyD" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.strafe > 0 && t.ship.l1110.strafe_right && (t.ship.l1110.strafe_right = !1, t.ship.lI1O1()), "KeyV" === e.code && null != t.O0IOO.mode && t.O0IOO.mode.options.release_crystal && t.ship.l1110.release_crystal && (t.ship.l1110.release_crystal = !1, t.ship.lI1O1()), null != t.map[i]) {
-                                        if (t[t.map[i]] = !1, t.ship.l1110[t.map[i]]) return t.ship.l1110[t.map[i]] = !1, t.ship.lI1O1()
-                                    } else if (17 === e.keyCode) {
-                                        if (t.control_pressed = !1, Date.now() > t.glide_pressed_time + 300 && t.ship.l1110.glide) return t.ship.l1110.glide = !1, t.ship.lI1O1()
-                                    } else if (t.O0IOO.keyReleased(i)) return e.preventDefault()
-                                }
-                            }(this), this.O0IOO.display.screen.control_listener = this, this.element.addEventListener("mouseout", function (t) {
-                                return function (e) {
-                                    return t.doMouseOut(e)
-                                }
-                            }(this)), this.element.addEventListener("oncontextmenu", function (t) {
-                                return function (t) {
-                                    return !1
-                                }
-                            }()), this.l1lll = null, this.Il101 = 0, this.O0O1I = 0, this.lOO0O = 0, this.first = !1, this.touchmoved = !1, this.nextauto = 0
-                        }
-                        return t.prototype.setNavigationListener = function (t) {
-                            var e;
-                            return e = this.navigation_listener, this.navigation_listener = null, null != e && e.gamepadNavigation("interrupted"), this.navigation_listener = t
-                        }, t.prototype.lI110 = function (t) {
-                            var e, i;
-                            for (e = 1, i = t; e <= i; e += 1) this.IlOIO();
-                            0 !== this.endup && this.O0IOO.O1110.IlI0I.O11ll >= this.endup && (this.endup = 0, null === this.l1lll && this.ship.l1110.up && (this.ship.l1110.up = !1, this.ship.lI1O1()))
-                        }, t.prototype.IlOIO = function () {
-                            var t, e;
-                            if (this.O0IOO.settings.check("gamepad_control") && null == this.gamepad && (this.gamepad = new Gamepad(this)), this.autoPilot(), this.left ? (this.inc = Math.min(6, this.inc + .3), this.ship.l1110.angle = Math.round((this.ship.l1110.angle + this.inc) % 360), this.ship.lI1O1(), t = .5 * this.O0IOO.display.width + .25 * this.O0IOO.display.height * Math.cos(-this.ship.l1110.angle / 180 * Math.PI), e = this.O0IOO.display.height * (.5 + .25 * Math.sin(-this.ship.l1110.angle / 180 * Math.PI)), this.O0IOO.display.screen.lIll0.cursor.set(t, e)) : this.right ? (this.inc = Math.min(6, this.inc + .3), this.ship.l1110.angle = Math.round((this.ship.l1110.angle + 360 - this.inc) % 360), this.ship.lI1O1(), t = .5 * this.O0IOO.display.width + .25 * this.O0IOO.display.height * Math.cos(-this.ship.l1110.angle / 180 * Math.PI), e = this.O0IOO.display.height * (.5 + .25 * Math.sin(-this.ship.l1110.angle / 180 * Math.PI)), this.O0IOO.display.screen.lIll0.cursor.set(t, e)) : this.inc = Math.max(1, this.inc - 1), null != this.aim_id && Date.now() > this.aim_time + 200) return this.aim_x < this.O0IOO.display.width / 2 ? (this.startJoystick(this.aim_x, this.aim_y, this.aim_id), this.aim_id = null) : (this.lOO0O = this.aim_id, this.aim_id = null, this.ship.l1110.l1lOl = !0, this.ship.lI1O1()), this.O0IOO.display.screen.lIll0.cursor.set(-1e4, -1e4)
-                        }, t.prototype.gamepadButtonStatus = function (t, e) {
-                            if (this.O0IOO.is_app && (this.O0IOO.using_gamepad = !0), null != this.navigation_listener && e) switch (t) {
-                                case 0:
-                                    if (this.navigation_listener.gamepadNavigation("ok")) return;
-                                    break;
-                                case 1:
-                                    if (this.navigation_listener.gamepadNavigation("cancel")) return;
-                                    break;
-                                case 12:
-                                    if (this.navigation_listener.gamepadNavigation("up")) return;
-                                    break;
-                                case 13:
-                                    if (this.navigation_listener.gamepadNavigation("l1lI0")) return;
-                                    break;
-                                case 14:
-                                    if (this.navigation_listener.gamepadNavigation("left")) return;
-                                    break;
-                                case 15:
-                                    if (this.navigation_listener.gamepadNavigation("right")) return
-                            }
-                            switch (t) {
-                                case 0:
-                                    return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.l1lOl = e, this.ship.lI1O1();
-                                case 1:
-                                    if (e && (this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), null != this.O0IOO.display.screen.lIll0.weapons_bar)) return this.O0IOO.display.screen.lIll0.weapons_bar.l1lOl();
-                                    break;
-                                case 2:
-                                    if (e && (this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), null != this.O0IOO.display.screen.lIll0.weapons_bar)) return this.O0IOO.display.screen.lIll0.weapons_bar.toggleStore();
-                                    break;
-                                case 3:
-                                    if (e && (this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), null != this.O0IOO.display.screen.lIll0.weapons_bar)) return this.O0IOO.display.screen.lIll0.weapons_bar.shiftSelection();
-                                    break;
-                                case 7:
-                                    return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.up = e, this.ship.lI1O1();
-                                case 6:
-                                    return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.glide = e, this.ship.lI1O1();
-                                case 4:
-                                    if (null != this.O0IOO.mode && this.O0IOO.mode.options.strafe > 0) return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.strafe_left = e, this.ship.lI1O1();
-                                    if (null != this.O0IOO.mode && this.O0IOO.mode.options.release_crystal && !this.ship.l1110.release_crystal === e) return this.ship.l1110.release_crystal = e, this.ship.lI1O1();
-                                    break;
-                                case 5:
-                                    if (null != this.O0IOO.mode && this.O0IOO.mode.options.strafe > 0) return this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.strafe_right = e, this.ship.lI1O1();
-                                    if (e) return this.O0IOO.keyPressed(9);
-                                    break;
-                                case 8:
-                                    if (e) return this.O0IOO.keyPressed("Z".charCodeAt(0));
-                                    break;
-                                case 9:
-                                    if (this.O0IOO.is_app && e && !this.O0IOO.display.screen.lIll0.hidden) return this.O0IOO.display.screen.lIll0.toggleOptions();
-                                    break;
-                                case 11:
-                                    if (this.O0IOO.is_app && e) return this.O0IOO.display.screen.lIll0.chatpanel.gamepadChatClick();
-                                    break;
-                                case 12:
-                                    if (e) return this.O0IOO.display.screen.lIll0.shipUpgradesNavigation();
-                                    break;
-                                case 13:
-                                    if (e) return this.O0IOO.display.screen.lIll0.statsUpgradesNavigation()
-                            }
-                        }, t.prototype.gamepadJoystickStatus = function (t, e) {
-                            var i, s;
-                            switch (this.O0IOO.is_app && (this.O0IOO.using_gamepad = !0), t) {
-                                case 0:
-                                    if (e >= 0) return this.angle = e, this.last_keyboard_action = Date.now(), this.last_gamepad_action = Date.now(), this.ship.l1110.angle = this.angle, this.ship.lI1O1(), i = .5 * this.O0IOO.display.width + .35 * this.O0IOO.display.height * Math.cos(-this.ship.l1110.angle / 180 * Math.PI), s = this.O0IOO.display.height * (.5 + .35 * Math.sin(-this.ship.l1110.angle / 180 * Math.PI)), this.O0IOO.display.screen.lIll0.cursor.set(i, s);
-                                    break;
-                                case 1:
-                                    if (this.O0IOO.is_app) return this.O0IOO.display.screen.lIll0.chatpanel.gamepadChat(e >= 0, e)
-                            }
-                        }, t.prototype.mouseDown = function (t, e, i) {
-                            if (null == this.navigation_listener || !this.navigation_listener.block_ship_control) return this.mousepressed = !0, 1 === i.which && (this.ship.l1110.l1lOl = !0, this.ship.lI1O1()), 2 === i.which && null != this.O0IOO.display.screen.lIll0.weapons_bar && this.O0IOO.display.screen.lIll0.weapons_bar.l1lOl(), 3 === i.which && (this.ship.l1110.up = !0, this.ship.lI1O1()), !0
-                        }, t.prototype.mouseMove = function (t, e, i) {
-                            if (!(Date.now() < this.last_keyboard_action + 1e3 || Date.now() < this.last_gamepad_action + 1e3 || (this.O0IOO.display.screen.lIll0.cursor.set(t, e), null != this.navigation_listener && this.navigation_listener.block_ship_control))) {
-                                for (t -= this.O0IOO.display.width / 2, e -= this.O0IOO.display.height / 2, this.angle = -Math.atan2(e, t), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
-                                return this.angle !== this.ship.l1110.angle && (this.O0IOO.using_keyboard *= .9, this.ship.l1110.angle = this.angle, this.ship.lI1O1()), !0
-                            }
-                        }, t.prototype.doMouseOut = function (t) {
-                            return this.O0IOO.display.screen.lIll0.figures.hideMouse()
-                        }, t.prototype.mouseUp = function (t, e, i) {
-                            return 1 === i.which && (this.ship.l1110.l1lOl = !1, this.ship.lI1O1()), 3 === i.which && (this.ship.l1110.up = !1, this.ship.lI1O1()), !0
-                        }, t.prototype.joystickRatio = function () {
-                            return 667 / Math.max(screen.width, screen.height) * .8
-                        }, t.prototype.joystickRadius = function () {
-                            return this.O0IOO.display.height / 8 * this.joystickRatio()
-                        }, t.prototype.O0O01 = function (t, e, i) {
-                            return this.touchmoved = !1, this.O0IOO.display.height, this.joystickRadius(), null === this.l1lll ? (this.aim_time = Date.now(), this.aim_x = t, this.aim_y = e, this.aim_id = i, this.O0IOO.display.screen.lIll0.cursor.set(this.aim_x, this.aim_y)) : t < this.O0IOO.display.width / 2 ? this.startJoystick(t, e, i) : (this.lOO0O = i, this.ship.l1110.l1lOl = !0, this.ship.lI1O1()), !0
-                        }, t.prototype.startJoystick = function (t, e, i) {
-                            var s, l, n, a;
-                            return this.auto = !1, a = this.joystickRadius(), n = this.O0IOO.display.height, s = this.ship.l1110.angle, s = -s * Math.PI / 180, l = a / 2, this.l1lll = i, this.Il101 = t - Math.cos(s) * l, this.O0O1I = e - Math.sin(s) * l, this.ship.l1110.up = !1, this.ship.lI1O1(), this.O0IOO.display.screen.lIll0.arrow.set(s, 0), this.O0IOO.display.screen.lIll0.joystick.set(this.Il101 / n, this.O0O1I / n, t / n, e / n), this.O0IOO.display.screen.lIll0.cursor.set(-1e4, -1e4)
-                        }, t.prototype.lOOlO = function (t, e, i) {
-                            var s, l, n, a, o, r, h, u;
-                            if (this.touchmoved = !0, l = this.O0IOO.display.height, n = this.joystickRadius(), this.l1lll === i) {
-                                for (t -= this.Il101, e -= this.O0O1I, s = Math.sqrt(t * t + e * e), o = t / s, r = e / s, h = this.Il101 + Math.min(1.5 * n, s) * o, u = this.O0O1I + Math.min(1.5 * n, s) * r, this.O0IOO.display.screen.lIll0.joystick.set(this.Il101 / l, this.O0O1I / l, h / l, u / l), a = s > this.joystickRadius(), this.angle = -Math.atan2(e, t), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
-                                this.O0IOO.display.screen.lIll0.arrow.set(-this.angle / 360 * Math.PI * 2, s / (l / 8)), this.angle === this.ship.l1110.angle && a === this.ship.l1110.up || (this.ship.l1110.angle = this.angle, this.ship.l1110.up = a, this.ship.lI1O1())
-                            }
-                            return !0
-                        }, t.prototype.autoPilot = function () {
-                            var t, e, i, s;
-                            if (this.nextauto = Math.max(this.nextauto - 1, 0), this.auto && 0 === this.nextauto) {
-                                if (this.nextauto = 10, e = this.ll1lO - this.O0IOO.O1110.OII0I.status.x, i = this.IO0Il - this.O0IOO.O1110.OII0I.status.y, e < -this.O0IOO.l000O && (e += this.O0IOO.size), e > this.O0IOO.l000O && (e -= this.O0IOO.size), i < -this.O0IOO.l000O && (i += this.O0IOO.size), i > this.O0IOO.l000O && (i -= this.O0IOO.size), Math.sqrt(e * e + i * i) < 8) return this.auto = !1, this.ship.l1110.up = !1, this.ship.lI1O1();
-                                for (this.angle = Math.atan2(i, e), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
-                                t = (this.angle - this.ship.status.angle + 360) % 360, t = Math.min(t, 360 - t), s = t < 10 || this.ship.l1110.up, this.angle === this.ship.l1110.angle && s === this.ship.l1110.up || (this.ship.l1110.angle = this.angle, this.ship.l1110.up = s, this.ship.lI1O1())
-                            }
-                        }, t.prototype.I1O0I = function (t, e, i) {
-                            if (this.aim_id === i) {
-                                for (this.aim_id = null, this.O0IOO.display.screen.lIll0.cursor.set(this.aim_x, this.aim_y), t = this.aim_x - this.O0IOO.display.width / 2, e = this.aim_y - this.O0IOO.display.height / 2, this.angle = -Math.atan2(e, t), this.angle = Math.round(this.angle / Math.PI * 180); this.angle < 0;) this.angle += 360;
-                                if (this.angle !== this.ship.l1110.angle) return this.ship.l1110.angle = this.angle, this.ship.lI1O1()
-                            } else {
-                                if (this.l1lll === i) return this.l1lll = null, this.ship.l1110.up = !1, this.ship.lI1O1(), this.O0IOO.display.screen.lIll0.joystick.pressed = !1;
-                                if (this.lOO0O === i) return this.lOO0O = null, this.ship.l1110.l1lOl = !1, this.ship.lI1O1()
-                            }
-                        }, t.prototype.mouseWheel = function (t) {
-                            if (null != this.O0IOO.display.screen.lIll0.weapons_bar && !(Date.now() < this.next_wheel_action)) return this.next_wheel_action = Date.now() + 200, t.wheelDelta < 0 || t.detail > 0 ? this.O0IOO.display.screen.lIll0.weapons_bar.selectDown() : this.O0IOO.display.screen.lIll0.weapons_bar.selectUp()
-                        }, t
-                    }(), this.StationModules = function () {
-                        function t() {
-                            this.modules = [], this.structures = [], this.structures_n = [], this.structures_ns = [], this.structures_ne = [], this.structures_nes = [], this.structures_nesw = [], this.deposits = [], this.spawnings = [], this.types_by_id = {}
-                        }
-                        return t.prototype.add = function (t) {
-                            switch (this.modules.push(t), this.types_by_id[t.id] = t, t.type) {
-                                case "structure":
-                                    switch (this.structures.push(t), t.hook) {
-                                        case "N":
-                                            return this.structures_n.push(t);
-                                        case "NE":
-                                            return this.structures_ne.push(t);
-                                        case "NS":
-                                            return this.structures_ns.push(t);
-                                        case "NES":
-                                            return this.structures_nes.push(t);
-                                        case "NESW":
-                                            return this.structures_nesw.push(t);
-                                        default:
-                                            return this.structures_ns.push(t)
-                                    }
-                                    break;
-                                case "deposit":
-                                    return this.deposits.push(t);
-                                case "spawning":
-                                    return this.spawnings.push(t)
-                            }
-                        }, t.prototype.IlO01 = function () {
-                            return this.modules[Math.floor(Math.random() * this.modules.length)]
-                        }, t.prototype.getDeposit = function () {
-                            return this.deposits[Math.floor(Math.random() * this.deposits.length)]
-                        }, t.prototype.getSpawning = function () {
-                            return this.spawnings[Math.floor(Math.random() * this.spawnings.length)]
-                        }, t.prototype.getStructure = function (t) {
-                            switch (t) {
-                                case "N":
-                                    return this.structures_n[Math.floor(Math.random() * this.structures_n.length)];
-                                case "NS":
-                                    return this.structures_ns[Math.floor(Math.random() * this.structures_ns.length)];
-                                case "NE":
-                                    return this.structures_ne[Math.floor(Math.random() * this.structures_ne.length)];
-                                case "NES":
-                                    return this.structures_nes[Math.floor(Math.random() * this.structures_nes.length)];
-                                default:
-                                    return this.structures_nesw[Math.floor(Math.random() * this.structures_nesw.length)]
-                            }
-                        }, t
-                    }(), STATION_MODULES = new this.StationModules, STATION_MODULES.add({
-                        type: "deposit",
-                        id: "d1",
-                        generate: function (t) {
-                            return {
-                                type: "deposit",
-                                size: .5,
-                                tori: {
-                                    main: {
-                                        radius: 60,
-                                        segments: 16,
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: -40,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0],
-                                            y: [0],
-                                            z: [0]
-                                        },
-                                        width: [10],
-                                        height: [10],
-                                        texture: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 63, 63, 2]
-                                    },
-                                    main2: {
-                                        radius: 60,
-                                        segments: 16,
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: -70,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0],
-                                            y: [0],
-                                            z: [0]
-                                        },
-                                        width: [10],
-                                        height: [10],
-                                        texture: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 63, 2, 2, 63, 2]
-                                    }
-                                },
-                                bodies: {
-                                    hook: {
-                                        section_segments: 16,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0],
-                                            y: [-130, -120, -55]
-                                        },
-                                        width: [0, 10, 12],
-                                        height: [0, 10, 12],
-                                        texture: [6, 12]
-                                    },
-                                    deposit: {
-                                        section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-90, -100, -90, 70, 85, 85, 0, -10]
-                                        },
-                                        width: [0, 95, 100, 100, 100, 90, 90, 0],
-                                        height: [0, 45, 50, 50, 50, 40, 30, 0],
-                                        texture: [1, 4, 2, 4, 63, 10, 12]
-                                    },
-                                    sidewalls: {
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 80,
-                                            y: -20,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0],
-                                            y: [-55, -50, -20, 0, 20, 45, 50]
-                                        },
-                                        width: [0, 15, 15, 10, 10, 5, 0],
-                                        height: [0, 15, 15, 10, 10, 5, 0],
-                                        angle: 0,
-                                        propeller: !1,
-                                        texture: [4, 4, 10, 4, 63, 4]
-                                    },
-                                    antenna: {
-                                        vertical: !0,
-                                        section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
-                                        offset: {
-                                            x: 0,
-                                            y: 90,
-                                            z: -20
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-50, -45, -20, -19, 20, 21, 30, 60]
-                                        },
-                                        width: [50, 30, 30, 12, 12, 3, 3, 0],
-                                        height: [50, 30, 30, 12, 12, 3, 3, 0],
-                                        texture: [3, [15], 4, 16, 63, 6, 10]
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "deposit",
-                        id: "d2",
-                        generate: function (t) {
-                            var e, i, s, l, n, a;
-                            for (a = new OOll0(t), 1 + a.OlOO1(4), e = {
-                                type: "deposit",
-                                size: .5,
-                                bodies: {
-                                    hook: {
-                                        section_segments: 16,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0],
-                                            y: [-130, -120, -55]
-                                        },
-                                        width: [0, 10, 12],
-                                        height: [0, 10, 12],
-                                        texture: [6, 12]
-                                    },
-                                    deposit: {
-                                        section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-90, -100, -90, 70, 85, 85, 0, -10]
-                                        },
-                                        width: [0, 95, 100, 100, 100, 90, 90, 0],
-                                        height: [0, 45, 50, 50, 50, 40, 30, 0],
-                                        texture: [1, 4, 1, 4, 63, 1, 12]
-                                    },
-                                    antenna: {
-                                        vertical: !0,
-                                        section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
-                                        offset: {
-                                            x: 0,
-                                            y: 90,
-                                            z: 10
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-50, -45, -20, -19, 20, 21, 30, 60]
-                                        },
-                                        width: [20, 10, 10, 8, 8, 3, 3, 0],
-                                        height: [20, 10, 10, 8, 8, 3, 3, 0],
-                                        texture: [3, 10, 1, 12, 63, 6, 10]
-                                    },
-                                    sidewalls: {
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 80,
-                                            y: 10,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0],
-                                            y: [-55, -50, -20, 0, 20, 45, 50]
-                                        },
-                                        width: [0, 15, 15, 10, 10, 5, 0],
-                                        height: [0, 15, 15, 10, 10, 5, 0],
-                                        angle: 0,
-                                        propeller: !1,
-                                        texture: [4, 4, 10, 4, 63, 4]
-                                    }
-                                }
-                            }, i = l = 0; l <= 40; i = l += 20)
-                                for (s = n = -40; n <= 40; s = n += 20) a.OlOO1(50), e.bodies["body" + i + s] = {
-                                    section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
-                                    offset: {
-                                        x: 1.2 * i,
-                                        y: 1.6 * s - 12,
-                                        z: 38
-                                    },
-                                    position: {
-                                        x: [0, 0, 0, 0, 0],
-                                        y: [-7, -5, 10, 12]
-                                    },
-                                    width: [0, 8, 8, 0],
-                                    height: [0, 8, 8, 0],
-                                    texture: [12, a.next() < .3 ? 63 : 1 + a.OlOO1(4), 12]
-                                };
-                            return e
-                        }
-                    }), STATION_MODULES.add({
-                        type: "spawning",
-                        id: "sp1",
-                        generate: function (t) {
-                            var e, i, s, l, n;
-                            for (l = new OOll0(t), e = 1 + l.OlOO1(3), n = {
-                                type: "spawn",
-                                rotate: !0,
-                                size: .5,
-                                tori: [],
-                                bodies: {
-                                    sphere: {
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
-                                        },
-                                        width: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
-                                        height: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
-                                        texture: [6, 1, e, e, e, e, e, e, 1, 11, 12]
-                                    }
-                                },
-                                wings: {
-                                    sidejoin: {
-                                        offset: {
-                                            x: 65,
-                                            y: 0,
-                                            z: 65
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [45],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 0,
-                                            size: 30
-                                        }
-                                    },
-                                    sidejoin2: {
-                                        offset: {
-                                            x: 65,
-                                            y: 0,
-                                            z: -65
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [-45],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 0,
-                                            size: 30
-                                        }
-                                    },
-                                    sidejoin3: {
-                                        offset: {
-                                            x: 90,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [0],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 10,
-                                            size: 30
-                                        }
-                                    },
-                                    topjoin: {
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 95
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [90],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 10,
-                                            size: 30
-                                        }
-                                    },
-                                    bottomjoin: {
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: -95
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [-90],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 10,
-                                            size: 30
-                                        }
-                                    }
-                                }
-                            }, i = s = -4; s <= 0; i = ++s) n.tori["circle" + i] = {
-                                radius: 200 + 20 * i,
-                                segments: 16,
-                                section_segments: 8,
-                                offset: {
-                                    x: 0,
-                                    y: 25 * i,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0],
-                                    y: [0],
-                                    z: [0]
-                                },
-                                width: [15],
-                                height: [10],
-                                texture: function () {
-                                    var t, e;
-                                    for (e = [], i = t = 0; t <= 16; i = ++t) e.push([l.next() < .3 ? 8 : 3]);
-                                    return e
-                                }()
-                            };
-                            return n
-                        }
-                    }), STATION_MODULES.add({
-                        type: "spawning",
-                        id: "sp2",
-                        generate: function (t) {
-                            var e, i, s;
-                            return s = new OOll0(t), e = 1 + s.OlOO1(3), {
-                                type: "spawning",
-                                rotate: !0,
-                                size: .5,
-                                tori: {
-                                    main: {
-                                        radius: 200,
-                                        segments: 42,
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0],
-                                            y: [0],
-                                            z: [0]
-                                        },
-                                        width: [30],
-                                        height: [15],
-                                        texture: function () {
-                                            var t, e;
-                                            for (e = [], i = t = 0; t <= 42; i = ++t) e.push([i % 7 == 0 ? 10 : 1]);
-                                            return e
-                                        }()
-                                    }
-                                },
-                                bodies: {
-                                    sphere: {
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
-                                        },
-                                        width: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
-                                        height: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
-                                        texture: [6, 1, e, e, e, e, e, e, 1, 11, 12]
-                                    }
-                                },
-                                wings: {
-                                    topjoin: {
-                                        offset: {
-                                            x: 45,
-                                            y: 0,
-                                            z: 80
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [60],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 0,
-                                            size: 30
-                                        }
-                                    },
-                                    sidejoin: {
-                                        offset: {
-                                            x: 90,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [0],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 10,
-                                            size: 30
-                                        }
-                                    },
-                                    bottomjoin: {
-                                        offset: {
-                                            x: 45,
-                                            y: 0,
-                                            z: -80
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [50, 20],
-                                        angle: [-60],
-                                        position: [0, 0],
-                                        texture: [63],
-                                        bump: {
-                                            position: 0,
-                                            size: 30
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "spawning",
-                        id: "sp3",
-                        generate: function (t) {
-                            var e, i, s;
-                            return s = new OOll0(t), e = 1 + s.OlOO1(4), {
-                                type: "spawning",
-                                rotate: !0,
-                                size: .5,
-                                tori: {
-                                    main: {
-                                        radius: 100,
-                                        segments: 12,
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0],
-                                            y: [0],
-                                            z: [0]
-                                        },
-                                        width: [30],
-                                        height: [15],
-                                        texture: function () {
-                                            var t, s;
-                                            for (s = [], i = t = 0; t <= 20; i = ++t) s.push(i % 2 == 0 ? 10 : e);
-                                            return s
-                                        }()
-                                    }
-                                },
-                                bodies: {
-                                    sphere: {
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
-                                        },
-                                        width: [0, 30, 30, 40, 70, 90, 100, 100, 90, 60, 30, 0],
-                                        height: [0, 30, 30, 40, 70, 90, 100, 100, 90, 60, 30, 0],
-                                        texture: [6, 12, e, e, e, e, e, e, 1, 11, 12]
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "NESW",
-                        id: "st1",
-                        generate: function (t) {
-                            var e, i, s, l, n, a;
-                            for (n = new OOll0(t), i = 1 + n.OlOO1(4), e = {
-                                type: "structure",
-                                size: .5,
-                                tori: {
-                                    main: {
-                                        radius: 80,
-                                        segments: 20,
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0],
-                                            y: [0],
-                                            z: [0]
-                                        },
-                                        width: [20],
-                                        height: [10],
-                                        texture: function () {
-                                            var t, e;
-                                            for (e = [], s = t = 0; t <= 20; s = ++t) e.push([(s - 2) % 5 == 0 ? 10 : i]);
-                                            return e
-                                        }()
-                                    }
-                                },
-                                bodies: []
-                            }, s = l = 0; l <= 90; s = l += 90) a = n.OlOO1(40), e.bodies["body" + s] = {
-                                angle: s,
-                                section_segments: 12,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    y: [-130, -120, -55 - a, -40 - a, 40 + a, 55 + a, 120, 130]
-                                },
-                                width: [0, 15, 16, 40 + i, 40 + i, 12, 10, 0],
-                                height: [0, 15, 16, 40 + i, 40 + i, 12, 10, 0],
-                                texture: [6, 12, 10, i, 10, 4, 6]
-                            };
-                            return e
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "NS",
-                        id: "st2",
-                        generate: function (t) {
-                            var e, i, s, l, n, a, o;
-                            for (n = new OOll0(t), a = n.OlOO1(20), i = 1 + n.OlOO1(4), o = n.OlOO1(20), e = {
-                                type: "structure",
-                                rotate: !0,
-                                size: .5,
-                                tori: [],
-                                bodies: {
-                                    main: {
-                                        section_segments: 16,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -55 - o, -40 - o, 40 + o, 55 + o, 120, 130]
-                                        },
-                                        width: [0, 15, 16, 40, 40, 12, 10, 0],
-                                        height: [0, 15, 16, 40, 40, 12, 10, 0],
-                                        texture: [6, 12, 10, 11, 1, 4, 6]
-                                    }
-                                }
-                            }, s = l = -4; l <= 4; s = l += 2) e.tori["circle" + s] = {
-                                segments: 4 + o,
-                                radius: 100 - Math.abs(s * a),
-                                section_segments: 8,
-                                offset: {
-                                    x: 0,
-                                    y: 20 * s,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0],
-                                    y: [0],
-                                    z: [0]
-                                },
-                                width: [10],
-                                height: [o + 3],
-                                texture: function () {
-                                    var t, e;
-                                    for (e = [], s = t = 0; t <= 40; s = ++t) e.push([(s - 2) % 5 == 0 ? 10 : i]);
-                                    return e
-                                }()
-                            };
-                            return e
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "NS",
-                        id: "st3",
-                        generate: function (t) {
-                            return {
-                                type: "structure",
-                                rotate: 2 * (new OOll0(t)
-                                    .next() - .5),
-                                size: .5,
-                                bodies: {
-                                    main: {
-                                        section_segments: 16,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -75, -60, 60, 75, 120, 130]
-                                        },
-                                        width: [0, 15, 16, 40, 40, 12, 10, 0],
-                                        height: [0, 15, 16, 40, 40, 12, 10, 0],
-                                        texture: [6, 12, 10, 11, 1, 4, 6]
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "NS",
-                        id: "st4",
-                        generate: function (t) {
-                            var e;
-                            return {
-                                type: "structure",
-                                size: .5,
-                                tori: {
-                                    main: {
-                                        radius: 100,
-                                        segments: 20,
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0],
-                                            y: [0],
-                                            z: [0]
-                                        },
-                                        width: [20],
-                                        height: [10],
-                                        texture: function () {
-                                            var t, i;
-                                            for (i = [], e = t = 0; t <= 20; e = ++t) i.push([(e - 2) % 5 == 0 ? 10 : 1]);
-                                            return i
-                                        }()
-                                    }
-                                },
-                                bodies: {
-                                    bumpers: {
-                                        section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
-                                        offset: {
-                                            x: 97,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-100, -55, -30, -20, 20, 30, 90, 100]
-                                        },
-                                        width: [0, 12, 2, 20, 20, 2, 2, 0],
-                                        height: [0, 12, 5, 30, 30, 5, 2, 0],
-                                        texture: [4, 4, 1, 10, 1, 1, 1]
-                                    },
-                                    main: {
-                                        section_segments: 15,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-110, -100, -55, -40, 40, 55, 110, 120]
-                                        },
-                                        width: [0, 20, 20, 50, 50, 12, 10, 0],
-                                        height: [0, 20, 20, 30, 30, 12, 10, 0],
-                                        texture: [6, 15, 10, 11, 10, 4, 6]
-                                    }
-                                },
-                                wings: {
-                                    topjoin: {
-                                        offset: {
-                                            x: 0,
-                                            y: -3,
-                                            z: 0
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [20, 20],
-                                        angle: [45],
-                                        position: [0, 0, 0, 50],
-                                        texture: [1],
-                                        bump: {
-                                            position: 10,
-                                            size: 30
-                                        }
-                                    },
-                                    bottomjoin: {
-                                        offset: {
-                                            x: 0,
-                                            y: -3,
-                                            z: 0
-                                        },
-                                        doubleside: !0,
-                                        length: [100],
-                                        width: [20, 20],
-                                        angle: [-45],
-                                        position: [0, 0, 0, 50],
-                                        texture: [1],
-                                        bump: {
-                                            position: -10,
-                                            size: 30
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "N",
-                        id: "st5",
-                        generate: function (t) {
-                            var e, i, s;
-                            return s = new OOll0(t), e = 1 + s.OlOO1(4), {
-                                type: "structure",
-                                size: .5,
-                                tori: {
-                                    main: {
-                                        radius: 70,
-                                        segments: 20,
-                                        section_segments: 8,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0],
-                                            y: [0],
-                                            z: [0]
-                                        },
-                                        width: [20],
-                                        height: [10],
-                                        texture: function () {
-                                            var t, s;
-                                            for (s = [], i = t = 0; t <= 20; i = ++t) s.push([(i - 2) % 5 == 0 ? 10 : e]);
-                                            return s
-                                        }()
-                                    }
-                                },
-                                bodies: {
-                                    main: {
-                                        angle: 0,
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -55, -40, 40, 55]
-                                        },
-                                        width: [0, 15, 16, 40 + e, 40 + e, 0],
-                                        height: [0, 15, 16, 40 + e, 40 + e, 0],
-                                        texture: [6, 12, 10, e, 10, 4, 6]
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "NE",
-                        id: "st6",
-                        generate: function (t) {
-                            var e, i;
-                            return i = new OOll0(t), e = 1 + i.OlOO1(4), {
-                                type: "structure",
-                                size: .5,
-                                bodies: {
-                                    main: {
-                                        angle: 0,
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -100, -40, 20, 30]
-                                        },
-                                        width: [0, 15, 16, 40, 20, 0],
-                                        height: [0, 15, 16, 40, 20, 0],
-                                        texture: [6, 12, 8, e, 10, 4, 6]
-                                    },
-                                    angle: {
-                                        angle: -90,
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -55, -40, 40, 55]
-                                        },
-                                        width: [0, 15, 16, 40, 40, 0],
-                                        height: [0, 15, 16, 40, 40, 0],
-                                        texture: [6, 12, 10, e, 10, 4, 6]
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "NES",
-                        id: "st7",
-                        generate: function (t) {
-                            var e, i;
-                            return i = new OOll0(t), e = 1 + i.OlOO1(4), {
-                                type: "structure",
-                                size: .5,
-                                bodies: {
-                                    main: {
-                                        angle: 0,
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -100, -40, 0, 40, 100, 120, 130]
-                                        },
-                                        width: [0, 15, 16, 40, 20, 40, 12, 10, 0],
-                                        height: [0, 15, 16, 40, 20, 40, 12, 10, 0],
-                                        texture: [6, 12, 8, e, e, 8, 12, 6]
-                                    },
-                                    angle: {
-                                        angle: -90,
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -55, -40, 40, 55]
-                                        },
-                                        width: [0, 15, 16, 40, 40, 0],
-                                        height: [0, 15, 16, 40, 40, 0],
-                                        texture: [6, 12, 10, e, 10, 4, 6]
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "N",
-                        id: "st8",
-                        generate: function (t) {
-                            var e, i;
-                            return i = new OOll0(t), e = 1 + i.OlOO1(4), {
-                                type: "structure",
-                                rotate: 30 * (new OOll0(t)
-                                    .next() - .5),
-                                transparent: !0,
-                                size: .5,
-                                bodies: {
-                                    main: {
-                                        angle: 0,
-                                        section_segments: 12,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -55, -40, 40, 55]
-                                        },
-                                        width: [0, 15, 16, 40 + e, 40 + e, 0],
-                                        height: [0, 15, 16, 40 + e, 40 + e, 0],
-                                        texture: [6, 12, 10, e, 10, 4, 6]
-                                    }
-                                },
-                                wings: {
-                                    topsolarpanel: {
-                                        noshape: !0,
-                                        doubleside: !0,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        length: [60, 60, 60, 60],
-                                        width: [70, 70, 65, 60, 55],
-                                        angle: [90, 90, 90, 90, 90],
-                                        position: [0, 0, 0, 0, 0],
-                                        texture: [14],
-                                        bump: {
-                                            position: 0,
-                                            size: 5
-                                        }
-                                    },
-                                    solarpanels: {
-                                        noshape: !0,
-                                        doubleside: !0,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        length: [60, 60, 60, 60],
-                                        width: [70, 70, 65, 60, 55],
-                                        angle: [-30, -30, -30, -30, -30],
-                                        position: [0, 0, 0, 0, 0],
-                                        texture: [14],
-                                        bump: {
-                                            position: 0,
-                                            size: 5
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }), STATION_MODULES.add({
-                        type: "structure",
-                        hook: "NS",
-                        id: "st9",
-                        generate: function (t) {
-                            return {
-                                type: "structure",
-                                rotate: 2 * (new OOll0(t)
-                                    .next() - .5),
-                                size: .5,
-                                bodies: {
-                                    main: {
-                                        section_segments: 16,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        position: {
-                                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                            y: [-130, -120, -75, -70, 70, 75, 120, 130]
-                                        },
-                                        width: [0, 15, 16, 40, 40, 12, 10, 0],
-                                        height: [0, 15, 16, 40, 40, 12, 10, 0],
-                                        texture: [6, 12, 10, 11, 1, 4, 6]
-                                    }
-                                },
-                                wings: {
-                                    topsolarpanel: {
-                                        noshape: !0,
-                                        doubleside: !0,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        length: [60, 60, 60, 60],
-                                        width: [70, 70, 65, 60, 55],
-                                        angle: [90, 90, 90, 90, 90],
-                                        position: [0, 0, 0, 0, 0],
-                                        texture: [14],
-                                        bump: {
-                                            position: 0,
-                                            size: 5
-                                        }
-                                    },
-                                    solarpanels: {
-                                        noshape: !0,
-                                        doubleside: !0,
-                                        offset: {
-                                            x: 0,
-                                            y: 0,
-                                            z: 0
-                                        },
-                                        length: [60, 60, 60, 60],
-                                        width: [70, 70, 65, 60, 55],
-                                        angle: [-30, -30, -30, -30, -30],
-                                        position: [0, 0, 0, 0, 0],
-                                        texture: [14],
-                                        bump: {
-                                            position: 0,
-                                            size: 5
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }), this.StationModel = function () {
-                        function e(t, e) {
-                            var i, s, l, n, a, o;
-                            for (this.team = e, this.phase = t.phase, this.hue = t.hue, this.open = !1, this.IIOOO = 0, this.crystals_max = 10, this.level = 0, this.modules = [], this.lO101 = new THREE.Group, this.last_station_message = 0, this.alive = !0, o = t.modules, i = 0, s = o.length; i < s; i++) l = o[i], n = STATION_MODULES.types_by_id[l.type], a = new StationModuleModel(n.generate(l.id + this.hue), this.hue / 360, "alloy", this), a.id = l.id, a.type = l.type, a.dir = l.dir, this.modules.push(a), a.lO101.rotation.z = -Math.PI * l.dir * .5, a.lO101.position.y = 20 * l.y, a.lO101.position.x = 20 * l.x, a.lO101.scale.set(10, 10, 10), this.lO101.add(a.lO101), "deposit" === n.type ? a.createCarpet("deposit") : "spawning" === n.type && a.createCarpet("spawning");
-                            this.lO101.scale.set(.5, .5, .5), this.bar = new ShieldBar, this.lO101.add(this.bar.Il0I1), this.last_bar_module_change = 0, this.bar_module = null
-                        }
-                        return e.prototype.setLevel = function (e, i) {
-                            if (e > this.level && (this.level = e, i.mode.team === this.team)) return this.last_station_message = Date.now(), i.message(t("Station upgraded"), "#8FF")
-                        }, e.prototype.hasDestroyedModule = function () {
-                            var t, e, i, s;
-                            for (s = this.modules, t = 0, e = s.length; t < e; t++)
-                                if (i = s[t], !i.alive) return !0;
-                            return !1
-                        }, e.prototype.setModuleShield = function (t, e, i) {
-                            if (t !== this.bar_module) {
-                                if (!(Date.now() > this.last_bar_module_change + 1e3)) return;
-                                this.last_bar_module_change = Date.now(), this.bar_module = t
-                            }
-                            return this.bar.Il0I1.position.x = t.lO101.position.x, this.bar.Il0I1.position.y = t.lO101.position.y, this.bar.set(e, i)
-                        }, e.prototype.I0OIl = function (t) {
-                            var e, i, s, l, n, a, o;
-                            for (o = .5 * (10 + 2.5 * this.level) / 10, this.lO101.scale.set(o, o, o), e = !1, a = this.modules, s = 0, l = a.length; s < l; s++) n = a[s], n.lO101.visible = n.alive, n.data.rotate && (n.lO101.rotation.x += .001), n.I0OIl(t), n.updateCarpet(this.level), n.alive && (e = !0);
-                            return this.alive = e, i = -t / 60 / 1200 % 1 * Math.PI * 2, this.lO101.rotation.z = i, this.bar.I0OIl(), this.bar.Il0I1.rotation.z = -i
-                        }, e
-                    }(), this.Carpet = function () {
-                        function e(t) {
-                            this.type = t, this.level = 0, this.canvas = document.createElement("canvas"), this.canvas.width = 256, this.canvas.height = 256, this.texture = new THREE.Texture(this.canvas), this.OlOOI(), this.O1I0O = new THREE.PlaneGeometry(1, 1), this.material = new THREE.MeshBasicMaterial({
-                                color: 16777215,
-                                map: this.texture,
-                                transparent: !0,
-                                depthWrite: !1,
-                                depthTest: !0,
-                                blending: THREE.AdditiveBlending
-                            }), this.Il0I1 = new THREE.Mesh(this.O1I0O, this.material), this.Il0I1.scale.set(2, 2, 2), this.Il0I1.rotation.z = Math.PI / 2, this.lO101 = new THREE.Group, this.lO101.add(this.Il0I1)
-                        }
-                        return e.prototype.setLevel = function (t) {
-                            if (t !== this.level) return this.level = t, this.OlOOI()
-                        }, e.prototype.OlOOI = function () {
-                            var e, i, s, l, n, a, o;
-                            if (e = this.canvas.getContext("2d"), e.clearRect(0, 0, this.canvas.width, this.canvas.height), "deposit" === this.type) {
-                                for (i = e.createLinearGradient(0, 0, 0, this.canvas.height), i.addColorStop(0, "hsla(0,60%,60%,0)"), i.addColorStop(.1, "hsla(0,60%,60%,.2)"), i.addColorStop(1, "hsla(0,60%,60%,0)"), e.fillStyle = i, e.beginPath(), e.moveTo(.2 * this.canvas.width, 0), e.lineTo(.8 * this.canvas.width, 0), e.lineTo(this.canvas.width, this.canvas.height), e.lineTo(0, this.canvas.height), e.closePath(), e.fill(), e.fillStyle = "hsla(0,60%,60%,1)", e.font = "30pt Play", e.textAlign = "center", e.textBaseline = "middle", e.fillText("Lv" + (this.level + 3), this.canvas.width / 2, this.canvas.height / 2), e.font = "14pt Play", e.fillText(t("DEPOT"), this.canvas.width / 2, this.canvas.height / 8), e.fillRect(.25 * this.canvas.width, this.canvas.height / 6, .5 * this.canvas.width, 4), e.font = "20pt FontAwesome", e.fillText("", this.canvas.width / 4, this.canvas.height / 2), e.fillText("", .75 * this.canvas.width, this.canvas.height / 2), e.fillText("", .35 * this.canvas.width, this.canvas.height / 4), e.fillText("", .5 * this.canvas.width, this.canvas.height / 4), e.fillText("", .65 * this.canvas.width, this.canvas.height / 4), e.fillStyle = "rgba(0,0,0,.5)", s = l = 0, a = this.canvas.height - 1; l <= a; s = l += 2) e.fillRect(0, s, this.canvas.width, 1);
-                                return this.texture.needsUpdate = !0
-                            }
-                            for (i = e.createLinearGradient(0, 0, 0, this.canvas.height), i.addColorStop(0, "hsla(180,60%,60%,0)"), i.addColorStop(.1, "hsla(180,60%,60%,.2)"), i.addColorStop(1, "hsla(180,60%,60%,0)"), e.fillStyle = i, e.beginPath(), e.moveTo(.2 * this.canvas.width, 0), e.lineTo(.8 * this.canvas.width, 0), e.lineTo(this.canvas.width, this.canvas.height), e.lineTo(0, this.canvas.height), e.closePath(), e.fill(), e.fillStyle = "hsla(180,60%,60%,1)", e.font = "30pt Play", e.textAlign = "center", e.textBaseline = "middle", e.fillText("Lv" + (this.level + 3), this.canvas.width / 2, this.canvas.height / 2), e.font = "14pt Play", e.fillText(t("TAKE OFF"), this.canvas.width / 2, this.canvas.height / 8), e.fillRect(.25 * this.canvas.width, this.canvas.height / 6, .5 * this.canvas.width, 4), e.fillText(t("KEEP CLEAR"), this.canvas.width / 2, .875 * this.canvas.height), e.font = "20pt FontAwesome", e.fillText("", this.canvas.width / 4, this.canvas.height / 2), e.fillText("", .75 * this.canvas.width, this.canvas.height / 2), e.fillText("", .35 * this.canvas.width, this.canvas.height / 4), e.fillText("", .5 * this.canvas.width, this.canvas.height / 4), e.fillText("", .65 * this.canvas.width, this.canvas.height / 4), e.fillStyle = "rgba(0,0,0,.5)", s = n = 0, o = this.canvas.height - 1; n <= o; s = n += 2) e.fillRect(0, s, this.canvas.width, 1);
-                            return this.texture.needsUpdate = !0
-                        }, e
-                    }(), this.ShieldBar = function () {
-                        function t() {
-                            this.name = "", this.shield = 0, this.shield_max = 1, this.canvas = document.createElement("canvas"), this.canvas.width = 256, this.canvas.height = 64, this.texture = new THREE.Texture(this.canvas), this.O1I0O = new THREE.PlaneGeometry(1, 1), this.material = new THREE.MeshBasicMaterial({
-                                color: 16777215,
-                                map: this.texture,
-                                transparent: !0,
-                                depthWrite: !1,
-                                depthTest: !1
-                            }), this.Il0I1 = new THREE.Mesh(this.O1I0O, this.material), this.Il0I1.scale.set(24, 6, 3), this.Il0I1.position.set(0, 0, 2), this.last_update = 0, this.Il0I1.visible = !1
-                        }
-                        return t.prototype.I0OIl = function () {
-                            if (this.Il0I1.visible && Date.now() > this.last_update + 5e3) return this.Il0I1.visible = !1
-                        }, t.prototype.set = function (t, e) {
-                            if (this.shield = t, this.shield_max = e, Date.now() > this.last_update + 500) return this.last_update = Date.now(), this.OlOOI(), this.Il0I1.visible = !0
-                        }, t.prototype.OlOOI = function (t) {
-                            var e, i, s, l, n, a;
-                            return e = this.shield / this.shield_max, this.color = e > .5 ? "hsl(180," + Math.round(2 * (e - .5) * 100) + "%,75%)" : "hsl(0," + Math.round(2 * (.5 - e) * 100) + "%,75%)", i = this.canvas.getContext("2d"), i.clearRect(0, 0, this.canvas.width, this.canvas.height), i.fillStyle = "rgba(0,0,0,.5)", i.fillRect(0, 0, this.canvas.width, this.canvas.height), a = this.canvas.width, s = this.canvas.height, n = this.canvas.height / 8, i.strokeStyle = this.color, i.fillStyle = this.color, i.strokeRect(n, s / 2 + n, a - 2 * n, s / 2 - 2 * n), l = a - 2 * n - 4, i.fillRect(n + 2, s / 2 + n + 2, l * e, s / 2 - 2 * n - 4), i.textAlign = "left", i.textBaseline = "middle", i.font = "16pt Play", i.fillText(this.shield, n, s / 4), i.textAlign = "right", i.fillText(this.shield_max, a - n, s / 4), this.texture.needsUpdate = !0
-                        }, t
-                    }(), extend = function (t, e) {
-                        function i() {
-                            this.constructor = t
-                        }
-                        for (var s in e) hasProp.call(e, s) && (t[s] = e[s]);
-                        return i.prototype = e.prototype, t.prototype = new i, t.OlOlO = e.prototype, t
-                    }, hasProp = {}.hasOwnProperty, this.StationModuleModel = function (e) {
-                        function i(t, e, s, l) {
-                            this.station = l, i.OlOlO.constructor.call(this, t, e, s), this.alive = !0, this.shield = 1
-                        }
-                        return extend(i, e), i.prototype.setAlive = function (e, i) {
-                            if (this.alive !== e && (this.alive = e, i.mode.team === this.station.team)) return this.station.last_station_message = Date.now(), this.alive ? i.message(t("Station module repaired"), "#8FF") : i.message(t("Station module destroyed"), "#F88")
-                        }, i.prototype.createCarpet = function (t) {
-                            if (null == this.carpet) return this.carpet = new Carpet(t), this.lO101.add(this.carpet.lO101), this.carpet.Il0I1.position.set(2, 0, -1)
-                        }, i.prototype.I0OIl = function (t) {
-                            var e, s, l, n;
-                            if (i.OlOlO.I0OIl.call(this, t), null != this.material) return s = Math.floor(255 * Math.max(.15, this.shield)), this.material.color.set((s << 16) + (s << 8) + s), n = Math.floor(128 * s / 255), l = Math.floor(96 * s / 255), e = Math.floor(80 * s / 255),
-                                this.material.specular.set((n << 16) + (l << 8) + e)
-                        }, i.prototype.updateCarpet = function (t) {
-                            if (null != this.carpet) return this.carpet.material.opacity = Math.pow(Math.random(), .2), this.carpet.setLevel(t), this.carpet.lO101.rotation.x = -this.lO101.rotation.x
-                        }, i.prototype.setShield = function (e, i) {
-                            if (this.shield !== e) {
-                                if (!(e < .99 * this.shield && i.mode.team === this.station.team)) return this.shield = e;
-                                if (this.shield = e, i.mode.attackWarning(), Date.now() > this.station.last_station_message + 1e4) return this.station.last_station_message = Date.now(), i.message(t("Station is under attack"), "#F88")
-                            }
-                        }, i.prototype.lOOII = function (t, e) {
-                            var i, s, l, n;
-                            return null == t && (t = 128), null == e && (e = 16777215), n = new THREE.Scene, i = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), this.material.emissive.setHex(e), this.material.map = lIO1l, this.material.emissiveMap = lIO1l, this.material.side = THREE.DoubleSide, this.material.color.setHex(0), this.IIOIO.opacity = 0, n.add(this.lO101), this.lO101.position.set(t / 2, t / 2, -1e3), l = .5 * t / 3, this.lO101.scale.set(l, -l, l), this.lO101.rotation.z = Math.PI / 2, I11lI.I0O01 || (I11lI.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), I11lI.I0O01.setSize(t, t), I11lI.I0O01.render(n, i), s = document.createElement("canvas"), s.width = t, s.height = t, s.getContext("2d")
-                                .drawImage(I11lI.I0O01.domElement, 0, 0), s
-                        }, i.images_buffer = [], i.getModuleImage = function (t) {
-                            return null == i.images_buffer[t.id] && (i.images_buffer[t.id] = new i(t.generate(0))
-                                .lOOII()), i.images_buffer[t.id]
-                        }, i.getModuleImageColorized = function (t, e) {
-                            var s;
-                            return null == i.images_buffer[t.id + e] && (s = new i(t.generate(0))
-                                .lOOII(128, e), i.images_buffer[t.id + e] = s), i.images_buffer[t.id + e]
-                        }, i
-                    }(this.I11lI), this.StationGrid = function () {
-                        function t(t, e, i) {
-                            this.ends = t, this.modules = e, this.size = null != i ? i : 2 * Math.floor(Math.sqrt(this.modules)), this.types = [], this.types[0] = {
-                                type: "NS",
-                                dir: 0
-                            }, this.types[1] = {
-                                type: "N",
-                                dir: 0
-                            }, this.types[2] = {
-                                type: "N",
-                                dir: 1
-                            }, this.types[3] = {
-                                type: "NE",
-                                dir: 0
-                            }, this.types[4] = {
-                                type: "N",
-                                dir: 2
-                            }, this.types[5] = {
-                                type: "NS",
-                                dir: 0
-                            }, this.types[6] = {
-                                type: "NE",
-                                dir: 1
-                            }, this.types[7] = {
-                                type: "NES",
-                                dir: 0
-                            }, this.types[8] = {
-                                type: "N",
-                                dir: 3
-                            }, this.types[9] = {
-                                type: "NE",
-                                dir: 3
-                            }, this.types[10] = {
-                                type: "NS",
-                                dir: 1
-                            }, this.types[11] = {
-                                type: "NES",
-                                dir: 3
-                            }, this.types[12] = {
-                                type: "NE",
-                                dir: 2
-                            }, this.types[13] = {
-                                type: "NES",
-                                dir: 2
-                            }, this.types[14] = {
-                                type: "NES",
-                                dir: 1
-                            }, this.types[15] = {
-                                type: "NESW",
-                                dir: 0
-                            }
-                        }
-                        return t.prototype.l1l11 = function () {
-                            var t, e, i, s, l;
-                            for (this.ends = Math.max(2, this.ends), this.grid = function () {
-                                var i, s, l;
-                                for (l = [], t = i = 0, s = this.size - 1; i <= s; t = i += 1) l.push(function () {
-                                    var t, i, s;
-                                    for (s = [], e = t = 0, i = this.size - 1; t <= i; e = t += 1) s.push(0);
-                                    return s
-                                }.call(this));
-                                return l
-                            }.call(this), this.points = [], 0, this.x = Math.floor(this.size / 2), this.y = Math.floor(this.size / 2), this.dir = Math.floor(4 * Math.random()), this.O11I0 = 0, this.mark(this.x, this.y), this.lIIO0(), i = 2; ;) {
-                                if (this.O11I0 >= this.modules || 0 === this.points.length) break;
-                                s = this.points[Math.floor(this.points.length * Math.random())], l = this.type(s.x, s.y)
-                                    .type, "N" === l && this.O11I0 < this.modules - (this.ends - i) ? (this.x = s.x, this.y = s.y, this.lIIO0() || this.points.splice(this.points.indexOf(s), 1)) : ("NS" === l || "NE" === l) && i < this.ends ? (this.x = s.x, this.y = s.y, this.lIIO0() ? i++ : this.points.splice(this.points.indexOf(s), 1)) : this.points.splice(this.points.indexOf(s), 1)
-                            }
-                            return i === this.ends && this.O11I0 === this.modules
-                        }, t.prototype.O0OOI = function () { }, t.prototype.isClear = function (t, e) {
-                            return t < 0 || e < 0 || t >= this.size || e >= this.size || 0 === this.grid[e][t]
-                        }, t.prototype.get = function (t, e) {
-                            return t < 0 || e < 0 || t >= this.size || e >= this.size ? 0 : this.grid[e][t]
-                        }, t.prototype.type = function (t, e) {
-                            var i;
-                            return i = 0, this.isClear(t, e - 1) || (i |= 1), this.isClear(t, e + 1) || (i |= 4), this.isClear(t - 1, e) || (i |= 8), this.isClear(t + 1, e) || (i |= 2), this.types[i]
-                        }, t.prototype.isDirClear = function (t, e, i) {
-                            switch (i) {
-                                case 0:
-                                    return e > 0 && this.isClear(t, e - 1) && this.isClear(t - 1, e - 1) && this.isClear(t + 1, e - 1) && this.isClear(t, e - 2) && this.isClear(t - 1, e - 2) && this.isClear(t + 1, e - 2);
-                                case 2:
-                                    return e < this.size - 1 && this.isClear(t, e + 1) && this.isClear(t - 1, e + 1) && this.isClear(t + 1, e + 1) && this.isClear(t, e + 2) && this.isClear(t - 1, e + 2) && this.isClear(t + 1, e + 2);
-                                case 1:
-                                    return t < this.size - 1 && this.isClear(t + 1, e) && this.isClear(t + 1, e - 1) && this.isClear(t + 1, e + 1) && this.isClear(t + 2, e) && this.isClear(t + 2, e - 1) && this.isClear(t + 2, e + 1);
-                                default:
-                                    return t > 0 && this.isClear(t - 1, e) && this.isClear(t - 1, e - 1) && this.isClear(t - 1, e + 1) && this.isClear(t - 2, e) && this.isClear(t - 2, e - 1) && this.isClear(t - 2, e + 1)
-                            }
-                        }, t.prototype.mark = function (t, e) {
-                            return this.grid[e][t] = 1, this.points.push({
-                                x: t,
-                                y: e
-                            }), this.O11I0++
-                        }, t.prototype.lIIO0 = function () {
-                            var t, e, i;
-                            if (i = Math.random(), !this.isDirClear(this.x, this.y, this.dir)) {
-                                for (t = i < .5 ? 1 : 3, e = 0; e <= 2 && (this.dir = (this.dir + t) % 4, !this.isDirClear(this.x, this.y, this.dir)); e += 1);
-                                i = 1
-                            }
-                            if (i < .2 && this.isDirClear(this.x, this.y, (this.dir + 1) % 4) ? this.dir = (this.dir + 1) % 4 : i < .4 && this.isDirClear(this.x, this.y, (this.dir + 3) % 4) && (this.dir = (this.dir + 3) % 4), this.isDirClear(this.x, this.y, this.dir)) {
-                                switch (this.dir) {
-                                    case 2:
-                                        this.y += 1, this.mark(this.x, this.y);
-                                        break;
-                                    case 0:
-                                        this.y -= 1, this.mark(this.x, this.y);
-                                        break;
-                                    case 1:
-                                        this.x += 1, this.mark(this.x, this.y);
-                                        break;
-                                    case 3:
-                                        this.x -= 1, this.mark(this.x, this.y)
-                                }
-                                return !0
-                            }
-                            return !1
-                        }, t.prototype.O0O10 = function () {
-                            var t, e, i, s, l, n, a, o;
-                            for (t = document.createElement("canvas"), t.width = 1024, t.height = 1024, e = t.getContext("2d"), e.scale(1024 / this.size, 1024 / this.size), i = l = 0, a = this.size - 1; 0 <= a ? l <= a : l >= a; i = 0 <= a ? ++l : --l)
-                                for (s = n = 0, o = this.size - 1; 0 <= o ? n <= o : n >= o; s = 0 <= o ? ++n : --n) 0 !== this.grid[s][i] && (e.fillStyle = "#000", e.fillRect(i, s, 1, 1));
-                            return t
-                        }, t
-                    }(), this.Weapons = function () {
-                        function t(t) {
-                            this.O0IOO = t, this.weapons = [], this.next_shot_time = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], this.credits = 0
-                        }
-                        return t.prototype.read = function (t) {
-                            var e, i, s, l, n, a, o, r, h;
-                            for (o = this.weapons.length, this.weapons = [], this.credits = t.getUint32(1, !0), l = 5; l < t.byteLength;) i = t.getUint8(l++), e = t.getUint8(l++), a = t.getUint8(l++), this.weapons.push({
-                                code: i,
-                                type: WEAPON_TYPES.types_by_code[i],
-                                ammo: e,
-                                next_shot: this.O0IOO.O1110.IlI0I.O11ll + a
-                            });
-                            for (this.signature = "", r = this.weapons, s = 0, n = r.length; s < n; s++) h = r[s], this.signature += h.code + "-" + h.ammo + ":";
-                            this.weapons.length > o && this.O0IOO.lI0Ol.beep()
-                        }, t
-                    }(), extend = function (t, e) {
-                        function i() {
-                            this.constructor = t
-                        }
-                        for (var s in e) hasProp.call(e, s) && (t[s] = e[s]);
-                        return i.prototype = e.prototype, t.prototype = new i, t.OlOlO = e.prototype, t
-                    }, hasProp = {}.hasOwnProperty, this.Pod = function () {
-                        function t(t, e, i, s) {
-                            this.O0IOO = t, this.ship = e, this.pods = i, this.pod_type_id = s, this.x = this.ship.status.x, this.y = this.ship.status.y, this.z = 0, this.r = this.ship.status.r, this.lI1l1 = 0, this.I0I0l = 0, this.l0I10 = 0, this.l0lO0 = 0, this.last_visible = !0
-                        }
-                        return t.prototype.lIIO0 = function (t, e, i) {
-                            return this.x < this.ship.status.x - this.O0IOO.l000O ? this.x += this.O0IOO.size : this.x > this.ship.status.x + this.O0IOO.l000O && (this.x -= this.O0IOO.size), this.y < this.ship.status.y - this.O0IOO.l000O ? this.y += this.O0IOO.size : this.y > this.ship.status.y + this.O0IOO.l000O && (this.y -= this.O0IOO.size), this.physicsStep(t, e, i)
-                        }, t.prototype.dispose = function () {
-                            if (this.added) return this.O0IOO.O1110.O1110.remove(this.Il0I1), this.Il0I1.geometry.dispose(), this.Il0I1.material.dispose()
-                        }, t.prototype.updateModel = function (t) {
-                            return this.added || (this.added = !0, this.O0IOO.O1110.O1110.add(this.Il0I1)), t && !this.last_visible && (this.x = this.ship.status.x, this.y = this.ship.status.y, this.z = 0, this.I0I0l = 0, this.l0I10 = 0, this.l0lO0 = 0), this.Il0I1.rotation.x = this.ship.l1l1I, this.Il0I1.rotation.y = .4 * this.ship.lO1lI, this.Il0I1.rotation.z = this.r + Math.PI, this.Il0I1.position.x = this.x, this.Il0I1.position.y = this.y, this.Il0I1.position.z = this.z, this.Il0I1.visible = t, this.last_visible = t
-                        }, t.prototype.IlO1I = function () {
-                            return this.O0IOO.O1110.IlI0I.IlO1I(this.Il0I1)
-                        }, t
-                    }(), this.MiningPod = function (t) {
-                        function e(t, i, s) {
-                            e.OlOlO.constructor.call(this, t, i, s, 0), this.Il0I1 = this.ship.pods.getModelInstance("MINING_POD_MODEL")
-                        }
-                        return extend(e, t), e.prototype.physicsStep = function (t, e, i) {
-                            var s;
-                            return s = this.ship.type.radius, this.ship.status.guided && (s = 0), this.O0IOO.O1110.IlI0I.weapon_physics.miningPodStep(this, e, this.pods.mining_pods.length, s, t, i)
-                        }, e
-                    }(Pod), this.AttackPod = function (t) {
-                        function e(t, i, s) {
-                            e.OlOlO.constructor.call(this, t, i, s, 1), this.Il0I1 = this.ship.pods.getModelInstance("ATTACK_POD_MODEL")
-                        }
-                        return extend(e, t), e.prototype.physicsStep = function (t, e, i) {
-                            var s;
-                            return s = this.ship.type.radius, this.ship.status.guided && (s = 0), this.O0IOO.O1110.IlI0I.weapon_physics.attackPodStep(this, e, this.pods.attack_pods.length, s, t, i)
-                        }, e
-                    }(Pod), this.DefencePod = function (t) {
-                        function e(t, i, s) {
-                            e.OlOlO.constructor.call(this, t, i, s, 2), this.Il0I1 = this.ship.pods.getModelInstance("DEFENCE_POD_MODEL")
-                        }
-                        return extend(e, t), e.prototype.physicsStep = function (t, e, i) {
-                            var s;
-                            return s = this.ship.type.radius, this.ship.status.guided && (s = 0), this.O0IOO.O1110.IlI0I.weapon_physics.defencePodStep(this, e, this.pods.defence_pods.length, s, t, i)
-                        }, e
-                    }(Pod), this.Pods = function () {
-                        function t(t, e) {
-                            this.O0IOO = t, this.OII0I = e, this.mining_pods = [], this.attack_pods = [], this.defence_pods = [], this.target = null, this.models = {}
-                        }
-                        return t.prototype.getModelInstance = function (t) {
-                            var e, i, s;
-                            return null == this.models[t] && (i = "zinc", this.OII0I === this.O0IOO.OII0I ? this.O0IOO.II010.ll10I() && (i = this.O0IOO.II010.custom.finish) : null != (e = this.O0IOO.names.getCustom(this.OII0I.status.id)) && null != e.finish && (i = e.finish), this.models[t] = new WeaponModel(WeaponModel[t], this.OII0I.status.hue / 360, i)), s = this.models[t].getInstance(), s.scale.x = .6 * this.models[t].data.size * 2, s.scale.y = .6 * this.models[t].data.size * 2, s.scale.z = .6 * this.models[t].data.size * 2, s
-                        }, t.prototype.setMiningNum = function (t) {
-                            for (; this.mining_pods.length > t;) this.mining_pods[0].dispose(), this.mining_pods.splice(0, 1);
-                            for (; this.mining_pods.length < t;) this.mining_pods.push(new MiningPod(this.O0IOO, this.OII0I, this))
-                        }, t.prototype.setAttackNum = function (t) {
-                            for (; this.attack_pods.length > t;) this.attack_pods[0].dispose(), this.attack_pods.splice(0, 1);
-                            for (; this.attack_pods.length < t;) this.attack_pods.push(new AttackPod(this.O0IOO, this.OII0I, this))
-                        }, t.prototype.setDefenceNum = function (t) {
-                            for (; this.defence_pods.length > t;) this.defence_pods[0].dispose(), this.defence_pods.splice(0, 1);
-                            for (; this.defence_pods.length < t;) this.defence_pods.push(new DefencePod(this.O0IOO, this.OII0I, this))
-                        }, t.prototype.lIIO0 = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d;
-                            for (h = this.mining_pods, e = i = 0, n = h.length; i < n; e = ++i) r = h[e], r.lIIO0(t, e, this.target);
-                            for (u = this.attack_pods, e = s = 0, a = u.length; s < a; e = ++s) r = u[e], r.lIIO0(t, e, this.target);
-                            for (d = this.defence_pods, e = l = 0, o = d.length; l < o; e = ++l) r = d[e], r.lIIO0(t, e, this.target)
-                        }, t.prototype.remove = function (t, e) {
-                            switch (t) {
-                                case 0:
-                                    return this.removeMiningPod(e);
-                                case 1:
-                                    return this.removeAttackPod(e);
-                                case 2:
-                                    return this.removeDefencePod(e)
-                            }
-                        }, t.prototype.removeMiningPod = function (t) {
-                            if (t < this.mining_pods.length) return this.mining_pods[t].dispose(), this.mining_pods.splice(t, 1)
-                        }, t.prototype.removeAttackPod = function (t) {
-                            if (t < this.attack_pods.length) return this.attack_pods[t].dispose(), this.attack_pods.splice(t, 1)
-                        }, t.prototype.removeDefencePod = function (t) {
-                            if (t < this.defence_pods.length) return this.defence_pods[t].dispose(), this.defence_pods.splice(t, 1)
-                        }, t.prototype.updateModels = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d;
-                            for (h = this.mining_pods, e = i = 0, n = h.length; i < n; e = ++i) r = h[e], r.updateModel(t);
-                            for (u = this.attack_pods, e = s = 0, a = u.length; s < a; e = ++s) r = u[e], r.updateModel(t);
-                            for (d = this.defence_pods, e = l = 0, o = d.length; l < o; e = ++l) r = d[e], r.updateModel(t)
-                        }, t.prototype.fixPositions = function () {
-                            var t, e, i, s, l, n, a, o, r, h, u;
-                            for (r = this.mining_pods, t = e = 0, l = r.length; e < l; t = ++e) o = r[t], o.IlO1I();
-                            for (h = this.attack_pods, t = i = 0, n = h.length; i < n; t = ++i) o = h[t], o.IlO1I();
-                            for (u = this.defence_pods, t = s = 0, a = u.length; s < a; t = ++s) o = u[t], o.IlO1I()
-                        }, t
-                    }(), this.Mine = function () {
-                        function t(t, e) {
-                            this.O0IOO = t, this.typeid = e.getUint8(1), this.id = e.getUint16(2, !0), this.shipid = e.getUint16(4, !0), this.IlI0I = this.O0IOO.O1110.IlI0I, this.type = WEAPON_TYPES.types_by_code[this.typeid], this.speed = .004 * this.type.speed, this.O0O1l = Math.exp(Math.log(.5) * this.type.O0O1l / 3e3), this.read(e), this.I0OIl(e), this.createModel(), this.pop = 0, this.killed = !1
-                        }
-                        return t.prototype.I0OIl = function (t) {
-                            var e, i, s;
-                            if ((s = t.getUint32(6, !0)) > this.IlI0I.O11ll) this.O1OlO = t;
-                            else if (s < this.IlI0I.O11ll) {
-                                if (this.read(t), this.IlI0I.O11ll - s < 30)
-                                    for (e = s + 1, i = this.IlI0I.O11ll; e <= i; e += 1) this.lIIO0()
-                            } else this.read(t)
-                        }, t.prototype.read = function (t) {
-                            return this.x = t.getFloat32(10, !0), this.y = t.getFloat32(14, !0), this.I0I0l = t.getFloat32(18, !0), this.l0I10 = t.getFloat32(22, !0), this.hue = Math.floor(360 * t.getUint8(26) / 256), this.O0IOO.mode.anonymous_ships && this.shipid !== this.O0IOO.O1110.OII0I.status.id && (this.hue = (this.O0IOO.hue + 180) % 360), this.last_update = this.IlI0I.O11ll
-                        }, t.prototype.createModel = function () {
-                            var t, e, i;
-                            return e = "zinc", this.shipid === this.O0IOO.OII0I.status.id ? this.O0IOO.II010.ll10I() && (e = this.O0IOO.II010.custom.finish) : null != (t = this.O0IOO.names.getCustom(this.shipid)) && null != t.finish && (e = t.finish), i = this.type.model, this.model = new I11lI(WeaponModel[i], this.hue / 360, e), this.model.l1O0l = 0, this.O0IOO.O1110.O1110.add(this.model.lO101), this.lO101 = this.model.lO101
-                        }, t.prototype.lIIO0 = function () {
-                            if (null != this.O1OlO && this.IlI0I.O11ll >= this.O1OlO.getUint32(6, !0) && (this.read(this.O1OlO), this.O1OlO = null), this.O0IOO.O1110.IlI0I.weapon_physics.mineStep(this), this.IlI0I.O11ll > this.last_update + 90) return this.killed = !0
-                        }, t.prototype.dispose = function () {
-                            if (null != this.model) return this.O0IOO.O1110.O1110.remove(this.model.lO101), this.model.dispose()
-                        }, t.prototype.updateModel = function () {
-                            var t, e, i, s, l, n;
-                            return l = 2 * this.model.data.size, this.pop < 30 ? (this.pop++, s = Math.sqrt(this.pop / 30) * l, this.lO101.scale.set(s, s, s)) : this.lO101.scale.set(l, l, l), this.IlI0I.O11ll % 30 < 15 ? this.model.material.emissive.set(lO01l.hsvToRgbHex(this.model.hue, .5, 1)) : this.model.material.emissive.set(0), n = this.IlI0I.O11ll / 60 * 1e3, t = 4 * (137 * this.id % 100 + 2e3), e = 4 * (this.id % 100 + 2190), i = 4 * (993 * this.id % 100 + 2410), this.lO101.rotation.z = .25 * Math.sin(n % t / t * Math.PI * 2), this.lO101.rotation.x = .25 * Math.sin(n % e / e * Math.PI * 2), this.lO101.rotation.y = .25 * Math.sin(n % i / i * Math.PI * 2), this.lO101.position.x = this.x, this.lO101.position.y = this.y, this.lO101.position.z = -this.type.radius, this.lO101.visible = !0, this.IlI0I.IlO1I(this.lO101)
-                        }, t
-                    }(), this.Rocket = function () {
-                        function t(t, e) {
-                            this.O0IOO = t, this.typeid = e.getUint8(1), this.id = e.getUint16(2, !0), this.shipid = e.getUint16(4, !0), this.IlI0I = this.O0IOO.O1110.IlI0I, this.type = WEAPON_TYPES.types_by_code[this.typeid], this.speed = .004 * this.type.speed, null != this.O0IOO.mode.options.projectile_speed && (this.speed *= this.O0IOO.mode.options.projectile_speed), this.O0O1l = Math.exp(Math.log(.5) * this.type.O0O1l / 3e3), this.read(e), this.I0OIl(e), this.createModel(), this.pop = 0, this.killed = !1
-                        }
-                        return t.prototype.I0OIl = function (t) {
-                            var e, i, s;
-                            if ((s = t.getUint32(6, !0)) > this.IlI0I.O11ll) this.O1OlO = t;
-                            else if (s < this.IlI0I.O11ll) {
-                                if (this.read(t), this.IlI0I.O11ll - s < 30)
-                                    for (e = s + 1, i = this.IlI0I.O11ll; e <= i; e += 1) this.lIIO0()
-                            } else this.read(t)
-                        }, t.prototype.read = function (t) {
-                            return this.x = t.getFloat32(10, !0), this.y = t.getFloat32(14, !0), this.I0I0l = t.getFloat32(18, !0), this.l0I10 = t.getFloat32(22, !0), this.r = t.getFloat32(26, !0), this.target_r = t.getFloat32(30, !0), this.hue = Math.floor(360 * t.getUint8(34) / 256), this.O0IOO.mode.anonymous_ships && this.shipid !== this.O0IOO.O1110.OII0I.status.id && (this.hue = (this.O0IOO.hue + 180) % 360), this.last_update = this.IlI0I.O11ll
-                        }, t.prototype.createModel = function () {
-                            var t, e, i;
-                            return e = "zinc", this.shipid === this.O0IOO.OII0I.status.id ? this.O0IOO.II010.ll10I() && (e = this.O0IOO.II010.custom.finish) : null != (t = this.O0IOO.names.getCustom(this.shipid)) && null != t.finish && (e = t.finish), i = this.type.model, this.model = new I11lI(WeaponModel[i], this.hue / 360, e), this.model.l1O0l = 0, this.O0IOO.O1110.O1110.add(this.model.lO101), this.lO101 = this.model.lO101
-                        }, t.prototype.lIIO0 = function () {
-                            if (null != this.O1OlO && this.IlI0I.O11ll >= this.O1OlO.getUint32(6, !0) && (this.read(this.O1OlO), this.O1OlO = null), this.O0IOO.O1110.IlI0I.weapon_physics.rocketStep(this), this.IlI0I.O11ll > this.last_update + 90) return this.killed = !0
-                        }, t.prototype.dispose = function () {
-                            if (null != this.model) return this.O0IOO.O1110.O1110.remove(this.model.lO101), this.model.dispose()
-                        }, t.prototype.updateModel = function () {
-                            var t, e;
-                            return e = 2 * this.model.data.size, this.pop < 30 ? (this.pop++, t = Math.sqrt(this.pop / 30) * e, this.lO101.scale.set(t, t, t)) : this.lO101.scale.set(e, e, e), this.lO101.rotation.z = this.r + Math.PI, this.lO101.rotation.x = this.IlI0I.O11ll / 180 % 1 * Math.PI * 2, this.lO101.position.x = this.x, this.lO101.position.y = this.y, this.lO101.position.z = -1, this.lO101.visible = !0, this.model.propstep(!0), this.IlI0I.IlO1I(this.lO101)
-                        }, t
-                    }(), hasProp = {}.hasOwnProperty, this.WeaponModel = function () {
-                        function t(t, e, i) {
-                            var s, l, n, a, o, r, h, u, d, O;
-                            if (this.data = t, this.hue = null != e ? e : 0, this.finish = null != i ? i : "zinc", this.hue = Math.max(.01, Math.min(.99, this.hue)), this.geometry = new THREE.Geometry, this.geometry.faceVertexUvs[0] = [], this.II010 = !1, null != this.data.bodies) {
-                                r = this.data.bodies;
-                                for (a in r) hasProp.call(r, a) && (s = r[a], this.IllIO(s))
-                            }
-                            if (null != this.data.tori) {
-                                h = this.data.tori;
-                                for (a in h) hasProp.call(h, a) && (s = h[a], this.buildTorus(s))
-                            }
-                            if (this.data.wings) {
-                                u = this.data.wings;
-                                for (a in u) hasProp.call(u, a) && (O = u[a], this.l110I(O))
-                            }
-                            for (this.geometry.computeBoundingSphere(), this.geometry.computeBoundingBox(), this.geometry.computeFaceNormals(), d = this.geometry.faces, n = 0, o = d.length; n < o; n++) l = d[n], l.vertexNormals[0] = l.normal, l.vertexNormals[1] = l.normal, l.vertexNormals[2] = l.normal;
-                            this.lO101 = new THREE.Group, this.lO101.rotation.order = "ZYX", this.O1lI1 = this.I1O10(), this.shield_mat = new THREE.MeshBasicMaterial({
-                                map: lIO1l,
-                                color: 16756800,
-                                blending: THREE.AdditiveBlending,
-                                transparent: !0,
-                                side: THREE.DoubleSide
-                            })
-                        }
-                        return t.prototype.getInstance = function () {
-                            return this.Il0I1 = new THREE.Mesh(this.geometry, this.O1lI1), this.Il0I1.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size), this.Il0I1
-                        }, t.prototype.getCollectibleInstance = function () {
-                            return this.Il0I1 = new THREE.Mesh(this.geometry, this.shield_mat), this.Il0I1.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size), this.Il0I1
-                        }, t.prototype.dispose = function () {
-                            return this.geometry.dispose(), this.O1lI1.dispose()
-                        }, t.prototype.bump = function (t) {
-                            return this.bumpframe = t, this.bumping = !0
-                        }, t.prototype.I1O10 = function (t) {
-                            var e, i, s;
-                            switch (null == t && (t = 10), this.built_material = this.finish, this.finish) {
-                                case "alloy":
-                                    this.buildAlloyMaterial();
-                                    break;
-                                case "gold":
-                                    this.buildGoldMaterial();
-                                    break;
-                                case "titanium":
-                                    this.buildTitaniumMaterial();
-                                    break;
-                                case "carbon":
-                                    this.buildCarbonMaterial();
-                                    break;
-                                case "copper":
-                                    this.buildCopperMaterial();
-                                    break;
-                                case "diamond":
-                                    this.buildDiamondMaterial();
-                                    break;
-                                default:
-                                    this.buildDefaultMaterial()
-                            }
-                            return this.base_color = this.material.color.getHex(), s = this.base_color >> 16 & 255, i = this.base_color >> 8 & 255, e = 255 & this.base_color, this.dark_color = Math.floor(s / 2) << 16 | Math.floor(i / 2) << 8 | Math.floor(e / 2), this.material
-                        }, t.prototype.buildDefaultMaterial = function (t) {
-                            return null == t && (t = 10), this.material = new THREE.MeshLambertMaterial({
-                                map: OlOlI,
-                                color: 16777215,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildAlloyMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 8413264,
-                                shininess: 30,
-                                bumpScale: .1,
-                                color: 10531008,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildTitaniumMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 6316128,
-                                shininess: 20,
-                                bumpScale: .1,
-                                color: 6316128,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildCarbonMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specular: 6316128,
-                                shininess: 5,
-                                bumpScale: .1,
-                                color: 1052688,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: Oll11
-                            })
-                        }, t.prototype.buildFullColorMaterial = function () {
-                            var t;
-                            return t = lO01l.hsvToRgbHex(this.hue, 1, 1), this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 12632256,
-                                shininess: 50,
-                                bumpScale: .1,
-                                color: t,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildGoldMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 10506256,
-                                shininess: 50,
-                                bumpScale: .1,
-                                color: 8413232,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildCopperMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specularMap: OlOlI,
-                                specular: 11554864,
-                                shininess: 15,
-                                bumpScale: .1,
-                                color: 10514512,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.buildDiamondMaterial = function () {
-                            return this.material = new THREE.MeshPhongMaterial({
-                                map: OlOlI,
-                                bumpMap: OlOlI,
-                                specular: 16777215,
-                                opacity: .5,
-                                shininess: 50,
-                                side: THREE.DoubleSide,
-                                bumpScale: .1,
-                                transparent: !0,
-                                color: 8421504,
-                                emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
-                                emissiveMap: O11IO
-                            })
-                        }, t.prototype.I0OIl = function (t) {
-                            var e, i;
-                            if (this.built_material !== this.finish && (this.I1O10(this.hue), this.Il0I1.material = this.material), this.shield_mesh.visible = !1, this.material.color.setHex(this.base_color), this.invulnerable ? Date.now() % 500 < 250 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.shield_mesh.visible = !0) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.shield_mat.color.setHex(0)) : this.OII1l > 0 && (this.ll0O0 = Math.random() < this.OII1l ? 1 : 0, this.shield_mesh.visible = !0, 1 === this.ll0O0 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1))) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.shield_mat.color.setHex(0)), this.OII1l *= .95, this.OII1l < .1 && (this.OII1l = 0, this.shield_mesh.visible = !1, this.material.color.setHex(this.base_color), this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)))), this.bumping) return t > this.bumpframe + 30 ? (this.bumping = !1, this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) : (i = Math.max(0, t - this.bumpframe) / 30, e = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2), this.lO101.scale.set(2 * this.data.size * e, 2 * this.data.size * e, 2 * this.data.size * e))
-                        }, t.prototype.getTextureIndex = function (t, e) {
-                            return null == t ? 0 : "number" == typeof t ? t : t[e] || t[t.length - 1]
-                        }, t.prototype.IllIO = function (t, e) {
-                            var i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
-                            if (null == e && (e = 0), 0 === e) return this.IllIO(t, 1), void (0 !== t.offset.x && this.IllIO(t, -1));
-                            for (i = t.angle || 0, o = Math.cos(i / 180 * Math.PI * e), M = Math.sin(i / 180 * Math.PI * e), C = this.geometry.vertices.length, O = Math.min(t.position.x.length, t.position.y.length, t.width.length, t.height.length) - 1, p = 8, c = I = 0, b = p - 1; 0 <= b ? I <= b : I >= b; c = 0 <= b ? ++I : --I) l = c / p * Math.PI * 2;
-                            if (null != t.section_segments && ("number" == typeof t.section_segments ? (p = t.section_segments, l = function () {
-                                var t, e, i;
-                                for (i = [], c = t = 0, e = p - 1; 0 <= e ? t <= e : t >= e; c = 0 <= e ? ++t : --t) i.push(c / p * Math.PI * 2);
-                                return i
-                            }()) : (p = t.section_segments.length, l = function () {
-                                var e, i, s;
-                                for (s = [], c = e = 0, i = p - 1; 0 <= i ? e <= i : e >= i; c = 0 <= i ? ++e : --e) s.push(t.section_segments[c] / 180 * Math.PI);
-                                return s
-                            }())), null == t.position.z)
-                                for (t.position.z = [], c = m = 1, w = t.position.y.length; 1 <= w ? m <= w : m >= w; c = 1 <= w ? ++m : --m) t.position.z.push(0);
-                            for (d = f = 0, x = O; f <= x; d = f += 1)
-                                for (H = .01 * t.position.y[d], c = g = 0, k = p - 1; g <= k; c = g += 1) s = l[c] + Math.PI / 2, A = (.01 * t.position.x[d] + Math.cos(s) * t.width[d] * .01) * e, B = Math.sin(s) * t.height[d] * .01 * e + .01 * t.offset.z + .01 * t.position.z[d], j = o * A + M * H, D = o * H - M * A, D += .01 * t.offset.y, j += .01 * t.offset.x * e, t.vertical ? this.geometry.vertices.push(new THREE.Vector3(-B, j, D)) : this.geometry.vertices.push(new THREE.Vector3(D, j, B));
-                            for (d = y = 0, _ = O - 1; y <= _; d = y += 1)
-                                for (a = .25 * (t.width[d] + t.width[d + 1] + t.height[d] + t.height[d + 1]) * 6.28, n = Math.abs(t.position.y[d] - t.position.y[d + 1]), S = 1, n > 0 && a / n > 4 && p % 8 == 0 ? S = 4 : n > 0 && a / n > 2 && p % 4 == 0 && (S = 2), c = v = 0, z = p - 1; v <= z; c = v += 1) c < p / 2 ? (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + d * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + (c + 1) % p, C + (d + 1) * p + c, C + d * p + (c + 1) % p))) : (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + (d + 1) * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + d * p + c, C + d * p + (c + 1) % p, C + (d + 1) * p + (c + 1) % p))), r = (l[c] - l[0] + Math.PI / 2) / Math.PI * S % 1, u = l[(c + 1) % l.length] - l[c], u < 0 && (u += 2 * Math.PI), h = r + u / Math.PI * S, E = this.getTextureIndex(t.texture, d), 15 === E && (E = 13), 63 === E && (E = 31), T = E % 8 * .125, P = .25 * (3 - Math.floor(E / 8) + .1), r = T + .125 * (.1 + .8 * r), h = T + .125 * (.1 + .8 * h), R = P + .2, 31 === E && (T += .125 * this.hue, r = T, h = T), c < p / 2 ? (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(r, R), new THREE.Vector2(h, R)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(h, P), new THREE.Vector2(r, P), new THREE.Vector2(h, R)])) : (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(r, R), new THREE.Vector2(h, P)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, R), new THREE.Vector2(h, R), new THREE.Vector2(h, P)]))
-                        }, t.prototype.buildTorus = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
-                            if ("number" == typeof (k = t.segments)) I = k, _ = function () {
-                                var t, e, i;
-                                for (i = [], h = t = 0, e = I; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / I * Math.PI * 2);
-                                return i
-                            }();
-                            else
-                                for (_ = [], h = d = 0, g = k.length - 1; 0 <= g ? d <= g : d >= g; h = 0 <= g ? ++d : --d) _[h] = k[h] / 180 * Math.PI;
-                            for (T = this.geometry.vertices.length, r = _.length - 1, u = 8, h = O = 0, y = u - 1; 0 <= y ? O <= y : O >= y; h = 0 <= y ? ++O : --O) s = h / u * Math.PI * 2;
-                            for (null != t.section_segments && ("number" == typeof t.section_segments ? (u = t.section_segments, s = function () {
-                                var t, e, i;
-                                for (i = [], h = t = 0, e = u - 1; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / u * Math.PI * 2);
-                                return i
-                            }()) : (u = t.section_segments.length, s = function () {
-                                var e, i, s;
-                                for (s = [], h = e = 0, i = u - 1; 0 <= i ? e <= i : e >= i; h = 0 <= i ? ++e : --e) s.push(t.section_segments[h] / 180 * Math.PI);
-                                return s
-                            }())); t.position.x.length < r + 1;) t.position.x.push(t.position.x[t.position.x.length - 1]);
-                            for (; t.position.y.length < r + 1;) t.position.y.push(t.position.y[t.position.y.length - 1]);
-                            for (; t.position.z.length < r + 1;) t.position.z.push(t.position.z[t.position.z.length - 1]);
-                            for (; t.width.length < r + 1;) t.width.push(t.width[t.width.length - 1]);
-                            for (; t.height.length < r + 1;) t.height.push(t.height[t.height.length - 1]);
-                            for (o = c = 0, v = r; c <= v; o = c += 1)
-                                for (e = _[o], P = Math.cos(e), R = Math.sin(e), h = p = 0, b = u - 1; p <= b; h = p += 1) i = s[h], C = .01 * (t.offset.x + t.position.x[o] + Math.cos(i) * t.height[o] + t.radius), j = .01 * (t.offset.y + t.position.y[o] + Math.sin(i) * t.width[o]), D = 0, A = P * C + R * D, B = P * D - R * C + .01 * t.offset.z, H = j, this.geometry.vertices.push(new THREE.Vector3(H, A, B));
-                            for (o = m = 0, w = r - 1; m <= w; o = m += 1)
-                                for (h = f = 0, x = u - 1; f <= x; h = f += 1) this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + h, T + o * u + h, T + o * u + (h + 1) % u)), this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + (h + 1) % u, T + (o + 1) * u + h, T + o * u + (h + 1) % u)), l = (s[h] - s[0]) / Math.PI % 1, a = s[(h + 1) % s.length] - s[h], a < 0 && (a += 2 * Math.PI), n = l + a / Math.PI, z = this.getTextureIndex(t.texture, o), 15 === z && (z = 13), 63 === z && (z = 31), M = z % 8 * .125, E = .25 * (3 - Math.floor(z / 8) + .1), l = M + .125 * (l + .1) * .8, n = M + .125 * (n + .1) * .8, S = E + .2, 31 === z && (M += .125 * this.hue, l = M, n = M), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(l, E), new THREE.Vector2(l, S), new THREE.Vector2(n, S)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(n, E), new THREE.Vector2(l, E), new THREE.Vector2(n, S)])
-                        }, t.prototype.l110I = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M;
-                            for (_ = this.geometry.vertices.length, u = Math.min(t.length.length, t.width.length - 1, t.angle.length, t.position.length - 1), null == t.offset && (t.offset = {
+                            },
+                            position: {
+                                x: [0, 0, 0],
+                                y: [-130, -120, -55]
+                            },
+                            width: [0, 10, 12],
+                            height: [0, 10, 12],
+                            texture: [6, 12]
+                        },
+                        deposit: {
+                            section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
+                            offset: {
                                 x: 0,
                                 y: 0,
                                 z: 0
-                            }), z = 0, M = 0, l = n = 0, O = u; n <= O; l = n += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * -t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z += o * e, M += o * m);
-                            for (l = a = 0, c = u - 1; a <= c; l = a += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 5, _ + 4 * l + 3, _ + 4 * l + 7)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 3)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 6, _ + 4 * l + 7, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(v, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, x), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)])));
-                            for (_ = this.geometry.vertices.length, z = 0, M = 0, l = r = 0, p = u; r <= p; l = r += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z -= o * e, M += o * m);
-                            for (l = h = 0, I = u - 1; h <= I; l = h += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 7)),
-                                this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 7, _ + 4 * l + 6)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(b, k)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(v, k)])))
-                        }, t.prototype.shapePoint = function (t, e, i) {
-                            var s, l, n;
-                            return n = i.length, s = Math.atan2(e, -t), s = Math.round((s + 2 * Math.PI) / (2 * Math.PI) * n) % n, l = Math.sqrt(t * t + e * e), i[s] = Math.max(i[s], l)
-                        }, t.prototype.Il111 = function (t) {
-                            var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g;
-                            for (null == t && (t = 50), c = [], s = n = 0, u = t - 1; 0 <= u ? n <= u : n >= u; s = 0 <= u ? ++n : --n) c[s] = 0;
-                            for (d = this.geometry.faces, a = 0, o = d.length; a < o; a++)
-                                for (i = d[a], p = this.geometry.vertices[i.a], I = this.geometry.vertices[i.b], m = this.geometry.vertices[i.c], s = r = 0; r <= 99; s = r += 1) e = s / 100, f = p.x * e + I.x * (1 - e), g = p.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + I.x * (1 - e), g = m.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + p.x * (1 - e), g = m.y * e + p.y * (1 - e), this.shapePoint(f, g, c);
-                            for (s = h = 0, O = c.length - 1; h <= O; s = h += 1) c[s] *= 2 * this.data.size;
-                            for (l in c) c[l] = parseFloat(c[l].toFixed(3));
-                            return c
-                        }, t.prototype.lOOII = function (t, e) {
-                            var i, s, l, n, a;
-                            return null == t && (t = 64), a = new THREE.Scene, i = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), l = new THREE.MeshLambertMaterial({
-                                color: 0,
-                                emissive: 16777215,
-                                emissiveMap: lIO1l,
-                                side: THREE.DoubleSide
-                            }), this.Il0I1.material = l, a.add(this.Il0I1), this.Il0I1.position.set(t / 2, t / 2, -1e3), n = .35 * t * e, this.Il0I1.scale.set(n, n, n), this.Il0I1.rotation.z = .75 * Math.PI, I11lI.I0O01 || (I11lI.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), I11lI.I0O01.setSize(t, t), I11lI.I0O01.render(a, i), s = document.createElement("canvas"), s.width = t, s.height = t, s.getContext("2d")
-                                .drawImage(I11lI.I0O01.domElement, 0, 0), s
-                        }, t.prototype.getIcon = function (t, e) {
-                            var i, s, l, n;
-                            return null == t && (t = 64), n = new THREE.Scene, i = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), this.material = new THREE.MeshBasicMaterial({
-                                color: 16777215,
-                                side: THREE.DoubleSide
-                            }), this.Il0I1.material = this.material, n.add(this.Il0I1), this.Il0I1.position.set(t / 2, t / 2, -1e3), l = .35 * t * e, this.Il0I1.scale.set(l, l, l), this.Il0I1.rotation.z = .75 * Math.PI, I11lI.I0O01 || (I11lI.I0O01 = new THREE.WebGLRenderer({
-                                antialias: !0,
-                                alpha: !0
-                            })), I11lI.I0O01.setSize(t, t), I11lI.I0O01.render(n, i), s = document.createElement("canvas"), s.width = t, s.height = t, s.getContext("2d")
-                                .drawImage(I11lI.I0O01.domElement, 0, 0), s
-                        }, t.getWeaponIcon = function (e) {
-                            var i, s;
-                            return null == t.icons_buffer[e] && (i = new t(t[WEAPON_TYPES.types_by_code[e].model], 0), i.getInstance(), s = 1, null != WEAPON_TYPES.types_by_code[e].icon_scale && (s = WEAPON_TYPES.types_by_code[e].icon_scale), t.icons_buffer[e] = i.getIcon(128, s), i.dispose()), t.icons_buffer[e]
-                        }, t.getWeaponImage = function (e) {
-                            var i, s;
-                            return null == t.images_buffer[e] && (i = new t(t[WEAPON_TYPES.types_by_code[e].model], 0), i.getInstance(), s = 1, null != WEAPON_TYPES.types_by_code[e].icon_scale && (s = WEAPON_TYPES.types_by_code[e].icon_scale), t.images_buffer[e] = i.lOOII(128, s), i.dispose()), t.images_buffer[e]
-                        }, t
-                    }(), WeaponModel.icons_buffer = [], WeaponModel.images_buffer = [], MINING_POD_MODEL = {
-                        name: "Mining Pod",
-                        level: 1,
-                        model: 1,
-                        size: 1.05,
-                        specs: {
-                            shield: {
-                                capacity: [75, 100],
-                                reload: [2, 3]
                             },
-                            generator: {
-                                capacity: [40, 60],
-                                reload: [10, 15]
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-90, -100, -90, 70, 85, 85, 0, -10]
                             },
-                            ship: {
-                                mass: 60,
-                                speed: [125, 145],
-                                rotation: [110, 130],
-                                acceleration: [100, 120]
-                            }
+                            width: [0, 95, 100, 100, 100, 90, 90, 0],
+                            height: [0, 45, 50, 50, 50, 40, 30, 0],
+                            texture: [1, 4, 2, 4, 63, 10, 12]
                         },
-                        bodies: {
-                            main: {
-                                section_segments: 8,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: function () {
-                                        var t, e;
-                                        for (e = [], i = t = 0; t <= 6; i = ++t) e.push(0);
-                                        return e
-                                    }(),
-                                    y: function () {
-                                        var t, e;
-                                        for (e = [], i = t = 0; t <= 10; i = ++t) e.push(50 * -Math.cos(i / 6 * Math.PI));
-                                        return e
-                                    }(),
-                                    z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
-                                },
-                                width: function () {
-                                    var t, e;
-                                    for (e = [], i = t = 0; t <= 10; i = ++t) e.push(50 * Math.sin(i / 6 * Math.PI));
-                                    return e
-                                }(),
-                                height: function () {
-                                    var t, e;
-                                    for (e = [], i = t = 0; t <= 10; i = ++t) e.push(50 * Math.sin(i / 6 * Math.PI));
-                                    return e
-                                }(),
-                                propeller: !1,
-                                texture: [1, 3, 1, 12, 4]
+                        sidewalls: {
+                            section_segments: 12,
+                            offset: {
+                                x: 80,
+                                y: -20,
+                                z: 0
                             },
-                            cannon: {
-                                section_segments: 8,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0],
-                                    y: [-50, -60, -30, 0, 30, 55, 60],
-                                    z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
-                                },
-                                width: [0, 10, 15, 10, 15, 10, 0],
-                                height: [0, 10, 15, 10, 15, 10, 0],
-                                propeller: !1,
-                                texture: [4, 63, 1, 1, 1, 4]
-                            }
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0],
+                                y: [-55, -50, -20, 0, 20, 45, 50]
+                            },
+                            width: [0, 15, 15, 10, 10, 5, 0],
+                            height: [0, 15, 15, 10, 10, 5, 0],
+                            angle: 0,
+                            propeller: !1,
+                            texture: [4, 4, 10, 4, 63, 4]
                         },
-                        wings: {
-                            main: {
-                                length: [50, 10],
-                                width: [20, 30, 20],
-                                angle: [45, 45],
-                                position: [0, 0, 0],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 30,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 20
-                                },
-                                texture: [63]
+                        antenna: {
+                            vertical: !0,
+                            section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
+                            offset: {
+                                x: 0,
+                                y: 90,
+                                z: -20
                             },
-                            main2: {
-                                length: [50, 10],
-                                width: [20, 30, 15],
-                                angle: [-45, -45],
-                                position: [0, 0, 0],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 30,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 20
-                                },
-                                texture: [63]
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-50, -45, -20, -19, 20, 21, 30, 60]
                             },
-                            wing3: {
-                                length: [20],
-                                width: [50, 30],
-                                angle: [0, 0],
-                                position: [0, 0],
-                                doubleside: !0,
-                                offset: {
-                                    x: 35,
-                                    y: 0,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 40
-                                },
-                                texture: [3]
-                            }
+                            width: [50, 30, 30, 12, 12, 3, 3, 0],
+                            height: [50, 30, 30, 12, 12, 3, 3, 0],
+                            texture: [3, [15], 4, 16, 63, 6, 10]
                         }
-                    }, ATTACK_POD_MODEL = {
-                        name: "Attack Pod",
-                        level: 1,
-                        model: 1,
-                        size: 1.05,
-                        specs: {
-                            shield: {
-                                capacity: [75, 100],
-                                reload: [2, 3]
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "deposit",
+            id: "d2",
+            generate: function (t) {
+                var e, i, s, l, n, a;
+                for (a = new OOll0(t), 1 + a.OlOO1(4), e = {
+                    type: "deposit",
+                    size: .5,
+                    bodies: {
+                        hook: {
+                            section_segments: 16,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
                             },
-                            generator: {
-                                capacity: [40, 60],
-                                reload: [10, 15]
+                            position: {
+                                x: [0, 0, 0],
+                                y: [-130, -120, -55]
                             },
-                            ship: {
-                                mass: 60,
-                                speed: [125, 145],
-                                rotation: [110, 130],
-                                acceleration: [100, 120]
-                            }
+                            width: [0, 10, 12],
+                            height: [0, 10, 12],
+                            texture: [6, 12]
                         },
-                        bodies: {
-                            main: {
-                                section_segments: [35, 55, 125, 145, 215, 235, 305, 325, 395],
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0],
-                                    y: [-50, -50, 0, 25, 50, 40],
-                                    z: [0, 0, 0, 0, 0, 0, 0]
-                                },
-                                width: [0, 10, 50, 50, 20, 0],
-                                height: [0, 5, 20, 15, 15, 0],
-                                propeller: !1,
-                                texture: [1, 1, 4, 3, 17]
+                        deposit: {
+                            section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
                             },
-                            cannon: {
-                                section_segments: 8,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0],
-                                    y: [-60, -70, -30, 0, 30, 35, 40],
-                                    z: [0, 0, 0, 5, 5, 0, 0, 0, 0]
-                                },
-                                width: [0, 10, 15, 10, 15, 10, 0],
-                                height: [0, 10, 15, 18, 15, 10, 0],
-                                propeller: !1,
-                                texture: [4, 63, 1, 1, 1, 4]
-                            }
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-90, -100, -90, 70, 85, 85, 0, -10]
+                            },
+                            width: [0, 95, 100, 100, 100, 90, 90, 0],
+                            height: [0, 45, 50, 50, 50, 40, 30, 0],
+                            texture: [1, 4, 1, 4, 63, 1, 12]
                         },
-                        wings: {
-                            II1IO: {
-                                length: [60],
-                                width: [80, 30],
-                                angle: [0, 0],
-                                position: [0, 20],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: -5
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 20
-                                },
-                                texture: [63]
-                            }
+                        antenna: {
+                            vertical: !0,
+                            section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
+                            offset: {
+                                x: 0,
+                                y: 90,
+                                z: 10
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-50, -45, -20, -19, 20, 21, 30, 60]
+                            },
+                            width: [20, 10, 10, 8, 8, 3, 3, 0],
+                            height: [20, 10, 10, 8, 8, 3, 3, 0],
+                            texture: [3, 10, 1, 12, 63, 6, 10]
+                        },
+                        sidewalls: {
+                            section_segments: 12,
+                            offset: {
+                                x: 80,
+                                y: 10,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0],
+                                y: [-55, -50, -20, 0, 20, 45, 50]
+                            },
+                            width: [0, 15, 15, 10, 10, 5, 0],
+                            height: [0, 15, 15, 10, 10, 5, 0],
+                            angle: 0,
+                            propeller: !1,
+                            texture: [4, 4, 10, 4, 63, 4]
                         }
-                    }, DEFENCE_POD_MODEL = {
-                        name: "Defence Pod",
-                        level: 1,
-                        model: 1,
-                        size: 1.05,
-                        specs: {
-                            shield: {
-                                capacity: [75, 100],
-                                reload: [2, 3]
-                            },
-                            generator: {
-                                capacity: [40, 60],
-                                reload: [10, 15]
-                            },
-                            ship: {
-                                mass: 60,
-                                speed: [125, 145],
-                                rotation: [110, 130],
-                                acceleration: [100, 120]
-                            }
-                        },
-                        bodies: {
-                            main: {
-                                section_segments: [35, 55, 125, 145, 215, 235, 305, 325, 395],
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0],
-                                    y: [0, 25, 50, 40],
-                                    z: [0, 0, 0, 0, 0]
-                                },
-                                width: [50, 50, 20, 0],
-                                height: [15, 10, 10, 0],
-                                propeller: !1,
-                                texture: [3, 3, 17]
-                            },
-                            cannon: {
-                                section_segments: 6,
-                                offset: {
-                                    x: 40,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0],
-                                    y: [-25, -20, 0, 0, 20, 30, 35],
-                                    z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
-                                },
-                                width: [0, 10, 15, 10, 7, 6, 0],
-                                height: [0, 10, 15, 18, 15, 10, 0],
-                                propeller: !1,
-                                texture: [4, 63, 1, 1, 1, 4]
-                            }
-                        },
-                        wings: {
-                            II1IO: {
-                                length: [60, 20],
-                                width: [40, 35, 25],
-                                angle: [0, 0, 0],
-                                position: [0, 10, 20],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 0,
-                                    size: 80
-                                },
-                                texture: [1, 63]
-                            }
-                        }
-                    }, WeaponModel.MINING_POD_MODEL = MINING_POD_MODEL, WeaponModel.ATTACK_POD_MODEL = ATTACK_POD_MODEL, WeaponModel.DEFENCE_POD_MODEL = DEFENCE_POD_MODEL, ROCKET_MODEL = {
-                        name: "Rocket",
-                        id: 1,
-                        size: 1,
-                        bodies: {
-                            main: {
-                                section_segments: 10,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    y: [-60, -45, -30, -25, 0, 15, 60, 70, 60]
-                                },
-                                width: [0, 15, 20, 20, 16, 20, 20, 15, 0],
-                                height: [0, 15, 20, 20, 16, 20, 20, 15, 0],
-                                propeller: !0,
-                                texture: [13, 63, 3, 10, 63, 4, 12, 17]
-                            }
-                        },
-                        wings: {
-                            main1: {
-                                length: [35],
-                                width: [40, 20],
-                                angle: [45, 45],
-                                position: [0, 0, 0],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 40,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 25
-                                },
-                                texture: [0]
-                            },
-                            main2: {
-                                length: [35],
-                                width: [40, 20],
-                                angle: [-45, -45],
-                                position: [0, 0, 0],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 40,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 25
-                                },
-                                texture: [0]
-                            }
-                        }
-                    }, MISSILE_MODEL = {
-                        name: "Missile",
-                        id: 1,
-                        size: 1,
-                        bodies: {
-                            main: {
-                                section_segments: 10,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    y: [-100, -85, -60, -45, -40, -5, 0, 25, 90, 100, 90]
-                                },
-                                width: [0, 20, 30, 30, 24, 22, 26, 20, 20, 20, 0],
-                                height: [0, 20, 30, 30, 24, 22, 26, 20, 20, 20, 0],
-                                propeller: !0,
-                                texture: [13, 63, 3, 4, 10, 4, 63, 4, 3, 17]
-                            }
-                        },
-                        wings: {
-                            main1: {
-                                length: [25, 25],
-                                width: [60, 40, 30],
-                                angle: [45, 45],
-                                position: [0, 0, 20],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 60,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 15
-                                },
-                                texture: [0]
-                            },
-                            main2: {
-                                length: [25, 25],
-                                width: [60, 40, 30],
-                                angle: [-45, -45],
-                                position: [0, 0, 20],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 60,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 15
-                                },
-                                texture: [0]
-                            }
-                        }
-                    }, TORPEDO_MODEL = {
-                        name: "Torpedo",
-                        id: 1,
-                        size: 1.5,
-                        bodies: {
-                            main: {
-                                section_segments: 10,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                    y: [-100, -90, -80, -25, 0, 60, 80, 110, 100]
-                                },
-                                width: [0, 15, 20, 20, 20, 20, 10, 10, 0],
-                                height: [0, 15, 20, 20, 20, 20, 10, 10, 0],
-                                propeller: !0,
-                                texture: [13, 63, 3, 10, 63, 4, 12, 17]
-                            }
-                        },
-                        wings: {
-                            main1: {
-                                length: [10, 25],
-                                width: [5, 30, 20],
-                                angle: [45, 45],
-                                position: [0, 0, 0],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 95,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 25
-                                },
-                                texture: [0]
-                            },
-                            main2: {
-                                length: [10, 25],
-                                width: [5, 30, 20],
-                                angle: [-45, -45],
-                                position: [0, 0, 0],
-                                doubleside: !0,
-                                offset: {
-                                    x: 0,
-                                    y: 95,
-                                    z: 0
-                                },
-                                bump: {
-                                    position: 30,
-                                    size: 25
-                                },
-                                texture: [0]
-                            }
-                        }
-                    }, WeaponModel.ROCKET_MODEL = ROCKET_MODEL, WeaponModel.MISSILE_MODEL = MISSILE_MODEL, WeaponModel.TORPEDO_MODEL = TORPEDO_MODEL, MINE_MODEL = {
-                        name: "Space Mine",
-                        level: 1,
-                        model: 1,
-                        size: .7,
-                        specs: {
-                            shield: {
-                                capacity: [75, 100],
-                                reload: [2, 3]
-                            },
-                            generator: {
-                                capacity: [40, 60],
-                                reload: [10, 15]
-                            },
-                            ship: {
-                                mass: 60,
-                                speed: [125, 145],
-                                rotation: [110, 130],
-                                acceleration: [100, 120]
-                            }
-                        },
-                        bodies: {
-                            main: {
-                                section_segments: 6,
-                                offset: {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                },
-                                position: {
-                                    x: function () {
-                                        var t, e;
-                                        for (e = [], i = t = 0; t <= 6; i = ++t) e.push(0);
-                                        return e
-                                    }(),
-                                    y: function () {
-                                        var t, e;
-                                        for (e = [], i = t = 0; t <= 10; i = ++t) e.push(80 * -Math.cos(i / 6 * Math.PI));
-                                        return e
-                                    }(),
-                                    z: [0, 0, 0, 0, 0, 0, 0, 0]
-                                },
-                                width: function () {
-                                    var t, e;
-                                    for (e = [], i = t = 0; t <= 10; i = ++t) e.push(80 * Math.sin(i / 6 * Math.PI));
-                                    return e
-                                }(),
-                                height: function () {
-                                    var t, e;
-                                    for (e = [], i = t = 0; t <= 10; i = ++t) e.push(80 * Math.sin(i / 6 * Math.PI));
-                                    return e
-                                }(),
-                                propeller: !1,
-                                texture: [1, 1, 63, 63, 1]
-                            }
-                        }
-                    }, i = j = 0; j <= 2; i = ++j) MINE_MODEL.bodies["peak" + i] = {
-                        angle: 30 + 60 * i,
-                        section_segments: 6,
+                    }
+                }, i = l = 0; l <= 40; i = l += 20)
+                    for (s = n = -40; n <= 40; s = n += 20) a.OlOO1(50), e.bodies["body" + i + s] = {
+                        section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
                         offset: {
-                            x: 0,
-                            y: 0,
-                            z: 0
+                            x: 1.2 * i,
+                            y: 1.6 * s - 12,
+                            z: 38
                         },
                         position: {
-                            x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                            y: [-115, -110, -100, -90, 90, 100, 110, 115],
-                            z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+                            x: [0, 0, 0, 0, 0],
+                            y: [-7, -5, 10, 12]
                         },
-                        width: [0, 10, 10, 20, 20, 10, 10, 0],
-                        height: [0, 10, 10, 20, 20, 10, 10, 0],
-                        propeller: !1,
-                        texture: [4, 1, 17, 4, 17, 1, 4]
+                        width: [0, 8, 8, 0],
+                        height: [0, 8, 8, 0],
+                        texture: [12, a.next() < .3 ? 63 : 1 + a.OlOO1(4), 12]
                     };
+                return e
+            }
+        }), STATION_MODULES.add({
+            type: "spawning",
+            id: "sp1",
+            generate: function (t) {
+                var e, i, s, l, n;
+                for (l = new OOll0(t), e = 1 + l.OlOO1(3), n = {
+                    type: "spawn",
+                    rotate: !0,
+                    size: .5,
+                    tori: [],
+                    bodies: {
+                        sphere: {
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
+                            },
+                            width: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
+                            height: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
+                            texture: [6, 1, e, e, e, e, e, e, 1, 11, 12]
+                        }
+                    },
+                    wings: {
+                        sidejoin: {
+                            offset: {
+                                x: 65,
+                                y: 0,
+                                z: 65
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [45],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 0,
+                                size: 30
+                            }
+                        },
+                        sidejoin2: {
+                            offset: {
+                                x: 65,
+                                y: 0,
+                                z: -65
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [-45],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 0,
+                                size: 30
+                            }
+                        },
+                        sidejoin3: {
+                            offset: {
+                                x: 90,
+                                y: 0,
+                                z: 0
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [0],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 10,
+                                size: 30
+                            }
+                        },
+                        topjoin: {
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 95
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [90],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 10,
+                                size: 30
+                            }
+                        },
+                        bottomjoin: {
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: -95
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [-90],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 10,
+                                size: 30
+                            }
+                        }
+                    }
+                }, i = s = -4; s <= 0; i = ++s) n.tori["circle" + i] = {
+                    radius: 200 + 20 * i,
+                    segments: 16,
+                    section_segments: 8,
+                    offset: {
+                        x: 0,
+                        y: 25 * i,
+                        z: 0
+                    },
+                    position: {
+                        x: [0],
+                        y: [0],
+                        z: [0]
+                    },
+                    width: [15],
+                    height: [10],
+                    texture: function () {
+                        var t, e;
+                        for (e = [], i = t = 0; t <= 16; i = ++t) e.push([l.next() < .3 ? 8 : 3]);
+                        return e
+                    }()
+                };
+                return n
+            }
+        }), STATION_MODULES.add({
+            type: "spawning",
+            id: "sp2",
+            generate: function (t) {
+                var e, i, s;
+                return s = new OOll0(t), e = 1 + s.OlOO1(3), {
+                    type: "spawning",
+                    rotate: !0,
+                    size: .5,
+                    tori: {
+                        main: {
+                            radius: 200,
+                            segments: 42,
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0],
+                                y: [0],
+                                z: [0]
+                            },
+                            width: [30],
+                            height: [15],
+                            texture: function () {
+                                var t, e;
+                                for (e = [], i = t = 0; t <= 42; i = ++t) e.push([i % 7 == 0 ? 10 : 1]);
+                                return e
+                            }()
+                        }
+                    },
+                    bodies: {
+                        sphere: {
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
+                            },
+                            width: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
+                            height: [0, 20, 20, 40, 70, 90, 100, 100, 90, 60, 30, 0],
+                            texture: [6, 1, e, e, e, e, e, e, 1, 11, 12]
+                        }
+                    },
+                    wings: {
+                        topjoin: {
+                            offset: {
+                                x: 45,
+                                y: 0,
+                                z: 80
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [60],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 0,
+                                size: 30
+                            }
+                        },
+                        sidejoin: {
+                            offset: {
+                                x: 90,
+                                y: 0,
+                                z: 0
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [0],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 10,
+                                size: 30
+                            }
+                        },
+                        bottomjoin: {
+                            offset: {
+                                x: 45,
+                                y: 0,
+                                z: -80
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [50, 20],
+                            angle: [-60],
+                            position: [0, 0],
+                            texture: [63],
+                            bump: {
+                                position: 0,
+                                size: 30
+                            }
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "spawning",
+            id: "sp3",
+            generate: function (t) {
+                var e, i, s;
+                return s = new OOll0(t), e = 1 + s.OlOO1(4), {
+                    type: "spawning",
+                    rotate: !0,
+                    size: .5,
+                    tori: {
+                        main: {
+                            radius: 100,
+                            segments: 12,
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0],
+                                y: [0],
+                                z: [0]
+                            },
+                            width: [30],
+                            height: [15],
+                            texture: function () {
+                                var t, s;
+                                for (s = [], i = t = 0; t <= 20; i = ++t) s.push(i % 2 == 0 ? 10 : e);
+                                return s
+                            }()
+                        }
+                    },
+                    bodies: {
+                        sphere: {
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-160, -150, -100, -85, -70, -50, -20, 20, 50, 70, -50, -50]
+                            },
+                            width: [0, 30, 30, 40, 70, 90, 100, 100, 90, 60, 30, 0],
+                            height: [0, 30, 30, 40, 70, 90, 100, 100, 90, 60, 30, 0],
+                            texture: [6, 12, e, e, e, e, e, e, 1, 11, 12]
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "NESW",
+            id: "st1",
+            generate: function (t) {
+                var e, i, s, l, n, a;
+                for (n = new OOll0(t), i = 1 + n.OlOO1(4), e = {
+                    type: "structure",
+                    size: .5,
+                    tori: {
+                        main: {
+                            radius: 80,
+                            segments: 20,
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0],
+                                y: [0],
+                                z: [0]
+                            },
+                            width: [20],
+                            height: [10],
+                            texture: function () {
+                                var t, e;
+                                for (e = [], s = t = 0; t <= 20; s = ++t) e.push([(s - 2) % 5 == 0 ? 10 : i]);
+                                return e
+                            }()
+                        }
+                    },
+                    bodies: []
+                }, s = l = 0; l <= 90; s = l += 90) a = n.OlOO1(40), e.bodies["body" + s] = {
+                    angle: s,
+                    section_segments: 12,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        y: [-130, -120, -55 - a, -40 - a, 40 + a, 55 + a, 120, 130]
+                    },
+                    width: [0, 15, 16, 40 + i, 40 + i, 12, 10, 0],
+                    height: [0, 15, 16, 40 + i, 40 + i, 12, 10, 0],
+                    texture: [6, 12, 10, i, 10, 4, 6]
+                };
+                return e
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "NS",
+            id: "st2",
+            generate: function (t) {
+                var e, i, s, l, n, a, o;
+                for (n = new OOll0(t), a = n.OlOO1(20), i = 1 + n.OlOO1(4), o = n.OlOO1(20), e = {
+                    type: "structure",
+                    rotate: !0,
+                    size: .5,
+                    tori: [],
+                    bodies: {
+                        main: {
+                            section_segments: 16,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -55 - o, -40 - o, 40 + o, 55 + o, 120, 130]
+                            },
+                            width: [0, 15, 16, 40, 40, 12, 10, 0],
+                            height: [0, 15, 16, 40, 40, 12, 10, 0],
+                            texture: [6, 12, 10, 11, 1, 4, 6]
+                        }
+                    }
+                }, s = l = -4; l <= 4; s = l += 2) e.tori["circle" + s] = {
+                    segments: 4 + o,
+                    radius: 100 - Math.abs(s * a),
+                    section_segments: 8,
+                    offset: {
+                        x: 0,
+                        y: 20 * s,
+                        z: 0
+                    },
+                    position: {
+                        x: [0],
+                        y: [0],
+                        z: [0]
+                    },
+                    width: [10],
+                    height: [o + 3],
+                    texture: function () {
+                        var t, e;
+                        for (e = [], s = t = 0; t <= 40; s = ++t) e.push([(s - 2) % 5 == 0 ? 10 : i]);
+                        return e
+                    }()
+                };
+                return e
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "NS",
+            id: "st3",
+            generate: function (t) {
+                return {
+                    type: "structure",
+                    rotate: 2 * (new OOll0(t)
+                        .next() - .5),
+                    size: .5,
+                    bodies: {
+                        main: {
+                            section_segments: 16,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -75, -60, 60, 75, 120, 130]
+                            },
+                            width: [0, 15, 16, 40, 40, 12, 10, 0],
+                            height: [0, 15, 16, 40, 40, 12, 10, 0],
+                            texture: [6, 12, 10, 11, 1, 4, 6]
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "NS",
+            id: "st4",
+            generate: function (t) {
+                var e;
+                return {
+                    type: "structure",
+                    size: .5,
+                    tori: {
+                        main: {
+                            radius: 100,
+                            segments: 20,
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0],
+                                y: [0],
+                                z: [0]
+                            },
+                            width: [20],
+                            height: [10],
+                            texture: function () {
+                                var t, i;
+                                for (i = [], e = t = 0; t <= 20; e = ++t) i.push([(e - 2) % 5 == 0 ? 10 : 1]);
+                                return i
+                            }()
+                        }
+                    },
+                    bodies: {
+                        bumpers: {
+                            section_segments: [40, 45, 50, 130, 135, 140, 220, 225, 230, 310, 315, 320],
+                            offset: {
+                                x: 97,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-100, -55, -30, -20, 20, 30, 90, 100]
+                            },
+                            width: [0, 12, 2, 20, 20, 2, 2, 0],
+                            height: [0, 12, 5, 30, 30, 5, 2, 0],
+                            texture: [4, 4, 1, 10, 1, 1, 1]
+                        },
+                        main: {
+                            section_segments: 15,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-110, -100, -55, -40, 40, 55, 110, 120]
+                            },
+                            width: [0, 20, 20, 50, 50, 12, 10, 0],
+                            height: [0, 20, 20, 30, 30, 12, 10, 0],
+                            texture: [6, 15, 10, 11, 10, 4, 6]
+                        }
+                    },
+                    wings: {
+                        topjoin: {
+                            offset: {
+                                x: 0,
+                                y: -3,
+                                z: 0
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [20, 20],
+                            angle: [45],
+                            position: [0, 0, 0, 50],
+                            texture: [1],
+                            bump: {
+                                position: 10,
+                                size: 30
+                            }
+                        },
+                        bottomjoin: {
+                            offset: {
+                                x: 0,
+                                y: -3,
+                                z: 0
+                            },
+                            doubleside: !0,
+                            length: [100],
+                            width: [20, 20],
+                            angle: [-45],
+                            position: [0, 0, 0, 50],
+                            texture: [1],
+                            bump: {
+                                position: -10,
+                                size: 30
+                            }
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "N",
+            id: "st5",
+            generate: function (t) {
+                var e, i, s;
+                return s = new OOll0(t), e = 1 + s.OlOO1(4), {
+                    type: "structure",
+                    size: .5,
+                    tori: {
+                        main: {
+                            radius: 70,
+                            segments: 20,
+                            section_segments: 8,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0],
+                                y: [0],
+                                z: [0]
+                            },
+                            width: [20],
+                            height: [10],
+                            texture: function () {
+                                var t, s;
+                                for (s = [], i = t = 0; t <= 20; i = ++t) s.push([(i - 2) % 5 == 0 ? 10 : e]);
+                                return s
+                            }()
+                        }
+                    },
+                    bodies: {
+                        main: {
+                            angle: 0,
+                            section_segments: 12,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -55, -40, 40, 55]
+                            },
+                            width: [0, 15, 16, 40 + e, 40 + e, 0],
+                            height: [0, 15, 16, 40 + e, 40 + e, 0],
+                            texture: [6, 12, 10, e, 10, 4, 6]
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "NE",
+            id: "st6",
+            generate: function (t) {
+                var e, i;
+                return i = new OOll0(t), e = 1 + i.OlOO1(4), {
+                    type: "structure",
+                    size: .5,
+                    bodies: {
+                        main: {
+                            angle: 0,
+                            section_segments: 12,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -100, -40, 20, 30]
+                            },
+                            width: [0, 15, 16, 40, 20, 0],
+                            height: [0, 15, 16, 40, 20, 0],
+                            texture: [6, 12, 8, e, 10, 4, 6]
+                        },
+                        angle: {
+                            angle: -90,
+                            section_segments: 12,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -55, -40, 40, 55]
+                            },
+                            width: [0, 15, 16, 40, 40, 0],
+                            height: [0, 15, 16, 40, 40, 0],
+                            texture: [6, 12, 10, e, 10, 4, 6]
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "NES",
+            id: "st7",
+            generate: function (t) {
+                var e, i;
+                return i = new OOll0(t), e = 1 + i.OlOO1(4), {
+                    type: "structure",
+                    size: .5,
+                    bodies: {
+                        main: {
+                            angle: 0,
+                            section_segments: 12,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -100, -40, 0, 40, 100, 120, 130]
+                            },
+                            width: [0, 15, 16, 40, 20, 40, 12, 10, 0],
+                            height: [0, 15, 16, 40, 20, 40, 12, 10, 0],
+                            texture: [6, 12, 8, e, e, 8, 12, 6]
+                        },
+                        angle: {
+                            angle: -90,
+                            section_segments: 12,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -55, -40, 40, 55]
+                            },
+                            width: [0, 15, 16, 40, 40, 0],
+                            height: [0, 15, 16, 40, 40, 0],
+                            texture: [6, 12, 10, e, 10, 4, 6]
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "N",
+            id: "st8",
+            generate: function (t) {
+                var e, i;
+                return i = new OOll0(t), e = 1 + i.OlOO1(4), {
+                    type: "structure",
+                    rotate: 30 * (new OOll0(t)
+                        .next() - .5),
+                    transparent: !0,
+                    size: .5,
+                    bodies: {
+                        main: {
+                            angle: 0,
+                            section_segments: 12,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -55, -40, 40, 55]
+                            },
+                            width: [0, 15, 16, 40 + e, 40 + e, 0],
+                            height: [0, 15, 16, 40 + e, 40 + e, 0],
+                            texture: [6, 12, 10, e, 10, 4, 6]
+                        }
+                    },
+                    wings: {
+                        topsolarpanel: {
+                            noshape: !0,
+                            doubleside: !0,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            length: [60, 60, 60, 60],
+                            width: [70, 70, 65, 60, 55],
+                            angle: [90, 90, 90, 90, 90],
+                            position: [0, 0, 0, 0, 0],
+                            texture: [14],
+                            bump: {
+                                position: 0,
+                                size: 5
+                            }
+                        },
+                        solarpanels: {
+                            noshape: !0,
+                            doubleside: !0,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            length: [60, 60, 60, 60],
+                            width: [70, 70, 65, 60, 55],
+                            angle: [-30, -30, -30, -30, -30],
+                            position: [0, 0, 0, 0, 0],
+                            texture: [14],
+                            bump: {
+                                position: 0,
+                                size: 5
+                            }
+                        }
+                    }
+                }
+            }
+        }), STATION_MODULES.add({
+            type: "structure",
+            hook: "NS",
+            id: "st9",
+            generate: function (t) {
+                return {
+                    type: "structure",
+                    rotate: 2 * (new OOll0(t)
+                        .next() - .5),
+                    size: .5,
+                    bodies: {
+                        main: {
+                            section_segments: 16,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            position: {
+                                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                y: [-130, -120, -75, -70, 70, 75, 120, 130]
+                            },
+                            width: [0, 15, 16, 40, 40, 12, 10, 0],
+                            height: [0, 15, 16, 40, 40, 12, 10, 0],
+                            texture: [6, 12, 10, 11, 1, 4, 6]
+                        }
+                    },
+                    wings: {
+                        topsolarpanel: {
+                            noshape: !0,
+                            doubleside: !0,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            length: [60, 60, 60, 60],
+                            width: [70, 70, 65, 60, 55],
+                            angle: [90, 90, 90, 90, 90],
+                            position: [0, 0, 0, 0, 0],
+                            texture: [14],
+                            bump: {
+                                position: 0,
+                                size: 5
+                            }
+                        },
+                        solarpanels: {
+                            noshape: !0,
+                            doubleside: !0,
+                            offset: {
+                                x: 0,
+                                y: 0,
+                                z: 0
+                            },
+                            length: [60, 60, 60, 60],
+                            width: [70, 70, 65, 60, 55],
+                            angle: [-30, -30, -30, -30, -30],
+                            position: [0, 0, 0, 0, 0],
+                            texture: [14],
+                            bump: {
+                                position: 0,
+                                size: 5
+                            }
+                        }
+                    }
+                }
+            }
+        }), this.StationModel = function () {
+            function e(t, e) {
+                var i, s, l, n, a, o;
+                for (this.team = e, this.phase = t.phase, this.hue = t.hue, this.open = !1, this.IIOOO = 0, this.crystals_max = 10, this.level = 0, this.modules = [], this.lO101 = new THREE.Group, this.last_station_message = 0, this.alive = !0, o = t.modules, i = 0, s = o.length; i < s; i++) l = o[i], n = STATION_MODULES.types_by_id[l.type], a = new StationModuleModel(n.generate(l.id + this.hue), this.hue / 360, "alloy", this), a.id = l.id, a.type = l.type, a.dir = l.dir, this.modules.push(a), a.lO101.rotation.z = -Math.PI * l.dir * .5, a.lO101.position.y = 20 * l.y, a.lO101.position.x = 20 * l.x, a.lO101.scale.set(10, 10, 10), this.lO101.add(a.lO101), "deposit" === n.type ? a.createCarpet("deposit") : "spawning" === n.type && a.createCarpet("spawning");
+                this.lO101.scale.set(.5, .5, .5), this.bar = new ShieldBar, this.lO101.add(this.bar.Il0I1), this.last_bar_module_change = 0, this.bar_module = null
+            }
+            return e.prototype.setLevel = function (e, i) {
+                if (e > this.level && (this.level = e, i.mode.team === this.team)) return this.last_station_message = Date.now(), i.message(t("Station upgraded"), "#8FF")
+            }, e.prototype.hasDestroyedModule = function () {
+                var t, e, i, s;
+                for (s = this.modules, t = 0, e = s.length; t < e; t++)
+                    if (i = s[t], !i.alive) return !0;
+                return !1
+            }, e.prototype.setModuleShield = function (t, e, i) {
+                if (t !== this.bar_module) {
+                    if (!(Date.now() > this.last_bar_module_change + 1e3)) return;
+                    this.last_bar_module_change = Date.now(), this.bar_module = t
+                }
+                return this.bar.Il0I1.position.x = t.lO101.position.x, this.bar.Il0I1.position.y = t.lO101.position.y, this.bar.set(e, i)
+            }, e.prototype.I0OIl = function (t) {
+                var e, i, s, l, n, a, o;
+                for (o = .5 * (10 + 2.5 * this.level) / 10, this.lO101.scale.set(o, o, o), e = !1, a = this.modules, s = 0, l = a.length; s < l; s++) n = a[s], n.lO101.visible = n.alive, n.data.rotate && (n.lO101.rotation.x += .001), n.I0OIl(t), n.updateCarpet(this.level), n.alive && (e = !0);
+                return this.alive = e, i = -t / 60 / 1200 % 1 * Math.PI * 2, this.lO101.rotation.z = i, this.bar.I0OIl(), this.bar.Il0I1.rotation.z = -i
+            }, e
+        }(), this.Carpet = function () {
+            function e(t) {
+                this.type = t, this.level = 0, this.canvas = document.createElement("canvas"), this.canvas.width = 256, this.canvas.height = 256, this.texture = new THREE.Texture(this.canvas), this.OlOOI(), this.O1I0O = new THREE.PlaneGeometry(1, 1), this.material = new THREE.MeshBasicMaterial({
+                    color: 16777215,
+                    map: this.texture,
+                    transparent: !0,
+                    depthWrite: !1,
+                    depthTest: !0,
+                    blending: THREE.AdditiveBlending
+                }), this.Il0I1 = new THREE.Mesh(this.O1I0O, this.material), this.Il0I1.scale.set(2, 2, 2), this.Il0I1.rotation.z = Math.PI / 2, this.lO101 = new THREE.Group, this.lO101.add(this.Il0I1)
+            }
+            return e.prototype.setLevel = function (t) {
+                if (t !== this.level) return this.level = t, this.OlOOI()
+            }, e.prototype.OlOOI = function () {
+                var e, i, s, l, n, a, o;
+                if (e = this.canvas.getContext("2d"), e.clearRect(0, 0, this.canvas.width, this.canvas.height), "deposit" === this.type) {
+                    for (i = e.createLinearGradient(0, 0, 0, this.canvas.height), i.addColorStop(0, "hsla(0,60%,60%,0)"), i.addColorStop(.1, "hsla(0,60%,60%,.2)"), i.addColorStop(1, "hsla(0,60%,60%,0)"), e.fillStyle = i, e.beginPath(), e.moveTo(.2 * this.canvas.width, 0), e.lineTo(.8 * this.canvas.width, 0), e.lineTo(this.canvas.width, this.canvas.height), e.lineTo(0, this.canvas.height), e.closePath(), e.fill(), e.fillStyle = "hsla(0,60%,60%,1)", e.font = "30pt Play", e.textAlign = "center", e.textBaseline = "middle", e.fillText("Lv" + (this.level + 3), this.canvas.width / 2, this.canvas.height / 2), e.font = "14pt Play", e.fillText(t("DEPOT"), this.canvas.width / 2, this.canvas.height / 8), e.fillRect(.25 * this.canvas.width, this.canvas.height / 6, .5 * this.canvas.width, 4), e.font = "20pt FontAwesome", e.fillText("", this.canvas.width / 4, this.canvas.height / 2), e.fillText("", .75 * this.canvas.width, this.canvas.height / 2), e.fillText("", .35 * this.canvas.width, this.canvas.height / 4), e.fillText("", .5 * this.canvas.width, this.canvas.height / 4), e.fillText("", .65 * this.canvas.width, this.canvas.height / 4), e.fillStyle = "rgba(0,0,0,.5)", s = l = 0, a = this.canvas.height - 1; l <= a; s = l += 2) e.fillRect(0, s, this.canvas.width, 1);
+                    return this.texture.needsUpdate = !0
+                }
+                for (i = e.createLinearGradient(0, 0, 0, this.canvas.height), i.addColorStop(0, "hsla(180,60%,60%,0)"), i.addColorStop(.1, "hsla(180,60%,60%,.2)"), i.addColorStop(1, "hsla(180,60%,60%,0)"), e.fillStyle = i, e.beginPath(), e.moveTo(.2 * this.canvas.width, 0), e.lineTo(.8 * this.canvas.width, 0), e.lineTo(this.canvas.width, this.canvas.height), e.lineTo(0, this.canvas.height), e.closePath(), e.fill(), e.fillStyle = "hsla(180,60%,60%,1)", e.font = "30pt Play", e.textAlign = "center", e.textBaseline = "middle", e.fillText("Lv" + (this.level + 3), this.canvas.width / 2, this.canvas.height / 2), e.font = "14pt Play", e.fillText(t("TAKE OFF"), this.canvas.width / 2, this.canvas.height / 8), e.fillRect(.25 * this.canvas.width, this.canvas.height / 6, .5 * this.canvas.width, 4), e.fillText(t("KEEP CLEAR"), this.canvas.width / 2, .875 * this.canvas.height), e.font = "20pt FontAwesome", e.fillText("", this.canvas.width / 4, this.canvas.height / 2), e.fillText("", .75 * this.canvas.width, this.canvas.height / 2), e.fillText("", .35 * this.canvas.width, this.canvas.height / 4), e.fillText("", .5 * this.canvas.width, this.canvas.height / 4), e.fillText("", .65 * this.canvas.width, this.canvas.height / 4), e.fillStyle = "rgba(0,0,0,.5)", s = n = 0, o = this.canvas.height - 1; n <= o; s = n += 2) e.fillRect(0, s, this.canvas.width, 1);
+                return this.texture.needsUpdate = !0
+            }, e
+        }(), this.ShieldBar = function () {
+            function t() {
+                this.name = "", this.shield = 0, this.shield_max = 1, this.canvas = document.createElement("canvas"), this.canvas.width = 256, this.canvas.height = 64, this.texture = new THREE.Texture(this.canvas), this.O1I0O = new THREE.PlaneGeometry(1, 1), this.material = new THREE.MeshBasicMaterial({
+                    color: 16777215,
+                    map: this.texture,
+                    transparent: !0,
+                    depthWrite: !1,
+                    depthTest: !1
+                }), this.Il0I1 = new THREE.Mesh(this.O1I0O, this.material), this.Il0I1.scale.set(24, 6, 3), this.Il0I1.position.set(0, 0, 2), this.last_update = 0, this.Il0I1.visible = !1
+            }
+            return t.prototype.I0OIl = function () {
+                if (this.Il0I1.visible && Date.now() > this.last_update + 5e3) return this.Il0I1.visible = !1
+            }, t.prototype.set = function (t, e) {
+                if (this.shield = t, this.shield_max = e, Date.now() > this.last_update + 500) return this.last_update = Date.now(), this.OlOOI(), this.Il0I1.visible = !0
+            }, t.prototype.OlOOI = function (t) {
+                var e, i, s, l, n, a;
+                return e = this.shield / this.shield_max, this.color = e > .5 ? "hsl(180," + Math.round(2 * (e - .5) * 100) + "%,75%)" : "hsl(0," + Math.round(2 * (.5 - e) * 100) + "%,75%)", i = this.canvas.getContext("2d"), i.clearRect(0, 0, this.canvas.width, this.canvas.height), i.fillStyle = "rgba(0,0,0,.5)", i.fillRect(0, 0, this.canvas.width, this.canvas.height), a = this.canvas.width, s = this.canvas.height, n = this.canvas.height / 8, i.strokeStyle = this.color, i.fillStyle = this.color, i.strokeRect(n, s / 2 + n, a - 2 * n, s / 2 - 2 * n), l = a - 2 * n - 4, i.fillRect(n + 2, s / 2 + n + 2, l * e, s / 2 - 2 * n - 4), i.textAlign = "left", i.textBaseline = "middle", i.font = "16pt Play", i.fillText(this.shield, n, s / 4), i.textAlign = "right", i.fillText(this.shield_max, a - n, s / 4), this.texture.needsUpdate = !0
+            }, t
+        }(), extend = function (t, e) {
+            function i() {
+                this.constructor = t
+            }
+            for (var s in e) hasProp.call(e, s) && (t[s] = e[s]);
+            return i.prototype = e.prototype, t.prototype = new i, t.OlOlO = e.prototype, t
+        }, hasProp = {}.hasOwnProperty, this.StationModuleModel = function (e) {
+            function i(t, e, s, l) {
+                this.station = l, i.OlOlO.constructor.call(this, t, e, s), this.alive = !0, this.shield = 1
+            }
+            return extend(i, e), i.prototype.setAlive = function (e, i) {
+                if (this.alive !== e && (this.alive = e, i.mode.team === this.station.team)) return this.station.last_station_message = Date.now(), this.alive ? i.message(t("Station module repaired"), "#8FF") : i.message(t("Station module destroyed"), "#F88")
+            }, i.prototype.createCarpet = function (t) {
+                if (null == this.carpet) return this.carpet = new Carpet(t), this.lO101.add(this.carpet.lO101), this.carpet.Il0I1.position.set(2, 0, -1)
+            }, i.prototype.I0OIl = function (t) {
+                var e, s, l, n;
+                if (i.OlOlO.I0OIl.call(this, t), null != this.material) return s = Math.floor(255 * Math.max(.15, this.shield)), this.material.color.set((s << 16) + (s << 8) + s), n = Math.floor(128 * s / 255), l = Math.floor(96 * s / 255), e = Math.floor(80 * s / 255),
+                    this.material.specular.set((n << 16) + (l << 8) + e)
+            }, i.prototype.updateCarpet = function (t) {
+                if (null != this.carpet) return this.carpet.material.opacity = Math.pow(Math.random(), .2), this.carpet.setLevel(t), this.carpet.lO101.rotation.x = -this.lO101.rotation.x
+            }, i.prototype.setShield = function (e, i) {
+                if (this.shield !== e) {
+                    if (!(e < .99 * this.shield && i.mode.team === this.station.team)) return this.shield = e;
+                    if (this.shield = e, i.mode.attackWarning(), Date.now() > this.station.last_station_message + 1e4) return this.station.last_station_message = Date.now(), i.message(t("Station is under attack"), "#F88")
+                }
+            }, i.prototype.lOOII = function (t, e) {
+                var i, s, l, n;
+                return null == t && (t = 128), null == e && (e = 16777215), n = new THREE.Scene, i = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), this.material.emissive.setHex(e), this.material.map = lIO1l, this.material.emissiveMap = lIO1l, this.material.side = THREE.DoubleSide, this.material.color.setHex(0), this.IIOIO.opacity = 0, n.add(this.lO101), this.lO101.position.set(t / 2, t / 2, -1e3), l = .5 * t / 3, this.lO101.scale.set(l, -l, l), this.lO101.rotation.z = Math.PI / 2, I11lI.I0O01 || (I11lI.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), I11lI.I0O01.setSize(t, t), I11lI.I0O01.render(n, i), s = document.createElement("canvas"), s.width = t, s.height = t, s.getContext("2d")
+                    .drawImage(I11lI.I0O01.domElement, 0, 0), s
+            }, i.images_buffer = [], i.getModuleImage = function (t) {
+                return null == i.images_buffer[t.id] && (i.images_buffer[t.id] = new i(t.generate(0))
+                    .lOOII()), i.images_buffer[t.id]
+            }, i.getModuleImageColorized = function (t, e) {
+                var s;
+                return null == i.images_buffer[t.id + e] && (s = new i(t.generate(0))
+                    .lOOII(128, e), i.images_buffer[t.id + e] = s), i.images_buffer[t.id + e]
+            }, i
+        }(this.I11lI), this.StationGrid = function () {
+            function t(t, e, i) {
+                this.ends = t, this.modules = e, this.size = null != i ? i : 2 * Math.floor(Math.sqrt(this.modules)), this.types = [], this.types[0] = {
+                    type: "NS",
+                    dir: 0
+                }, this.types[1] = {
+                    type: "N",
+                    dir: 0
+                }, this.types[2] = {
+                    type: "N",
+                    dir: 1
+                }, this.types[3] = {
+                    type: "NE",
+                    dir: 0
+                }, this.types[4] = {
+                    type: "N",
+                    dir: 2
+                }, this.types[5] = {
+                    type: "NS",
+                    dir: 0
+                }, this.types[6] = {
+                    type: "NE",
+                    dir: 1
+                }, this.types[7] = {
+                    type: "NES",
+                    dir: 0
+                }, this.types[8] = {
+                    type: "N",
+                    dir: 3
+                }, this.types[9] = {
+                    type: "NE",
+                    dir: 3
+                }, this.types[10] = {
+                    type: "NS",
+                    dir: 1
+                }, this.types[11] = {
+                    type: "NES",
+                    dir: 3
+                }, this.types[12] = {
+                    type: "NE",
+                    dir: 2
+                }, this.types[13] = {
+                    type: "NES",
+                    dir: 2
+                }, this.types[14] = {
+                    type: "NES",
+                    dir: 1
+                }, this.types[15] = {
+                    type: "NESW",
+                    dir: 0
+                }
+            }
+            return t.prototype.l1l11 = function () {
+                var t, e, i, s, l;
+                for (this.ends = Math.max(2, this.ends), this.grid = function () {
+                    var i, s, l;
+                    for (l = [], t = i = 0, s = this.size - 1; i <= s; t = i += 1) l.push(function () {
+                        var t, i, s;
+                        for (s = [], e = t = 0, i = this.size - 1; t <= i; e = t += 1) s.push(0);
+                        return s
+                    }.call(this));
+                    return l
+                }.call(this), this.points = [], 0, this.x = Math.floor(this.size / 2), this.y = Math.floor(this.size / 2), this.dir = Math.floor(4 * Math.random()), this.O11I0 = 0, this.mark(this.x, this.y), this.lIIO0(), i = 2; ;) {
+                    if (this.O11I0 >= this.modules || 0 === this.points.length) break;
+                    s = this.points[Math.floor(this.points.length * Math.random())], l = this.type(s.x, s.y)
+                        .type, "N" === l && this.O11I0 < this.modules - (this.ends - i) ? (this.x = s.x, this.y = s.y, this.lIIO0() || this.points.splice(this.points.indexOf(s), 1)) : ("NS" === l || "NE" === l) && i < this.ends ? (this.x = s.x, this.y = s.y, this.lIIO0() ? i++ : this.points.splice(this.points.indexOf(s), 1)) : this.points.splice(this.points.indexOf(s), 1)
+                }
+                return i === this.ends && this.O11I0 === this.modules
+            }, t.prototype.O0OOI = function () { }, t.prototype.isClear = function (t, e) {
+                return t < 0 || e < 0 || t >= this.size || e >= this.size || 0 === this.grid[e][t]
+            }, t.prototype.get = function (t, e) {
+                return t < 0 || e < 0 || t >= this.size || e >= this.size ? 0 : this.grid[e][t]
+            }, t.prototype.type = function (t, e) {
+                var i;
+                return i = 0, this.isClear(t, e - 1) || (i |= 1), this.isClear(t, e + 1) || (i |= 4), this.isClear(t - 1, e) || (i |= 8), this.isClear(t + 1, e) || (i |= 2), this.types[i]
+            }, t.prototype.isDirClear = function (t, e, i) {
+                switch (i) {
+                    case 0:
+                        return e > 0 && this.isClear(t, e - 1) && this.isClear(t - 1, e - 1) && this.isClear(t + 1, e - 1) && this.isClear(t, e - 2) && this.isClear(t - 1, e - 2) && this.isClear(t + 1, e - 2);
+                    case 2:
+                        return e < this.size - 1 && this.isClear(t, e + 1) && this.isClear(t - 1, e + 1) && this.isClear(t + 1, e + 1) && this.isClear(t, e + 2) && this.isClear(t - 1, e + 2) && this.isClear(t + 1, e + 2);
+                    case 1:
+                        return t < this.size - 1 && this.isClear(t + 1, e) && this.isClear(t + 1, e - 1) && this.isClear(t + 1, e + 1) && this.isClear(t + 2, e) && this.isClear(t + 2, e - 1) && this.isClear(t + 2, e + 1);
+                    default:
+                        return t > 0 && this.isClear(t - 1, e) && this.isClear(t - 1, e - 1) && this.isClear(t - 1, e + 1) && this.isClear(t - 2, e) && this.isClear(t - 2, e - 1) && this.isClear(t - 2, e + 1)
+                }
+            }, t.prototype.mark = function (t, e) {
+                return this.grid[e][t] = 1, this.points.push({
+                    x: t,
+                    y: e
+                }), this.O11I0++
+            }, t.prototype.lIIO0 = function () {
+                var t, e, i;
+                if (i = Math.random(), !this.isDirClear(this.x, this.y, this.dir)) {
+                    for (t = i < .5 ? 1 : 3, e = 0; e <= 2 && (this.dir = (this.dir + t) % 4, !this.isDirClear(this.x, this.y, this.dir)); e += 1);
+                    i = 1
+                }
+                if (i < .2 && this.isDirClear(this.x, this.y, (this.dir + 1) % 4) ? this.dir = (this.dir + 1) % 4 : i < .4 && this.isDirClear(this.x, this.y, (this.dir + 3) % 4) && (this.dir = (this.dir + 3) % 4), this.isDirClear(this.x, this.y, this.dir)) {
+                    switch (this.dir) {
+                        case 2:
+                            this.y += 1, this.mark(this.x, this.y);
+                            break;
+                        case 0:
+                            this.y -= 1, this.mark(this.x, this.y);
+                            break;
+                        case 1:
+                            this.x += 1, this.mark(this.x, this.y);
+                            break;
+                        case 3:
+                            this.x -= 1, this.mark(this.x, this.y)
+                    }
+                    return !0
+                }
+                return !1
+            }, t.prototype.O0O10 = function () {
+                var t, e, i, s, l, n, a, o;
+                for (t = document.createElement("canvas"), t.width = 1024, t.height = 1024, e = t.getContext("2d"), e.scale(1024 / this.size, 1024 / this.size), i = l = 0, a = this.size - 1; 0 <= a ? l <= a : l >= a; i = 0 <= a ? ++l : --l)
+                    for (s = n = 0, o = this.size - 1; 0 <= o ? n <= o : n >= o; s = 0 <= o ? ++n : --n) 0 !== this.grid[s][i] && (e.fillStyle = "#000", e.fillRect(i, s, 1, 1));
+                return t
+            }, t
+        }(), this.Weapons = function () {
+            function t(t) {
+                this.O0IOO = t, this.weapons = [], this.next_shot_time = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], this.credits = 0
+            }
+            return t.prototype.read = function (t) {
+                var e, i, s, l, n, a, o, r, h;
+                for (o = this.weapons.length, this.weapons = [], this.credits = t.getUint32(1, !0), l = 5; l < t.byteLength;) i = t.getUint8(l++), e = t.getUint8(l++), a = t.getUint8(l++), this.weapons.push({
+                    code: i,
+                    type: WEAPON_TYPES.types_by_code[i],
+                    ammo: e,
+                    next_shot: this.O0IOO.O1110.IlI0I.O11ll + a
+                });
+                for (this.signature = "", r = this.weapons, s = 0, n = r.length; s < n; s++) h = r[s], this.signature += h.code + "-" + h.ammo + ":";
+                this.weapons.length > o && this.O0IOO.lI0Ol.beep()
+            }, t
+        }(), extend = function (t, e) {
+            function i() {
+                this.constructor = t
+            }
+            for (var s in e) hasProp.call(e, s) && (t[s] = e[s]);
+            return i.prototype = e.prototype, t.prototype = new i, t.OlOlO = e.prototype, t
+        }, hasProp = {}.hasOwnProperty, this.Pod = function () {
+            function t(t, e, i, s) {
+                this.O0IOO = t, this.ship = e, this.pods = i, this.pod_type_id = s, this.x = this.ship.status.x, this.y = this.ship.status.y, this.z = 0, this.r = this.ship.status.r, this.lI1l1 = 0, this.I0I0l = 0, this.l0I10 = 0, this.l0lO0 = 0, this.last_visible = !0
+            }
+            return t.prototype.lIIO0 = function (t, e, i) {
+                return this.x < this.ship.status.x - this.O0IOO.l000O ? this.x += this.O0IOO.size : this.x > this.ship.status.x + this.O0IOO.l000O && (this.x -= this.O0IOO.size), this.y < this.ship.status.y - this.O0IOO.l000O ? this.y += this.O0IOO.size : this.y > this.ship.status.y + this.O0IOO.l000O && (this.y -= this.O0IOO.size), this.physicsStep(t, e, i)
+            }, t.prototype.dispose = function () {
+                if (this.added) return this.O0IOO.O1110.O1110.remove(this.Il0I1), this.Il0I1.geometry.dispose(), this.Il0I1.material.dispose()
+            }, t.prototype.updateModel = function (t) {
+                return this.added || (this.added = !0, this.O0IOO.O1110.O1110.add(this.Il0I1)), t && !this.last_visible && (this.x = this.ship.status.x, this.y = this.ship.status.y, this.z = 0, this.I0I0l = 0, this.l0I10 = 0, this.l0lO0 = 0), this.Il0I1.rotation.x = this.ship.l1l1I, this.Il0I1.rotation.y = .4 * this.ship.lO1lI, this.Il0I1.rotation.z = this.r + Math.PI, this.Il0I1.position.x = this.x, this.Il0I1.position.y = this.y, this.Il0I1.position.z = this.z, this.Il0I1.visible = t, this.last_visible = t
+            }, t.prototype.IlO1I = function () {
+                return this.O0IOO.O1110.IlI0I.IlO1I(this.Il0I1)
+            }, t
+        }(), this.MiningPod = function (t) {
+            function e(t, i, s) {
+                e.OlOlO.constructor.call(this, t, i, s, 0), this.Il0I1 = this.ship.pods.getModelInstance("MINING_POD_MODEL")
+            }
+            return extend(e, t), e.prototype.physicsStep = function (t, e, i) {
+                var s;
+                return s = this.ship.type.radius, this.ship.status.guided && (s = 0), this.O0IOO.O1110.IlI0I.weapon_physics.miningPodStep(this, e, this.pods.mining_pods.length, s, t, i)
+            }, e
+        }(Pod), this.AttackPod = function (t) {
+            function e(t, i, s) {
+                e.OlOlO.constructor.call(this, t, i, s, 1), this.Il0I1 = this.ship.pods.getModelInstance("ATTACK_POD_MODEL")
+            }
+            return extend(e, t), e.prototype.physicsStep = function (t, e, i) {
+                var s;
+                return s = this.ship.type.radius, this.ship.status.guided && (s = 0), this.O0IOO.O1110.IlI0I.weapon_physics.attackPodStep(this, e, this.pods.attack_pods.length, s, t, i)
+            }, e
+        }(Pod), this.DefencePod = function (t) {
+            function e(t, i, s) {
+                e.OlOlO.constructor.call(this, t, i, s, 2), this.Il0I1 = this.ship.pods.getModelInstance("DEFENCE_POD_MODEL")
+            }
+            return extend(e, t), e.prototype.physicsStep = function (t, e, i) {
+                var s;
+                return s = this.ship.type.radius, this.ship.status.guided && (s = 0), this.O0IOO.O1110.IlI0I.weapon_physics.defencePodStep(this, e, this.pods.defence_pods.length, s, t, i)
+            }, e
+        }(Pod), this.Pods = function () {
+            function t(t, e) {
+                this.O0IOO = t, this.OII0I = e, this.mining_pods = [], this.attack_pods = [], this.defence_pods = [], this.target = null, this.models = {}
+            }
+            return t.prototype.getModelInstance = function (t) {
+                var e, i, s;
+                return null == this.models[t] && (i = "zinc", this.OII0I === this.O0IOO.OII0I ? this.O0IOO.II010.ll10I() && (i = this.O0IOO.II010.custom.finish) : null != (e = this.O0IOO.names.getCustom(this.OII0I.status.id)) && null != e.finish && (i = e.finish), this.models[t] = new WeaponModel(WeaponModel[t], this.OII0I.status.hue / 360, i)), s = this.models[t].getInstance(), s.scale.x = .6 * this.models[t].data.size * 2, s.scale.y = .6 * this.models[t].data.size * 2, s.scale.z = .6 * this.models[t].data.size * 2, s
+            }, t.prototype.setMiningNum = function (t) {
+                for (; this.mining_pods.length > t;) this.mining_pods[0].dispose(), this.mining_pods.splice(0, 1);
+                for (; this.mining_pods.length < t;) this.mining_pods.push(new MiningPod(this.O0IOO, this.OII0I, this))
+            }, t.prototype.setAttackNum = function (t) {
+                for (; this.attack_pods.length > t;) this.attack_pods[0].dispose(), this.attack_pods.splice(0, 1);
+                for (; this.attack_pods.length < t;) this.attack_pods.push(new AttackPod(this.O0IOO, this.OII0I, this))
+            }, t.prototype.setDefenceNum = function (t) {
+                for (; this.defence_pods.length > t;) this.defence_pods[0].dispose(), this.defence_pods.splice(0, 1);
+                for (; this.defence_pods.length < t;) this.defence_pods.push(new DefencePod(this.O0IOO, this.OII0I, this))
+            }, t.prototype.lIIO0 = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d;
+                for (h = this.mining_pods, e = i = 0, n = h.length; i < n; e = ++i) r = h[e], r.lIIO0(t, e, this.target);
+                for (u = this.attack_pods, e = s = 0, a = u.length; s < a; e = ++s) r = u[e], r.lIIO0(t, e, this.target);
+                for (d = this.defence_pods, e = l = 0, o = d.length; l < o; e = ++l) r = d[e], r.lIIO0(t, e, this.target)
+            }, t.prototype.remove = function (t, e) {
+                switch (t) {
+                    case 0:
+                        return this.removeMiningPod(e);
+                    case 1:
+                        return this.removeAttackPod(e);
+                    case 2:
+                        return this.removeDefencePod(e)
+                }
+            }, t.prototype.removeMiningPod = function (t) {
+                if (t < this.mining_pods.length) return this.mining_pods[t].dispose(), this.mining_pods.splice(t, 1)
+            }, t.prototype.removeAttackPod = function (t) {
+                if (t < this.attack_pods.length) return this.attack_pods[t].dispose(), this.attack_pods.splice(t, 1)
+            }, t.prototype.removeDefencePod = function (t) {
+                if (t < this.defence_pods.length) return this.defence_pods[t].dispose(), this.defence_pods.splice(t, 1)
+            }, t.prototype.updateModels = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d;
+                for (h = this.mining_pods, e = i = 0, n = h.length; i < n; e = ++i) r = h[e], r.updateModel(t);
+                for (u = this.attack_pods, e = s = 0, a = u.length; s < a; e = ++s) r = u[e], r.updateModel(t);
+                for (d = this.defence_pods, e = l = 0, o = d.length; l < o; e = ++l) r = d[e], r.updateModel(t)
+            }, t.prototype.fixPositions = function () {
+                var t, e, i, s, l, n, a, o, r, h, u;
+                for (r = this.mining_pods, t = e = 0, l = r.length; e < l; t = ++e) o = r[t], o.IlO1I();
+                for (h = this.attack_pods, t = i = 0, n = h.length; i < n; t = ++i) o = h[t], o.IlO1I();
+                for (u = this.defence_pods, t = s = 0, a = u.length; s < a; t = ++s) o = u[t], o.IlO1I()
+            }, t
+        }(), this.Mine = function () {
+            function t(t, e) {
+                this.O0IOO = t, this.typeid = e.getUint8(1), this.id = e.getUint16(2, !0), this.shipid = e.getUint16(4, !0), this.IlI0I = this.O0IOO.O1110.IlI0I, this.type = WEAPON_TYPES.types_by_code[this.typeid], this.speed = .004 * this.type.speed, this.O0O1l = Math.exp(Math.log(.5) * this.type.O0O1l / 3e3), this.read(e), this.I0OIl(e), this.createModel(), this.pop = 0, this.killed = !1
+            }
+            return t.prototype.I0OIl = function (t) {
+                var e, i, s;
+                if ((s = t.getUint32(6, !0)) > this.IlI0I.O11ll) this.O1OlO = t;
+                else if (s < this.IlI0I.O11ll) {
+                    if (this.read(t), this.IlI0I.O11ll - s < 30)
+                        for (e = s + 1, i = this.IlI0I.O11ll; e <= i; e += 1) this.lIIO0()
+                } else this.read(t)
+            }, t.prototype.read = function (t) {
+                return this.x = t.getFloat32(10, !0), this.y = t.getFloat32(14, !0), this.I0I0l = t.getFloat32(18, !0), this.l0I10 = t.getFloat32(22, !0), this.hue = Math.floor(360 * t.getUint8(26) / 256), this.O0IOO.mode.anonymous_ships && this.shipid !== this.O0IOO.O1110.OII0I.status.id && (this.hue = (this.O0IOO.hue + 180) % 360), this.last_update = this.IlI0I.O11ll
+            }, t.prototype.createModel = function () {
+                var t, e, i;
+                return e = "zinc", this.shipid === this.O0IOO.OII0I.status.id ? this.O0IOO.II010.ll10I() && (e = this.O0IOO.II010.custom.finish) : null != (t = this.O0IOO.names.getCustom(this.shipid)) && null != t.finish && (e = t.finish), i = this.type.model, this.model = new I11lI(WeaponModel[i], this.hue / 360, e), this.model.l1O0l = 0, this.O0IOO.O1110.O1110.add(this.model.lO101), this.lO101 = this.model.lO101
+            }, t.prototype.lIIO0 = function () {
+                if (null != this.O1OlO && this.IlI0I.O11ll >= this.O1OlO.getUint32(6, !0) && (this.read(this.O1OlO), this.O1OlO = null), this.O0IOO.O1110.IlI0I.weapon_physics.mineStep(this), this.IlI0I.O11ll > this.last_update + 90) return this.killed = !0
+            }, t.prototype.dispose = function () {
+                if (null != this.model) return this.O0IOO.O1110.O1110.remove(this.model.lO101), this.model.dispose()
+            }, t.prototype.updateModel = function () {
+                var t, e, i, s, l, n;
+                return l = 2 * this.model.data.size, this.pop < 30 ? (this.pop++, s = Math.sqrt(this.pop / 30) * l, this.lO101.scale.set(s, s, s)) : this.lO101.scale.set(l, l, l), this.IlI0I.O11ll % 30 < 15 ? this.model.material.emissive.set(lO01l.hsvToRgbHex(this.model.hue, .5, 1)) : this.model.material.emissive.set(0), n = this.IlI0I.O11ll / 60 * 1e3, t = 4 * (137 * this.id % 100 + 2e3), e = 4 * (this.id % 100 + 2190), i = 4 * (993 * this.id % 100 + 2410), this.lO101.rotation.z = .25 * Math.sin(n % t / t * Math.PI * 2), this.lO101.rotation.x = .25 * Math.sin(n % e / e * Math.PI * 2), this.lO101.rotation.y = .25 * Math.sin(n % i / i * Math.PI * 2), this.lO101.position.x = this.x, this.lO101.position.y = this.y, this.lO101.position.z = -this.type.radius, this.lO101.visible = !0, this.IlI0I.IlO1I(this.lO101)
+            }, t
+        }(), this.Rocket = function () {
+            function t(t, e) {
+                this.O0IOO = t, this.typeid = e.getUint8(1), this.id = e.getUint16(2, !0), this.shipid = e.getUint16(4, !0), this.IlI0I = this.O0IOO.O1110.IlI0I, this.type = WEAPON_TYPES.types_by_code[this.typeid], this.speed = .004 * this.type.speed, null != this.O0IOO.mode.options.projectile_speed && (this.speed *= this.O0IOO.mode.options.projectile_speed), this.O0O1l = Math.exp(Math.log(.5) * this.type.O0O1l / 3e3), this.read(e), this.I0OIl(e), this.createModel(), this.pop = 0, this.killed = !1
+            }
+            return t.prototype.I0OIl = function (t) {
+                var e, i, s;
+                if ((s = t.getUint32(6, !0)) > this.IlI0I.O11ll) this.O1OlO = t;
+                else if (s < this.IlI0I.O11ll) {
+                    if (this.read(t), this.IlI0I.O11ll - s < 30)
+                        for (e = s + 1, i = this.IlI0I.O11ll; e <= i; e += 1) this.lIIO0()
+                } else this.read(t)
+            }, t.prototype.read = function (t) {
+                return this.x = t.getFloat32(10, !0), this.y = t.getFloat32(14, !0), this.I0I0l = t.getFloat32(18, !0), this.l0I10 = t.getFloat32(22, !0), this.r = t.getFloat32(26, !0), this.target_r = t.getFloat32(30, !0), this.hue = Math.floor(360 * t.getUint8(34) / 256), this.O0IOO.mode.anonymous_ships && this.shipid !== this.O0IOO.O1110.OII0I.status.id && (this.hue = (this.O0IOO.hue + 180) % 360), this.last_update = this.IlI0I.O11ll
+            }, t.prototype.createModel = function () {
+                var t, e, i;
+                return e = "zinc", this.shipid === this.O0IOO.OII0I.status.id ? this.O0IOO.II010.ll10I() && (e = this.O0IOO.II010.custom.finish) : null != (t = this.O0IOO.names.getCustom(this.shipid)) && null != t.finish && (e = t.finish), i = this.type.model, this.model = new I11lI(WeaponModel[i], this.hue / 360, e), this.model.l1O0l = 0, this.O0IOO.O1110.O1110.add(this.model.lO101), this.lO101 = this.model.lO101
+            }, t.prototype.lIIO0 = function () {
+                if (null != this.O1OlO && this.IlI0I.O11ll >= this.O1OlO.getUint32(6, !0) && (this.read(this.O1OlO), this.O1OlO = null), this.O0IOO.O1110.IlI0I.weapon_physics.rocketStep(this), this.IlI0I.O11ll > this.last_update + 90) return this.killed = !0
+            }, t.prototype.dispose = function () {
+                if (null != this.model) return this.O0IOO.O1110.O1110.remove(this.model.lO101), this.model.dispose()
+            }, t.prototype.updateModel = function () {
+                var t, e;
+                return e = 2 * this.model.data.size, this.pop < 30 ? (this.pop++, t = Math.sqrt(this.pop / 30) * e, this.lO101.scale.set(t, t, t)) : this.lO101.scale.set(e, e, e), this.lO101.rotation.z = this.r + Math.PI, this.lO101.rotation.x = this.IlI0I.O11ll / 180 % 1 * Math.PI * 2, this.lO101.position.x = this.x, this.lO101.position.y = this.y, this.lO101.position.z = -1, this.lO101.visible = !0, this.model.propstep(!0), this.IlI0I.IlO1I(this.lO101)
+            }, t
+        }(), hasProp = {}.hasOwnProperty, this.WeaponModel = function () {
+            function t(t, e, i) {
+                var s, l, n, a, o, r, h, u, d, O;
+                if (this.data = t, this.hue = null != e ? e : 0, this.finish = null != i ? i : "zinc", this.hue = Math.max(.01, Math.min(.99, this.hue)), this.geometry = new THREE.Geometry, this.geometry.faceVertexUvs[0] = [], this.II010 = !1, null != this.data.bodies) {
+                    r = this.data.bodies;
+                    for (a in r) hasProp.call(r, a) && (s = r[a], this.IllIO(s))
+                }
+                if (null != this.data.tori) {
+                    h = this.data.tori;
+                    for (a in h) hasProp.call(h, a) && (s = h[a], this.buildTorus(s))
+                }
+                if (this.data.wings) {
+                    u = this.data.wings;
+                    for (a in u) hasProp.call(u, a) && (O = u[a], this.l110I(O))
+                }
+                for (this.geometry.computeBoundingSphere(), this.geometry.computeBoundingBox(), this.geometry.computeFaceNormals(), d = this.geometry.faces, n = 0, o = d.length; n < o; n++) l = d[n], l.vertexNormals[0] = l.normal, l.vertexNormals[1] = l.normal, l.vertexNormals[2] = l.normal;
+                this.lO101 = new THREE.Group, this.lO101.rotation.order = "ZYX", this.O1lI1 = this.I1O10(), this.shield_mat = new THREE.MeshBasicMaterial({
+                    map: lIO1l,
+                    color: 16756800,
+                    blending: THREE.AdditiveBlending,
+                    transparent: !0,
+                    side: THREE.DoubleSide
+                })
+            }
+            return t.prototype.getInstance = function () {
+                return this.Il0I1 = new THREE.Mesh(this.geometry, this.O1lI1), this.Il0I1.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size), this.Il0I1
+            }, t.prototype.getCollectibleInstance = function () {
+                return this.Il0I1 = new THREE.Mesh(this.geometry, this.shield_mat), this.Il0I1.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size), this.Il0I1
+            }, t.prototype.dispose = function () {
+                return this.geometry.dispose(), this.O1lI1.dispose()
+            }, t.prototype.bump = function (t) {
+                return this.bumpframe = t, this.bumping = !0
+            }, t.prototype.I1O10 = function (t) {
+                var e, i, s;
+                switch (null == t && (t = 10), this.built_material = this.finish, this.finish) {
+                    case "alloy":
+                        this.buildAlloyMaterial();
+                        break;
+                    case "gold":
+                        this.buildGoldMaterial();
+                        break;
+                    case "titanium":
+                        this.buildTitaniumMaterial();
+                        break;
+                    case "carbon":
+                        this.buildCarbonMaterial();
+                        break;
+                    case "copper":
+                        this.buildCopperMaterial();
+                        break;
+                    case "diamond":
+                        this.buildDiamondMaterial();
+                        break;
+                    default:
+                        this.buildDefaultMaterial()
+                }
+                return this.base_color = this.material.color.getHex(), s = this.base_color >> 16 & 255, i = this.base_color >> 8 & 255, e = 255 & this.base_color, this.dark_color = Math.floor(s / 2) << 16 | Math.floor(i / 2) << 8 | Math.floor(e / 2), this.material
+            }, t.prototype.buildDefaultMaterial = function (t) {
+                return null == t && (t = 10), this.material = new THREE.MeshLambertMaterial({
+                    map: OlOlI,
+                    color: 16777215,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildAlloyMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 8413264,
+                    shininess: 30,
+                    bumpScale: .1,
+                    color: 10531008,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildTitaniumMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 6316128,
+                    shininess: 20,
+                    bumpScale: .1,
+                    color: 6316128,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildCarbonMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specular: 6316128,
+                    shininess: 5,
+                    bumpScale: .1,
+                    color: 1052688,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: Oll11
+                })
+            }, t.prototype.buildFullColorMaterial = function () {
+                var t;
+                return t = lO01l.hsvToRgbHex(this.hue, 1, 1), this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 12632256,
+                    shininess: 50,
+                    bumpScale: .1,
+                    color: t,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildGoldMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 10506256,
+                    shininess: 50,
+                    bumpScale: .1,
+                    color: 8413232,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildCopperMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specularMap: OlOlI,
+                    specular: 11554864,
+                    shininess: 15,
+                    bumpScale: .1,
+                    color: 10514512,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.buildDiamondMaterial = function () {
+                return this.material = new THREE.MeshPhongMaterial({
+                    map: OlOlI,
+                    bumpMap: OlOlI,
+                    specular: 16777215,
+                    opacity: .5,
+                    shininess: 50,
+                    side: THREE.DoubleSide,
+                    bumpScale: .1,
+                    transparent: !0,
+                    color: 8421504,
+                    emissive: lO01l.hsvToRgbHex(this.hue, .5, 1),
+                    emissiveMap: O11IO
+                })
+            }, t.prototype.I0OIl = function (t) {
+                var e, i;
+                if (this.built_material !== this.finish && (this.I1O10(this.hue), this.Il0I1.material = this.material), this.shield_mesh.visible = !1, this.material.color.setHex(this.base_color), this.invulnerable ? Date.now() % 500 < 250 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.shield_mesh.visible = !0) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.shield_mat.color.setHex(0)) : this.OII1l > 0 && (this.ll0O0 = Math.random() < this.OII1l ? 1 : 0, this.shield_mesh.visible = !0, 1 === this.ll0O0 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1))) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.shield_mat.color.setHex(0)), this.OII1l *= .95, this.OII1l < .1 && (this.OII1l = 0, this.shield_mesh.visible = !1, this.material.color.setHex(this.base_color), this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)))), this.bumping) return t > this.bumpframe + 30 ? (this.bumping = !1, this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) : (i = Math.max(0, t - this.bumpframe) / 30, e = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2), this.lO101.scale.set(2 * this.data.size * e, 2 * this.data.size * e, 2 * this.data.size * e))
+            }, t.prototype.getTextureIndex = function (t, e) {
+                return null == t ? 0 : "number" == typeof t ? t : t[e] || t[t.length - 1]
+            }, t.prototype.IllIO = function (t, e) {
+                var i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
+                if (null == e && (e = 0), 0 === e) return this.IllIO(t, 1), void (0 !== t.offset.x && this.IllIO(t, -1));
+                for (i = t.angle || 0, o = Math.cos(i / 180 * Math.PI * e), M = Math.sin(i / 180 * Math.PI * e), C = this.geometry.vertices.length, O = Math.min(t.position.x.length, t.position.y.length, t.width.length, t.height.length) - 1, p = 8, c = I = 0, b = p - 1; 0 <= b ? I <= b : I >= b; c = 0 <= b ? ++I : --I) l = c / p * Math.PI * 2;
+                if (null != t.section_segments && ("number" == typeof t.section_segments ? (p = t.section_segments, l = function () {
+                    var t, e, i;
+                    for (i = [], c = t = 0, e = p - 1; 0 <= e ? t <= e : t >= e; c = 0 <= e ? ++t : --t) i.push(c / p * Math.PI * 2);
+                    return i
+                }()) : (p = t.section_segments.length, l = function () {
+                    var e, i, s;
+                    for (s = [], c = e = 0, i = p - 1; 0 <= i ? e <= i : e >= i; c = 0 <= i ? ++e : --e) s.push(t.section_segments[c] / 180 * Math.PI);
+                    return s
+                }())), null == t.position.z)
+                    for (t.position.z = [], c = m = 1, w = t.position.y.length; 1 <= w ? m <= w : m >= w; c = 1 <= w ? ++m : --m) t.position.z.push(0);
+                for (d = f = 0, x = O; f <= x; d = f += 1)
+                    for (H = .01 * t.position.y[d], c = g = 0, k = p - 1; g <= k; c = g += 1) s = l[c] + Math.PI / 2, A = (.01 * t.position.x[d] + Math.cos(s) * t.width[d] * .01) * e, B = Math.sin(s) * t.height[d] * .01 * e + .01 * t.offset.z + .01 * t.position.z[d], j = o * A + M * H, D = o * H - M * A, D += .01 * t.offset.y, j += .01 * t.offset.x * e, t.vertical ? this.geometry.vertices.push(new THREE.Vector3(-B, j, D)) : this.geometry.vertices.push(new THREE.Vector3(D, j, B));
+                for (d = y = 0, _ = O - 1; y <= _; d = y += 1)
+                    for (a = .25 * (t.width[d] + t.width[d + 1] + t.height[d] + t.height[d + 1]) * 6.28, n = Math.abs(t.position.y[d] - t.position.y[d + 1]), S = 1, n > 0 && a / n > 4 && p % 8 == 0 ? S = 4 : n > 0 && a / n > 2 && p % 4 == 0 && (S = 2), c = v = 0, z = p - 1; v <= z; c = v += 1) c < p / 2 ? (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + d * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + (c + 1) % p, C + (d + 1) * p + c, C + d * p + (c + 1) % p))) : (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + (d + 1) * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + d * p + c, C + d * p + (c + 1) % p, C + (d + 1) * p + (c + 1) % p))), r = (l[c] - l[0] + Math.PI / 2) / Math.PI * S % 1, u = l[(c + 1) % l.length] - l[c], u < 0 && (u += 2 * Math.PI), h = r + u / Math.PI * S, E = this.getTextureIndex(t.texture, d), 15 === E && (E = 13), 63 === E && (E = 31), T = E % 8 * .125, P = .25 * (3 - Math.floor(E / 8) + .1), r = T + .125 * (.1 + .8 * r), h = T + .125 * (.1 + .8 * h), R = P + .2, 31 === E && (T += .125 * this.hue, r = T, h = T), c < p / 2 ? (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(r, R), new THREE.Vector2(h, R)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(h, P), new THREE.Vector2(r, P), new THREE.Vector2(h, R)])) : (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(r, R), new THREE.Vector2(h, P)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, R), new THREE.Vector2(h, R), new THREE.Vector2(h, P)]))
+            }, t.prototype.buildTorus = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
+                if ("number" == typeof (k = t.segments)) I = k, _ = function () {
+                    var t, e, i;
+                    for (i = [], h = t = 0, e = I; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / I * Math.PI * 2);
+                    return i
+                }();
+                else
+                    for (_ = [], h = d = 0, g = k.length - 1; 0 <= g ? d <= g : d >= g; h = 0 <= g ? ++d : --d) _[h] = k[h] / 180 * Math.PI;
+                for (T = this.geometry.vertices.length, r = _.length - 1, u = 8, h = O = 0, y = u - 1; 0 <= y ? O <= y : O >= y; h = 0 <= y ? ++O : --O) s = h / u * Math.PI * 2;
+                for (null != t.section_segments && ("number" == typeof t.section_segments ? (u = t.section_segments, s = function () {
+                    var t, e, i;
+                    for (i = [], h = t = 0, e = u - 1; 0 <= e ? t <= e : t >= e; h = 0 <= e ? ++t : --t) i.push(h / u * Math.PI * 2);
+                    return i
+                }()) : (u = t.section_segments.length, s = function () {
+                    var e, i, s;
+                    for (s = [], h = e = 0, i = u - 1; 0 <= i ? e <= i : e >= i; h = 0 <= i ? ++e : --e) s.push(t.section_segments[h] / 180 * Math.PI);
+                    return s
+                }())); t.position.x.length < r + 1;) t.position.x.push(t.position.x[t.position.x.length - 1]);
+                for (; t.position.y.length < r + 1;) t.position.y.push(t.position.y[t.position.y.length - 1]);
+                for (; t.position.z.length < r + 1;) t.position.z.push(t.position.z[t.position.z.length - 1]);
+                for (; t.width.length < r + 1;) t.width.push(t.width[t.width.length - 1]);
+                for (; t.height.length < r + 1;) t.height.push(t.height[t.height.length - 1]);
+                for (o = c = 0, v = r; c <= v; o = c += 1)
+                    for (e = _[o], P = Math.cos(e), R = Math.sin(e), h = p = 0, b = u - 1; p <= b; h = p += 1) i = s[h], C = .01 * (t.offset.x + t.position.x[o] + Math.cos(i) * t.height[o] + t.radius), j = .01 * (t.offset.y + t.position.y[o] + Math.sin(i) * t.width[o]), D = 0, A = P * C + R * D, B = P * D - R * C + .01 * t.offset.z, H = j, this.geometry.vertices.push(new THREE.Vector3(H, A, B));
+                for (o = m = 0, w = r - 1; m <= w; o = m += 1)
+                    for (h = f = 0, x = u - 1; f <= x; h = f += 1) this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + h, T + o * u + h, T + o * u + (h + 1) % u)), this.geometry.faces.push(new THREE.Face3(T + (o + 1) * u + (h + 1) % u, T + (o + 1) * u + h, T + o * u + (h + 1) % u)), l = (s[h] - s[0]) / Math.PI % 1, a = s[(h + 1) % s.length] - s[h], a < 0 && (a += 2 * Math.PI), n = l + a / Math.PI, z = this.getTextureIndex(t.texture, o), 15 === z && (z = 13), 63 === z && (z = 31), M = z % 8 * .125, E = .25 * (3 - Math.floor(z / 8) + .1), l = M + .125 * (l + .1) * .8, n = M + .125 * (n + .1) * .8, S = E + .2, 31 === z && (M += .125 * this.hue, l = M, n = M), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(l, E), new THREE.Vector2(l, S), new THREE.Vector2(n, S)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(n, E), new THREE.Vector2(l, E), new THREE.Vector2(n, S)])
+            }, t.prototype.l110I = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M;
+                for (_ = this.geometry.vertices.length, u = Math.min(t.length.length, t.width.length - 1, t.angle.length, t.position.length - 1), null == t.offset && (t.offset = {
+                    x: 0,
+                    y: 0,
+                    z: 0
+                }), z = 0, M = 0, l = n = 0, O = u; n <= O; l = n += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * -t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z += o * e, M += o * m);
+                for (l = a = 0, c = u - 1; a <= c; l = a += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 5, _ + 4 * l + 3, _ + 4 * l + 7)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 3)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 6, _ + 4 * l + 7, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(v, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 1, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 3, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(v, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, x), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l, _ + 4 * l + 4, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 4, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 3)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, w), new THREE.Vector2(b, w), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(b, w), new THREE.Vector2(b, x), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(v, x)])));
+                for (_ = this.geometry.vertices.length, z = 0, M = 0, l = r = 0, p = u; r <= p; l = r += 1) d = .01 * t.position[l], f = .01 * t.width[l], this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d - f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), l < u && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), 0 === l && (e = 1, m = 0), s = .01 * t.bump.size * f * e, i = .01 * t.bump.size * f * m, this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z + i, .01 * t.offset.z + M + s)), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f * t.bump.position * .01, .01 * -t.offset.x + z - i, .01 * t.offset.z + M - s))), this.geometry.vertices.push(new THREE.Vector3(.01 * t.offset.y + d + f / 2, .01 * -t.offset.x + z, .01 * t.offset.z + M)), null != t.length[l] && (e = Math.cos(t.angle[l] * Math.PI / 180), m = Math.sin(t.angle[l] * Math.PI / 180), o = .01 * t.length[l], z -= o * e, M += o * m);
+                for (l = h = 0, I = u - 1; h <= I; l = h += 1) g = this.getTextureIndex(t.texture, l), 15 === g && (g = 13), 63 === g && (g = 31), y = g % 8 * .125, v = y + .0125, b = v + .1, w = .25 * (3 - Math.floor(g / 8) + .1), x = w + .2, k = w + (x - w) * (.5 + .01 * t.bump.position), 31 === g && (v = y + .125 * this.hue, b = v), l < u - 1 ? (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 7)),
+                    this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 6, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 6, _ + 4 * l + 2)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 7, _ + 4 * l + 6)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, k), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, k), new THREE.Vector2(v, k)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(b, k)]))) : (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 1, _ + 4 * l + 4, _ + 4 * l + 5)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 1, _ + 4 * l + 5)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(v, w), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(b, x)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(v, k), new THREE.Vector2(b, x)]), t.doubleside && (this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 4, _ + 4 * l)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 2, _ + 4 * l + 5, _ + 4 * l + 4)), this.geometry.faces.push(new THREE.Face3(_ + 4 * l + 3, _ + 4 * l + 5, _ + 4 * l + 2)), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, w), new THREE.Vector2(v, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, k), new THREE.Vector2(b, x), new THREE.Vector2(b, w)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(v, x), new THREE.Vector2(b, x), new THREE.Vector2(v, k)])))
+            }, t.prototype.shapePoint = function (t, e, i) {
+                var s, l, n;
+                return n = i.length, s = Math.atan2(e, -t), s = Math.round((s + 2 * Math.PI) / (2 * Math.PI) * n) % n, l = Math.sqrt(t * t + e * e), i[s] = Math.max(i[s], l)
+            }, t.prototype.Il111 = function (t) {
+                var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g;
+                for (null == t && (t = 50), c = [], s = n = 0, u = t - 1; 0 <= u ? n <= u : n >= u; s = 0 <= u ? ++n : --n) c[s] = 0;
+                for (d = this.geometry.faces, a = 0, o = d.length; a < o; a++)
+                    for (i = d[a], p = this.geometry.vertices[i.a], I = this.geometry.vertices[i.b], m = this.geometry.vertices[i.c], s = r = 0; r <= 99; s = r += 1) e = s / 100, f = p.x * e + I.x * (1 - e), g = p.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + I.x * (1 - e), g = m.y * e + I.y * (1 - e), this.shapePoint(f, g, c), f = m.x * e + p.x * (1 - e), g = m.y * e + p.y * (1 - e), this.shapePoint(f, g, c);
+                for (s = h = 0, O = c.length - 1; h <= O; s = h += 1) c[s] *= 2 * this.data.size;
+                for (l in c) c[l] = parseFloat(c[l].toFixed(3));
+                return c
+            }, t.prototype.lOOII = function (t, e) {
+                var i, s, l, n, a;
+                return null == t && (t = 64), a = new THREE.Scene, i = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), l = new THREE.MeshLambertMaterial({
+                    color: 0,
+                    emissive: 16777215,
+                    emissiveMap: lIO1l,
+                    side: THREE.DoubleSide
+                }), this.Il0I1.material = l, a.add(this.Il0I1), this.Il0I1.position.set(t / 2, t / 2, -1e3), n = .35 * t * e, this.Il0I1.scale.set(n, n, n), this.Il0I1.rotation.z = .75 * Math.PI, I11lI.I0O01 || (I11lI.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), I11lI.I0O01.setSize(t, t), I11lI.I0O01.render(a, i), s = document.createElement("canvas"), s.width = t, s.height = t, s.getContext("2d")
+                    .drawImage(I11lI.I0O01.domElement, 0, 0), s
+            }, t.prototype.getIcon = function (t, e) {
+                var i, s, l, n;
+                return null == t && (t = 64), n = new THREE.Scene, i = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), this.material = new THREE.MeshBasicMaterial({
+                    color: 16777215,
+                    side: THREE.DoubleSide
+                }), this.Il0I1.material = this.material, n.add(this.Il0I1), this.Il0I1.position.set(t / 2, t / 2, -1e3), l = .35 * t * e, this.Il0I1.scale.set(l, l, l), this.Il0I1.rotation.z = .75 * Math.PI, I11lI.I0O01 || (I11lI.I0O01 = new THREE.WebGLRenderer({
+                    antialias: !0,
+                    alpha: !0
+                })), I11lI.I0O01.setSize(t, t), I11lI.I0O01.render(n, i), s = document.createElement("canvas"), s.width = t, s.height = t, s.getContext("2d")
+                    .drawImage(I11lI.I0O01.domElement, 0, 0), s
+            }, t.getWeaponIcon = function (e) {
+                var i, s;
+                return null == t.icons_buffer[e] && (i = new t(t[WEAPON_TYPES.types_by_code[e].model], 0), i.getInstance(), s = 1, null != WEAPON_TYPES.types_by_code[e].icon_scale && (s = WEAPON_TYPES.types_by_code[e].icon_scale), t.icons_buffer[e] = i.getIcon(128, s), i.dispose()), t.icons_buffer[e]
+            }, t.getWeaponImage = function (e) {
+                var i, s;
+                return null == t.images_buffer[e] && (i = new t(t[WEAPON_TYPES.types_by_code[e].model], 0), i.getInstance(), s = 1, null != WEAPON_TYPES.types_by_code[e].icon_scale && (s = WEAPON_TYPES.types_by_code[e].icon_scale), t.images_buffer[e] = i.lOOII(128, s), i.dispose()), t.images_buffer[e]
+            }, t
+        }(), WeaponModel.icons_buffer = [], WeaponModel.images_buffer = [], MINING_POD_MODEL = {
+            name: "Mining Pod",
+            level: 1,
+            model: 1,
+            size: 1.05,
+            specs: {
+                shield: {
+                    capacity: [75, 100],
+                    reload: [2, 3]
+                },
+                generator: {
+                    capacity: [40, 60],
+                    reload: [10, 15]
+                },
+                ship: {
+                    mass: 60,
+                    speed: [125, 145],
+                    rotation: [110, 130],
+                    acceleration: [100, 120]
+                }
+            },
+            bodies: {
+                main: {
+                    section_segments: 8,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: function () {
+                            var t, e;
+                            for (e = [], i = t = 0; t <= 6; i = ++t) e.push(0);
+                            return e
+                        }(),
+                        y: function () {
+                            var t, e;
+                            for (e = [], i = t = 0; t <= 10; i = ++t) e.push(50 * -Math.cos(i / 6 * Math.PI));
+                            return e
+                        }(),
+                        z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    },
+                    width: function () {
+                        var t, e;
+                        for (e = [], i = t = 0; t <= 10; i = ++t) e.push(50 * Math.sin(i / 6 * Math.PI));
+                        return e
+                    }(),
+                    height: function () {
+                        var t, e;
+                        for (e = [], i = t = 0; t <= 10; i = ++t) e.push(50 * Math.sin(i / 6 * Math.PI));
+                        return e
+                    }(),
+                    propeller: !1,
+                    texture: [1, 3, 1, 12, 4]
+                },
+                cannon: {
+                    section_segments: 8,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0],
+                        y: [-50, -60, -30, 0, 30, 55, 60],
+                        z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    },
+                    width: [0, 10, 15, 10, 15, 10, 0],
+                    height: [0, 10, 15, 10, 15, 10, 0],
+                    propeller: !1,
+                    texture: [4, 63, 1, 1, 1, 4]
+                }
+            },
+            wings: {
+                main: {
+                    length: [50, 10],
+                    width: [20, 30, 20],
+                    angle: [45, 45],
+                    position: [0, 0, 0],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 30,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 20
+                    },
+                    texture: [63]
+                },
+                main2: {
+                    length: [50, 10],
+                    width: [20, 30, 15],
+                    angle: [-45, -45],
+                    position: [0, 0, 0],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 30,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 20
+                    },
+                    texture: [63]
+                },
+                wing3: {
+                    length: [20],
+                    width: [50, 30],
+                    angle: [0, 0],
+                    position: [0, 0],
+                    doubleside: !0,
+                    offset: {
+                        x: 35,
+                        y: 0,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 40
+                    },
+                    texture: [3]
+                }
+            }
+        }, ATTACK_POD_MODEL = {
+            name: "Attack Pod",
+            level: 1,
+            model: 1,
+            size: 1.05,
+            specs: {
+                shield: {
+                    capacity: [75, 100],
+                    reload: [2, 3]
+                },
+                generator: {
+                    capacity: [40, 60],
+                    reload: [10, 15]
+                },
+                ship: {
+                    mass: 60,
+                    speed: [125, 145],
+                    rotation: [110, 130],
+                    acceleration: [100, 120]
+                }
+            },
+            bodies: {
+                main: {
+                    section_segments: [35, 55, 125, 145, 215, 235, 305, 325, 395],
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0],
+                        y: [-50, -50, 0, 25, 50, 40],
+                        z: [0, 0, 0, 0, 0, 0, 0]
+                    },
+                    width: [0, 10, 50, 50, 20, 0],
+                    height: [0, 5, 20, 15, 15, 0],
+                    propeller: !1,
+                    texture: [1, 1, 4, 3, 17]
+                },
+                cannon: {
+                    section_segments: 8,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0],
+                        y: [-60, -70, -30, 0, 30, 35, 40],
+                        z: [0, 0, 0, 5, 5, 0, 0, 0, 0]
+                    },
+                    width: [0, 10, 15, 10, 15, 10, 0],
+                    height: [0, 10, 15, 18, 15, 10, 0],
+                    propeller: !1,
+                    texture: [4, 63, 1, 1, 1, 4]
+                }
+            },
+            wings: {
+                II1IO: {
+                    length: [60],
+                    width: [80, 30],
+                    angle: [0, 0],
+                    position: [0, 20],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: -5
+                    },
+                    bump: {
+                        position: 30,
+                        size: 20
+                    },
+                    texture: [63]
+                }
+            }
+        }, DEFENCE_POD_MODEL = {
+            name: "Defence Pod",
+            level: 1,
+            model: 1,
+            size: 1.05,
+            specs: {
+                shield: {
+                    capacity: [75, 100],
+                    reload: [2, 3]
+                },
+                generator: {
+                    capacity: [40, 60],
+                    reload: [10, 15]
+                },
+                ship: {
+                    mass: 60,
+                    speed: [125, 145],
+                    rotation: [110, 130],
+                    acceleration: [100, 120]
+                }
+            },
+            bodies: {
+                main: {
+                    section_segments: [35, 55, 125, 145, 215, 235, 305, 325, 395],
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0],
+                        y: [0, 25, 50, 40],
+                        z: [0, 0, 0, 0, 0]
+                    },
+                    width: [50, 50, 20, 0],
+                    height: [15, 10, 10, 0],
+                    propeller: !1,
+                    texture: [3, 3, 17]
+                },
+                cannon: {
+                    section_segments: 6,
+                    offset: {
+                        x: 40,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0],
+                        y: [-25, -20, 0, 0, 20, 30, 35],
+                        z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+                    },
+                    width: [0, 10, 15, 10, 7, 6, 0],
+                    height: [0, 10, 15, 18, 15, 10, 0],
+                    propeller: !1,
+                    texture: [4, 63, 1, 1, 1, 4]
+                }
+            },
+            wings: {
+                II1IO: {
+                    length: [60, 20],
+                    width: [40, 35, 25],
+                    angle: [0, 0, 0],
+                    position: [0, 10, 20],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    bump: {
+                        position: 0,
+                        size: 80
+                    },
+                    texture: [1, 63]
+                }
+            }
+        }, WeaponModel.MINING_POD_MODEL = MINING_POD_MODEL, WeaponModel.ATTACK_POD_MODEL = ATTACK_POD_MODEL, WeaponModel.DEFENCE_POD_MODEL = DEFENCE_POD_MODEL, ROCKET_MODEL = {
+            name: "Rocket",
+            id: 1,
+            size: 1,
+            bodies: {
+                main: {
+                    section_segments: 10,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        y: [-60, -45, -30, -25, 0, 15, 60, 70, 60]
+                    },
+                    width: [0, 15, 20, 20, 16, 20, 20, 15, 0],
+                    height: [0, 15, 20, 20, 16, 20, 20, 15, 0],
+                    propeller: !0,
+                    texture: [13, 63, 3, 10, 63, 4, 12, 17]
+                }
+            },
+            wings: {
+                main1: {
+                    length: [35],
+                    width: [40, 20],
+                    angle: [45, 45],
+                    position: [0, 0, 0],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 40,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 25
+                    },
+                    texture: [0]
+                },
+                main2: {
+                    length: [35],
+                    width: [40, 20],
+                    angle: [-45, -45],
+                    position: [0, 0, 0],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 40,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 25
+                    },
+                    texture: [0]
+                }
+            }
+        }, MISSILE_MODEL = {
+            name: "Missile",
+            id: 1,
+            size: 1,
+            bodies: {
+                main: {
+                    section_segments: 10,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        y: [-100, -85, -60, -45, -40, -5, 0, 25, 90, 100, 90]
+                    },
+                    width: [0, 20, 30, 30, 24, 22, 26, 20, 20, 20, 0],
+                    height: [0, 20, 30, 30, 24, 22, 26, 20, 20, 20, 0],
+                    propeller: !0,
+                    texture: [13, 63, 3, 4, 10, 4, 63, 4, 3, 17]
+                }
+            },
+            wings: {
+                main1: {
+                    length: [25, 25],
+                    width: [60, 40, 30],
+                    angle: [45, 45],
+                    position: [0, 0, 20],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 60,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 15
+                    },
+                    texture: [0]
+                },
+                main2: {
+                    length: [25, 25],
+                    width: [60, 40, 30],
+                    angle: [-45, -45],
+                    position: [0, 0, 20],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 60,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 15
+                    },
+                    texture: [0]
+                }
+            }
+        }, TORPEDO_MODEL = {
+            name: "Torpedo",
+            id: 1,
+            size: 1.5,
+            bodies: {
+                main: {
+                    section_segments: 10,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        y: [-100, -90, -80, -25, 0, 60, 80, 110, 100]
+                    },
+                    width: [0, 15, 20, 20, 20, 20, 10, 10, 0],
+                    height: [0, 15, 20, 20, 20, 20, 10, 10, 0],
+                    propeller: !0,
+                    texture: [13, 63, 3, 10, 63, 4, 12, 17]
+                }
+            },
+            wings: {
+                main1: {
+                    length: [10, 25],
+                    width: [5, 30, 20],
+                    angle: [45, 45],
+                    position: [0, 0, 0],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 95,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 25
+                    },
+                    texture: [0]
+                },
+                main2: {
+                    length: [10, 25],
+                    width: [5, 30, 20],
+                    angle: [-45, -45],
+                    position: [0, 0, 0],
+                    doubleside: !0,
+                    offset: {
+                        x: 0,
+                        y: 95,
+                        z: 0
+                    },
+                    bump: {
+                        position: 30,
+                        size: 25
+                    },
+                    texture: [0]
+                }
+            }
+        }, WeaponModel.ROCKET_MODEL = ROCKET_MODEL, WeaponModel.MISSILE_MODEL = MISSILE_MODEL, WeaponModel.TORPEDO_MODEL = TORPEDO_MODEL, MINE_MODEL = {
+            name: "Space Mine",
+            level: 1,
+            model: 1,
+            size: .7,
+            specs: {
+                shield: {
+                    capacity: [75, 100],
+                    reload: [2, 3]
+                },
+                generator: {
+                    capacity: [40, 60],
+                    reload: [10, 15]
+                },
+                ship: {
+                    mass: 60,
+                    speed: [125, 145],
+                    rotation: [110, 130],
+                    acceleration: [100, 120]
+                }
+            },
+            bodies: {
+                main: {
+                    section_segments: 6,
+                    offset: {
+                        x: 0,
+                        y: 0,
+                        z: 0
+                    },
+                    position: {
+                        x: function () {
+                            var t, e;
+                            for (e = [], i = t = 0; t <= 6; i = ++t) e.push(0);
+                            return e
+                        }(),
+                        y: function () {
+                            var t, e;
+                            for (e = [], i = t = 0; t <= 10; i = ++t) e.push(80 * -Math.cos(i / 6 * Math.PI));
+                            return e
+                        }(),
+                        z: [0, 0, 0, 0, 0, 0, 0, 0]
+                    },
+                    width: function () {
+                        var t, e;
+                        for (e = [], i = t = 0; t <= 10; i = ++t) e.push(80 * Math.sin(i / 6 * Math.PI));
+                        return e
+                    }(),
+                    height: function () {
+                        var t, e;
+                        for (e = [], i = t = 0; t <= 10; i = ++t) e.push(80 * Math.sin(i / 6 * Math.PI));
+                        return e
+                    }(),
+                    propeller: !1,
+                    texture: [1, 1, 63, 63, 1]
+                }
+            }
+        }, i = j = 0; j <= 2; i = ++j) MINE_MODEL.bodies["peak" + i] = {
+            angle: 30 + 60 * i,
+            section_segments: 6,
+            offset: {
+                x: 0,
+                y: 0,
+                z: 0
+            },
+            position: {
+                x: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+                y: [-115, -110, -100, -90, 90, 100, 110, 115],
+                z: [0, 0, 0, 0, 0, 0, 0, 0, 0]
+            },
+            width: [0, 10, 10, 20, 20, 10, 10, 0],
+            height: [0, 10, 10, 20, 20, 10, 10, 0],
+            propeller: !1,
+            texture: [4, 1, 17, 4, 17, 1, 4]
+        };
     for (i = k = 0; k <= 1; i = ++k) MINE_MODEL.bodies["vert" + i] = {
         vertical: !0,
         angle: 60 * i - 30,
