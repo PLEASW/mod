@@ -3663,11 +3663,22 @@
                 return this.O1I0O.dispose(), this.material.dispose(), this.texture.dispose()
             }, t.prototype.OlOOI = function (t) {
                 var e, i, s, l;
-                return e = this.canvas.getContext("2d"), e.fillStyle = "#FFF", l = this.canvas.width, e.font = Math.round(.4 * l) + "pt SBGlyphs", e.textBaseLine = "middle", e.textAlign = "center", e.fillText("[", .5 * l, .45 * l), e.globalCompositeOperation = "source-in", e.fillRect(0, 0, l, l), e.globalCompositeOperation = "source-over", e.font = Math.round(.08 * l) + "pt Play", e.fillText(this.name, l / 2, .9 * l), null != this.II010 ? (i = .2 * l, s = IIl10.lOOII(this.II010.badge, this.II010.laser, this.II010.finish, i, this.II010.hue), s.complete ? e.drawImage(s, l / 2 - i, .7 * l - i / 2, 2 * i, i) : e.fillText("R.I.P", l / 2, .75 * l), s.onload = function (e) {
-                    return function () {
-                        return e.OlOOI(t)
-                    }
-                }(this)) : e.fillText("R.I.P", l / 2, .75 * l), this.texture.needsUpdate = !0
+                return e = this.canvas.getContext("2d"),
+                    e.fillStyle = "#FFF", l = this.canvas.width,
+                    e.font = Math.round(.4 * l) + "pt SBGlyphs",
+                    e.textBaseLine = "middle", e.textAlign = "center",
+                    e.fillText("[", .5 * l, .45 * l), e.globalCompositeOperation = "source-in",
+                    e.fillRect(0, 0, l, l), e.globalCompositeOperation = "source-over",
+                    e.font = Math.round(.08 * l) + "pt Play",
+                    e.fillText(this.name, l / 2, .9 * l), null != this.II010 ? (i = .2 * l,
+                        s = IIl10.lOOII(this.II010.badge, this.II010.laser, this.II010.finish, i, this.II010.hue),
+                        s.complete ? e.drawImage(s, l / 2 - i, .7 * l - i / 2, 2 * i, i) :
+                            e.fillText("R.I.P", l / 2, .75 * l),
+                        s.onload = function (e) {
+                            return function () {
+                                return e.OlOOI(t)
+                            }
+                        }(this)) : e.fillText("R.I.P", l / 2, .75 * l), this.texture.needsUpdate = !0
             }, t
         }(), this.MobileAsteroid = function () {
             function t(t, e) {
@@ -6932,16 +6943,21 @@
                     for (F = this.data.scale, C = this.geometry.vertices, p = 0, f = C.length; p < f; p++) N = C[p], N.x *= F, N.y *= F, N.z *= F;
                 for (this.geometry.computeBoundingSphere(), this.geometry.computeBoundingBox(), this.geometry.computeFaceNormals(), A = this.quads, I = 0, g = A.length; I < g; I++) E = A[I], r = E[0], h = E[1], r.normal.lengthSq() > 0 && h.normal.lengthSq() > 0 && (r.normal.add(h.normal), r.normal.normalize(), h.normal = r.normal);
                 for (j = this.geometry.faces, w = 0, y = j.length; w < y; w++) o = j[w], o.vertexNormals[0] = o.normal, o.vertexNormals[1] = o.normal, o.vertexNormals[2] = o.normal;
-                if (this.lO101 = new THREE.Group, this.lO101.rotation.order = "ZYX", this.O1lI1 = this.I1O10(), this.Il0I1 = new THREE.Mesh(this.geometry, this.O1lI1), this.l1O0l = 0, this.options.propulsion) {
-                    M = new THREE.Geometry, a = lO01l.l1Ol1(this.hue, .5, 1), this.IIOIO = new THREE.MeshBasicMaterial({
-                        color: new THREE.Color(a[0] / 255, a[1] / 255, a[2] / 255),
-                        opacity: 1,
-                        map: l010l,
-                        transparent: !0,
-                        depthWrite: !1,
-                        side: THREE.DoubleSide,
-                        blending: THREE.AdditiveBlending
-                    }), H = this.data.bodies;
+                if (this.lO101 = new THREE.Group,
+                    this.lO101.rotation.order = "ZYX",
+                    this.O1lI1 = this.I1O10(),
+                    this.Il0I1 = new THREE.Mesh(this.geometry, this.O1lI1),
+                    this.l1O0l = 0, this.options.propulsion) {
+                    M = new THREE.Geometry, a = lO01l.l1Ol1(this.hue, .5, 1),
+                        this.IIOIO = new THREE.MeshBasicMaterial({
+                            color: new THREE.Color(a[0] / 255, a[1] / 255, a[2] / 255),
+                            opacity: 1,
+                            map: l010l,
+                            transparent: !0,
+                            depthWrite: !1,
+                            side: THREE.DoubleSide,
+                            blending: THREE.AdditiveBlending
+                        }), H = this.data.bodies;
                     for (m in H)
                         if (hasProp.call(H, m) && (n = H[m], n.propeller)) {
                             for (z = 0, K = -200, d = x = 0, D = n.width.length - 1; x <= D; d = x += 1) n.position.y[d] > K && (K = n.position.y[d], z = d);
@@ -7092,7 +7108,46 @@
                 })
             }, t.prototype.I0OIl = function (t) {
                 var e, i;
-                if (this.built_material !== this.finish && (this.I1O10(this.hue), this.Il0I1.material = this.material), this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.invulnerable ? Date.now() % 500 < 250 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && (this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.shield_mesh.visible = !0)) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)) : this.OII1l > 0 && (this.ll0O0 = Math.random() < this.OII1l ? 1 : 0, this.options.shield && (this.shield_mesh.visible = !0), 1 === this.ll0O0 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1))) : (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)), this.OII1l *= .95, this.OII1l < .1 && (this.OII1l = 0, this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)))), this.bumping && (t > this.bumpframe + 30 ? (this.bumping = !1, this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) : (i = Math.max(0, t - this.bumpframe) / 30, e = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2), this.lO101.scale.set(2 * this.data.size * e, 2 * this.data.size * e, 2 * this.data.size * e))), this.last_frame = t, this.bump_shield && this.options.shield) return t > this.bump_shield_frame + 30 ? (this.bump_shield = !1, this.shield_mesh.scale.set(1.2, 1.2, 1.2)) : (i = Math.max(0, t - this.bump_shield_frame) / 30, e = 1.2 - .1 * Math.cos(Math.pow(i, .5) * Math.PI * 2), this.shield_mesh.scale.set(e, e, e), this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, Math.pow(1 - i, .25))), this.shield_mesh.visible = !0)
+                if (this.built_material !== this.finish &&
+                    (this.I1O10(this.hue),
+                        this.Il0I1.material = this.material),
+                    this.options.shield &&
+                    (this.shield_mesh.visible = !1),
+                    this.material.color.setHex(this.base_color),
+                    this.invulnerable ? Date.now() % 500 < 250 ?
+                        (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)),
+                            this.material.color.setHex(this.dark_color),
+                            this.options.shield &&
+                            (this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1)),
+                                this.shield_mesh.visible = !0)) :
+                        (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)),
+                            this.material.color.setHex(this.base_color),
+                            this.options.shield && this.shield_mat.color.setHex(0)) :
+                        this.OII1l > 0 && (this.ll0O0 = Math.random() < this.OII1l ? 1 : 0,
+                            this.options.shield && (this.shield_mesh.visible = !0),
+                            1 === this.ll0O0 ? (this.material.emissive.setHex(lO01l.hsvToRgbHex(this.hue, .5, .5)),
+                                this.material.color.setHex(this.dark_color),
+                                this.options.shield && this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, 1))) :
+                                (this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)),
+                                    this.material.color.setHex(this.base_color), this.options.shield &&
+                                    this.shield_mat.color.setHex(0)), this.OII1l *= .95,
+                            this.OII1l < .1 && (this.OII1l = 0,
+                                this.options.shield && (this.shield_mesh.visible = !1),
+                                this.material.color.setHex(this.base_color),
+                                this.material.emissive.set(lO01l.hsvToRgbHex(this.hue, .5, 1)))),
+                    this.bumping && (t > this.bumpframe + 30 ?
+                        (this.bumping = !1,
+                            this.lO101.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) :
+                        (i = Math.max(0, t - this.bumpframe) / 30, e = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2),
+                            this.lO101.scale.set(2 * this.data.size * e, 2 * this.data.size * e, 2 * this.data.size * e))),
+                    this.last_frame = t, this.bump_shield && this.options.shield)
+                    return t > this.bump_shield_frame + 30 ?
+                        (this.bump_shield = !1, this.shield_mesh.scale.set(1.2, 1.2, 1.2)) :
+                        (i = Math.max(0, t - this.bump_shield_frame) / 30,
+                            e = 1.2 - .1 * Math.cos(Math.pow(i, .5) * Math.PI * 2),
+                            this.shield_mesh.scale.set(e, e, e),
+                            this.shield_mat.color.setHex(lO01l.hsvToRgbHex(this.hue, .5, Math.pow(1 - i, .25))),
+                            this.shield_mesh.visible = !0)
             }, t.prototype.bumpShield = function () {
                 if (null != this.last_frame && !this.bump_shield) return this.bump_shield_frame = this.last_frame, this.bump_shield = !0
             }, t.prototype.getTextureIndex = function (t, e) {
@@ -7117,7 +7172,29 @@
                     for (H = .01 * t.position.y[d], c = g = 0,
                         x = p - 1; g <= x; c = g += 1) s = l[c] + Math.PI / 2, A = (.01 * t.position.x[d] + Math.cos(s) * t.width[d] * .01) * e, B = Math.sin(s) * t.height[d] * .01 * e + .01 * t.offset.z + .01 * t.position.z[d], j = o * A + z * H, D = o * H - z * A, D += .01 * t.offset.y, j += .01 * t.offset.x * e, t.vertical ? this.geometry.vertices.push(new THREE.Vector3(-B, j, D)) : this.geometry.vertices.push(new THREE.Vector3(D, j, B));
                 for (d = y = 0, k = O - 1; y <= k; d = y += 1)
-                    for (a = .25 * (t.width[d] + t.width[d + 1] + t.height[d] + t.height[d + 1]) * 6.28, n = Math.abs(t.position.y[d] - t.position.y[d + 1]), E = 1, n > 0 && a / n > 4 && p % 8 == 0 ? E = 4 : n > 0 && a / n > 2 && p % 4 == 0 && (E = 2), c = R = 0, _ = p - 1; R <= _; c = R += 1) c < p / 2 ? (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + d * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + (c + 1) % p, C + (d + 1) * p + c, C + d * p + (c + 1) % p)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]])) : (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + (d + 1) * p + (c + 1) % p)), this.geometry.faces.push(new THREE.Face3(C + d * p + c, C + d * p + (c + 1) % p, C + (d + 1) * p + (c + 1) % p)), this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]])), r = (l[c] - l[0] + Math.PI / 2) / Math.PI * E % 1, u = l[(c + 1) % l.length] - l[c], u < 0 && (u += 2 * Math.PI), h = r + u / Math.PI * E, M = this.getTextureIndex(t.texture, d), 15 === M && (M = 13), 63 === M && (M = 31), S = M % 8 * .125, T = .25 * (3 - Math.floor(M / 8) + .1), r = S + .125 * (.1 + .8 * r), h = S + .125 * (.1 + .8 * h), P = T + .2, 31 === M && (S += .125 * this.hue, r = S, h = S), c < p / 2 ? (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T), new THREE.Vector2(r, P), new THREE.Vector2(h, P)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(h, T), new THREE.Vector2(r, T), new THREE.Vector2(h, P)])) : (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T), new THREE.Vector2(r, P), new THREE.Vector2(h, T)]), this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(h, P), new THREE.Vector2(h, T)]))
+                    for (a = .25 * (t.width[d] + t.width[d + 1] + t.height[d] + t.height[d + 1]) * 6.28, n = Math.abs(t.position.y[d] - t.position.y[d + 1]), E = 1, n > 0 && a / n > 4 && p % 8 == 0 ? E = 4 : n > 0 && a / n > 2 && p % 4 == 0 && (E = 2), c = R = 0, _ = p - 1; R <= _; c = R += 1)
+                        c < p / 2 ? (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + d * p + (c + 1) % p)),
+                            this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + (c + 1) % p, C + (d + 1) * p + c, C + d * p + (c + 1) % p)),
+                            this.quads.push([this.geometry.faces[this.geometry.faces.length - 2], this.geometry.faces[this.geometry.faces.length - 1]])) :
+                            (this.geometry.faces.push(new THREE.Face3(C + (d + 1) * p + c, C + d * p + c, C + (d + 1) * p + (c + 1) % p)),
+                                this.geometry.faces.push(new THREE.Face3(C + d * p + c, C + d * p + (c + 1) % p, C + (d + 1) * p + (c + 1) % p)),
+                                this.quads.push([this.geometry.faces[this.geometry.faces.length - 2],
+                                this.geometry.faces[this.geometry.faces.length - 1]])),
+                            r = (l[c] - l[0] + Math.PI / 2) / Math.PI * E % 1, u = l[(c + 1) % l.length] - l[c],
+                            u < 0 && (u += 2 * Math.PI), h = r + u / Math.PI * E,
+                            M = this.getTextureIndex(t.texture, d), 15 === M && (M = 13),
+                            63 === M && (M = 31),
+                            S = M % 8 * .125, T = .25 * (3 - Math.floor(M / 8) + .1),
+                            r = S + .125 * (.1 + .8 * r),
+                            h = S + .125 * (.1 + .8 * h),
+                            P = T + .2, 31 === M && (S += .125 * this.hue, r = S, h = S),
+                            c < p / 2 ? (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T),
+                            new THREE.Vector2(r, P), new THREE.Vector2(h, P)]),
+                                this.geometry.faceVertexUvs[0].push([new THREE.Vector2(h, T),
+                                new THREE.Vector2(r, T), new THREE.Vector2(h, P)])) :
+                                (this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, T),
+                                new THREE.Vector2(r, P), new THREE.Vector2(h, T)]),
+                                    this.geometry.faceVertexUvs[0].push([new THREE.Vector2(r, P), new THREE.Vector2(h, P), new THREE.Vector2(h, T)]))
             }, t.prototype.buildTorus = function (t) {
                 var e, i, s, l, n, a, o, r, h, u, d, O, c, p, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, D, B;
                 if ("number" == typeof (x = t.segments)) I = x, k = function () {
@@ -15615,8 +15692,7 @@
                             badge: i,
                             laser: n,
                             finish: e
-                        })
-                            .canvas)
+                        }).canvas)
             }, t
         }(), this.IlII1 = function () {
             function t(e) {
