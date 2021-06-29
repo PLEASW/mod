@@ -807,11 +807,15 @@
     }, hasProp = {}.hasOwnProperty, this.lO1ll = function (t) {
         function e(t) {
             var i, s, l, n, a;
-            for (this.O11ll = t, e.II01l.constructor.call(this), this.buttons = [], this.lv = 1, this.buttons.push(new l100I(this.O11ll, "9ç", lIOIO.types_by_code[201])), this.buttons.push(new l100I(this.O11ll, "0à", lIOIO.types_by_code[202])), this.life_button = new OlI1I(this.O11ll, function (t) {
-                return function () {
-                    return t.O11ll.l0OlI.buyLife(), t.life_button.pressed = !1, t.O11ll.sendGAEvent("buylife_evt"), !0
-                }
-            }(this)), this.buttons.push(this.life_button), a = this.buttons, s = l = 0, n = a.length; l < n; s = ++l) i = a[s], this.add(i, [s / 2 + .0025, 0, .495, 1]);
+            for (this.O11ll = t, e.II01l.constructor.call(this),
+                this.buttons = [], this.lv = 1,
+                this.buttons.push(new l100I(this.O11ll, "9ç", lIOIO.types_by_code[201])),
+                this.buttons.push(new l100I(this.O11ll, "0à", lIOIO.types_by_code[202])),
+                this.life_button = new OlI1I(this.O11ll, function (t) {
+                    return function () {
+                        return t.O11ll.l0OlI.buyLife(), t.life_button.pressed = !1, t.O11ll.sendGAEvent("buylife_evt"), !0
+                    }
+                }(this)), this.buttons.push(this.life_button), a = this.buttons, s = l = 0, n = a.length; l < n; s = ++l) i = a[s], this.add(i, [s / 2 + .0025, 0, .495, 1]);
             this.shown = !1, this.toggled = !0, this.shown_since = 0, this.manual_toggle = !1, this.current_type = null, this.togglable = !this.O11ll.is_touch_device, this.toggle_button = new ToggleUpgradesButton(this.O11ll, function (t) {
                 return function () {
                     return t.toggle(!0)
@@ -6907,7 +6911,8 @@
         O1I0O.wrapS = O1I0O.wrapT = THREE.RepeatWrapping, O1I0O.needsUpdate = !0,
         Il0l0 = new THREE.Texture(new this.ShipEmissiveTexture(null, !0).canvas),
         Il0l0.wrapS = Il0l0.wrapT = THREE.RepeatWrapping, Il0l0.needsUpdate = !0,
-        OOIIO = new THREE.Texture((new ShipShieldTexture).canvas), OOIIO.minFilter = THREE.LinearFilter, OOIIO.needsUpdate = !0,
+        OOIIO = new THREE.Texture((new ShipShieldTexture).canvas),
+        OOIIO.minFilter = THREE.LinearFilter, OOIIO.needsUpdate = !0,
         hasProp = {}.hasOwnProperty, this.OII0I = function () {
             function t(t, e, i, s) {
                 var l, n, a, o, r, h, u, d, c, p, O, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, B, D, L, F, V, N, q, G, U, K;
@@ -11470,7 +11475,28 @@
         return i.prototype = e.prototype, t.prototype = new i, t.II01l = e.prototype, t
     }, hasProp = {}.hasOwnProperty, this.BattleRoyaleMode = function (e) {
         function i(e, s, l) {
-            this.O11ll = e, null == s && (s = "battleroyale"), null == l && (l = "Battle Royale"), i.II01l.constructor.call(this, s, l), this.vocabulary = [], this.radar_zoom = 2, this.high_def_radar = !0, this.max_enter_time = 120, this.max_enter_players = 30, this.soundtrack = "crystals.mp3", this.respawn_delay = 1e3, this.IO11I = !1, this.anonymous_ships = !1, this.radar_shows_leader = !1, this.show_weaponsbar = !0, this.restricted_weapons_store = !0, this.I0O1I = BATTLE_SHIPS, this.lIOIO = BATTLE_SHIP_TYPES, this.I0O1I.add(I0O1I.ships_by_code[101]), this.lIOIO.add(lIOIO.types_by_code[101]), this.RADIATION_TIME = 36e3, this.RADIATION_SIZE = 1.3, this.RADIATION_STRENGTH = .003, this.RADIATION_START = 7200, this.custom_game_allowed = !0, this.II11l = !1, this.tips_test = "Collect weapons and refills", this.tips = [t("Collect weapons and refills"), t("Kill other players"), t("Be the last player standing")], this.spawned = !1
+            this.O11ll = e, null == s && (s = "battleroyale"),
+                null == l && (l = "Battle Royale"),
+                i.II01l.constructor.call(this, s, l),
+                this.vocabulary = [], this.radar_zoom = 2,
+                this.high_def_radar = !0, this.max_enter_time = 120,
+                this.max_enter_players = 30, this.soundtrack = "crystals.mp3",
+                this.respawn_delay = 1e3, this.IO11I = !1,
+                this.anonymous_ships = !1,
+                this.radar_shows_leader = !1,
+                this.show_weaponsbar = !0,
+                this.restricted_weapons_store = !0,
+                this.I0O1I = BATTLE_SHIPS,
+                this.lIOIO = BATTLE_SHIP_TYPES, t
+            his.I0O1I.add(I0O1I.ships_by_code[101]),
+                this.lIOIO.add(lIOIO.types_by_code[101]),
+                this.RADIATION_TIME = 36e3,
+                this.RADIATION_SIZE = 1.3,
+                this.RADIATION_STRENGTH = .003,
+                this.RADIATION_START = 7200,
+                this.custom_game_allowed = !0, this.II11l = !1,
+                this.tips_test = "Collect weapons and refills",
+                this.tips = [t("Collect weapons and refills"), t("Kill other players"), t("Be the last player standing")], this.spawned = !1
         }
         return extend(i, e), i.prototype.O1IOl = function (t) {
             return this.game_info = t, this.O11ll.startGame(t), this.O11ll.display.screen.l1011.hide(), this.O11ll.lOOOI.Il0Ol.I1Ill.x = 0, this.O11ll.lOOOI.Il0Ol.I1Ill.y = -40, this.next_round_page = new BattleRoyalePage(this.O11ll, this), this.next_round_page.visible = !1, this.O11ll.display.screen.l1011.add(this.next_round_page, [0, 0, 1, 1]), this.O11ll.l0OlI.enter()
@@ -13258,13 +13284,29 @@
         }, t
     }(), this.I0111 = function () {
         function t(t) {
-            this.O11ll = t, this.ships = [], this.lasers = [], this.I01OI = [], this.stations = [], this.projectiles = [], this.aliens = [], this.O10lI = [], this.IlO1l = new THREE.Group, this.Ol010 = Date.now(), this.lO0l0 = 0, this.l1OII = 0, this.offtime_count = 0, this.time_initialized = !1, this.l11OO = 16, this.last_read_time = 0, this.I1Ill = {
-                x: 0,
-                y: 0,
-                llI1l: 0,
-                lOl0I: 0,
-                zoom: 1
-            }, this.rip_plates = [], this.weapon_physics = new WeaponPhysics(this.O11ll), this.alien_physics = new AlienPhysics(this.O11ll)
+            this.O11ll = t,
+                this.ships = [],
+                this.lasers = [],
+                this.I01OI = [],
+                this.stations = [],
+                this.projectiles = [],
+                this.aliens = [],
+                this.O10lI = [],
+                this.IlO1l = new THREE.Group,
+                this.Ol010 = Date.now(),
+                this.lO0l0 = 0,
+                this.l1OII = 0,
+                this.offtime_count = 0,
+                this.time_initialized = !1,
+                this.l11OO = 16,
+                this.last_read_time = 0,
+                this.I1Ill = {
+                    x: 0,
+                    y: 0,
+                    llI1l: 0,
+                    lOl0I: 0,
+                    zoom: 1
+                }, this.rip_plates = [], this.weapon_physics = new WeaponPhysics(this.O11ll), this.alien_physics = new AlienPhysics(this.O11ll)
         }
         return t.prototype.IIO1l = function (t) {
             var e, i;
@@ -21605,22 +21647,27 @@
                     seed: i,
                     id: 0,
                     name: "Welcome"
-                }, this.hue = 0, this.player_name = "", this.names = new Names(this), this.weapons = new Weapons(this), this.I01Ol = new IO0lO(this, lIOIO.types_by_code[101]), this.lOOOI = new Scene(this, t.seed, this.Il110, !0), this.Il110.add(function (e) {
-                    return function () {
-                        return e.is_app ? (e.I01Ol.status.y = -30, e.I01Ol.status.x = 30) : e.I01Ol.status.y = -60, e.lOOOI.Il0Ol.initCamera(), e.lOOOI.background.initOffsets(), e.display = new OlO10(e, !0), e.display.start(), null != e.display.screen.l1011.OOl01 && e.display.screen.l1011.OOl01(t), e.l0I10.load()
-                    }
-                }(this)), setTimeout(function (t) {
-                    return function () {
-                        return t.Il110.start()
-                    }
-                }(this), 1e3), this.key_listeners = [], this.paused = !1, void 0 !== saveAs && null !== saveAs) return this.addKeyListener("Z".charCodeAt(0), {
-                    keyPressed: function (t) {
+                }, this.hue = 0, this.player_name = "",
+                    this.names = new Names(this),
+                    this.weapons = new Weapons(this),
+                    this.I01Ol = new IO0lO(this, lIOIO.types_by_code[101]),
+                    this.lOOOI = new Scene(this, t.seed, this.Il110, !0),
+                    this.Il110.add(function (e) {
                         return function () {
-                            return t.is_app ? t.takeScreenshot("user", 0, 100) : t.display.make_screenshot = !0
+                            return e.is_app ? (e.I01Ol.status.y = -30, e.I01Ol.status.x = 30) : e.I01Ol.status.y = -60, e.lOOOI.Il0Ol.initCamera(), e.lOOOI.background.initOffsets(), e.display = new OlO10(e, !0), e.display.start(), null != e.display.screen.l1011.OOl01 && e.display.screen.l1011.OOl01(t), e.l0I10.load()
                         }
-                    }(this),
-                    keyReleased: function () { }
-                })
+                    }(this)), setTimeout(function (t) {
+                        return function () {
+                            return t.Il110.start()
+                        }
+                    }(this), 1e3), this.key_listeners = [], this.paused = !1, void 0 !== saveAs && null !== saveAs) return this.addKeyListener("Z".charCodeAt(0), {
+                        keyPressed: function (t) {
+                            return function () {
+                                return t.is_app ? t.takeScreenshot("user", 0, 100) : t.display.make_screenshot = !0
+                            }
+                        }(this),
+                        keyReleased: function () { }
+                    })
             }, e.prototype.takeScreenshot = function (t, e, i) {
                 if (null == t && (t = "user"), null == e && (e = 0), null == i && (i = 0), this.is_app && ("user" === t || this.settings.check("automatic_screenshots"))) return this.display.make_screenshot = !0, this.display.screenshot_type = t, this.display.screenshot_time = e, this.display.screenshot_value = i
             }, e.prototype.setSize = function (t) {
