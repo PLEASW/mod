@@ -6913,7 +6913,8 @@
         Il0l0.wrapS = Il0l0.wrapT = THREE.RepeatWrapping, Il0l0.needsUpdate = !0,
         OOIIO = new THREE.Texture((new ShipShieldTexture).canvas),
         OOIIO.minFilter = THREE.LinearFilter, OOIIO.needsUpdate = !0,
-        hasProp = {}.hasOwnProperty, this.OII0I = function () {
+        hasProp = {}.hasOwnProperty,
+        this.OII0I = function () {
             function t(t, e, i, s) {
                 var l, n, a, o, r, h, u, d, c, p, O, I, m, f, g, y, v, b, w, x, k, _, z, M, E, S, T, P, R, C, A, j, H, B, D, L, F, V, N, q, G, U, K;
                 if (this.data = t, this.hue = null != e ? e : 0, this.finish = null != i ? i : "zinc", this.options = s, null == this.options && (this.options = {
