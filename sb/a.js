@@ -14595,15 +14595,26 @@
             if (this.O11ll.lOI0O.O001l()) {
                 for (c = function (t) {
                     return function () {
-                        return document.querySelector(".ecpverifiedlogo")
-                            .innerHTML = "", document.querySelector(".shippreview")
-                                .innerHTML = "", document.querySelector(".ecpverifiedlogo")
-                                    .appendChild(new O0OOl(112, t.O11ll.lOI0O.custom)
-                                        .canvas), document.querySelector(".shippreview")
-                                            .appendChild(OII0I.exportThumbnail(101, localStorage.getItem("shipColor"), t.O11ll.lOI0O.custom.finish, t.O11ll.lOI0O.custom.laser, 192)), t.O0I0I()
+                        return document.querySelector(".ecpverifiedlogo").innerHTML = "",
+                            document.querySelector(".shippreview").innerHTML = "",
+                            document.querySelector(".ecpverifiedlogo").appendChild(new O0OOl(112, t.O11ll.lOI0O.custom).canvas),
+                            document.querySelector(".shippreview").appendChild(OII0I.exportThumbnail(101, localStorage.getItem("shipColor"),
+                                t.O11ll.lOI0O.custom.finish, t.O11ll.lOI0O.custom.laser, 192)), t.O0I0I()
                     }
-                }(this), n = llI1O.options, document.querySelector(".modal .modaltitle")
-                    .innerHTML = t("Greetings, Elite Commander"), d.innerHTML = '<div class="infos">\n  <div class="center">\n    <p>' + t("Thank you for your purchase! Your ECP is valid, please keep it safe.") + '</p>\n<button id="viewEcp" class="ecpinput ecpbtn"><i class="fa fa-eye"></i></button>\n<input id="ECPKey" readonly class=\'ecpinput\' placeholder="&#9679;&#9679;&#9679;&#9679;&#9679; - &#9679;&#9679;&#9679;&#9679;&#9679;" data-value=\'' + localStorage.getItem("ECPKey") + '\' style="vertical-align:middle; width:200px;">\n  <button id="removeEcp" class="ecpinput ecpbtn"><i class="fa fa-trash"></i></button>\n</div>\n<div class=\'beta textcentered\'>\n  <h3 class=\'customizeship\'>' + t("Create your custom game") + "</h3>\n</div>\n<h3 class='customizeship'>" + t("Customize your ship") + "</h3>\n<table class='customtable noselect'>\n  <tr>\n    <td class='ecpverifiedlogo frozenbg'></td>\n    <td>\n      <div data-type='badge'>\n          <i class='fa fa-caret-left'></i>\n          <div class='title frozenbg'>" + t(n.badge[this.O11ll.lOI0O.custom.badge]) + "</div>\n    <i class='fa fa-caret-right'></i><br />\n</div>\n<div data-type='finish'>\n    <i class='fa fa-caret-left'></i>\n    <div class='title frozenbg'>" + t(n.finish[this.O11ll.lOI0O.custom.finish]) + "</div>\n    <i class='fa fa-caret-right'></i>\n</div>\n<div data-type='laser'>\n    <i class='fa fa-caret-left'></i>\n    <div class='title frozenbg'>" + t(n.laser[this.O11ll.lOI0O.custom.laser]) + "</div>\n          <i class='fa fa-caret-right'></i>\n      </div>\n    </td>\n    <td class='shippreview frozenbg'></td>\n  </tr>\n</table>\n<h3 class=\"customizeship\">" + t("Download our application") + '</h3>\n  <div class=\'download-apps\'>\n    <a href="https://starblast.data.neuronality.com/download/starblast_setup-latest.exe" download><img src="https://starblast.data.neuronality.com/img/windows.png"></a>\n    <a href="https://starblast.data.neuronality.com/download/Starblast.dmg" download><img src="https://starblast.data.neuronality.com/img/osx.jpg"></a>\n    <a href="https://starblast.data.neuronality.com/download/starblast-latest-x86_64.AppImage" download><img src="https://starblast.data.neuronality.com/img/linux.jpg"></a>\n  </div>\n</div>', l = document.createElement("button"), l.setAttribute("class", "donate-btn"), l.style.marginTop = "0", l.innerHTML = t("Create custom game"), l.addEventListener("click", function (t) {
+                }(this),
+                    n = llI1O.options, document.querySelector(".modal .modaltitle")
+                        .innerHTML = t("Greetings, Elite Commander"),
+                    d.innerHTML = '<div class="infos">\n  <div class="center">\n    <p>' +
+                    t("Thank you for your purchase! Your ECP is valid, please keep it safe.") +
+                    '</p>\n<button id="viewEcp" class="ecpinput ecpbtn"><i class="fa fa-eye"></i></button>\n<input id="ECPKey" readonly class=\'ecpinput\' placeholder="&#9679;&#9679;&#9679;&#9679;&#9679; - &#9679;&#9679;&#9679;&#9679;&#9679;" data-value=\'' +
+                    localStorage.getItem("ECPKey") + '\' style="vertical-align:middle; width:200px;">\n  <button id="removeEcp" class="ecpinput ecpbtn"><i class="fa fa-trash"></i></button>\n</div>\n<div class=\'beta textcentered\'>\n  <h3 class=\'customizeship\'>' +
+                    t("Create your custom game") + "</h3>\n</div>\n<h3 class='customizeship'>" +
+                    t("Customize your ship") + "</h3>\n<table class='customtable noselect'>\n  <tr>\n    <td class='ecpverifiedlogo frozenbg'></td>\n    <td>\n      <div data-type='badge'>\n          <i class='fa fa-caret-left'></i>\n          <div class='title frozenbg'>" +
+                    t(n.badge[this.O11ll.lOI0O.custom.badge]) + "</div>\n    <i class='fa fa-caret-right'></i><br />\n</div>\n<div data-type='finish'>\n    <i class='fa fa-caret-left'></i>\n    <div class='title frozenbg'>" +
+                    t(n.finish[this.O11ll.lOI0O.custom.finish]) + "</div>\n    <i class='fa fa-caret-right'></i>\n</div>\n<div data-type='laser'>\n    <i class='fa fa-caret-left'></i>\n    <div class='title frozenbg'>" +
+                    t(n.laser[this.O11ll.lOI0O.custom.laser]) + "</div>\n          <i class='fa fa-caret-right'></i>\n      </div>\n    </td>\n    <td class='shippreview frozenbg'></td>\n  </tr>\n</table>\n<h3 class=\"customizeship\">" +
+                    t("Download our application") + '</h3>\n  <div class=\'download-apps\'>\n    <a href="https://starblast.data.neuronality.com/download/starblast_setup-latest.exe" download><img src="https://starblast.data.neuronality.com/img/windows.png"></a>\n    <a href="https://starblast.data.neuronality.com/download/Starblast.dmg" download><img src="https://starblast.data.neuronality.com/img/osx.jpg"></a>\n    <a href="https://starblast.data.neuronality.com/download/starblast-latest-x86_64.AppImage" download><img src="https://starblast.data.neuronality.com/img/linux.jpg"></a>\n  </div>\n</div>',
+                    l = document.createElement("button"), l.setAttribute("class", "donate-btn"), l.style.marginTop = "0", l.innerHTML = t("Create custom game"), l.addEventListener("click", function (t) {
                         return function () {
                             return t.O11ll.OllOO.O1OII()
                         }
