@@ -13278,11 +13278,15 @@
             }
         }, t.prototype.addDemoShip = function (t) {
             var e, i, s, l, n;
-            return n = this.O11ll.mode.lIOIO.types_by_code[t.type], l = new OII0I(this.O11ll.mode.I0O1I.ships_by_code[n.code], t.hue / 360), i = l.IlO1l, this.IlO1l.add(i), e = new IO0lO(this.O11ll, n, !0), e.status = t, s = {
-                l0OI0: e,
-                model: i,
-                shipmodel: l
-            }, this.ships.push(s), this.I01OI[t.id] = s, this.OIOO0(s)
+            return n = this.O11ll.mode.lIOIO.types_by_code[t.type],
+                l = new OII0I(this.O11ll.mode.I0O1I.ships_by_code[n.code], t.hue / 360),
+                i = l.IlO1l, this.IlO1l.add(i),
+                e = new IO0lO(this.O11ll, n, !0),
+                e.status = t, s = {
+                    l0OI0: e,
+                    model: i,
+                    shipmodel: l
+                }, this.ships.push(s), this.I01OI[t.id] = s, this.OIOO0(s)
         }, t.prototype.Illl1 = function (t) {
             var e, i, s, l, n, a, o;
             return a = new llOIO, a.read(t), a.id = t.getUint8(1), o = this.O11ll.mode.lIOIO.types_by_code[a.type], i = a.hue, this.O11ll.mode.anonymous_ships && (i = (this.O11ll.hue + 180) % 360), n = new OII0I(this.O11ll.mode.I0O1I.ships_by_code[o.code], i / 360), s = n.IlO1l, this.IlO1l.add(s), this.IlO1l.add(n.I0l1l.OIl0O), e = new IO0lO(this.O11ll, o, !0), e.status = a, l = {
