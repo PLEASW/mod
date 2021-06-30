@@ -5651,7 +5651,12 @@
         return p
       }, ShipEditor.prototype.modExport = function () {
         var code, name, shipdata, src;
-        return src = this.editor.getValue(), code = CoffeeScript.compile(src), shipdata = eval(code), null != shipdata && (shipdata.typespec = Compiler.compileShip(shipdata)), name = shipdata.name + "_" + shipdata.typespec.code, "var " + (name = name.replace(/(\s|-)/g, "_")) + " = '" + JSON.stringify(shipdata) + "';"
+        return src = this.editor.getValue(),
+          code = CoffeeScript.compile(src),
+          shipdata = eval(code),
+          null != shipdata && (shipdata.typespec = Compiler.compileShip(shipdata)),
+          name = shipdata.name + "_" + shipdata.typespec.code,
+          "var " + (name = name.replace(/(\s|-)/g, "_")) + " = '" + JSON.stringify(shipdata) + "';"
       }, ShipEditor
     }(), window.makeScreenshot = function () {
       var e, t, i;
