@@ -15482,7 +15482,10 @@
                 return t.globalCompositeOperation = "source-over"
             }, t.prototype.drawLaser = function (t, e, i) {
                 var s, l, n, a, o, r, h, u, d, c, p, O;
-                for (t.save(), t.translate(.12 * e, i / 2), O = OI0l1.getShape(parseInt(this.laser)), l = 0, a = O.length; l < a; l++) {
+                for (t.save(),
+                    t.translate(.12 * e, i / 2),
+                    O = OI0l1.getShape(parseInt(this.laser)),
+                    l = 0, a = O.length; l < a; l++) {
                     for (p = O[l], t.beginPath(), s = t.createRadialGradient(0, 0, 0, 0, 0, i / 6), s.addColorStop(0, "hsl(50,100%,100%)"), s.addColorStop(1, "hsl(50,80%,40%)"), t.fillStyle = s, t.strokeStyle = "rgba(0,0,0,.8)", t.lineWidth = i / 24, n = 0, o = p.length; n < o; n++) c = p[n], t.lineTo(c[1] * i / 10, c[0] * i / 9);
                     t.closePath(), t.stroke(), t.fill()
                 }
