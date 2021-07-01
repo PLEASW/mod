@@ -4959,11 +4959,15 @@
     this.O1l0O = function () {
       function e(e, t, i, s) {
         var o, l, n, r, a, h, p, c, d, u, f, g, m, y, x, b, I, O, w, E, z, v, R, T, H, M, _, S, V, k, F, C, P, L, D, U, B, q, A, G, j, W, N;
-        if (this.data = e, this.hue = null != t ? t : 0, this.finish = null != i ? i : "zinc", this.options = s, null == this.options && (this.options = {
-          shield: !0,
-          propulsion: !0,
-          Oll0O: !0
-        }), this.hue = Math.max(.01, Math.min(.99, this.hue)), this.geometry = new THREE.Geometry, this.geometry.faceVertexUvs[0] = [], this.quads = [], this.OI101 = !1, null != this.data.bodies) {
+        if (this.data = e,
+          this.hue = null != t ? t : 0,
+          this.finish = null != i ? i : "zinc",
+          this.options = s,
+          null == this.options && (this.options = {
+            shield: !0,
+            propulsion: !0,
+            Oll0O: !0
+          }), this.hue = Math.max(.01, Math.min(.99, this.hue)), this.geometry = new THREE.Geometry, this.geometry.faceVertexUvs[0] = [], this.quads = [], this.OI101 = !1, null != this.data.bodies) {
           M = this.data.bodies;
           for (m in M) hasProp.call(M, m) && (l = M[m], this.I11O1(l))
         }
@@ -4979,16 +4983,21 @@
           for (B = this.data.scale, k = this.geometry.vertices, f = 0, y = k.length; f < y; f++) A = k[f], A.x *= B, A.y *= B, A.z *= B;
         for (this.geometry.computeBoundingSphere(), this.geometry.computeBoundingBox(), this.geometry.computeFaceNormals(), F = this.quads, g = 0, x = F.length; g < x; g++) H = F[g], a = H[0], h = H[1], a.normal.lengthSq() > 0 && h.normal.lengthSq() > 0 && (a.normal.add(h.normal), a.normal.normalize(), h.normal = a.normal);
         for (C = this.geometry.faces, w = 0, b = C.length; w < b; w++) r = C[w], r.vertexNormals[0] = r.normal, r.vertexNormals[1] = r.normal, r.vertexNormals[2] = r.normal;
-        if (this.l0OOl = new THREE.Group, this.l0OOl.rotation.order = "ZYX", this.II0IO = this.OlO01(), this.mesh = new THREE.Mesh(this.geometry, this.II0IO), this.lO1lO = 0, this.options.propulsion) {
-          T = new THREE.Geometry, n = lOOlO.O1Ol0(this.hue, .5, 1), this.lII1I = new THREE.MeshBasicMaterial({
-            color: new THREE.Color(n[0] / 255, n[1] / 255, n[2] / 255),
-            opacity: 1,
-            map: l01O1,
-            transparent: !0,
-            depthWrite: !1,
-            side: THREE.DoubleSide,
-            blending: THREE.AdditiveBlending
-          }), P = this.data.bodies;
+        if (this.l0OOl = new THREE.Group,
+          this.l0OOl.rotation.order = "ZYX",
+          this.II0IO = this.OlO01(),
+          this.mesh = new THREE.Mesh(this.geometry, this.II0IO),
+          this.lO1lO = 0, this.options.propulsion) {
+          T = new THREE.Geometry, n = lOOlO.O1Ol0(this.hue, .5, 1),
+            this.lII1I = new THREE.MeshBasicMaterial({
+              color: new THREE.Color(n[0] / 255, n[1] / 255, n[2] / 255),
+              opacity: 1,
+              map: l01O1,
+              transparent: !0,
+              depthWrite: !1,
+              side: THREE.DoubleSide,
+              blending: THREE.AdditiveBlending
+            }), P = this.data.bodies;
           for (m in P)
             if (hasProp.call(P, m) && (l = P[m], l.propeller)) {
               for (R = 0, N = -200, c = E = 0, L = l.width.length - 1; E <= L; c = E += 1) l.position.y[c] > N && (N = l.position.y[c], R = c);
@@ -4999,20 +5008,33 @@
             for (B = this.data.scale, S = T.vertices, d = 0, I = S.length; d < I; d++) A = S[d], A.x *= B, A.y *= B, A.z *= B;
           T.verticesNeedUpdate = !0, T.OlO1l = !0, T.computeBoundingSphere(), this.I0ll0 = T, this.l1OI0 = new THREE.Mesh(T, this.lII1I)
         }
-        this.l0OOl.add(this.mesh), this.options.propulsion && this.l0OOl.add(this.l1OI0), this.l0OOl.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size), this.options.shield && (this.shield_mat = new THREE.MeshBasicMaterial({
-          map: Ol11l,
-          color: 0,
-          blending: THREE.AdditiveBlending,
-          transparent: !0,
-          side: THREE.DoubleSide
-        }), this.shield_mesh = new THREE.Mesh(this.geometry, this.shield_mat), this.shield_mesh.scale.set(1.2, 1.2, 1.2), this.l0OOl.add(this.shield_mesh), this.shield_mesh.visible = !1), this.options.Oll0O && "undefined" != typeof Il1l1 && null !== Il1l1 && (this.Oll0O = new Il1l1(Math.floor(360 * this.hue))), this.Il0lI = 0, this.lI1ll = 0, this.lIIlO = new O00l0
+        this.l0OOl.add(this.mesh),
+          this.options.propulsion && this.l0OOl.add(this.l1OI0),
+          this.l0OOl.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size),
+          this.options.shield && (this.shield_mat = new THREE.MeshBasicMaterial({
+            map: Ol11l,
+            color: 0,
+            blending: THREE.AdditiveBlending,
+            transparent: !0,
+            side: THREE.DoubleSide
+          }), this.shield_mesh = new THREE.Mesh(this.geometry, this.shield_mat),
+            this.shield_mesh.scale.set(1.2, 1.2, 1.2),
+            this.l0OOl.add(this.shield_mesh),
+            this.shield_mesh.visible = !1),
+          this.options.Oll0O && "undefined" != typeof Il1l1 && null !== Il1l1 &&
+          (this.Oll0O = new Il1l1(Math.floor(360 * this.hue))),
+          this.Il0lI = 0, this.lI1ll = 0, this.lIIlO = new O00l0
       }
       return e.prototype.dispose = function () {
         if (this.geometry.dispose(), this.quads = [], this.II0IO.dispose(), this.options.propulsion && this.lII1I.dispose(), this.options.propulsion) return this.I0ll0.dispose()
       }, e.prototype.bump = function (e) {
         return this.bumpframe = e, this.bumping = !0
       }, e.prototype.propstep = function (e) {
-        if (this.options.propulsion) return this.lO1lO = e ? Math.max(.02, Math.min(1, 1.1 * this.lO1lO)) : .94 * this.lO1lO, this.l1OI0.visible = this.lO1lO > .01, this.lII1I.opacity = (.5 + .5 * Math.random()) * this.lO1lO
+        if (this.options.propulsion)
+          return this.lO1lO = e ? Math.max(.02, Math.min(1, 1.1 * this.lO1lO)) :
+            .94 * this.lO1lO,
+            this.l1OI0.visible = this.lO1lO > .01,
+            this.lII1I.opacity = (.5 + .5 * Math.random()) * this.lO1lO
       }, e.prototype.OlO01 = function (e) {
         var t, i, s;
         switch (null == e && (e = 10), this.built_material = this.finish, this.finish) {
@@ -5145,7 +5167,39 @@
         })
       }, e.prototype.l0lO0 = function (e) {
         var t, i;
-        if (this.built_material !== this.finish && (this.OlO01(this.hue), this.mesh.material = this.material), this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.invulnerable ? Date.now() % 500 < 250 ? (this.material.emissive.setHex(lOOlO.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && (this.shield_mat.color.setHex(lOOlO.hsvToRgbHex(this.hue, .5, 1)), this.shield_mesh.visible = !0)) : (this.material.emissive.set(lOOlO.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)) : this.Il0lI > 0 && (this.lI1ll = Math.random() < this.Il0lI ? 1 : 0, this.options.shield && (this.shield_mesh.visible = !0), 1 === this.lI1ll ? (this.material.emissive.setHex(lOOlO.hsvToRgbHex(this.hue, .5, .5)), this.material.color.setHex(this.dark_color), this.options.shield && this.shield_mat.color.setHex(lOOlO.hsvToRgbHex(this.hue, .5, 1))) : (this.material.emissive.set(lOOlO.hsvToRgbHex(this.hue, .5, 1)), this.material.color.setHex(this.base_color), this.options.shield && this.shield_mat.color.setHex(0)), this.Il0lI *= .95, this.Il0lI < .1 && (this.Il0lI = 0, this.options.shield && (this.shield_mesh.visible = !1), this.material.color.setHex(this.base_color), this.material.emissive.set(lOOlO.hsvToRgbHex(this.hue, .5, 1)))), this.bumping && (e > this.bumpframe + 30 ? (this.bumping = !1, this.l0OOl.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) : (i = Math.max(0, e - this.bumpframe) / 30, t = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2), this.l0OOl.scale.set(2 * this.data.size * t, 2 * this.data.size * t, 2 * this.data.size * t))), this.last_frame = e, this.bump_shield && this.options.shield) return e > this.bump_shield_frame + 30 ? (this.bump_shield = !1, this.shield_mesh.scale.set(1.2, 1.2, 1.2)) : (i = Math.max(0, e - this.bump_shield_frame) / 30, t = 1.2 - .1 * Math.cos(Math.pow(i, .5) * Math.PI * 2), this.shield_mesh.scale.set(t, t, t), this.shield_mat.color.setHex(lOOlO.hsvToRgbHex(this.hue, .5, Math.pow(1 - i, .25))), this.shield_mesh.visible = !0)
+        if (this.built_material !== this.finish && (this.OlO01(this.hue),
+          this.mesh.material = this.material),
+          this.options.shield && (this.shield_mesh.visible = !1),
+          this.material.color.setHex(this.base_color),
+          this.invulnerable ? Date.now() % 500 < 250 ?
+            (this.material.emissive.setHex(lOOlO.hsvToRgbHex(this.hue, .5, .5)),
+              this.material.color.setHex(this.dark_color),
+              his.options.shield && (this.shield_mat.color.setHex(lOOlO.hsvToRgbHex(this.hue, .5, 1)),
+                this.shield_mesh.visible = !0)) : (this.material.emissive.set(lOOlO.hsvToRgbHex(this.hue, .5, 1)),
+                  this.material.color.setHex(this.base_color),
+                  this.options.shield && this.shield_mat.color.setHex(0)) : this.Il0lI > 0 &&
+          (this.lI1ll = Math.random() < this.Il0lI ? 1 : 0,
+            this.options.shield && (this.shield_mesh.visible = !0),
+            1 === this.lI1ll ? (this.material.emissive.setHex(lOOlO.hsvToRgbHex(this.hue, .5, .5)),
+              this.material.color.setHex(this.dark_color),
+              this.options.shield && this.shield_mat.color.setHex(lOOlO.hsvToRgbHex(this.hue, .5, 1))) :
+              (this.material.emissive.set(lOOlO.hsvToRgbHex(this.hue, .5, 1)),
+                this.material.color.setHex(this.base_color),
+                this.options.shield && this.shield_mat.color.setHex(0)),
+            this.Il0lI *= .95, this.Il0lI < .1 && (this.Il0lI = 0,
+              this.options.shield && (this.shield_mesh.visible = !1),
+              this.material.color.setHex(this.base_color),
+              this.material.emissive.set(lOOlO.hsvToRgbHex(this.hue, .5, 1)))),
+          this.bumping && (e > this.bumpframe + 30 ? (this.bumping = !1,
+            this.l0OOl.scale.set(2 * this.data.size, 2 * this.data.size, 2 * this.data.size)) :
+            (i = Math.max(0, e - this.bumpframe) / 30, t = 1.5 - Math.cos(Math.pow(i, .5) * Math.PI * 2),
+              this.l0OOl.scale.set(2 * this.data.size * t, 2 * this.data.size * t, 2 * this.data.size * t))),
+          this.last_frame = e, this.bump_shield && this.options.shield)
+          return e > this.bump_shield_frame + 30 ? (this.bump_shield = !1,
+            this.shield_mesh.scale.set(1.2, 1.2, 1.2)) : (i = Math.max(0, e - this.bump_shield_frame) / 30,
+              t = 1.2 - .1 * Math.cos(Math.pow(i, .5) * Math.PI * 2), this.shield_mesh.scale.set(t, t, t),
+              this.shield_mat.color.setHex(lOOlO.hsvToRgbHex(this.hue, .5, Math.pow(1 - i, .25))),
+              this.shield_mesh.visible = !0)
       }, e.prototype.bumpShield = function () {
         if (null != this.last_frame && !this.bump_shield) return this.bump_shield_frame = this.last_frame, this.bump_shield = !0
       }, e.prototype.getTextureIndex = function (e, t) {
@@ -5239,10 +5293,25 @@
         })), e.IO1l1.setSize(t, t), e.IO1l1.render(a, i), s = document.createElement("canvas"), s.width = t, s.height = t, s.getContext("2d").drawImage(e.IO1l1.domElement, 0, 0), s
       }, e.prototype.get3DImage = function (t, i) {
         var s, o, l, n, r;
-        return null == t && (t = 128), null == i && (i = 0), r = new THREE.Scene, s = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), this.lII1I.opacity = 1, this.finish = "alloy", this.OlO01(), this.mesh.material = this.material, r.add(this.l0OOl), l = new THREE.DirectionalLight, l.position.set(2, -1, 1), r.add(l), this.l0OOl.position.set(t / 2, t / 2, -1e3), n = .25 * t, this.l0OOl.scale.set(-n, n, n), this.l0OOl.rotation.z = Math.PI / 2 + i, this.l0OOl.rotation.x = Math.PI / 4, this.l0OOl.rotation.order = "XYZ", e.IO1l1 || (e.IO1l1 = new THREE.WebGLRenderer({
-          antialias: !0,
-          alpha: !0
-        })), e.IO1l1.setSize(t, t), e.IO1l1.render(r, s), o = document.createElement("canvas"), o.width = t, o.height = t, o.getContext("2d").drawImage(e.IO1l1.domElement, 0, 0), o
+        return null == t && (t = 128), null == i && (i = 0),
+          r = new THREE.Scene,
+          s = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3),
+          this.lII1I.opacity = 1,
+          this.finish = "alloy",
+          this.OlO01(),
+          this.mesh.material = this.material,
+          r.add(this.l0OOl),
+          l = new THREE.DirectionalLight,
+          l.position.set(2, -1, 1), r.add(l),
+          this.l0OOl.position.set(t / 2, t / 2, -1e3), n = .25 * t,
+          this.l0OOl.scale.set(-n, n, n),
+          this.l0OOl.rotation.z = Math.PI / 2 + i,
+          this.l0OOl.rotation.x = Math.PI / 4,
+          this.l0OOl.rotation.order = "XYZ",
+          e.IO1l1 || (e.IO1l1 = new THREE.WebGLRenderer({
+            antialias: !0,
+            alpha: !0
+          })), e.IO1l1.setSize(t, t), e.IO1l1.render(r, s), o = document.createElement("canvas"), o.width = t, o.height = t, o.getContext("2d").drawImage(e.IO1l1.domElement, 0, 0), o
       }, e.prototype.getIcon = function (t) {
         var i, s, o, l, n, r, a;
         return null == t && (t = 64), a = new THREE.Scene, i = new THREE.OrthographicCamera(0, t, 0, t, 1, 3e3), this.material = new THREE.MeshBasicMaterial({
@@ -5376,11 +5445,18 @@
     }(), module.exports = O00l0, this.IOl0I = function () {
       function e(t) {
         var i, s, o, l;
-        if (this.Il1Il = t, this.key = localStorage.getItem("ECPKey"), null != this.key && this.key.length > 11 && (this.key = this.key.substring(this.key.length - 11, this.key.length)), this.verified = localStorage.getItem("ECPVerified"), this.custom = {
-          badge: localStorage.getItem("badge") || "star",
-          finish: localStorage.getItem("finish") || "alloy",
-          laser: localStorage.getItem("laser") || "1"
-        }, "fullcolor" === this.custom.finish && (this.custom.finish = "alloy"), this.additional_badges = [], null != localStorage.getItem("additional_badges")) {
+        if (this.Il1Il = t,
+          this.key = localStorage.getItem("ECPKey"),
+          null != this.key && this.key.length > 11 &&
+          (this.key = this.key.substring(this.key.length - 11, this.key.length)),
+          this.verified = localStorage.getItem("ECPVerified"), this.custom = {
+            badge: localStorage.getItem("badge") || "star",
+            finish: localStorage.getItem("finish") || "alloy",
+            laser: localStorage.getItem("laser") || "1"
+          }, "fullcolor" === this.custom.finish &&
+          (this.custom.finish = "alloy"),
+          this.additional_badges = [],
+          null != localStorage.getItem("additional_badges")) {
           try {
             this.additional_badges = JSON.parse(localStorage.getItem("additional_badges"))
           } catch (e) {
@@ -5396,13 +5472,20 @@
           return (16 * Math.random() | 0).toString(16)
         }), this.I1lO0(e)
       }, e.prototype.I1lO0 = function (e) {
-        if (e !== this.key) return this.key = e, null != this.key && this.key.length > 11 && (this.key = this.key.substring(this.key.length - 11, this.key.length)), this.verified = "no", localStorage.setItem("ECPKey", this.key), localStorage.setItem("ECPVerified", "no")
+        if (e !== this.key)
+          return this.key = e,
+            null != this.key &&
+            this.key.length > 11 &&
+            (this.key = this.key.substring(this.key.length - 11, this.key.length)),
+            this.verified = "no", localStorage.setItem("ECPKey", this.key),
+            localStorage.setItem("ECPVerified", "no")
       }, e.prototype.IlIO1 = function (e) {
         return /([0-9a-f]{5})-([0-9a-f]{5})/.test(e)
       }, e.prototype.l100O = function (e) {
         return this.verified = e, localStorage.setItem("ECPVerified", this.verified)
       }, e.prototype.removeKey = function () {
-        return localStorage.removeItem("ECPKey"), localStorage.removeItem("ECPVerified"), this.Il1Il.I0Ol1.reloadGame()
+        return localStorage.removeItem("ECPKey"),
+          localStorage.removeItem("ECPVerified"), this.Il1Il.I0Ol1.reloadGame()
       }, e.prototype.O01l0 = function () {
         return "yes" === this.verified
       }, e.prototype.O0O11 = function (e, t, i) {
@@ -5475,7 +5558,8 @@
       return function () {
         return e.apply(t, arguments)
       }
-    }, this.ShipEditor = function () {
+    },
+    this.ShipEditor = function () {
       function ShipEditor() {
         this.loadShip = bind(this.loadShip, this);
         var e, t, i, s;
@@ -5487,27 +5571,49 @@
           return function () {
             return e.update_time = Date.now() + 100
           }
-        }(this)), this.width = 1e3, this.height = 1e3, this.O1OlI = new THREE.Scene, this.II0l1 = new THREE.PerspectiveCamera(20, this.width / this.height, 1, 1e3), this.II0l1.position.y = -20, this.II0l1.position.z = 20, this.II0l1.lookAt(new THREE.Vector3(0, 0, 0)), this.II0l1.updateProjectionMatrix(), this.l1OO0 = new THREE.DirectionalLight(16777215), this.l1OO0.position.set(1, -1, 4), this.O1OlI.add(this.l1OO0), this.IO1l1 = new THREE.WebGLRenderer({
-          antialias: !0,
-          transparent: !0,
-          alpha: !0
-        }), this.IO1l1.setSize(this.width, this.height, !1), this.rotation = 0, document.getElementById("insiderenderpanel").appendChild(this.IO1l1.domElement), this.rotate_x = 0, this.rotate_y = 0, this.zoom = 1, this.IO1l1.setClearColor(new THREE.Color(16777215), 0), this.IO1l1.domElement.addEventListener("mousedown", function (e) {
-          return function (t) {
-            return e.mouseDown(t)
-          }
-        }(this)), this.IO1l1.domElement.addEventListener("mousemove", function (e) {
-          return function (t) {
-            return e.mouseMove(t)
-          }
-        }(this)), this.IO1l1.domElement.addEventListener("mousewheel", function (e) {
-          return function (t) {
-            return e.mouseWheel(t)
-          }
-        }(this)), document.addEventListener("mouseup", function (e) {
-          return function (t) {
-            return e.mouseUp(t)
-          }
-        }(this)), this.dragging = !1, this.Oll00(), this.material_index = 0, this.materials = ["zinc", "alloy", "carbon", "titanium", "gold"], this.model_index = 0, this.hue = 0, i = ll1O1.O0IOO, e = 0, t = i.length; e < t; e++) s = i[e], null == this.levels[s.level] && (this.levels[s.level] = []), this.levels[s.level].push(100 * s.level + s.model);
+        }(this)), this.width = 1e3,
+          this.height = 1e3,
+          this.O1OlI = new THREE.Scene,
+          this.II0l1 = new THREE.PerspectiveCamera(20, this.width / this.height, 1, 1e3),
+          this.II0l1.position.y = -20,
+          this.II0l1.position.z = 20,
+          this.II0l1.lookAt(new THREE.Vector3(0, 0, 0)),
+          this.II0l1.updateProjectionMatrix(),
+          this.l1OO0 = new THREE.DirectionalLight(16777215),
+          this.l1OO0.position.set(1, -1, 4),
+          this.O1OlI.add(this.l1OO0),
+          this.IO1l1 = new THREE.WebGLRenderer({
+            antialias: !0,
+            transparent: !0,
+            alpha: !0
+          }), this.IO1l1.setSize(this.width, this.height, !1),
+          this.rotation = 0,
+          document.getElementById("insiderenderpanel").appendChild(this.IO1l1.domElement),
+          this.rotate_x = 0, this.rotate_y = 0, this.zoom = 1,
+          this.IO1l1.setClearColor(new THREE.Color(16777215), 0),
+          this.IO1l1.domElement.addEventListener("mousedown", function (e) {
+            return function (t) {
+              return e.mouseDown(t)
+            }
+          }(this)), this.IO1l1.domElement.addEventListener("mousemove", function (e) {
+            return function (t) {
+              return e.mouseMove(t)
+            }
+          }(this)), this.IO1l1.domElement.addEventListener("mousewheel", function (e) {
+            return function (t) {
+              return e.mouseWheel(t)
+            }
+          }(this)), document.addEventListener("mouseup", function (e) {
+            return function (t) {
+              return e.mouseUp(t)
+            }
+          }(this)),
+          this.dragging = !1, this.Oll00(),
+          this.material_index = 0,
+          this.materials = ["zinc", "alloy", "carbon", "titanium", "gold"],
+          this.model_index = 0, this.hue = 0, i = ll1O1.O0IOO, e = 0, t = i.length; e < t; e++)
+          s = i[e], null == this.levels[s.level] && (this.levels[s.level] = []),
+            this.levels[s.level].push(100 * s.level + s.model);
         return localStorage.getItem("code") && this.editor.setValue(localStorage.getItem("code"), -1), document.getElementById("exportPNG").addEventListener("click", function (e) {
           return function (t) {
             return t.preventDefault(), e.export()
@@ -5593,38 +5699,52 @@
         return t = e.wheelDelta || -e.detail, t < 0 ? this.zoom *= .99 : t > 0 ? this.zoom /= .99 : void 0
       }, ShipEditor.prototype.editorContentsChanged = function () {
         var a, code, context, i, j, k, l, max, ref, ref1, shape, shipdata, src;
-        if (src = this.editor.getValue(), code = CoffeeScript.compile(src), shipdata = eval(code)) {
-          for (null != this.ship && this.O1OlI.remove(this.ship.l0OOl), this.ship = new O1l0O(shipdata, this.hue, this.materials[this.material_index]), this.O1OlI.add(this.ship.l0OOl), this.ship.l0lO0(0), localStorage.setItem("code", src), shape = this.ship.l11Il(50), context = document.getElementById("shapecanvas").getContext("2d"), context.clearRect(0, 0, 150, 150), context.save(), context.translate(75, 75), max = 0, i = j = 0, ref = shape.length - 1; j <= ref; i = j += 1) max = Math.max(Math.abs(shape[i]), max);
+        if (src = this.editor.getValue(),
+          code = CoffeeScript.compile(src),
+          shipdata = eval(code)) {
+          for (null != this.ship && this.O1OlI.remove(this.ship.l0OOl),
+            this.ship = new O1l0O(shipdata, this.hue, this.materials[this.material_index]),
+            this.O1OlI.add(this.ship.l0OOl), this.ship.l0lO0(0), localStorage.setItem("code", src), shape = this.ship.l11Il(50), context = document.getElementById("shapecanvas").getContext("2d"), context.clearRect(0, 0, 150, 150), context.save(), context.translate(75, 75), max = 0, i = j = 0, ref = shape.length - 1; j <= ref; i = j += 1) max = Math.max(Math.abs(shape[i]), max);
           for (context.scale(50 / max, 50 / max), context.beginPath(), i = k = 0, ref1 = shape.length - 1; k <= ref1; i = k += 1) l = shape[i], a = i / shape.length * 2 * Math.PI, context.lineTo(l * Math.cos(a), l * Math.sin(a));
           return context.closePath(), context.fillStyle = "rgba(255,255,255,.5)", context.fill(), context.strokeStyle = "rgba(255,255,255,.5)", context.lineWidth = .25 / max, context.stroke(), context.restore()
         }
       }, ShipEditor.prototype.changeMaterial = function () {
-        return this.material_index = (this.material_index + 1) % this.materials.length, this.editorContentsChanged()
+        return this.material_index = (this.material_index + 1) % this.materials.length,
+          this.editorContentsChanged()
       }, ShipEditor.prototype.changeHue = function () {
         return this.hue = (this.hue + 1 / 12) % 1, this.editorContentsChanged()
       }, ShipEditor.prototype.loadModel = function () {
         var e, t, i, s, o, l, n, r, a, h, p, c, d, u, f;
-        for (n = document.querySelector(".overlay"), l = document.querySelector("#shipLoader"), e = n.querySelector(".content"), d = n.querySelector(".title"), h = n.querySelector("table"), n.style.display = "block", l.style.display = "block", e.style.height = l.offsetHeight - d.offsetHeight + "px", h.style.height = l.offsetHeight - d.offsetHeight + "px", window.addEventListener("resize", function () {
-          return e.style.height = l.offsetHeight - d.offsetHeight + "px", h.style.height = l.offsetHeight - d.offsetHeight + "px"
-        }), u = h.querySelector("thead tr"), f = h.querySelector("tbody tr"), u.innerHTML = "", f.innerHTML = "", o = 1, p = document.createElement("td"), c = document.createElement("td"), c.innerText = "Tier " + o, u.appendChild(c), r = ll1O1.O0IOO, t = function (e) {
-          return function (t) {
-            var i, s, o;
-            return s = document.createElement("div"), s.innerHTML = t.name, o = document.createElement("div"), o.classList.add("shipgroup"), o.setAttribute("data-code", 100 * t.level + t.model), i = O1l0O.getShipIcon(100 * t.level + t.model), o.appendChild(i), o.appendChild(s), o.addEventListener("click", function (i) {
-              var s;
-              return e.closeModal(i), s = JSON.stringify(t), s = js2coffee.build("model = " + s).code, s = s.replace(/\s+(?=[^[\]]*\])/g, ",").replace(/\[,/g, "[").replace(/,\]/g, "]"), s = s.replace(/'(\w+)':/g, "$1:"), e.editor.setValue("return " + s, -1)
-            }), o.addEventListener("mouseover", function (i) {
-              var s, o, l, n, r, a, p, c, d, u, f, g;
-              for (c = document.querySelectorAll("[data-code]"), o = 0, l = c.length; o < l; o++) f = c[o], f.classList.remove("highlighted");
-              if (r = t.level, p = t.model, null == e.levels[r + 1]) return [];
-              for (g = (p - 1) / Math.max(1, e.levels[r].length - 1), g = Math.round(g * (e.levels[r + 1].length - 2)), d = [e.levels[r + 1][g]], g < e.levels[r + 1].length - 1 && d.push(e.levels[r + 1][g + 1]), u = [], a = 0, n = d.length; a < n; a++) s = d[a], u.push(h.querySelector("[data-code='" + s + "']").classList.add("highlighted"));
-              return u
-            }), o.addEventListener("mouseout", function (e) {
-              var t, i, s, o, l;
-              for (s = document.querySelectorAll("[data-code]"), o = [], t = 0, i = s.length; t < i; t++) l = s[t], o.push(l.classList.remove("highlighted"));
-              return o
-            }), p.appendChild(o)
-          }
-        }(this), i = 0, s = r.length; i < s; i++) a = r[i], a.level > o && (o = a.level, c = document.createElement("td"), c.innerText = "Tier " + o, u.appendChild(c), f.appendChild(p), p = document.createElement("td")), t(a);
+        for (n = document.querySelector(".overlay"),
+          l = document.querySelector("#shipLoader"),
+          e = n.querySelector(".content"),
+          d = n.querySelector(".title"),
+          h = n.querySelector("table"),
+          n.style.display = "block",
+          l.style.display = "block",
+          e.style.height = l.offsetHeight - d.offsetHeight + "px",
+          h.style.height = l.offsetHeight - d.offsetHeight + "px",
+          window.addEventListener("resize", function () {
+            return e.style.height = l.offsetHeight - d.offsetHeight + "px", h.style.height = l.offsetHeight - d.offsetHeight + "px"
+          }), u = h.querySelector("thead tr"), f = h.querySelector("tbody tr"), u.innerHTML = "", f.innerHTML = "", o = 1, p = document.createElement("td"), c = document.createElement("td"), c.innerText = "Tier " + o, u.appendChild(c), r = ll1O1.O0IOO, t = function (e) {
+            return function (t) {
+              var i, s, o;
+              return s = document.createElement("div"), s.innerHTML = t.name, o = document.createElement("div"), o.classList.add("shipgroup"), o.setAttribute("data-code", 100 * t.level + t.model), i = O1l0O.getShipIcon(100 * t.level + t.model), o.appendChild(i), o.appendChild(s), o.addEventListener("click", function (i) {
+                var s;
+                return e.closeModal(i), s = JSON.stringify(t), s = js2coffee.build("model = " + s).code, s = s.replace(/\s+(?=[^[\]]*\])/g, ",").replace(/\[,/g, "[").replace(/,\]/g, "]"), s = s.replace(/'(\w+)':/g, "$1:"), e.editor.setValue("return " + s, -1)
+              }), o.addEventListener("mouseover", function (i) {
+                var s, o, l, n, r, a, p, c, d, u, f, g;
+                for (c = document.querySelectorAll("[data-code]"), o = 0, l = c.length; o < l; o++) f = c[o], f.classList.remove("highlighted");
+                if (r = t.level, p = t.model, null == e.levels[r + 1]) return [];
+                for (g = (p - 1) / Math.max(1, e.levels[r].length - 1), g = Math.round(g * (e.levels[r + 1].length - 2)), d = [e.levels[r + 1][g]], g < e.levels[r + 1].length - 1 && d.push(e.levels[r + 1][g + 1]), u = [], a = 0, n = d.length; a < n; a++) s = d[a], u.push(h.querySelector("[data-code='" + s + "']").classList.add("highlighted"));
+                return u
+              }), o.addEventListener("mouseout", function (e) {
+                var t, i, s, o, l;
+                for (s = document.querySelectorAll("[data-code]"), o = [], t = 0, i = s.length; t < i; t++) l = s[t], o.push(l.classList.remove("highlighted"));
+                return o
+              }), p.appendChild(o)
+            }
+          }(this), i = 0, s = r.length; i < s; i++) a = r[i], a.level > o && (o = a.level, c = document.createElement("td"), c.innerText = "Tier " + o, u.appendChild(c), f.appendChild(p), p = document.createElement("td")), t(a);
         return f.appendChild(p)
       }, ShipEditor.prototype.Oll00 = function () {
         if (this.update_time > 0 && Date.now() > this.update_time) try {
