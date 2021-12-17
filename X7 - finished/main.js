@@ -596,6 +596,8 @@ this.tick = function (game) {
         }
 
         if (!ship.custom.init) {
+          ship.custom.options = true;
+          ship.custom.init = true;
           sendUI(ship, {
             id: "Options",
             position: [73.4, 0, 6.6, 4],
@@ -681,7 +683,9 @@ const boxes = {
 function fontSize(text, size) {
   return [50 - size / 2 * text.length, 0, text.length * size, 100]
 }
-
+function Center(width, height) {
+  return [50 - width / 2, 50 - height / 2, width, height];
+}
 const ids = ["Next ship", "Previous ship", "Spectate", "Reset", "Others", "Warp", "Stats"];
 const UIevents = {
   switch: function (input, ship) {
@@ -760,17 +764,41 @@ const UIevents = {
     ship.custom.index = index;
   },
   options: function (ship) {
-    let x = 0, y = 0;
-    ids.forEach((id, a) => {
-      if (x % 4 == 0) { x = 0; y++; }
+    console.log(ship.custom);
+    if (ship.custom.options) {
+      let x = 0, y = 0;
       sendUI(ship, {
-        id, position: [10 + x * 11, 40 + y * 11, 10, 10], visible: true, clickable: true,
+        id: 'board',
+        position: Center(60, 60),
+        visible: true,
         components: [
-          { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-          { type: "text", position: fontSize(id, 7), value: id, color: buttonColor }
+          { type: 'box', position: [0, 0, 100, 100], stroke: buttonColor, width: 5 },
         ]
       })
-    })
+      ids.forEach(id => {
+        if (x % 5 == 0) { x = 0; y++; }
+        sendUI(ship, {
+          id, position: [22 + x * 11, 18 + y * 11, 10, 10], visible: true, clickable: true,
+          components: [
+            { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
+            { type: "text", position: fontSize(id, 7), value: id, color: buttonColor }
+          ]
+        })
+        x++;
+      })
+      Object.keys(boxes).forEach(id => {
+        if (x % 5 == 0) { x = 0; y++; }
+        sendUI(ship, {
+          id, position: [22 + x * 11, 18 + y * 11, 10, 10], visible: true, clickable: true,
+          components: [
+            { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
+            { type: "text", position: fontSize(id, 7), value: id, color: buttonColor }
+          ]
+        })
+        x++;
+      })
+    } else { [...ids, ...Object.keys(boxes), 'board'].forEach(id => sendUI(ship, { id, visible: false })); }
+    ship.custom.options = !ship.custom.options;
   }
 };
 
