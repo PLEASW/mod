@@ -1,5 +1,5 @@
 //Credit to 45rfew/Money as well as ___ and Bhpsngum
-
+echo('Hello')
 const bans = ["TEST"];              // "TEST" is placeholder for name of person you want to ban. Note that multiple people can be banned.
 const old_gem_pickup = false;       // set to true if you want old gem pickup(FOR EVERY LEVEL)
 const optionshortcut = "B";         // shortcutkey for the options button.
