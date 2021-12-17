@@ -778,7 +778,6 @@ const UIevents = {
         })
         x++;
       })
-      console.log(ship.hue)
       sendUI(ship, {
         id: 'board',
         position: Center(60, 60),
