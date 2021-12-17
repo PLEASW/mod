@@ -24,6 +24,7 @@ mute <id>:                    prevent someone to use chat emotes, non-reversible
 crash <id>:                   crash someone, use the same command again to revert the crash (aka forgive).
 kick <id> <reason>:           kick someone with reason.
 ban <id> <reason>:            Ban someone (by name) with reason.
+
 2. Global commands
 playerlist:                   show all ships' info along with their ID.
 announce <message>:           announce a message to everyone.
