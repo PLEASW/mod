@@ -547,24 +547,6 @@ const map =
   "9 2    6          779          99             77               99 3     59    8   5 87         999    99977        56778        998    99              9        9      9999 9 9 9 9 9 9 99 9 9 9 9 9 999\n" +
   "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999    99999999999999999999999999999899999999999999999999999999999999999999999999999999999999999999999999";
 
-const boxes = {
-  "Spawn": [0, 0],
-  "AOW Pattern": [-855, -835],
-  "Nexus Pattern": [-525, -855],
-  "Light Pattern ": [-195, -855],
-  "Zebra Pattern": [195, -855],
-  "Rumble": [-845, 845],
-  "Plinko": [-515, 855],
-  "Standoff": [-195, 845],
-  "Waffle": [195, 845],
-  "Open Arena": [515, 845],
-  "Maze": [515, -845],
-  "Empty Circle": [845, 845],
-  "Empty box": [845, -845],
-};
-
-const ids = ["Next ship", "Previous ship", "Spectate", "Reset", "Others", "Warp", ...Object.keys(boxes)];
-
 this.options = {
   ships: ships,
   custom_map: map,
@@ -614,42 +596,40 @@ this.tick = function (game) {
         }
 
         if (!ship.custom.init) {
-          ship.custom.init = true;
           sendUI(ship, {
             id: "Options",
-            position: [73, 92, 6.6, 4],
+            position: [73.4, 0, 6.6, 4],
             clickable: true,
             visible: true,
             shortcut: optionshortcut,
             components: [
               { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-              { type: "text", position: [0, 30, 100, 60], value: "Options[" + optionshortcut + "]", color: buttonColor },
+              { type: "text", position: fontSize("Options[" + optionshortcut + "]", 9), value: "Options[" + optionshortcut + "]", color: buttonColor },
             ]
           });
-          ship.custom.option_screen = true;
           sendUI(ship, {
             id: "Restore",
-            position: [66, 92, 7.2, 4],
+            position: [66.3, 0, 7.2, 4],
             clickable: true,
             visible: true,
             shortcut: restoreshortcut,
             components: [
               { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-              { type: "text", position: [0, 30, 100, 60], value: "Restore[" + restoreshortcut + "]", color: buttonColor },
+              { type: "text", position: fontSize("Restore[" + restoreshortcut + "]", 9), value: "Restore[" + restoreshortcut + "]", color: buttonColor },
             ]
           });
-          sendUI(ship, {
-            id: "Stats",
-            position: [73, 88, 6.6, 4],
-            clickable: true,
-            visible: true,
-            shortcut: "V",
-            components: [
-              { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-              { type: "text", position: [0, 30, 100, 60], value: "Stats[V]", color: buttonColor },
-            ]
-          });
-          welcomeText(ship);
+          // sendUI(ship, {
+          //   id: "Stats",
+          //   position: [73, 88, 6.6, 4],
+          //   clickable: true,
+          //   visible: true,
+          //   shortcut: "V",
+          //   components: [
+          //     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
+          //     { type: "text", position: [0, 30, 100, 60], value: "Stats[V]", color: buttonColor },
+          //   ]
+          // });
+          // welcomeText(ship);
         }
         if (game.step % 1800 === 0 && game.ships.length > 1 && autolist == true) playerData();
       }
@@ -682,6 +662,27 @@ const welcomeText = function (ship, text) {
   if (text) ship.custom.welcomeTextID = setTimeout(welcomeText, 2000, ship);
 }
 
+const boxes = {
+  "Spawn": [0, 0],
+  "AOW Pattern": [-855, -835],
+  "Nexus Pattern": [-525, -855],
+  "Light Pattern ": [-195, -855],
+  "Zebra Pattern": [195, -855],
+  "Rumble": [-845, 845],
+  "Plinko": [-515, 855],
+  "Standoff": [-195, 845],
+  "Waffle": [195, 845],
+  "Open Arena": [515, 845],
+  "Maze": [515, -845],
+  "Empty Circle": [845, 845],
+  "Empty box": [845, -845],
+};
+
+function fontSize(text, size) {
+  return [50 - size / 2 * text.length, 0, text.length * size, 100]
+}
+
+const ids = ["Next ship", "Previous ship", "Spectate", "Reset", "Others", "Warp", "Stats"];
 const UIevents = {
   switch: function (input, ship) {
     const next = globalShips[globalShips.indexOf(ship.type) + input] || globalShips[0];
@@ -759,26 +760,17 @@ const UIevents = {
     ship.custom.index = index;
   },
   options: function (ship) {
-    if (ship.custom.option_screen === true) {
-      let xpos, ypos = 0;
-      for (let i = 0; i < ids.length; i++) {
-        if (i % 5 == 0) ypos++;
-        xpos = ypos;
-        sendUI(ship, {
-          id: ids[i],
-          position: [79 + i * 12 - xpos * 60, 21 + ypos * 11, 12, 10],
-          clickable: true,
-          visible: true,
-          components: [
-            { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: "#CDE", width: 4 },
-            { type: "text", position: [5, 35, 90, 40], value: `${ids[i]}`, color: "#CDE" },
-          ]
-        });
-      }
-    } else if (ship.custom.option_screen === false)
-      for (let i = 0; i < ids.length; i++) sendUI(ship, { id: ids[i], visible: false });
-
-    ship.custom.option_screen = !ship.custom.option_screen;
+    let x = 0, y = 0;
+    ids.forEach((id, a) => {
+      if (x % 4 == 0) { x = 0; y++; }
+      sendUI(ship, {
+        id, position: [10 + x * 11, 40 + y * 11, 10, 10], visible: true, clickable: true,
+        components: [
+          { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
+          { type: "text", position: fontSize(id, 7), value: id, color: buttonColor }
+        ]
+      })
+    })
   }
 };
 
@@ -804,12 +796,12 @@ this.event = function (event, game) {
       for (let i in boxes) {
         const [x, y] = boxes[i];
         if (component === i) {
-          ship.set({ x, y });
-          break;
+          return ship.set({ x, y });
         }
       }
   }
   if (!ship.custom.lastClickedStep || game.step - ship.custom.lastClickedStep > buttonDelay) {
+    ship.custom.lastClickedStep = game.step;
     switch (component) {
       case "Next ship":
         UIevents.next(ship)
@@ -839,17 +831,14 @@ this.event = function (event, game) {
         UIevents.admin(ship);
         break;
     }
-    ship.custom.lastClickedStep = game.step;
+  } else if (!['Spectate', 'Stats', 'Options', 'Reset', 'Warp'].includes(component)) welcomeText(ship, "Too fast, hold up for a bit");
+  if (ship != null && !ship.custom.crashed && !ship.custom.timeout) switch (event.name) {
+    case "ship_spawned":
+      const [x, y] = [ship.custom.last_x ?? 0, ship.custom.last_y ?? 0];
+      ship.set({ x, y, invulnerable: 300, crystals: shipCargo(ship.type) });
+      break;
+    case "ship_destroyed":
+      Object.assign(ship.custom, { last_x: ship.x, last_y: ship.y })
+      break;
   }
-  else welcomeText(ship, "Too fast, hold up for a bit");
-  if (ship != null && !ship.custom.crashed && !ship.custom.timeout)
-    switch (event.name) {
-      case "ship_spawned":
-        const [x, y] = [ship.custom.last_x ?? 0, ship.custom.last_y ?? 0];
-        ship.set({ x, y, invulnerable: 300, crystals: shipCargo(ship.type) });
-        break;
-      case "ship_destroyed":
-        Object.assign(ship.custom, { last_x: ship.x, last_y: ship.y })
-        break;
-    }
 };
