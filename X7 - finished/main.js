@@ -620,18 +620,7 @@ this.tick = function (game) {
               { type: "text", position: fontSize("Restore[" + restoreshortcut + "]", 9), value: "Restore[" + restoreshortcut + "]", color: buttonColor },
             ]
           });
-          // sendUI(ship, {
-          //   id: "Stats",
-          //   position: [73, 88, 6.6, 4],
-          //   clickable: true,
-          //   visible: true,
-          //   shortcut: "V",
-          //   components: [
-          //     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-          //     { type: "text", position: [0, 30, 100, 60], value: "Stats[V]", color: buttonColor },
-          //   ]
-          // });
-          // welcomeText(ship);
+          welcomeText(ship);
         }
         if (game.step % 1800 === 0 && game.ships.length > 1 && autolist == true) playerData();
       }
@@ -764,7 +753,6 @@ const UIevents = {
     ship.custom.index = index;
   },
   options: function (ship) {
-    console.log(ship.custom);
     if (ship.custom.options) {
       let x = 0, y = 0;
       sendUI(ship, {
