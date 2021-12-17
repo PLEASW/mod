@@ -778,17 +778,18 @@ const UIevents = {
         })
         x++;
       })
+      console.log(ship.hue)
       sendUI(ship, {
         id: 'board',
         position: Center(60, 60),
         visible: true,
         components: [
-          { type: 'box', position: [0, 0, 100, 100 * 2 / 5], fill: 'rgba(0,255,255,0.2)', width: 5 },
-          { type: 'box', position: [0, 2 / 5 * 100, 100, 100 * 3 / 5], fill: 'rgba(255,255,0,0.2)', width: 5 },
+          { type: 'box', position: [0, 0, 100, 100 * 2 / 5], fill: `hsla(192, 100%, 50%, 0.5)` },
+          { type: 'box', position: [0, 2 / 5 * 100, 100, 100 * 3 / 5], fill: `hsla(0, 100%, 50%, 0.5)` },
           { type: "text", position: [0, 0, 40, 20], value: 'Ships', color: buttonColor },
           { type: "text", position: [0, 40, 40, 20], value: 'Maps', color: buttonColor },
           { type: 'box', position: [0, 0, 100, 100], stroke: buttonColor, width: 5 },
-          { type: 'box', position: [0, 39.5, 100, 1], fill: 'rgba(255,255,255,0.2)', width: 5 },
+          { type: 'box', position: [0, 39.5, 100, 1], fill: 'rgba(255, 255, 255, 0.2)', width: 5 },
         ]
       })
     } else { [...ids, ...Object.keys(boxes), 'board'].forEach(id => sendUI(ship, { id, visible: false })); }
