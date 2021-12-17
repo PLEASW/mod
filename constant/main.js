@@ -13,3 +13,4 @@ const posConvt2 = function (x, y) {
   return [x - 50, 50 - y].map((i, b) => i * mapSize / 10 - b);
 };
 ; (function (params) { })(); // custom command for use in mod development
+$.get("path/to/file.js").then(data => eval(data)).catch(e => echo("Failed wtf"))
