@@ -595,10 +595,10 @@ this.tick = function (game) {
           ship.gameover({ "You have been banned from the game!": " " });
           ship.set({ kill: true });
         }
-
         if (!ship.custom.init) {
           ship.custom.options = true;
           ship.custom.init = true;
+          const options = `Options[${optionshortcut}]`;
           sendUI(ship, {
             id: "Options",
             position: [73.4, 0, 6.6, 4],
@@ -607,9 +607,10 @@ this.tick = function (game) {
             shortcut: optionshortcut,
             components: [
               { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-              { type: "text", position: fontSize("Options[" + optionshortcut + "]", 9), value: "Options[" + optionshortcut + "]", color: buttonColor },
+              { type: "text", position: Center(options.length * 7, 100), value: options, color: buttonColor },
             ]
           });
+          const restore = `Restore[${restoreshortcut}]`;
           sendUI(ship, {
             id: "Restore",
             position: [66.3, 0, 7.2, 4],
@@ -618,7 +619,7 @@ this.tick = function (game) {
             shortcut: restoreshortcut,
             components: [
               { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-              { type: "text", position: fontSize("Restore[" + restoreshortcut + "]", 9), value: "Restore[" + restoreshortcut + "]", color: buttonColor },
+              { type: "text", position: Center(restore.length * 7, 100), value: restore, color: buttonColor },
             ]
           });
           welcomeText(ship);
@@ -670,13 +671,11 @@ const boxes = {
   "Empty box": [845, -845],
 };
 
-function fontSize(text, size) {
-  return [50 - size / 2 * text.length, 0, text.length * size, 100]
-}
 function Center(width, height) {
   return [50 - width / 2, 50 - height / 2, width, height];
 }
-const ids = ["Next ship", "Previous ship", "Spectate", "Reset", "Others", "Warp", "Stats"];
+
+const ids = ["Next ship", "Previous ship", "Others", "Spectate", "Reset", "Stats", "Warp"];
 const UIevents = {
   switch: function (input, ship) {
     const next = globalShips[globalShips.indexOf(ship.type) + input] || globalShips[0];
@@ -755,36 +754,42 @@ const UIevents = {
   },
   options: function (ship) {
     if (ship.custom.options) {
-      let x = 0, y = 0;
+      let x = 2, y = 1;
+      ids.forEach(id => {
+        if (x % 5 == 0) { x = 0; y++; }
+        sendUI(ship, {
+          id, position: [25 + x * 11, 11 + y * 11, 10, 10], visible: true, clickable: true,
+          components: [
+            { type: "box", position: [0, 0, 100, 100], fill: "rgba(0, 0, 0, 0.5)", stroke: buttonColor, width: 5 },
+            { type: "text", position: Center(id.length * 7, 100), value: id, color: buttonColor }
+          ]
+        })
+        x++;
+      })
+      x -= 2;
+      Object.keys(boxes).forEach(id => {
+        if (x % 5 == 0) { x = 0; y++; }
+        sendUI(ship, {
+          id, position: [25 + x * 11, 24 + y * 11, 10, 10], visible: true, clickable: true,
+          components: [
+            { type: "box", position: [0, 0, 100, 100], fill: "rgba(0, 0, 0, 0.5)", stroke: buttonColor, width: 5 },
+            { type: "text", position: Center(id.length * 7, 100), value: id, color: buttonColor }
+          ]
+        })
+        x++;
+      })
       sendUI(ship, {
         id: 'board',
         position: Center(60, 60),
         visible: true,
         components: [
+          { type: 'box', position: [0, 0, 100, 100 * 2 / 5], fill: 'rgba(0,255,255,0.2)', width: 5 },
+          { type: 'box', position: [0, 2 / 5 * 100, 100, 100 * 3 / 5], fill: 'rgba(255,255,0,0.2)', width: 5 },
+          { type: "text", position: [0, 0, 40, 20], value: 'Ships', color: buttonColor },
+          { type: "text", position: [0, 40, 40, 20], value: 'Maps', color: buttonColor },
           { type: 'box', position: [0, 0, 100, 100], stroke: buttonColor, width: 5 },
+          { type: 'box', position: [0, 39.5, 100, 1], fill: 'rgba(255,255,255,0.2)', width: 5 },
         ]
-      })
-      ids.forEach(id => {
-        if (x % 5 == 0) { x = 0; y++; }
-        sendUI(ship, {
-          id, position: [22 + x * 11, 18 + y * 11, 10, 10], visible: true, clickable: true,
-          components: [
-            { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-            { type: "text", position: fontSize(id, 7), value: id, color: buttonColor }
-          ]
-        })
-        x++;
-      })
-      Object.keys(boxes).forEach(id => {
-        if (x % 5 == 0) { x = 0; y++; }
-        sendUI(ship, {
-          id, position: [22 + x * 11, 18 + y * 11, 10, 10], visible: true, clickable: true,
-          components: [
-            { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-            { type: "text", position: fontSize(id, 7), value: id, color: buttonColor }
-          ]
-        })
-        x++;
       })
     } else { [...ids, ...Object.keys(boxes), 'board'].forEach(id => sendUI(ship, { id, visible: false })); }
     ship.custom.options = !ship.custom.options;
