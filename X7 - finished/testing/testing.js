@@ -782,8 +782,7 @@ const UIevents = {
     ship.custom.spectator = true;
 
     let index = ship.custom.index || 0, target;
-    do target = game.ships[++index] || game.ships[index = 0];
-    while (target == ship);
+    do target = game.ships[++index] || game.ships[index = 0]; while (target == ship);
     ship.set({ x: target.x, y: target.y });
     ship.custom.index = index;
   },
