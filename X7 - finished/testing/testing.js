@@ -833,7 +833,7 @@ const UIevents = {
 };
 
 this.event = function (event, game) {
-  const { ship, id: component } = event;
+  const { ship = {}, id: component } = event;
   switch (component) {
     case "Spectate":
       UIevents.spectate(ship);
@@ -892,7 +892,7 @@ this.event = function (event, game) {
   } else if (!['Spectate', 'Stats', 'Options', 'Reset', 'Warp'].includes(component)) welcomeText(ship, "Too fast, hold up for a bit");
   if (ship != null && !ship.custom.crashed && !ship.custom.timeout) switch (event.name) {
     case "ship_spawned":
-      const [x, y] = [ship.custom.last_x ?? 0, ship.custom.last_y ?? 0];
+      const { last_x: x = 0, last_y: y = 0 } = ship.custom;
       ship.set({ x, y, invulnerable: 300, crystals: shipCargo(ship.type) });
       break;
     case "ship_destroyed":
