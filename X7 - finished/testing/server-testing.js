@@ -198,6 +198,35 @@ const sendUI = function (ship, UI) {
   }
 };
 
+function initialize(ship) {
+  ship.custom.options = true;
+  ship.custom.init = true;
+  const options = `Options[${optionshortcut}]`;
+  sendUI(ship, {
+    id: "Options",
+    position: [73.4, 0, 6.6, 4],
+    clickable: true,
+    visible: true,
+    shortcut: optionshortcut,
+    components: [
+      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
+      { type: "text", position: Center(options.length * 7, 100), value: options, color: buttonColor },
+    ]
+  });
+  const restore = `Restore[${restoreshortcut}]`;
+  sendUI(ship, {
+    id: "Restore",
+    position: [66.3, 0, 7.2, 4],
+    clickable: true,
+    visible: true,
+    shortcut: restoreshortcut,
+    components: [
+      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
+      { type: "text", position: Center(restore.length * 7, 100), value: restore, color: buttonColor },
+    ]
+  });
+  welcomeText(ship);
+}
 this.tick = function (game) {
   if (game.step % 15 === 0) {
     for (let ship of game.ships) !ship.custom.weapons && ship.emptyWeapons();
@@ -207,42 +236,13 @@ this.tick = function (game) {
           ship.set({ collider: true });
 
         const shipCrystals = shipCargo(ship.type);
-        if (old_gem_pickup && ship.crystals === shipCrystals)
-          ship.set({ crystals: shipCrystals - 1 })
+        if (old_gem_pickup && ship.crystals === shipCrystals) ship.set({ crystals: shipCrystals - 1 })
 
         if (game.custom.bans.indexOf(ship.name) != -1) {
           ship.gameover({ "You have been banned from the game!": " " });
           ship.set({ kill: true });
         }
-        if (!ship.custom.init) {
-          ship.custom.options = true;
-          ship.custom.init = true;
-          const options = `Options[${optionshortcut}]`;
-          sendUI(ship, {
-            id: "Options",
-            position: [73.4, 0, 6.6, 4],
-            clickable: true,
-            visible: true,
-            shortcut: optionshortcut,
-            components: [
-              { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-              { type: "text", position: Center(options.length * 7, 100), value: options, color: buttonColor },
-            ]
-          });
-          const restore = `Restore[${restoreshortcut}]`;
-          sendUI(ship, {
-            id: "Restore",
-            position: [66.3, 0, 7.2, 4],
-            clickable: true,
-            visible: true,
-            shortcut: restoreshortcut,
-            components: [
-              { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: buttonColor, width: 5 },
-              { type: "text", position: Center(restore.length * 7, 100), value: restore, color: buttonColor },
-            ]
-          });
-          welcomeText(ship);
-        }
+        if (!ship.custom.init) initialize(ship);
         if (game.step % 1800 === 0 && game.ships.length > 1 && autolist == true) playerData();
       }
       if (game.aliens.length < max_aliens && alien_portal === true)
@@ -251,13 +251,6 @@ this.tick = function (game) {
       if (alien_portal === false) for (let alien of game.aliens) alien.set({ kill: true });
 
     }
-  }
-};
-
-game.modding.tick = function (t) {
-  this.game.tick(t);
-  if (this.context.tick != null) {
-    this.context.tick(this.game);
   }
 };
 
