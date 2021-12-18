@@ -250,6 +250,7 @@ this.tick = function (game) {
     for (let ship of game.ships) !ship.custom.weapons && ship.emptyWeapons();
     if (game.step % 30 === 0) {
       spawnAsteroid();
+
       for (let ship of game.ships) {
         if (!ship.custom.spectator && Math.abs(ship.vx) < 1 && Math.abs(ship.vy) < 1)
           ship.set({ collider: true });
