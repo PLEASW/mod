@@ -13,18 +13,20 @@
 const spawnAsteroid = true;
 const spawnRate = 20; // 20 - infinite;
 const asteroids = 10
-function spawnAsteroid(game) {
-  if (!spawnAsteroid) {
-    game.asteroids.forEach(asteroid => asteroid.set({ kill: true }))
-    return;
-  }
-  else if (game.asteroids.length <= asteroids) {
-    game.addAsteroid({
-      vx: Math.random() * 4,
-      vy: Math.random() * 4,
-      [x, y]: boxes["Empty box"]
-    })
-  }
+
+function spawnAsteroid() {
+  const second = game.step / (spawnRate * 60);
+  if (!spawnAsteroid && !game.asteroids.length) return game.asteroids.forEach(asteroid => asteroid.set({ kill: true }));
+  else if (second === Math.trunc(second) && game.asteroids.length <= asteroids) game.addAsteroid({
+    vx: Math.random() * 4,
+    vy: Math.random() * 4,
+    [x, y]: boxes["Empty Box"]
+  })
+  else game.asteroids.forEach(asteroid => {
+    const { x, y } = asteroid;
+    const [size, cornerX, cornerY] = [330, ...boxes["Empty Box"].map(i => i - size / 2)];
+    if (!(cornerX <= x && x <= cornerX + size && cornerY <= y && y <= cornerY + size)) asteroid.set({ kill: true })
+  })
 }
 if (!game.custom.bans) game.custom.bans = bans;
 game.ships.forEach(ship => ship.custom.init = false);
@@ -297,7 +299,7 @@ const boxes = {
   "Open Arena": [515, 845],
   "Maze": [515, -845],
   "Empty Circle": [845, 845],
-  "Empty box": [845, -845],
+  "Empty Box": [845, -845],
 };
 
 function Center(width, height) {
