@@ -399,9 +399,8 @@ this.options = {
 //Credit to 45rfew/Money as well as ___ and Bhpsngum
 
 /**
- * Add asteroid into box.
  * Add another button to warp players to the admin.
- * fix admin ships.
+ * fix admin ships. 
  * new button: vanilla, balance version and speedster. Seperate customs and speedster.
  * Spawn Alien random across the map.
  * Auto align buttons.
@@ -409,16 +408,16 @@ this.options = {
  */
 
 const isSpawnAsteroid = true;
-const spawnRate = 5; // 20 - infinite;
-const asteroids = 10
+const spawnRate = 10; // 10 - infinite; second
+const asteroids = 50;
 
 function spawnAsteroid() {
   const second = game.step / (spawnRate * 60);
   if (!isSpawnAsteroid && !game.asteroids.length) return game.asteroids.forEach(asteroid => asteroid.set({ kill: true }));
   else if (game.step / (spawnRate * 60) === Math.trunc(second) && game.asteroids.length <= asteroids) game.addAsteroid({
-    vx: Math.random() * 4,
-    vy: Math.random() * 4,
-    size: Math.trunc(Math.random() * 20),
+    vx: Math.random() * 2,
+    vy: Math.random() * 2,
+    size: Math.trunc(Math.random() * 50),
     x: boxes["Empty Box"][0],
     y: boxes["Empty Box"][1]
   })
@@ -429,6 +428,7 @@ function spawnAsteroid() {
     if (!(cornerX < x && x < cornerX + size && cornerY < y && y < cornerY + size)) asteroid.set({ kill: true })
   })
 }
+
 if (!game.custom.bans) game.custom.bans = bans;
 game.ships.forEach(ship => ship.custom.init = false);
 
@@ -619,7 +619,6 @@ const sendUI = function (ship, UI) {
 
 function initialize(ship) {
   if (!!ship.custom.init) return
-
   ship.custom.options = true;
   ship.custom.init = true;
   const options = `Options[${optionshortcut}]`;
@@ -665,7 +664,7 @@ this.tick = function (game) {
         }
         initialize(ship)
       }
-      // spawnAsteroid();
+      spawnAsteroid();
 
       if (game.step % 1800 === 0 && game.ships.length > 1 && autolist == true) playerData();
 
