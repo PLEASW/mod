@@ -125,7 +125,8 @@ vanillaShips.Bastion_703 = '{"name":"Bastion","level":7,"model":3,"size":4,"spec
 vanillaShips.Aries_704 = '{"name":"Aries","level":7,"model":4,"size":4.5,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}},"bodies":{"arm":{"section_segments":6,"angle":0,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90,85],"z":[0,0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,15,20,20,15,0],"height":[0,10,12,8,12,12,8,12,10,5,0],"texture":[4,63,4,4,4,4,4,63,3],"propeller":true},"arm45":{"section_segments":6,"angle":45,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,10,25,20,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"arm90":{"section_segments":6,"angle":90,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,10,25,20,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"arm135":{"section_segments":6,"angle":-45,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-90,-85,-70,-60,-10,10,60,70,85,90],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,20,25,10,12,12,10,25,20,0],"height":[0,10,12,8,12,12,8,12,10,0],"texture":[4,63,4,4,4,4,4,63,4]},"cockpit":{"section_segments":20,"offset":{"x":0,"y":-10,"z":8},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0],"y":[-50,-35,-25,-15,0,15,25,35,70],"z":[0,0,0,0,0,0,0,0,0]},"width":[0,15,20,25,20,10,15,15,0],"height":[0,10,13,15,15,15,12,10,0],"texture":[6,15,15,1,4,3,3,15]},"topcockpit":{"section_segments":16,"offset":{"x":0,"y":-23,"z":7},"position":{"x":[0,0,0,0,0,0,0],"y":[-30,-10,0,10,30],"z":[0,0,0,0,0]},"width":[0,12,15,10,0],"height":[0,20,22,18,0],"texture":[9]},"cannon":{"section_segments":6,"offset":{"x":0,"y":-63,"z":0},"position":{"x":[0,0,0,0,0,0],"y":[-25,-30,-20,0,10,12],"z":[0,0,0,0,0,0]},"width":[0,10,8,7,6,0],"height":[0,5,5,7,6,0],"texture":[6,6,6,10,12],"laser":{"damage":[150,150],"rate":0.7,"type":1,"speed":[110,110],"number":1,"error":0}},"sidecannons":{"section_segments":6,"offset":{"x":45,"y":-45,"z":7},"position":{"x":[0,0,0,0,0,0],"y":[0,-30,-20,0,10,12],"z":[0,0,0,0,-5,-10]},"width":[0,3,5,7,6,0],"height":[0,3,5,7,6,0],"texture":[6,6,15,4,4],"angle":-45,"laser":{"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"error":0}},"backsidecannons":{"section_segments":6,"offset":{"x":45,"y":45,"z":7},"position":{"x":[0,0,0,0,0,0],"y":[0,-30,-20,0,10,12],"z":[0,0,0,0,-5,-10]},"width":[0,3,5,7,6,0],"height":[0,3,5,7,6,0],"texture":[6,6,15,4,4],"angle":225,"laser":{"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"error":0}}},"wings":{"side_joins":{"offset":{"x":0,"y":0,"z":5},"length":[40,30],"width":[50,30,0],"angle":[30,-10],"position":[0,0,50],"texture":[1,11],"bump":{"position":10,"size":20}}},"typespec":{"name":"Aries","level":7,"model":4,"code":704,"specs":{"shield":{"capacity":[800,800],"reload":[17,17]},"generator":{"capacity":[350,350],"reload":[175,175]},"ship":{"mass":800,"speed":[40,40],"rotation":[20,20],"acceleration":[150,150]}},"shape":[8.386,8.406,7.816,4.278,7.535,7.919,8.431,8.279,7.842,6.772,7.119,7.875,8.096,8.1,7.875,7.119,6.772,7.842,8.279,8.431,7.919,7.535,3.408,7.88,8.184,8.116,8.184,7.88,3.408,7.535,7.919,8.431,8.279,7.842,6.772,7.119,7.875,8.096,8.1,7.875,7.119,6.772,7.842,8.279,8.431,7.919,7.535,4.278,7.816,8.406],"lasers":[{"x":0,"y":-8.37,"z":0,"angle":0,"damage":[150,150],"rate":0.7,"type":1,"speed":[110,110],"number":1,"spread":0,"error":0,"recoil":0},{"x":5.959,"y":-5.959,"z":0.63,"angle":-45,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-5.959,"y":-5.959,"z":0.63,"angle":45,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":5.959,"y":5.959,"z":0.63,"angle":225,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-5.959,"y":5.959,"z":0.63,"angle":-225,"damage":[15,15],"rate":4,"type":1,"speed":[200,200],"number":1,"spread":0,"error":0,"recoil":0}],"radius":8.431}}';
 
 // all ships
-const importShips = { ...vanillaShips, ...spectators, ...adminShips, ...speedsterShips, ...customShips }
+const importShips = Object.assign({}, vanillaShips, spectators, adminShips, speedsterShips, customShips);
+
 
 // ship codes
 const [adminShipsCodes, speedsterShipCodes, customShipCodes, spectatorShipCodes, vanillaShipCodes] = [adminShips, speedsterShips, customShips, spectators, vanillaShips]
@@ -390,8 +391,11 @@ this.options = {
   max_players: 16
 };
 
-// _________________________________________________________________________________________________
 
+/**
+ * --------------------------------------------------------------------------------------------------
+ * --------------------------------------------------------------------------------------------------
+ */
 //Credit to 45rfew/Money as well as ___ and Bhpsngum
 
 /**
@@ -404,21 +408,25 @@ this.options = {
  * Add page to the list of button.
  */
 
-const spawnAsteroid = true;
-const spawnRate = 20; // 20 - infinite;
+const isSpawnAsteroid = true;
+const spawnRate = 5; // 20 - infinite;
 const asteroids = 10
 
 function spawnAsteroid() {
-  if (!spawnAsteroid && !game.asteroids.length) return game.asteroids.forEach(asteroid => asteroid.set({ kill: true }));
-  else if (second = game.step / (spawnRate * 60) === Math.trunc(second) && game.asteroids.length <= asteroids) game.addAsteroid({
+  const second = game.step / (spawnRate * 60);
+  if (!isSpawnAsteroid && !game.asteroids.length) return game.asteroids.forEach(asteroid => asteroid.set({ kill: true }));
+  else if (game.step / (spawnRate * 60) === Math.trunc(second) && game.asteroids.length <= asteroids) game.addAsteroid({
     vx: Math.random() * 4,
     vy: Math.random() * 4,
-    [x, y]: boxes["Empty Box"]
+    size: Math.trunc(Math.random() * 20),
+    x: boxes["Empty Box"][0],
+    y: boxes["Empty Box"][1]
   })
   else game.asteroids.forEach(asteroid => {
     const { x, y } = asteroid;
-    const [size, cornerX, cornerY] = [330, ...boxes["Empty Box"].map(i => i - size / 2)];
-    if (!(cornerX <= x && x <= cornerX + size && cornerY <= y && y <= cornerY + size)) asteroid.set({ kill: true })
+    const size = 330;
+    const [cornerX, cornerY] = boxes["Empty Box"].map(i => i - size / 2);
+    if (!(cornerX < x && x < cornerX + size && cornerY < y && y < cornerY + size)) asteroid.set({ kill: true })
   })
 }
 if (!game.custom.bans) game.custom.bans = bans;
@@ -609,8 +617,9 @@ const sendUI = function (ship, UI) {
   }
 };
 
-function initialize() {
-  if (!ship.custom.init) return;
+function initialize(ship) {
+  if (!!ship.custom.init) return
+
   ship.custom.options = true;
   ship.custom.init = true;
   const options = `Options[${optionshortcut}]`;
@@ -654,7 +663,7 @@ this.tick = function (game) {
           ship.gameover({ "You have been banned from the game!": " " });
           ship.set({ kill: true });
         }
-        initialize();
+        initialize(ship)
       }
       // spawnAsteroid();
 
@@ -891,3 +900,5 @@ this.event = function (event, game) {
       break;
   }
 };
+
+
