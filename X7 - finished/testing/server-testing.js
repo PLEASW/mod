@@ -215,7 +215,7 @@ const sendUI = function (ship, UI) {
   }
 };
 
-function initialize(ship) {
+function initialize() {
   if (ship.custom.init) return;
   ship.custom.options = true;
   ship.custom.init = true;
@@ -260,7 +260,7 @@ this.tick = function (game) {
           ship.gameover({ "You have been banned from the game!": " " });
           ship.set({ kill: true });
         }
-        initialize(ship);
+        initialize();
       }
       // spawnAsteroid();
 
