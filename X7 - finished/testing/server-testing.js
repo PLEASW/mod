@@ -15,9 +15,8 @@ const spawnRate = 20; // 20 - infinite;
 const asteroids = 10
 
 function spawnAsteroid() {
-  const second = game.step / (spawnRate * 60);
   if (!spawnAsteroid && !game.asteroids.length) return game.asteroids.forEach(asteroid => asteroid.set({ kill: true }));
-  else if (second === Math.trunc(second) && game.asteroids.length <= asteroids) game.addAsteroid({
+  else if (second = game.step / (spawnRate * 60) === Math.trunc(second) && game.asteroids.length <= asteroids) game.addAsteroid({
     vx: Math.random() * 4,
     vy: Math.random() * 4,
     [x, y]: boxes["Empty Box"]
@@ -250,6 +249,7 @@ this.tick = function (game) {
   if (game.step % 15 === 0) {
     for (let ship of game.ships) !ship.custom.weapons && ship.emptyWeapons();
     if (game.step % 30 === 0) {
+      spawnAsteroid();
       for (let ship of game.ships) {
         if (!ship.custom.spectator && Math.abs(ship.vx) < 1 && Math.abs(ship.vy) < 1)
           ship.set({ collider: true });
