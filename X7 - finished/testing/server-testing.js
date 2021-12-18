@@ -321,7 +321,7 @@ const UIevents = {
     ship.set({ shield: 999, crystals: shipCargo(ship.type) });
   },
   stats: function (ship) {
-    ship.set({ stats: 999999999 * !ship.stats })
+    if (Math.trunc(ship.type) < 7) ship.set({ stats: 999999999 * !ship.stats })
   },
   admin: function (ship) {
     if (ship.custom.authorize === true) {
