@@ -1,8 +1,8 @@
 
 const bans = ["TEST"];              // "TEST" is placeholder for name of person you want to ban. Note that multiple people can be banned.
 const old_gem_pickup = true;        // set to true if you want old gem pickup(FOR EVERY LEVEL).
-const optionshortcut = "B";         // shortcutkey for the options button.
-const restoreshortcut = "J";        // shortcutkey for the restore/healing button.
+const optionshortcut = "B";         // shortcut key for the options button.
+const restoreshortcut = "J";        // shortcut key for the restore/healing button.
 const buttonColor = "#cde";         // colour of the button.
 const autolist = true;              // automatically runs the playerList() command.
 const buttonDelay = 30;             // delay for the button clicks (in ticks).
