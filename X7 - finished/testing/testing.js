@@ -1,19 +1,23 @@
 
 const bans = ["TEST"];              // "TEST" is placeholder for name of person you want to ban. Note that multiple people can be banned.
 
-const old_gem_pickup = true;        // set to true if you want old gem pickup(FOR EVERY LEVEL).
+const old_gem_pickup = 0;           // set to true if you want old gem pickup(FOR EVERY LEVEL).
 
 const optionshortcut = "B";         // shortcut key for the options button.
 const restoreshortcut = "J";        // shortcut key for the restore/healing button.
 const buttonColor = "#cde";         // colour of the button.
 
-const autolist = true;              // automatically runs the playerList() command.
+const autolist = 1;                 // automatically runs the playerList() command.
 const buttonDelay = 30;             // delay for the button clicks (in ticks).
 
 const alien_array = [{ code: 10, level: 2, x: -800, y: 800, points: 10, weapon_drop: 91, crystal_drop: 100 }];
 const alien_stats = [{ vx: 3, shield: 30, damage: 30, laser_speed: 120, rate: 2.5 }];
 const max_aliens = 100;             // set this to however many you want.
-const alien_portal = false;         // set to true to enable aliens.
+const alien_portal = 0;             // set to true to enable aliens.
+
+const isSpawnAsteroid = 0;          // set this true to spawn Asteroids in Empty Box. 
+const spawnRate = 10;               // spawn asteroid in x second.
+const asteroids = 50;               // max number of asteroids in the Empty Box.
 
 /* CONSOLE COMMANDS
 1. Ship interaction commands
@@ -407,9 +411,7 @@ this.options = {
  * Add page to the list of button.
  */
 
-const isSpawnAsteroid = true;
-const spawnRate = 10; // 10 - infinite; second
-const asteroids = 50;
+
 
 function spawnAsteroid() {
   const second = game.step / (spawnRate * 60);
@@ -782,7 +784,8 @@ const UIevents = {
     ship.custom.spectator = true;
 
     let index = ship.custom.index || 0, target;
-    do target = game.ships[++index] || game.ships[index = 0]; while (target == ship);
+    do target = game.ships[++index] || game.ships[index = 0];
+    while (target == ship);
     ship.set({ x: target.x, y: target.y });
     ship.custom.index = index;
   },
