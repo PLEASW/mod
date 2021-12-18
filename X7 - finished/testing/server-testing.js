@@ -249,7 +249,6 @@ this.tick = function (game) {
   if (game.step % 15 === 0) {
     for (let ship of game.ships) !ship.custom.weapons && ship.emptyWeapons();
     if (game.step % 30 === 0) {
-
       for (let ship of game.ships) {
         if (!ship.custom.spectator && Math.abs(ship.vx) < 1 && Math.abs(ship.vy) < 1)
           ship.set({ collider: true });
@@ -262,9 +261,11 @@ this.tick = function (game) {
           ship.set({ kill: true });
         }
         initialize(ship);
-        if (game.step % 1800 === 0 && game.ships.length > 1 && autolist == true) playerData();
       }
       // spawnAsteroid();
+
+      if (game.step % 1800 === 0 && game.ships.length > 1 && autolist == true) playerData();
+
       if (game.aliens.length < max_aliens && alien_portal === true)
         game.addAlien(alien_array[Math.trunc(Math.random() * alien_array.length)]);
 
