@@ -7,9 +7,6 @@ const buttonColor = "#cde";         // colour of the button.
 const autolist = true;              // automatically runs the playerList() command.
 const buttonDelay = 30;             // delay for the button clicks (in ticks).
 
-const aimbotname = "TEST";          // again, placeholder for who gets aimbotted.
-const aimbotcrystals = 300;         // amount of crystals you want them to have. change to whatever.
-const aimbotplayer = 0;             // id of aimbotter(you in this case).
 const alien_array = [{ code: 10, level: 2, x: -800, y: 800, points: 10, weapon_drop: 91, crystal_drop: 100 }];
 const alien_stats = [{ vx: 3, shield: 30, damage: 30, laser_speed: 120, rate: 2.5 }];
 const max_aliens = 100;             // set this to however many you want.
