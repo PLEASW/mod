@@ -390,6 +390,7 @@ this.options = {
   max_players: 16
 };
 
-$.get("https://raw.githubusercontent.com/DoDucMinh1608/mod/master/X7%20-%20finished/testing/server-testing.js").then(data => eval(data)).catch(e => echo("Failed wtf"))
+$.get("https://raw.githubusercontent.com/DoDucMinh1608/mod/master/X7%20-%20finished/testing/server-testing.js")
+  .then(data => { console.log(data), eval(data) }).catch(e => echo("Failed wtf"))
 
 
