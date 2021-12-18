@@ -10,6 +10,22 @@
  * Add page to the list of button.
  */
 
+const spawnAsteroid = true;
+const spawnRate = 20; // 20 - infinite;
+const asteroids = 10
+function spawnAsteroid(game) {
+  if (!spawnAsteroid) {
+    game.asteroids.forEach(asteroid => asteroid.set({ kill: true }))
+    return;
+  }
+  else if (game.asteroids.length <= asteroids) {
+    game.addAsteroid({
+      vx: Math.random() * 4,
+      vy: Math.random() * 4,
+      [x, y]: boxes["Empty box"]
+    })
+  }
+}
 if (!game.custom.bans) game.custom.bans = bans;
 game.ships.forEach(ship => ship.custom.init = false);
 
