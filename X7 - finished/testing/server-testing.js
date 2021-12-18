@@ -216,7 +216,7 @@ const sendUI = function (ship, UI) {
 };
 
 function initialize() {
-  if (ship.custom.init) return;
+  // if (ship.custom.init) return;
   ship.custom.options = true;
   ship.custom.init = true;
   const options = `Options[${optionshortcut}]`;
