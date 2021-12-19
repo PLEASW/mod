@@ -6,8 +6,10 @@ function shipCode(ships, name) {
       return this.codes = Array(keys.length).fill(0)
         .map((i, r) => JSON.parse(ships[keys[r]]).typespec.code).sort((a, b) => a - b);
     },
-    event(ship, index = this.codes.indexOf(ship?.type) || 0) {
-      ship.set({ type: this.codes[index + 1] || this.codes[0], stats: 88888888 });
+    event(ship = { type: 0 }) {
+      this.codes || this.ships();
+      const type = this.codes[this.codes.indexOf(ship.type) + 1] ?? this.codes[0];
+      ship.set({ type, stats: type < 700 ? 88888888 : 0 });
     }
   }
 }
