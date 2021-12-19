@@ -403,9 +403,7 @@ this.options = {
 //Credit to 45rfew/Money as well as ___ and Bhpsngum
 
 /**
- * Add another button to warp players to the admin.
  * fix admin ships. 
- * new button: vanilla, balance version and speedster. Seperate customs and speedster.
  * Spawn Alien random across the map.
  * Auto align buttons.
  * Add page to the list of button.
