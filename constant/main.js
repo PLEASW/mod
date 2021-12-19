@@ -14,3 +14,9 @@ const posConvt2 = function (x, y) {
 };
 ; (function (params) { })(); // custom command for use in mod development
 $.get("path/to/file.js").then(data => eval(data)).catch(e => echo("Failed wtf"))
+const sendUI = function (ship, UI) {
+  if (ship != null && typeof ship.setUIComponent == "function") {
+    if (UI.visible || UI.visible == null) ship.setUIComponent(UI);
+    else ship.setUIComponent({ id: UI.id, position: [0, 0, 0, 0], visible: false });
+  }
+};
