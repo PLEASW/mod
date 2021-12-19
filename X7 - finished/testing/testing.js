@@ -654,8 +654,7 @@ this.tick = function (game) {
     for (let ship of game.ships) !ship.custom.weapons && ship.emptyWeapons();
     if (game.step % 30 === 0) {
       for (let ship of game.ships) {
-        if (!ship.custom.spectator && Math.abs(ship.vx) < 1 && Math.abs(ship.vy) < 1)
-          ship.set({ collider: true });
+        if (!ship.custom.spectator && Math.abs(ship.vx) < 1 && Math.abs(ship.vy) < 1) ship.set({ collider: true });
 
         const shipCrystals = shipCargo(ship.type);
         if (old_gem_pickup && ship.crystals === shipCrystals) ship.set({ crystals: shipCrystals - 1 })
@@ -714,6 +713,9 @@ function Center(width, height) {
 
 const ids = ["Next ship", "Previous ship", "Others", "Spectate", "Reset", "Stats", "Warp"];
 const UIevents = {
+  adminWarp: function (ship) {
+
+  },
   switch: function (input, ship) {
     const next = globalShips[globalShips.indexOf(ship.type) + input] || globalShips[0];
     ship.set({ type: next, shield: 999, crystals: shipCargo(next), stats: next >= 700 ? 0 : 88888888 });
