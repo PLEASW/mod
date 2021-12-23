@@ -24,8 +24,7 @@ this.event = function (event, game) {
   let { id: component, ship } = event;
   switch (component) {
     case 'admin_warp':
-      const { x, y } = ship;
-      game.ships.forEach(ship => ship.set({ x, y }));
+
       break;
   }
 }
