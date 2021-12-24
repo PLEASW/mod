@@ -62,9 +62,11 @@ const shipFunc = {
     return Math.trunc(type / 100) ** 2 * 20;
   },
   stats(ship) {
-    return ship.type < 700 ? 88888888 : 0;
+    const type = typeof ship === 'object' ? ship.type : ship;
+    return type < 700 ? 88888888 : 0;
   }
 }
+
 function shipCode(ships, name) {
   const values = Object.values(ships ?? {});
   return {
@@ -78,7 +80,7 @@ function shipCode(ships, name) {
       this.codes ?? this.ships();
       const side = this.codes[reverse ? 1 : 0];
       const type = side[side.indexOf(ship.type) + 1] || side[0];
-      ship.set({ type, stats: shipFunc.stats(ship), shield: 1000, crystals: shipFunc.shipCargo(type) });
+      ship.set({ type, stats: shipFunc.stats(type), shield: 1000, crystals: shipFunc.shipCargo(type) });
     },
     reset(ship) {
       const type = this.codes[0][0];
@@ -164,7 +166,7 @@ function optionsScreen(ship) {
     clickable: true,
     components: [
       { type: "box", position: [0, 0, 100, 100], stroke: '#FFFFFF', width: 5 },
-      { type: "text", position: [0, 0, 100, 100], value: 'Warp', color: '#FFFFFF' }
+      { type: "text", position: [0, 0, 100, 100], value: 'Reset', color: '#FFFFFF' }
     ]
   });
   ship.setUIComponent({
@@ -212,12 +214,17 @@ this.event = function (event, game) {
     case '<':
       vanillaCodes.event(ship, true);
       break;
+    case 'reset':
+      vanillaCodes.reset(ship);
+      break;
     case 'warp':
-      const index = custom.warpIndex ??= ships.indexOf(ship);
+      custom.warpIndex ??= ships.indexOf(ship);
+
       do ships[++custom.warpIndex] ?? (custom.warpIndex = 0);
-      while (game.ships.length > 1 && custom.warpIndex === index);
+      while (game.ships.length > 1 && ships[custom.warpIndex] === ship);
+
       const { x, y } = ships[custom.warpIndex];
-      ship.set({ x, y, collider: false });
+      ship.set({ x, y, collider: false, type: 102 });
       break;
   }
   if (ship != null) switch (name) {
