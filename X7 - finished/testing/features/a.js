@@ -140,7 +140,7 @@ this.options = {
   mines_destroy_delay: 0,
   max_players: 16
 }
-
+// for (let i = 0; i < 1000; i++)   game.ships[0].setUIComponent({ id: i, position: [0, 0, 0, 0], visible: false })
 function defaulScreen(ship) {
   ship.setUIComponent({
     id: "Options",
@@ -389,7 +389,7 @@ this.event = function (event, game) {
   const { name, ship, id, alien, asteroid } = event;
   const { ships, aliens, asteroids } = game;
   if (name === 'ui_component_clicked') {
-    (buttonEvents[id] || (function () {
+    (shipTrees.changeShipTree(event) || buttonEvents[id] || (function () {
       shipTrees.changeShipTree(event);
       switch (id) {
         case 'shipPage':
