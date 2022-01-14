@@ -195,7 +195,7 @@ function Grids(pos, rows, columns) {
   this.merges = [];
   this.init(pos);
 }
-Grids.prototype.display = function (marginHorizontal = 0, marginVertical = 0, vertical = false) {
+Grids.prototype.display = function (marginHorizontal = this.marginHorizontal ?? 0, marginVertical = this.marginVertical ?? 0, vertical = false) {
   this.marginHorizontal = marginHorizontal;
   this.marginVertical = marginVertical;
   this.displayUI = [...this.grids.flat().filter(i => i.length)].map(([x, y, width, height]) => {
