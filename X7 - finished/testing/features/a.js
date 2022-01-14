@@ -290,9 +290,7 @@ function optionsPageLayout() {
 
 const shipFunctions = ['Restore', 'Stats', 'Reset', 'Warp'];
 const shipTreeIds = Object.keys(shipTrees.shipTree);
-function buttonLayoutInit(ids, layout) {
 
-}
 function shipPageLayout() {
   const area = new Grids([5, 35, 30, 60], 1, 6);
   const shipTreeSection = new Grids(area.mergeCells([0, 0], [0, 3]), 1, 3);
