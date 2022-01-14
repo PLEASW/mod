@@ -390,7 +390,6 @@ this.event = function (event, game) {
   const { ships, aliens, asteroids } = game;
   if (name === 'ui_component_clicked') {
     (shipTrees.changeShipTree(event) || buttonEvents[id] || (function () {
-      shipTrees.changeShipTree(event);
       switch (id) {
         case 'shipPage':
         case 'mapPage':
