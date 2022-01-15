@@ -1,4 +1,4 @@
-const square = screen_width / screen_height; // 1920 / 1080
+const square = screen_width / screen_height; // 1080 / 1920
 const upgrades = [
   { id: "9", position: [25, 0, 20, 10], shortcut: "9", components: [{ type: "box", position: [0, 0, 100, 100] }] },
   { id: "0", position: [45, 0, 20, 10], shortcut: "0", components: [{ type: "box", position: [0, 0, 100, 100] }] }

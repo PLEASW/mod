@@ -3,7 +3,7 @@ function Grids(pos, rows, columns) {
   this.merges = [];
   this.init(pos);
 }
-Grids.prototype.display = function (marginHorizontal = 0, marginVertical = 0, vertical = false) {
+Grids.prototype.display = function (marginHorizontal = this.marginHorizontal ?? 0, marginVertical = this.marginVertical ?? 0, vertical = false) {
   this.marginHorizontal = marginHorizontal;
   this.marginVertical = marginVertical;
   this.displayUI = [...this.grids.flat().filter(i => i.length)].map(([x, y, width, height]) => {
@@ -35,7 +35,7 @@ Grids.prototype.buttonLayoutGenerate = function (ids, style = {}, text = []) {
   this.displayUI ?? this.display(this.marginHorizontal, this.marginVertical);
   return ids.map((id, index) => {
     return {
-      id, position: this.displayUI[index], components: [
+      id, position: this.displayUI[index], clickable: true, components: [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 },
         { type: 'text', position: [0, 0, 100, 100], color: 'rgb(255,255,255)', value: text[index] || '' }
       ], ...style

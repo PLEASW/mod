@@ -226,7 +226,7 @@ Grids.prototype.buttonLayoutGenerate = function (ids, style = {}, text = []) {
   this.displayUI ?? this.display(this.marginHorizontal, this.marginVertical);
   return ids.map((id, index) => {
     return {
-      id, position: this.displayUI[index], components: [
+      id, position: this.displayUI[index], clickable: true, components: [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 },
         { type: 'text', position: [0, 0, 100, 100], color: 'rgb(255,255,255)', value: text[index] || '' }
       ], ...style
@@ -241,6 +241,7 @@ shipCode.prototype.changeShipTree = function ({ ship, id }) {
   if (!Object.keys(this.shipTree).includes(id)) return;
   ship.custom.shipTree = id;
   ship.set(this.reset(ship));
+  return true;
 }
 shipCode.prototype.initialize = function (ships) {
   const arr = {};
@@ -256,13 +257,13 @@ shipCode.prototype.addShipTree = function (ships, id) {
 shipCode.prototype.type = function (ship) { return typeof ship === 'object' ? ship.type : ship; }
 shipCode.prototype.shipCargo = function (ship) { return Math.trunc(this.type(ship) / 100) ** 2 * 20; }
 shipCode.prototype.maxStats = function (ship) { return this.type(ship) < 700 ? 88888888 : 0; }
-shipCode.prototype.shipValue = function (ship) {
+shipCode.prototype.restore = function (ship) {
   const type = this.type(ship);
   return { type, stats: this.maxStats(type), crystals: this.shipCargo(type), shield: 999 };
 }
 shipCode.prototype.changeShip = function (ship, reverse = false) {
   const shipTree = Object.values(this.shipTree[ship.custom.shipTree]).map(ship => ship.code).sort((a, b) => (a - b) * (!reverse - 1));
-  return this.shipValue(shipTree[shipTree.indexOf(ship.type) + 1] || shipTree[0]);
+  return this.restore(shipTree[shipTree.indexOf(ship.type) + 1] || shipTree[0]);
 }
 shipCode.prototype.reset = function (ship) {
   const type = Object.values(this.shipTree[ship.custom.shipTree])[0].code;
@@ -311,26 +312,64 @@ function shipPageLayout() {
 
   const shipFunctionSection = new Grids(area.mergeCells([0, 4], [0, 5]), 4, 3);
   shipFunctionSection.display(10, 12);
-  const buttonStyle = { clickable: true };
-  const uis = [
-    ...shipFunctionSection.buttonLayoutGenerate(shipFunctions, buttonStyle, shipFunctions),
-    ...shipTreeOptions.buttonLayoutGenerate(shipTreeIds, buttonStyle, shipTreeIds),
-    ...nextButton.buttonLayoutGenerate(['Next'], buttonStyle, ['>>>']),
-    ...previousButton.buttonLayoutGenerate(['Previous'], buttonStyle, ['<<<']),
-    ...orders.buttonLayoutGenerate(['orders'])
+
+  return [
+    ...shipFunctionSection.buttonLayoutGenerate(shipFunctions, {}, shipFunctions),
+    ...shipTreeOptions.buttonLayoutGenerate(shipTreeIds, {}, shipTreeIds),
+    ...nextButton.buttonLayoutGenerate(['Next'], {}, ['>>>']),
+    ...previousButton.buttonLayoutGenerate(['Previous'], {}, ['<<<']),
+    ...orders.buttonLayoutGenerate(['orders'], { clickable: false })
   ];
-  return uis;
+}
+const boxes = {
+  "Spawn": [0, 0],
+  "AOW Pattern": [-855, -835],
+  "Nexus Pattern": [-525, -855],
+  "Light Pattern ": [-195, -855],
+  "Zebra Pattern": [195, -855],
+  "Rumble": [-845, 845],
+  "Plinko": [-515, 855],
+  "Standoff": [-195, 845],
+  "Waffle": [195, 845],
+  "Open Arena": [515, 845],
+  "Maze": [515, -845],
+  "Empty Circle": [845, 845],
+  "Empty box": [845, -845],
+};
+
+function mapPageLayout() {
+  const menus = new Grids([5, 35, 30, 60], 1, 6);
+
+  const buttons = new Grids(menus.mergeCells([0, 0], [0, 1]), 4, 4);
+  buttons.display(5, 20);
+
+  const map = new Grids(menus.mergeCells([0, 2], [0, 5]), 1, 1);
+  map.display((1080 / 1920) * 10 * 2.5, 5);
+
+  return [
+    ...buttons.buttonLayoutGenerate(Object.keys(boxes), {}, Object.keys(boxes)),
+    ...map.buttonLayoutGenerate(['Map'], {})
+  ]
 }
 const pages = {
   shipPage: shipPageLayout(),
-  mapPage: [],
+  mapPage: mapPageLayout(),
   adminPage: [],
   options: optionsPageLayout(),
 }
 const ids = {
-  shipPage: [...pages.shipPage].map(i => i.id),
-  options: [...pages.options].map(i => i.id)
+  ship: getAllIDs(pages.shipPage),
+  map: getAllIDs(pages.mapPage),
+  admin: getAllIDs(pages.adminPage),
+  options: getAllIDs(pages.options)
 }
+function getAllIDs(UIs) {
+  return Object.values(UIs).flat().map(i => i.id)
+}
+function hideAllUIs(ids, ship) {
+  ids.forEach(id => ship.setUIComponent({ id, position: [0, 0, 0, 0], visible: false, shortcut: undefined }))
+}
+
 const buttonEvents = {
   adminWarp: function (ship, ships) {
     ships.forEach(pilot => pilot.set({ x: ship.x, y: ship.y, type: 102, collider: false }));
@@ -368,7 +407,7 @@ const buttonEvents = {
       pages.options.forEach(ui => ship.setUIComponent(ui));
       pages[ship.custom.page].forEach(ui => ship.setUIComponent(ui));
     } else {
-      ['overlay', ...Object.values(ids).flat()].forEach(id => ship.setUIComponent({ id, position: [0, 0, 0, 0], visible: false, shortcut: undefined }))
+      hideAllUIs(['overlay', ...Object.values(ids).flat()], ship);
       defaulScreen(ship);
     }
   }
@@ -385,18 +424,17 @@ const events = {
 this.event = function (event, game) {
   const { name, ship, id, alien, asteroid } = event;
   const { ships, aliens, asteroids } = game;
-  if (name === 'ui_component_clicked') {
-    (shipTrees.changeShipTree(event) || buttonEvents[id] || (function () {
-      switch (id) {
-        case 'shipPage':
-        case 'mapPage':
-        case 'adminPage':
-          ship.custom.page = id;
-          pages[ship.custom.page].forEach(ui => ship.setUIComponent(ui));
-          break;
-        default:
-          console.log(`${id} isnt existed`);
-      }
-    })).call(buttonEvents, ship, ships);
-  } else (events[name] || (() => console.log(`${name} isnt existed`))).call(events, ship, ships);
+  if (name === 'ui_component_clicked') shipTrees.changeShipTree(event) || function () {
+    if (!Object.keys(boxes).includes(id)) return;
+    const [x, y] = boxes[id];
+    ship.set({ x, y, ...shipTrees.restore(ship) })
+    return true;
+  }() || function () {
+    if (!Object.keys(pages).includes(id)) return
+    ship.custom.page = id;
+    hideAllUIs([...ids.admin, ...ids.map, ...ids.ship], ship);
+    pages[ship.custom.page].forEach(ui => ship.setUIComponent(ui));
+    return true;
+  }() || buttonEvents[id].call(buttonEvents, ship, ships);
+  else (events[name] || (() => console.log(`${name} isnt existed`))).call(events, ship, ships);
 }
