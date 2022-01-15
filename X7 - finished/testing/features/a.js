@@ -181,11 +181,10 @@ function initialize(ship) {
 }
 this.tick = function (game) {
   if (game.step % 15 === 0) {
-    for (let ship of game.ships) !ship.custom.weapons && ship.emptyWeapons();
-    if (game.step % 60 === 0) {
-      game.ships.forEach(function (ship, index) {
-        initialize(ship);
-      })
+    for (let ship of game.ships) {
+      !ship.custom.weapons && ship.emptyWeapons();
+      if (game.step % 30 === 0 && ship.custom.page === 'mapPage') ship.setUIComponent({ id: 'Map', ...updateMap(game, ship, 2, { others: 'rgb(10,10,10)' }) });
+      if (game.step % 60 === 0) initialize(ship);
     }
   }
 }
@@ -222,7 +221,7 @@ Grids.prototype.mergeCells = function ([x0, y0], [x, y]) {
   this.display();
   return cell;
 }
-Grids.prototype.buttonLayoutGenerate = function (ids, style = {}, text = []) {
+Grids.prototype.buttonLayoutGenerate = function (ids, text = [], style = {}) {
   this.displayUI ?? this.display(this.marginHorizontal, this.marginVertical);
   return ids.map((id, index) => {
     return {
@@ -269,7 +268,21 @@ shipCode.prototype.reset = function (ship) {
   const type = Object.values(this.shipTree[ship.custom.shipTree])[0].code;
   return { type, crystals: this.shipCargo(type), stats: this.maxStats(type), shield: 999 };
 }
-
+function mapToComponent(x, y, { map_size }, width) {
+  return [x, -y].map((i, b) => (i + map_size * 5 - b) / map_size * 10 - width * 0.5);
+};
+function updateMap(game, ship, width = 1, { owner = 'rgb(255,255,255)', others = 'rgb(100, 100, 100)', custom = {} }) {
+  return {
+    components: [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255', width: 5 }]
+      .concat(game.ships.map(component => {
+        return {
+          type: 'box', position: [...mapToComponent(component.x, component.y, game.options, width), width, width],
+          fill: ship === component ? owner : custom[component.custom] || others,
+        };
+      }))
+  }
+}
 const shipTrees = new shipCode();
 shipTrees.addShipTree(customShips, 'Custom');
 shipTrees.addShipTree(speedsterShips, 'Speedster');
@@ -285,7 +298,7 @@ function optionsPageLayout() {
 
   return [
     { id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] },
-    ...menuSection.buttonLayoutGenerate(menuFunctions, { clickable: true }, menuText)
+    ...menuSection.buttonLayoutGenerate(menuFunctions, menuText)
   ];
 }
 
@@ -314,11 +327,11 @@ function shipPageLayout() {
   shipFunctionSection.display(10, 12);
 
   return [
-    ...shipFunctionSection.buttonLayoutGenerate(shipFunctions, {}, shipFunctions),
-    ...shipTreeOptions.buttonLayoutGenerate(shipTreeIds, {}, shipTreeIds),
-    ...nextButton.buttonLayoutGenerate(['Next'], {}, ['>>>']),
-    ...previousButton.buttonLayoutGenerate(['Previous'], {}, ['<<<']),
-    ...orders.buttonLayoutGenerate(['orders'], { clickable: false })
+    ...shipFunctionSection.buttonLayoutGenerate(shipFunctions, shipFunctions),
+    ...shipTreeOptions.buttonLayoutGenerate(shipTreeIds, shipTreeIds),
+    ...nextButton.buttonLayoutGenerate(['Next'], ['>>>']),
+    ...previousButton.buttonLayoutGenerate(['Previous'], ['<<<']),
+    ...orders.buttonLayoutGenerate(['orders'], {}, { clickable: false })
   ];
 }
 const boxes = {
@@ -347,8 +360,8 @@ function mapPageLayout() {
   map.display((1080 / 1920) * 10 * 2.5, 5);
 
   return [
-    ...buttons.buttonLayoutGenerate(Object.keys(boxes), {}, Object.keys(boxes)),
-    ...map.buttonLayoutGenerate(['Map'], {})
+    ...buttons.buttonLayoutGenerate(Object.keys(boxes), Object.keys(boxes)),
+    ...map.buttonLayoutGenerate(['Map'])
   ]
 }
 const pages = {
@@ -435,6 +448,6 @@ this.event = function (event, game) {
     hideAllUIs([...ids.admin, ...ids.map, ...ids.ship], ship);
     pages[ship.custom.page].forEach(ui => ship.setUIComponent(ui));
     return true;
-  }() || buttonEvents[id].call(buttonEvents, ship, ships);
-  else (events[name] || (() => console.log(`${name} isnt existed`))).call(events, ship, ships);
+  }() || buttonEvents?.[id].call(buttonEvents, ship, ships);
+  else events?.[name].call(events, ship, ships) || (() => console.log(`${name} isnt existed`))();
 }
