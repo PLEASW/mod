@@ -268,6 +268,7 @@ shipCode.prototype.reset = function (ship) {
   const type = Object.values(this.shipTree[ship.custom.shipTree])[0].code;
   return { type, crystals: this.shipCargo(type), stats: this.maxStats(type), shield: 999 };
 }
+
 function mapToComponent(x, y, { map_size }, width) {
   return [x, -y].map((i, b) => (i + map_size * 5 - b) / map_size * 10 - width * 0.5);
 };
@@ -289,51 +290,15 @@ shipTrees.addShipTree(speedsterShips, 'Speedster');
 shipTrees.addShipTree(vanillaShips, 'Vanilla');
 shipTrees.addShipTree(spectators, 'Spectator');
 
-function optionsPageLayout() {
-  const menuFunctions = ['shipPage', 'mapPage', 'adminPage', 'Shortcuts'];
-  const menuText = ['Ship', 'Map', 'Admin', 'Shortcuts'];
-
-  const menuSection = new Grids([4, 29, 30, 5], 4, 1);
-  menuSection.display(10, 10);
-
-  return [
-    { id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] },
-    ...menuSection.buttonLayoutGenerate(menuFunctions, menuText)
-  ];
-}
-
+// admin
+const playerPerms = ['Bans', 'Idle', 'Promote', 'Demote'];
+const adminFuncs = ['adminWarp'];
+// options
+const menuFunctions = ['Ship', 'Map', 'Admin', 'Shortcuts'];
+// ships
 const shipFunctions = ['Restore', 'Stats', 'Reset', 'Warp'];
 const shipTreeIds = Object.keys(shipTrees.shipTree);
-
-function shipPageLayout() {
-  const area = new Grids([5, 35, 30, 60], 1, 6);
-  const shipTreeSection = new Grids(area.mergeCells([0, 0], [0, 3]), 1, 3);
-
-  const shipTreeOptions = new Grids(shipTreeSection.mergeCells([0, 0], [0, 1]), 3, 4);
-  shipTreeOptions.display(5, 15);
-
-  const changeShip = new Grids(shipTreeSection.mergeCells([0, 2], [0, 2]), 5, 1);
-
-  const previousButton = new Grids(changeShip.mergeCells([0, 0], [1, 0]), 1, 1);
-  previousButton.display(5, 30);
-
-  const orders = new Grids(changeShip.mergeCells([2, 0], [2, 0]), 1, 1);
-  orders.display(0, 35);
-
-  const nextButton = new Grids(changeShip.mergeCells([3, 0], [4, 0]), 1, 1)
-  nextButton.display(5, 30);
-
-  const shipFunctionSection = new Grids(area.mergeCells([0, 4], [0, 5]), 4, 3);
-  shipFunctionSection.display(10, 12);
-
-  return [
-    ...shipFunctionSection.buttonLayoutGenerate(shipFunctions, shipFunctions),
-    ...shipTreeOptions.buttonLayoutGenerate(shipTreeIds, shipTreeIds),
-    ...nextButton.buttonLayoutGenerate(['Next'], ['>>>']),
-    ...previousButton.buttonLayoutGenerate(['Previous'], ['<<<']),
-    ...orders.buttonLayoutGenerate(['orders'], {}, { clickable: false })
-  ];
-}
+// map
 const boxes = {
   "Spawn": [0, 0],
   "AOW Pattern": [-855, -835],
@@ -348,44 +313,127 @@ const boxes = {
   "Maze": [515, -845],
   "Empty Circle": [845, 845],
   "Empty box": [845, -845],
+  teleport: function (ship, id) {
+    if (!Object.keys(boxes).includes(id)) return;
+    const [x, y] = boxes[id];
+    ship.set({ x, y, ...shipTrees.restore(ship) })
+    return true;
+  }
 };
+// options page
+function optionsPageLayout() {
+  const menuSection = new Grids([4, 29, 30, 5], 4, 1);
+  menuSection.display(10, 10);
 
+  return [
+    { id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] },
+    menuSection.buttonLayoutGenerate(menuFunctions, menuFunctions)
+  ].flat();
+}
+// admin page
+function playersList(ships) {
+  const menus = new Grids([5, 35, 30, 60], 1, 3);
+
+  const playersList = new Grids(menus.mergeCells([0, 0], [0, 1]), 5, 1);
+
+  const players = new Grids(playersList.mergeCells([0, 0], [3, 0]), 2, 8);
+  players.display(2, 10);
+
+  return players.buttonLayoutGenerate(ships.map((ship, index) => 'player ' + index), ships.map(ship => ship.name))
+}
+function adminPageLayout() {
+  const menus = new Grids([5, 35, 30, 60], 1, 3);
+
+  const playersList = new Grids(menus.mergeCells([0, 0], [0, 1]), 5, 1);
+
+  const playerFuncs = new Grids(playersList.mergeCells([4, 0], [4, 0]), 1, 10);
+  playerFuncs.display(5, 10);
+
+  const funcs = new Grids(menus.mergeCells([0, 2], [0, 2]), 4, 3)
+  funcs.display(5, 20);
+
+  return [
+    funcs.buttonLayoutGenerate(adminFuncs, adminFuncs),
+    playerFuncs.buttonLayoutGenerate(playerPerms, playerPerms),
+  ].flat()
+}
+// ship page
+const shipArea = new Grids([5, 35, 30, 60], 1, 6);
+const shipTreeSection = new Grids(shipArea.mergeCells([0, 0], [0, 3]), 1, 3);
+const changeShipArea = new Grids(shipTreeSection.mergeCells([0, 2], [0, 2]), 5, 1);
+
+function shipIndex(ship) {
+  const index = new Grids(changeShipArea.mergeCells([2, 0], [2, 0]), 1, 1);
+  index.display(0, 35);
+  console.log(index);
+  return index.buttonLayoutGenerate(['index'], ['hello'], { clickable: false });
+}
+function shipPageLayout() {
+  const shipTreeOptions = new Grids(shipTreeSection.mergeCells([0, 0], [0, 1]), 3, 4);
+  shipTreeOptions.display(5, 15);
+
+  const previousButton = new Grids(changeShipArea.mergeCells([0, 0], [1, 0]), 1, 1);
+  previousButton.display(5, 30);
+
+  const nextButton = new Grids(changeShipArea.mergeCells([3, 0], [4, 0]), 1, 1)
+  nextButton.display(5, 30);
+
+  const shipFunctionSection = new Grids(shipArea.mergeCells([0, 4], [0, 5]), 4, 3);
+  shipFunctionSection.display(10, 12);
+
+  return [
+    shipFunctionSection.buttonLayoutGenerate(shipFunctions, shipFunctions),
+    shipTreeOptions.buttonLayoutGenerate(shipTreeIds, shipTreeIds),
+    nextButton.buttonLayoutGenerate(['Next'], ['>>>']),
+    previousButton.buttonLayoutGenerate(['Previous'], ['<<<']),
+  ].flat()
+}
+// map page
 function mapPageLayout() {
   const menus = new Grids([5, 35, 30, 60], 1, 6);
 
   const buttons = new Grids(menus.mergeCells([0, 0], [0, 1]), 4, 4);
   buttons.display(5, 20);
 
-  const map = new Grids(menus.mergeCells([0, 2], [0, 5]), 1, 1);
-  map.display((1080 / 1920) * 10 * 2.5, 5);
-
-  return [
-    ...buttons.buttonLayoutGenerate(Object.keys(boxes), Object.keys(boxes)),
-    ...map.buttonLayoutGenerate(['Map'])
-  ]
+  return buttons.buttonLayoutGenerate(Object.keys(boxes), Object.keys(boxes));
 }
 const pages = {
-  shipPage: shipPageLayout(),
-  mapPage: mapPageLayout(),
-  adminPage: [],
-  options: optionsPageLayout(),
+  ship: shipPageLayout(),
+  map: mapPageLayout(),
+  admin: adminPageLayout(),
+  options: optionsPageLayout()
 }
 const ids = {
-  ship: getAllIDs(pages.shipPage),
-  map: getAllIDs(pages.mapPage),
-  admin: getAllIDs(pages.adminPage),
-  options: getAllIDs(pages.options)
+  ship: shipFunctions.concat(shipTreeIds),
+  map: ['Map'].concat(Object.keys(boxes)),
+  admin: playerPerms.concat(adminFuncs),
+  options: menuFunctions
 }
-function getAllIDs(UIs) {
-  return Object.values(UIs).flat().map(i => i.id)
+function emergePage(ship, ships, id) {
+  const page = id.toLowerCase();
+  if (!Object.keys(pages).includes(page)) return;
+  hideAllUIs([ids.ship, ids.map, ids.admin].flat(), ship);
+  pages[page].forEach(ui => ship.setUIComponent(ui));
+  switch (page) {
+    case 'ship':
+      shipIndex(ship).forEach(ui => ship.setUIComponent(ui));
+      break;
+    case 'admin':
+      const players = playersList(ships);
+      players.forEach(ui => ship.setUIComponent(ui));
+      ship.custom.playerList = playersList.map(ui => ui.id);
+      break;
+  }
+  return true;
 }
+
 function hideAllUIs(ids, ship) {
   ids.forEach(id => ship.setUIComponent({ id, position: [0, 0, 0, 0], visible: false, shortcut: undefined }))
 }
 
 const buttonEvents = {
   adminWarp: function (ship, ships) {
-    ships.forEach(pilot => pilot.set({ x: ship.x, y: ship.y, type: 102, collider: false }));
+    ships.forEach(pilot => pilot.set({ x: ship.x, y: ship.y, type: 102, collider: false, stats: 88888888 }));
   },
   Warp: function (ship, ships) {
     const { custom } = ship;
@@ -413,16 +461,12 @@ const buttonEvents = {
   Reset: function (ship) {
     ship.set(shipTrees.reset(ship));
   },
-  Options: function (ship) {
+  Options: function (ship, ships) {
     ship.custom.optionsScreen = !ship.custom.optionsScreen;
-    ship.custom.page ??= 'shipPage';
-    if (ship.custom.optionsScreen) {
+    if (ship.customShips.optionsScreen) {
       pages.options.forEach(ui => ship.setUIComponent(ui));
-      pages[ship.custom.page].forEach(ui => ship.setUIComponent(ui));
-    } else {
-      hideAllUIs(['overlay', ...Object.values(ids).flat()], ship);
-      defaulScreen(ship);
-    }
+      emergePage(ship, ships, 'ship')
+    } else hideAllUIs(Object.values(ids), ship);
   }
 }
 const events = {
@@ -437,17 +481,12 @@ const events = {
 this.event = function (event, game) {
   const { name, ship, id, alien, asteroid } = event;
   const { ships, aliens, asteroids } = game;
-  if (name === 'ui_component_clicked') shipTrees.changeShipTree(event) || function () {
-    if (!Object.keys(boxes).includes(id)) return;
-    const [x, y] = boxes[id];
-    ship.set({ x, y, ...shipTrees.restore(ship) })
-    return true;
-  }() || function () {
-    if (!Object.keys(pages).includes(id)) return
-    ship.custom.page = id;
-    hideAllUIs([...ids.admin, ...ids.map, ...ids.ship], ship);
-    pages[ship.custom.page].forEach(ui => ship.setUIComponent(ui));
-    return true;
-  }() || buttonEvents?.[id].call(buttonEvents, ship, ships);
+  // console.log(id);
+  if (name === 'ui_component_clicked') {
+    buttonEvents?.[id].call(buttonEvents, ship, ships);
+    shipTrees.changeShipTree(event);
+    boxes.teleport(ship, id);
+    emergePage(ship, ships, id);
+  }
   else events?.[name].call(events, ship, ships) || (() => console.log(`${name} isnt existed`))();
 }

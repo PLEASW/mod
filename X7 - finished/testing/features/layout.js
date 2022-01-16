@@ -37,7 +37,7 @@ Grids.prototype.mergeCells = function ([x0, y0], [x, y]) {
   this.display();
   return cell;
 }
-Grids.prototype.buttonLayoutGenerate = function (ids, style = {}, text = []) {
+Grids.prototype.buttonLayoutGenerate = function (ids, text = [], style = {}) {
   this.displayUI ?? this.display(this.marginHorizontal, this.marginVertical);
   return ids.map((id, index) => {
     return {
@@ -50,15 +50,19 @@ Grids.prototype.buttonLayoutGenerate = function (ids, style = {}, text = []) {
 }
 const overlay = new Grids([5, 35, 30, 60], 1, 1);
 // console.log({ shipTreeSection, shipFunctionSection });
-const menus = new Grids([5, 35, 30, 60], 1, 6);
+const menus = new Grids([5, 35, 30, 60], 1, 3);
 
-const buttons = new Grids(menus.mergeCells([0, 0], [0, 1]), 4, 3);
-buttons.display(5, 20)
+const playersList = new Grids(menus.mergeCells([0, 0], [0, 1]), 5, 1);
 
-const map = new Grids(menus.mergeCells([0, 2], [0, 5]), 1, 1)
-map.display((1080 / 1920) * 10 * 2.5, 5)
+const s = new Grids(playersList.mergeCells([0, 0], [3, 0]), 2, 8);
+s.display(2, 10)
+const p = new Grids(playersList.mergeCells([4, 0], [4, 0]), 1, 10);
+p.display(5, 10)
+
+const func = new Grids(menus.mergeCells([0, 2], [0, 2]), 4, 3)
+func.display(5, 20)
 const aa = {
-  overlay, buttons, map
+  overlay, func, p, s
 }
 console.log(aa);
 const dd = Object.values(aa).map(i => i.displayUI).flat();
