@@ -1,38 +1,3 @@
-let locateShip = function (req, handler) {
-  let args = req.split(" "), id = Number(args[0] || "NaN");
-  if (isNaN(id)) game.modding.terminal.error("Please specify a ship id to take action");
-  else {
-    let ship = game.findShip(id);
-    if (!ship) game.modding.terminal.error("Requested ship not found!");
-    else {
-      try { typeof handler == "function" && handler(ship, id, args.slice(1).join(" ")) }
-      catch (e) { game.modding.terminal.error("string" == typeof e ? e : "An error occured while taking action with the requested ship!") }
-    }
-  }
-}
-let identifierString = function (ship) {
-  return ship.name + " (ID " + ship.id + ")"
-}
-let addCommand = function (name, resolver) {
-  game.modding.commands[name] = function (req) {
-    let args = req.replace(/^\s+/, "").replace(/\s+/, " ").split(" ");
-    let text = resolver(args.slice(1).join(" "));
-    if (text != null) echo(text)
-  }
-}
-let addShipInteractionCommand = function (name, resolver) {
-  addCommand(name, function (req) {
-    let text;
-    locateShip(req, function (ship, id, args) {
-      let rstr = resolver(ship, id, args);
-      if (rstr != null) text = identifierString(ship) + " " + rstr;
-    })
-    return text
-  })
-}
-addShipInteractionCommand('admin', function (ship, id, args) {
-  ship.custom.isAdmin = !ship.custom.isAdmin
-});
 // ___________________________________________________________________________________________
 const vocabulary = [
   { text: "You", icon: "\u004e", key: "O" },
@@ -462,9 +427,9 @@ this.tick = function (game) {
   Grids.prototype.buttonLayoutGenerate = function (ids, text = [], ui = {}, component) {
     this.displayUI ?? this.display(this.marginHorizontal, this.marginVertical);
     return ids.map((id, index) => {
-      if (typeof component === 'function') return component(id, index, text[index]);
       return {
-        id, position: this.displayUI[index], clickable: true, components: [
+        id, position: this.displayUI[index], clickable: true,
+        components: typeof component === 'function' ? component(id, index, text[index]) : [
           { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 },
           { type: 'text', position: [0, 0, 100, 100], color: 'rgb(255,255,255)', value: text[index] || '' }
         ], ...ui
@@ -599,7 +564,7 @@ const Ships = {
     const { ship, id } = event;
     const { ships } = game;
     if (this.shiptreeIDs.includes(id)) return shipTrees.changeShipTree(event);
-    return this.eventFuncs[id]?.(ship, ships);
+    return this.eventFuncs[id]?.call(this, ship, ships);
   }
 }
 // Map___________________________________________________________________________________________
@@ -664,8 +629,11 @@ const Shortcuts = {
 }
 // Admin_________________________________________________________________________________________
 const Admins = {
+  prefix: '______',
   funcIDs: ['admin_warp', 'players_clear', 'entities_clear'],
-  shipFuncIDs: ['refresh', 'kick', 'weapons'],
+  // restore_map reset_map 
+  shipFuncIDs: ['kick', 'weapons'],
+  // promote demote refresh
   layout: function () {
     const menus = new Grids([5, 35, 30, 60], 1, 3);
     const playersList = new Grids(menus.mergeCells([0, 0], [0, 1]), 5, 1);
@@ -689,8 +657,7 @@ const Admins = {
     ].flat()
   },
   dynamicUIs(ships) {
-    const displayList = ships.filter(ship => !ship.custom.isAdmin);
-    return this.layout.players.buttonLayoutGenerate(displayList.map(ship => 'player' + ship.id), ships.map(ship => ship.name + `#${ship.id}`))
+    return this.layout.players.buttonLayoutGenerate(ships.map(ship => this.prefix + ship.id), ships.map(ship => ship.name + `#${ship.id}`))
   },
   eventsFunc: {
     admin_warp: ({ ship, ships }) => ships.forEach(player => player.set({ x: ship.x, y: ship.y, type: 102, stats: shipTrees.maxStats(player), collider: false })),
@@ -705,12 +672,14 @@ const Admins = {
     refresh: function ({ ship, ships }) { this.dynamicUIs(ships).forEach(ship.setUIComponent); }
   },
   events(event, game) {
-    const { ships, asteroids, aliens } = game;
     const { ship, id } = event;
-    if (['refresh'].includes(id)) return this.eventsFunc[id].call(this, { ship, ships });
     if (!ship.custom.isAdmin) return;
-    if (id.includes('player')) return ship.custom.choosePlayer = game.findShip(Number(id.split('player').pop()));
-    return this.eventsFunc[id]({ choosePlayer: ship.custom.choosePlayer, ship, ships, asteroids, aliens, custom_map: id === 'restore_map' ? custom_map : '' })
+    if (id.includes(this.prefix)) return ship.custom.choosePlayer = game.findShip(Number(id.split(this.prefix).pop()));
+    return this.eventsFunc[id].call(this, {
+      ...event, ...game,
+      choosePlayer: ship.custom.choosePlayer,
+      custom_map: id === 'restore_map' ? custom_map : ''
+    })
   }
 }
 // Pages___________________________________________________________________________________________
@@ -725,7 +694,7 @@ const pagesUI = {
   hideUIs, hidePages: hideUIs(
     Ships.otherIDs, Ships.shipFuncIDs, Ships.shiptreeIDs,
     Maps.otherIDs, Object.keys(Maps.boxes).map(i => i.toLowerCase()),
-    Admins.funcIDs, Admins.shipFuncIDs, Array(16).fill(0).map((a, i) => 'player' + i)
+    Admins.funcIDs, Admins.shipFuncIDs, Array(16).fill(0).map((a, i) => '#' + i)
   ),
   displayUIs(event, game) {
     const { ship, id: eventID } = event
@@ -739,7 +708,7 @@ const pagesUI = {
         case 'ship':
           return this.hidePages.concat(this.ship).concat(Ships.dynamicUIs(ship));
         case 'admin':
-          return this.hidePages.concat(this.admin).concat(Admins.dynamicUIs(ships));
+          if (ship.custom.isAdmin) return this.hidePages.concat(this.admin).concat(Admins.dynamicUIs(ships));
       }
     } else if (eventID === 'options') {
       ship.custom.optionsScreen = !ship.custom.optionsScreen;
