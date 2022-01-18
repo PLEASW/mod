@@ -572,8 +572,10 @@ const Ships = {
     next: ship => shipTrees.changeShip(ship),
     previous: ship => shipTrees.changeShip(ship, true)
   },
-  events({ ship, id, ships }) {
-    if (this.shiptreeIDs.includes(id)) return shipTrees.changeShipTree({ ship, id });
+  events(event, game) {
+    const { ship, id } = event;
+    const { ships } = game;
+    if (this.shiptreeIDs.includes(id)) return shipTrees.changeShipTree(event);
     return this.eventFuncs[id]?.call(this, ship, ships);
   }
 }
@@ -629,7 +631,8 @@ const Maps = {
   dynamicUIs(game, ship, custom = {}, width = 2) {
     return { id: 'players_map', position: this.layout.map.displayUI.flat(), components: this.updateMap(game, ship, width, custom) }
   },
-  events({ ship, id }) {
+  events(event) {
+    const { ship, id } = event;
     if (this.boxes[id]) return { ...this.boxes[id], ...shipTrees.restore(ship) }
   }
 }
@@ -643,7 +646,7 @@ const Admins = {
   prefix, funcIDs: ['admin_warp', 'players_clear', 'entities_clear'],
   shipIDs: Array(this.options.max_players).fill(0).map((a, i) => prefix + i),
   // restore_map reset_map 
-  shipFuncIDs: ['refresh', 'kick', 'time_out', 'weapons'],
+  shipFuncIDs: ['refresh', 'kick', 'weapons'],
   // promote demote refresh
   layout: function () {
     const menus = new Grids([5, 35, 30, 60], 1, 3);
@@ -673,9 +676,8 @@ const Admins = {
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
         { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,255)', value: player.name.slice(0, 9) + ` #${player.id}`, align: 'left' },
-        { type: 'box', position: [90, 15, 5, 20], fill: player.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-        { type: 'box', position: [90, 50, 5, 20], fill: player.custom.timeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-        { type: 'box', position: [80, 13, 6, 24], fill: player.custom.isAdmin ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 }
+        { type: 'box', position: [90, 45, 5, 20], fill: player.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+        { type: 'box', position: [80, 43, 6, 24], fill: player.custom.isAdmin ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 }
       ]
     })
   },
@@ -687,12 +689,15 @@ const Admins = {
     entities_clear: ({ aliens, asteroids }) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true })),
     kick: ({ choosePlayer }) => {
       try { choosePlayer.gameover({ "": "" }) } catch (e) { console.log(e) };
-      this.eventsFunc.time_out({ ship: choosePlayer });
+      this.eventsFunc.alternative_punish({ ship: choosePlayer });
     },
-    time_out: ({ ship }) => {
-      ship.custom.timeout = !ship.custom.timeout
-      if (ship.custom.timeout) ship.set({ collider: false, idle: true });
-      else ship.set({ ...shipTrees.reset(ship), idle: false });
+    alternative_punish: ({ ship }) => {
+      ship.setUIComponent({
+        id: 'banned', position: [0, 0, 100, 100], clickable: true, components: [
+          { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)' }
+        ]
+      })
+      ship.set({ collider: false, idle: true });
     },
     promote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = true,
     demote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = false,
@@ -701,11 +706,13 @@ const Admins = {
       hideUIs(this.shipIDs).concat(this.dynamicUIs(ships)).forEach(ship.setUIComponent);
     }
   },
-  events({ ship, id, ships, aliens, asteroids }) {
-    if (!ship.custom.isAdmin && Object.keys(this.eventsFunc).includes(id)) this.eventsFunc.time_out({ ship });
+  events(event, game) {
+    const { ship, id } = event;
+    const { ships } = game;
+    if (!ship.custom.isAdmin && Object.keys(this.eventsFunc).includes(id)) this.eventsFunc.alternative_punish({ ship });
 
     if (id.includes(this.prefix)) return ship.custom.choosePlayer = ships[Number(id.split(this.prefix).pop())];
-    return this.eventsFunc[id].call(this, { ship, id, ships, aliens, asteroids, choosePlayer: ship.custom.choosePlayer });
+    return this.eventsFunc[id].call(this, { ...event, ...game, choosePlayer: ship.custom.choosePlayer });
   }
 }
 // Pages___________________________________________________________________________________________
@@ -722,11 +729,13 @@ const pagesUI = {
     Maps.otherIDs, Object.keys(Maps.boxes).map(i => i.toLowerCase()),
     Admins.funcIDs, Admins.shipFuncIDs, Array(16).fill(0).map((a, i) => Admins.prefix + i)
   ),
-  displayUIs({ ships, id, ship }) {
-    if (Options.ids.includes(id)) {
-      if (ship.custom.page === id) return;
-      ship.custom.page = id;
-      switch (id) {
+  displayUIs(event, game) {
+    const { ship, id: eventID } = event
+    const { ships } = game;
+    if (Options.ids.includes(eventID)) {
+      if (ship.custom.page === eventID) return;
+      ship.custom.page = eventID;
+      switch (eventID) {
         case 'map':
           return this.hidePages.concat(this.map);
         case 'ship':
@@ -734,7 +743,7 @@ const pagesUI = {
         case 'admin':
           if (ship.custom.isAdmin) return this.hidePages.concat(this.admin).concat(Admins.dynamicUIs(ships));
       }
-    } else if (id === 'options') {
+    } else if (eventID === 'options') {
       ship.custom.optionsScreen = !ship.custom.optionsScreen;
       ship.custom.page = 'ship';
       if (ship.custom.optionsScreen) return this.options.concat(this.ship).concat(Ships.dynamicUIs(ship));
@@ -746,9 +755,9 @@ const pagesUI = {
 // ___________________________________________________________________________________________
 function uiEvents(event, game) {
   const { ship } = event;
-  pagesUI.displayUIs({ ...event, ...game }).forEach(ship.setUIComponent);
-  ship.set(Ships.events({ ...event, ...game }) ?? Maps.events(event) ?? {});
-  Admins.events({ ...event, ...game });
+  pagesUI.displayUIs(event, game).forEach(ship.setUIComponent);
+  ship.set(Ships.events(event, game) ?? Maps.events(event) ?? {});
+  Admins.events(event, game);
 }
 // ___________________________________________________________________________________________
 this.event = function (event, game) {
