@@ -498,7 +498,7 @@ const simpleUI = (id, text, fontsize = 10, align = 'center') => {
 }
 // Options___________________________________________________________________________________________
 const Options = {
-  ids: ['ship', 'map', 'shortcut', 'admin'],
+  ids: ['ship', 'map', 'info', 'admin'],
   otherIDs: ['overlay'],
   fontSize: 60,
   staticUIs() {
@@ -633,8 +633,8 @@ const Maps = {
     if (this.boxes[id]) return { ...this.boxes[id], ...shipTrees.restore(ship) }
   }
 }
-// Shortcuts_________________________________________________________________________________________
-const Shortcuts = {
+// Infos_________________________________________________________________________________________
+const Infos = {
 
 }
 // Admin_________________________________________________________________________________________
