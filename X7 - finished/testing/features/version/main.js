@@ -1,3 +1,63 @@
+/* COMMAND
+admin <id>:         promote new admin or demote an existing admin.
+*/
+
+
+const identifierString = function (ship) {
+  return ship.name + " (ID " + ship.id + ")"
+}
+const addShipInteractionCommand = function (name, resolver) {
+  addCommand(name, function (req) {
+    let text;
+    locateShip(req, function (ship, id, args) {
+      let rstr = resolver(ship, id, args);
+      if (rstr != null) text = identifierString(ship) + " " + rstr;
+    })
+    return text
+  })
+}
+const addCommand = function (name, resolver) {
+  game.modding.commands[name] = function (req) {
+    let args = req.replace(/^\s+/, "").replace(/\s+/, " ").split(" ");
+    let text = resolver(args.slice(1).join(" "));
+    if (text != null) echo(text)
+  }
+}
+const locateShip = function (req, handler) {
+  let args = req.split(" "), id = Number(args[0] || "NaN");
+  if (isNaN(id)) game.modding.terminal.error("Please specify a ship id to take action");
+  else {
+    let ship = game.findShip(id);
+    if (!ship) game.modding.terminal.error("Requested ship not found!");
+    else {
+      try { typeof handler == "function" && handler(ship, id, args.slice(1).join(" ")) }
+      catch (e) { game.modding.terminal.error("string" == typeof e ? e : "An error occured while taking action with the requested ship!") }
+    }
+  }
+}
+// __________________________________________________________________________________________________
+addShipInteractionCommand('admin', function (ship, id, args) {
+  ship.custom.isAdmin = !ship.custom.isAdmin
+  return `was ${ship.custom.isAdmin ? "granted" : "removed from"} admin permissions!`;
+});
+const playerData = function () {
+  echo("\nList of players and their data:");
+  for (let ship of game.ships)
+    echo(ship.id + ": Player name: " + ship.name + ", position:(" + Math.trunc(ship.x) + ", " + Math.trunc(ship.y) + "), shield:" + ship.shield + ", crystals: " + ship.crystals + ", ship code:" + ship.type);
+  if (game.ships.length == 0) echo("No ships.")
+};
+const welcomeText = function (ship, text) {
+  clearTimeout(ship.custom.welcomeTextID);
+  sendUI(ship, {
+    id: "welcome",
+    visible: true,
+    position: [35, 85, 30, 10],
+    components: [
+      { type: "text", position: [0, 0, 100, 100], value: text || "Duel and chill, no toxic behaviours please.", color: "#cde" }
+    ]
+  });
+  if (text) ship.custom.welcomeTextID = setTimeout(welcomeText, 2000, ship);
+}
 // ___________________________________________________________________________________________
 const vocabulary = [
   { text: "You", icon: "\u004e", key: "O" },
@@ -349,19 +409,19 @@ this.options = {
 }
 // ________________________________________________________________________________________
 const defaulScreen = [{
-  id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'B', components: [
+  id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
-    { type: "text", position: [0, 30, 100, 60], value: "Restore", color: 'rgba(255,255,255,1)' },
+    { type: "text", position: [0, 30, 100, 60], value: "Restore[J]", color: 'rgba(255,255,255,1)' },
   ]
 }, {
   id: "stats", position: [73, 88, 6.6, 4], clickable: true, shortcut: "V", components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
-    { type: "text", position: [0, 30, 100, 60], value: "Stats", color: 'rgba(255,255,255,1)' },
+    { type: "text", position: [0, 30, 100, 60], value: "Stats[V]", color: 'rgba(255,255,255,1)' },
   ]
 }, {
-  id: "options", position: [73, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
+  id: "options", position: [73, 92, 6.6, 4], clickable: true, shortcut: 'B', components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
-    { type: "text", position: [0, 30, 100, 60], value: "Options", color: 'rgba(255,255,255,1)' },
+    { type: "text", position: [0, 30, 100, 60], value: "Options[B]", color: 'rgba(255,255,255,1)' },
   ]
 }]
 // ___________________________________________________________________________________________
@@ -387,6 +447,7 @@ this.tick = function (game) {
       }
       if (game.step % 60 === 0) initialize(ship);
     }
+    if (game.step % 1800 === 0 && game.ships.length > 1) playerData();
   }
 }
 // Grids___________________________________________________________________________________________
@@ -498,7 +559,8 @@ const simpleUI = (id, text, fontsize = 10, align = 'center') => {
 }
 // Options___________________________________________________________________________________________
 const Options = {
-  ids: ['ship', 'map', 'info', 'admin'],
+  ids: ['ship', 'map', 'admin'],
+  // info
   otherIDs: ['overlay'],
   fontSize: 60,
   staticUIs() {
@@ -623,6 +685,7 @@ const Maps = {
         return {
           type: 'box', position: [...this.mapToComponent(component.x, component.y, game.options, width), width, width],
           fill: ship === component ? (custom?.owner ?? 'rgb(255,255,255)') : (custom?.[component.custom] ?? 'rgb(100, 100, 100)'),
+          stroke: 'rgb(0,0,0)', width: 2
         };
       }))
   },
@@ -641,10 +704,10 @@ const Infos = {
 const prefix = '______';
 const Admins = {
   prefix, funcIDs: ['admin_warp', 'players_clear', 'entities_clear'],
-  shipIDs: Array(this.options.max_players).fill(0).map((a, i) => prefix + i),
   // restore_map reset_map 
+  shipIDs: Array(this.options.max_players).fill(0).map((a, i) => prefix + i),
   shipFuncIDs: ['refresh', 'kick', 'time_out', 'weapons'],
-  // promote demote refresh
+  // promote demote
   layout: function () {
     const menus = new Grids([5, 35, 30, 60], 1, 3);
     const playersList = new Grids(menus.mergeCells([0, 0], [0, 1]), 5, 1);
@@ -691,8 +754,17 @@ const Admins = {
     },
     time_out: ({ ship }) => {
       ship.custom.timeout = !ship.custom.timeout
-      if (ship.custom.timeout) ship.set({ collider: false, idle: true });
-      else ship.set({ ...shipTrees.reset(ship), idle: false });
+      if (ship.custom.timeout) {
+        ship.setUIComponent({
+          id: 'timeout', position: [0, 0, 100, 100], clickable: true,
+          components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)' }]
+        })
+        ship.set({ collider: false, idle: true });
+      }
+      else {
+        ship.setUIComponent(...hideUIs('timeout'));
+        ship.set({ ...shipTrees.reset(ship), idle: false });
+      }
     },
     promote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = true,
     demote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = false,

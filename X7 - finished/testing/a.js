@@ -698,7 +698,7 @@ this.tick = function (game) {
           });
           welcomeText(ship);
         }
-        if (game.step % 1800 === 0 && game.ships.length > 1 && autolist == true) playerData();
+
       }
       if (game.aliens.length < max_aliens && alien_portal === true)
         game.addAlien(alien_array[Math.trunc(Math.random() * alien_array.length)]);
