@@ -387,6 +387,127 @@ const customShips = {
   Prime_Fighter_665: '{"name":"Prime-Fighter","level":6,"model":65,"size":2.1,"specs":{"shield":{"capacity":[280,400],"reload":[7,10]},"generator":{"capacity":[80,160],"reload":[25,55]},"ship":{"mass":380,"speed":[85,115],"rotation":[55,85],"acceleration":[90,115]}},"bodies":{"main":{"section_segments":9,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0],"y":[-50,-47,-40,0,40,55,60],"z":[-10,-10,-10,-8,0,0,0]},"width":[0,10,17,22,26,20,0],"height":[0,4,10,12,20,15,0],"texture":[63,4,1,11,4,63]},"cockpit":{"section_segments":5,"offset":{"x":0,"y":-23,"z":1},"position":{"x":[0,0,0,0],"y":[-15,-10,30,45],"z":[-2,-2,0,5]},"width":[2,10,13,10],"height":[0,5,8,4],"texture":[9]},"propulsors":{"section_segments":8,"offset":{"x":50,"y":15,"z":0},"position":{"x":[0,0,0,0,0,0,0],"y":[-39,-20,0,10,58,60,50],"z":[0,0,0,0,0,0]},"width":[0,6,10,15,12,10,0],"height":[0,8,10,15,12,10,0],"texture":[63,3,4,11,4,13],"propeller":true},"lasers":{"section_segments":8,"offset":{"x":25,"y":-55,"z":-20},"position":{"x":[-2,-2,0,0,-5,0,0,-3,-10],"y":[-35,-30,0,5,30,60,75,82,95],"z":[0,0,0,0,0,10,15,15,15]},"width":[0,3,5,8,9,7,6,5,4],"height":[0,3,5,8,10,5,5,4,3],"texture":[6,4,63,1,10,1,4,4],"propeller":false,"laser":{"damage":[14,28],"rate":4,"type":1,"speed":[150,200],"number":1}}},"wings":{"archA":{"offset":{"x":-50.5,"y":30,"z":-30},"length":[11,5,20,20,20,20,17,0.3,23],"width":[0,180,60,55,50,40,35,30,100,0],"angle":[90,80,95,70,55,35,15,0,0],"position":[-10,-10,0,15,5,-10,0,0,-10,15],"texture":[12,13,1,1,10,1,1,10,63],"bump":{"position":30,"size":12},"doubleside":1},"bottom":{"doubleside":true,"offset":{"x":0,"y":-30,"z":-30},"length":[10,5,20],"width":[0,160,0],"angle":[90,90],"position":[60,0,60],"texture":[12,12],"bump":{"position":30,"size":15}},"bridge":{"doubleside":true,"offset":{"x":1,"y":-30,"z":-22},"length":[30,23,20],"width":[20,30,20,5],"angle":[-20,30,-10],"position":[-40,20,-5,25],"texture":[63,11,63],"bump":{"position":10,"size":15}},"winglets1":{"doubleside":true,"offset":{"x":55,"y":60,"z":0},"length":[20],"width":[20,10],"angle":[10],"position":[-5,15],"texture":[63],"bump":{"position":10,"size":15}},"winglets2":{"doubleside":true,"offset":{"x":-45,"y":60,"z":-1},"length":[20],"width":[20,10],"angle":[10],"position":[-5,15],"texture":[63],"bump":{"position":10,"size":15}}},"typespec":{"name":"Prime-Fighter","level":6,"model":65,"code":665,"specs":{"shield":{"capacity":[280,400],"reload":[7,10]},"generator":{"capacity":[80,160],"reload":[25,55]},"ship":{"mass":380,"speed":[85,115],"rotation":[55,85],"acceleration":[90,115]}},"shape":[4.62,3.444,3.901,3.595,2.862,3.625,3.372,3.07,2.849,2.72,2.779,2.888,2.907,2.624,2.722,2.931,3.141,3.496,4.302,4.597,4.686,5.044,5.084,3.524,2.757,2.94,2.757,3.524,5.084,5.044,4.686,4.597,4.302,3.496,3.141,2.931,2.722,2.624,2.907,2.888,2.779,2.72,2.849,3.07,3.372,3.625,2.862,3.595,3.901,3.444],"lasers":[{"x":0.966,"y":-3.78,"z":-0.84,"angle":0,"damage":[14,28],"rate":4,"type":1,"speed":[150,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-0.966,"y":-3.78,"z":-0.84,"angle":0,"damage":[14,28],"rate":4,"type":1,"speed":[150,200],"number":1,"spread":0,"error":0,"recoil":0}],"radius":5.084}}',
 };
 // ___________________________________________________________________________________________
+var main = {
+  id: "main",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/pds.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "main",
+  type: main,
+  position: { x: -0, y: -10, z: -20 },
+  scale: { x: 75, y: 75, z: 20 },
+  rotation: { x: 0, y: 9.4, z: Math.PI }
+});
+
+var credit = {
+  id: "credit",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/credits.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "credit",
+  type: credit,
+  position: { x: -0, y: -60, z: -20 },
+  scale: { x: 40, y: 40, z: 20 },
+  rotation: { x: 0, y: 9.4, z: Math.PI }
+});
+
+var UwU = {
+  id: "UwU",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/UwU.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "UwU",
+  type: UwU,
+  position: { x: -830, y: 630, z: -10 },
+  scale: { x: 145, y: 120, z: 20 },
+  rotation: { x: 0, y: 9.4, z: Math.PI }
+});
+
+
+var barrier = {
+  id: "barrier",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "barrier",
+  type: barrier,
+  position: { x: -1000, y: 0, z: -10 },
+  scale: { x: 40 * 1.6, y: 260, z: 300 },
+  rotation: { x: 0, y: 160, z: Math.PI }
+});
+
+var barrier2 = {
+  id: "barrier2",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "barrier2",
+  type: barrier2,
+  position: { x: -1000, y: 260, z: -10 },
+  scale: { x: 40 * 1.6, y: 260, z: 300 },
+  rotation: { x: 0, y: 160, z: Math.PI }
+});
+
+var barrier3 = {
+  id: "barrier3",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "barrier3",
+  type: barrier3,
+  position: { x: -1000, y: -260, z: -10 },
+  scale: { x: 40 * 1.6, y: 260, z: 300 },
+  rotation: { x: 0, y: 160, z: Math.PI }
+});
+
+var barrier4 = {
+  id: "barrier4",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "barrier4",
+  type: barrier4,
+  position: { x: -1000, y: -520, z: -10 },
+  scale: { x: 40 * 1.6, y: 260, z: 300 },
+  rotation: { x: 0, y: 160, z: Math.PI }
+});
+
+var barrier5 = {
+  id: "barrier5",
+  obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
+  emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
+  transparent: true
+}
+
+game.setObject({
+  id: "barrier5",
+  type: barrier5,
+  position: { x: -1000, y: 520, z: -10 },
+  scale: { x: 40 * 1.6, y: 260, z: 300 },
+  rotation: { x: 0, y: 160, z: Math.PI }
+});
+// ___________________________________________________________________________________________
 this.options = {
   ships: Object.values({ ...spectators, ...speedsterShips, ...vanillaShips, ...customShips }),
   custom_map, vocabulary,
@@ -751,11 +872,10 @@ const Admins = {
     time_out: ({ choosePlayer: ship }) => {
       ship.custom.timeout = !ship.custom.timeout
       if (ship.custom.timeout) {
-        pagesUI.hideAllUIs.forEach(ui => ship.setUIComponent(ui));
-        ship.setUIComponent({
+        pagesUI.hideAllUIs.concat({
           id: 'timeout', position: [0, 0, 100, 100], clickable: true,
           components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)' }]
-        })
+        }, hideUIs('announce', 'show_ui')).forEach(ui => ship.setUIComponent(ui));
         ship.set({ collider: false, idle: true, crystals: 0 });
         ship.custom.page = '';
       }
@@ -808,7 +928,6 @@ const pagesUI = {
         case 'map':
           return this.hidePages.concat(this.map);
         case 'ship':
-
           return this.hidePages.concat(this.ship);
         case 'admin':
           if (ship.custom.isAdmin) return this.hidePages.concat(this.admin).concat(Admins.dynamicUIs(ships));
