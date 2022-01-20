@@ -2,7 +2,7 @@
  * CREDIT__________________________________________________________________________________
  * Main coder: BHPSNGUM, ___
  * Helper coder: X7
- * Ships designer: Robonuko, 45rfew, Neuronailty
+ * Ships: Robonuko, 45rfew, Neuronailty, KEST, SDC
  */
 
 /* CONSOLE COMMANDS________________________________________________________________________________
