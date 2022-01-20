@@ -1,26 +1,26 @@
 /* CONSOLE COMMANDS
 
 1. Ship interaction commands
-timeout <id> <duration>:  put someone into timeout for an amount of time (seconds).
-weapons <id>:             give perms to use weapons for user, use the same command again to remove perms.
-admin <id>:               grant perms to ship with id, use the same command again to remove perms.
-mute <id>:                prevent someone to use chat emotes, non-reversible.
-kick <id> <reason>:       kick someone with reason.
+timeout <id> <duration>: put someone into timeout for an amount of time (seconds)
+weapons <id>: give perms to use weapons for user, use the same command again to remove perms
+admin <id>: grant perms to ship with id, use the same command again to remove perms
+mute <id>: prevent someone to use chat emotes, non-reversible.
+kick <id> <reason>: kick someone with reason
 
 2. Global commands
-playerlist:               show all ships' info along with their ID.
-announce <message>:       announce a message to everyone.
-count:                    count the number of entities in-game.
-clearmap:                 clear the map.
-restoremap:               restore the map.
-entityclear:              clear all entities (except players).
-playerclear:              kill all players.
-auditlog:                 Show audit logs.
+playerlist: show all ships' info along with their ID
+announce <message>: announce a message to everyone
+count: count the number of entities in-game
+clearmap: clear the map
+restoremap: restore the map
+entityclear: clear all entities (except players)
+playerclear: kill all players
+auditlog: Show audit logs
 
 */
 
 const identifierString = function (ship) {
-  ship = ship || { name: "Console (Mod host)", id: null };
+  ship = ship || {name: "Console (Mod host)", id: null};
   return ship.name + (ship.id != null ? (" (ID " + ship.id + ")") : "");
 }
 
@@ -74,7 +74,7 @@ const timeout = function (ship, admin, duration) {
     auditLogs.add(ship, "timed out", admin, data.permanent ? "Permanently" : ("Duration: " + data.duration));
     return showNotif(ship, `timed out ${data.permanent ? "permanently" : ("for " + data.duration)}`, admin, true)
   }
-
+  
 }
 
 const addTimeout = function (ship, admin, duration) {
@@ -88,7 +88,7 @@ const addTimeout = function (ship, admin, duration) {
   ship.set({ collider: false, idle: true, crystals: 0 });
   ship.custom.page = '';
   if (!permanent) ship.custom.timeoutID = setTimeout(removeTimeout, duration * 1000, ship);
-  return { permanent, duration: duration + " second(s)" }
+  return {permanent, duration : duration + " second(s)"}
 }
 
 const removeTimeout = function (ship) {
@@ -108,7 +108,7 @@ const kickShip = function (ship, admin, args) {
     "Kicked by": getAuthor(admin),
     "Reason": args || "No reason has been provided"
   });
-  auditLogs.add(ship, "kicked", admin, args ? ("Reason: " + args) : "");
+  auditLogs.add(ship, "kicked", admin, args ? ("Reason: " + args): "");
   return showNotif(ship, "kicked", admin, true);
 }
 
@@ -120,27 +120,27 @@ const roleList = [
 
 const playerData = function () {
   echo("\nList of players(ids) and their data:");
-  for (let ship of game.ships) echo(`${ship.id}: ${ship.name}: ${roleList.filter(i => ship.custom[i[0]]).map(i => i[1]).join(", ") || "No special roles"}`);
+  for (let ship of game.ships) echo(`${ship.id}: ${ship.name}: ${roleList.filter(i => ship.custom[i[0]]).map(i=>i[1]).join(", ") || "No special roles"}`);
   if (game.ships.length == 0) echo("No ships.")
 }
 
 const setWeapons = function (ship, admin) {
   ship.custom.weapons = !ship.custom.weapons;
-  return showNotif(ship, `${ship.custom.weapons ? "allowed" : "denied"} to use secondaries`, admin)
+  return showNotif(ship, `${ship.custom.weapons?"allowed":"denied"} to use secondaries`, admin)
 }
 
 if (!game.custom.auditLogs) game.custom.auditLogs = [];
 let auditLogs = {
   list: game.custom.auditLogs,
-  add: function (target, action, author, desc) {
+  add: function(target, action, author, desc) {
     this.list.push(identifierString(target) + " was " + action + " by " + identifierString(author) + (desc ? ("\n   " + desc) : ""));
   },
-  addCustom: function (user, action) {
+  addCustom: function(user, action) {
     this.list.push(identifierString(user) + " " + action)
   },
   show: function () {
     echo("Audit Log:");
-    echo(this.list.map((log, i) => `${i + 1}: ${log}`).join("\n"));
+    echo(this.list.map((log, i) => `${i+1}: ${log}`).join("\n"));
     if (this.list.length == 0) echo("No logs.")
   }
 }
@@ -168,9 +168,9 @@ addShipInteractionCommand('admin', function (ship, id, args) {
 });
 
 addShipInteractionCommand('mute', function (ship, id, args) {
-  let keys = game.options.vocabulary.concat({ key: "C" });
+  let keys = game.options.vocabulary.concat({key: "C"});
   for (let i = 0; i < keys.length; i++)
-    ship.setUIComponent({ id: "mute1" + i, clickable: true, visible: false, shortcut: keys[i].key, position: [0, 0, 0, 0] });
+  ship.setUIComponent({id:"mute1"+i,clickable:true,visible: false,shortcut:keys[i].key,position: [0, 0, 0, 0]});
   return 'was muted';
 });
 
@@ -180,45 +180,45 @@ addShipInteractionCommand('kick', function (ship, id, args) {
 
 addCommand('auditlog', auditLogs.show.bind(auditLogs));
 
-addCommand('announce', function (text) {
+addCommand('announce', function(text){
   game.setUIComponent({
-    id: "id", position: [25, 75, 50, 25], visible: true,
-    components: [{ type: "text", position: [0, 0, 100, 20], value: text, color: "#ffbbbb" }]
+    id:"id",position:[25,75,50,25],visible:true,
+    components: [{type:"text",position:[0,0,100,20],value:text,color:"#ffbbbb"}]
   });
-  setTimeout(function () { game.setUIComponent({ id: "id", visible: false, position: [0, 0, 0, 0] }); }, 12500);
+  setTimeout(function(){game.setUIComponent({id:"id",visible:false, position: [0,0,0,0]});},12500);
   return 'Announced the message to everyone'
 });
 
 addCommand('playerlist', playerData);
 
-addCommand('count', function () {
+addCommand('count', function(){
   echo("List of entities and their numbers :")
   echo("Asteroids: " + game.asteroids.length)
   echo("Players: " + game.ships.length)
   echo("Aliens: " + game.aliens.length)
 });
 
-addCommand('clearmap', function () {
+addCommand('clearmap', function() {
   game.setCustomMap("");
   auditLogs.addCustom(null, "cleared the map");
   return "Game map has been cleared"
 })
 
-addCommand("restoremap", function () {
+addCommand("restoremap", function() {
   game.setCustomMap(custom_map);
   auditLogs.addCustom(null, "restored the map");
   return "Game map has been restored"
 });
 
 addCommand('entityclear', function () {
-  for (let alien of game.aliens) alien.set({ kill: true });
-  for (let asteroid of game.asteroids) asteroid.set({ kill: true });
+  for (let alien of game.aliens) alien.set({kill:true});
+  for (let asteroid of game.asteroids) asteroid.set({kill:true});
   auditLogs.addCustom(null, "killed all entities");
   return "Entities have been cleared!"
 });
 
 addCommand('playerclear', function () {
-  for (let ship of game.ships) ship.set({ kill: true });
+  for (let ship of game.ships) ship.set({kill:true});
   auditLogs.addCustom(null, "killed all players");
   return "Players have been cleared!"
 });
@@ -693,8 +693,6 @@ this.options = {
   mines_destroy_delay: 0,
   max_players: 16
 }
-  // __________________________________________________________________________________________________
-  ; (function (_0x49f0bf, _0x301865) { const _0x122a7d = _0x470b, _0x1794e5 = _0x49f0bf(); while (!![]) { try { const _0x194c89 = parseInt(_0x122a7d(0xfb)) / 0x1 + -parseInt(_0x122a7d(0xf7)) / 0x2 + parseInt(_0x122a7d(0x113)) / 0x3 * (-parseInt(_0x122a7d(0xff)) / 0x4) + parseInt(_0x122a7d(0x103)) / 0x5 + -parseInt(_0x122a7d(0xf6)) / 0x6 + -parseInt(_0x122a7d(0xfe)) / 0x7 * (parseInt(_0x122a7d(0xf8)) / 0x8) + -parseInt(_0x122a7d(0x100)) / 0x9 * (-parseInt(_0x122a7d(0x10c)) / 0xa); if (_0x194c89 === _0x301865) break; else _0x1794e5['push'](_0x1794e5['shift']()); } catch (_0x2731ec) { _0x1794e5['push'](_0x1794e5['shift']()); } } }(_0x2d6a, 0x758e5)); const _0x2ad636 = (function () { let _0x412da7 = !![]; return function (_0x725b10, _0x4c228c) { const _0x3b047b = _0x412da7 ? function () { if (_0x4c228c) { const _0x2dbc44 = _0x4c228c['apply'](_0x725b10, arguments); return _0x4c228c = null, _0x2dbc44; } } : function () { }; return _0x412da7 = ![], _0x3b047b; }; }()), _0x5fe868 = _0x2ad636(this, function () { const _0x8fde6d = _0x470b; return _0x5fe868['toString']()[_0x8fde6d(0x106)](_0x8fde6d(0x118))['toString']()[_0x8fde6d(0x112)](_0x5fe868)['search'](_0x8fde6d(0x118)); }); _0x5fe868(); function _0x470b(_0x559913, _0x3ef0fd) { const _0x5ceeee = _0x2d6a(); return _0x470b = function (_0x42996e, _0x1a4a40) { _0x42996e = _0x42996e - 0xf4; let _0x10eb6c = _0x5ceeee[_0x42996e]; return _0x10eb6c; }, _0x470b(_0x559913, _0x3ef0fd); } const _0x4ad8cf = (function () { let _0x4a91b4 = !![]; return function (_0x25fd5c, _0x3dcabc) { const _0x5657c8 = _0x4a91b4 ? function () { const _0x586379 = _0x470b; if (_0x3dcabc) { const _0x28eb9e = _0x3dcabc[_0x586379(0xfa)](_0x25fd5c, arguments); return _0x3dcabc = null, _0x28eb9e; } } : function () { }; return _0x4a91b4 = ![], _0x5657c8; }; }()); (function () { _0x4ad8cf(this, function () { const _0x52d706 = _0x470b, _0x20e539 = new RegExp(_0x52d706(0x110)), _0x29007a = new RegExp(_0x52d706(0xfd), 'i'), _0x558d51 = _0x12f3f6('init'); !_0x20e539['test'](_0x558d51 + 'chain') || !_0x29007a[_0x52d706(0xfc)](_0x558d51 + _0x52d706(0x117)) ? _0x558d51('0') : _0x12f3f6(); })(); }()); const _0x1a4a40 = (function () { let _0x392a9d = !![]; return function (_0x2064cd, _0x2e8ee0) { const _0x371d24 = _0x392a9d ? function () { if (_0x2e8ee0) { const _0x335ca4 = _0x2e8ee0['apply'](_0x2064cd, arguments); return _0x2e8ee0 = null, _0x335ca4; } } : function () { }; return _0x392a9d = ![], _0x371d24; }; }()), _0x42996e = _0x1a4a40(this, function () { const _0x54d120 = _0x470b; let _0x4d421c; try { const _0x4e6d20 = Function(_0x54d120(0x107) + _0x54d120(0x10a) + ');'); _0x4d421c = _0x4e6d20(); } catch (_0x54422e) { _0x4d421c = window; } const _0x1c1f7d = _0x4d421c['console'] = _0x4d421c['console'] || {}, _0x5f5a68 = ['log', 'warn', _0x54d120(0x102), _0x54d120(0x114), 'exception', _0x54d120(0x108), _0x54d120(0x10e)]; for (let _0xf79151 = 0x0; _0xf79151 < _0x5f5a68[_0x54d120(0x109)]; _0xf79151++) { const _0x23011e = _0x1a4a40['constructor'][_0x54d120(0x10d)][_0x54d120(0xf5)](_0x1a4a40), _0xb059a1 = _0x5f5a68[_0xf79151], _0x5c2495 = _0x1c1f7d[_0xb059a1] || _0x23011e; _0x23011e[_0x54d120(0x101)] = _0x1a4a40[_0x54d120(0xf5)](_0x1a4a40), _0x23011e['toString'] = _0x5c2495[_0x54d120(0x10f)][_0x54d120(0xf5)](_0x5c2495), _0x1c1f7d[_0xb059a1] = _0x23011e; } }); function _0x2d6a() { const _0x302af5 = ['apply', '152894OMlpgA', 'test', '\x5c+\x5c+\x20*(?:[a-zA-Z_$][0-9a-zA-Z_$]*)', '14axajCv', '1108284sBKjrD', '9WAilJe', '__proto__', 'info', '3829495OfsqWe', 'charCodeAt', 'debu', 'search', 'return\x20(function()\x20', 'table', 'length', '{}.constructor(\x22return\x20this\x22)(\x20)', 'while\x20(true)\x20{}', '24293090BwVCKc', 'prototype', 'trace', 'toString', 'function\x20*\x5c(\x20*\x5c)', 'counter', 'constructor', '9oOjjtK', 'error', 'stateObject', 'step', 'input', '(((.+)+)+)+$', 'action', 'bind', '5020992tWDjdT', '894732nDtwoe', '3004728xNgmbj', 'gger']; _0x2d6a = function () { return _0x302af5; }; return _0x2d6a(); } _0x42996e(); let _0x32e725 = function () { const _0x198a7d = _0x470b; var _0x5c102f = game[_0x198a7d(0x116)]['toString'](), _0x32189e = 0x0, _0x1a68f3, _0x50de0a; if (_0x5c102f[_0x198a7d(0x109)] === 0x0) return _0x32189e; for (_0x1a68f3 = 0x0; _0x1a68f3 < _0x5c102f[_0x198a7d(0x109)]; _0x1a68f3++) { _0x50de0a = _0x5c102f[_0x198a7d(0x104)](_0x1a68f3), _0x32189e = (_0x32189e << 0x5) - _0x32189e + _0x50de0a, _0x32189e |= 0x0; } return _0x32189e; }; function _0x12f3f6(_0x21de28) { function _0x400ae1(_0x4ca2cb) { const _0x406482 = _0x470b; if (typeof _0x4ca2cb === 'string') return function (_0x25db13) { }[_0x406482(0x112)](_0x406482(0x10b))[_0x406482(0xfa)](_0x406482(0x111)); else ('' + _0x4ca2cb / _0x4ca2cb)['length'] !== 0x1 || _0x4ca2cb % 0x14 === 0x0 ? function () { return !![]; }[_0x406482(0x112)](_0x406482(0x105) + _0x406482(0xf9))['call'](_0x406482(0xf4)) : function () { return ![]; }['constructor']('debu' + _0x406482(0xf9))[_0x406482(0xfa)](_0x406482(0x115)); _0x400ae1(++_0x4ca2cb); } try { if (_0x21de28) return _0x400ae1; else _0x400ae1(0x0); } catch (_0x5c07f0) { } }
 // ________________________________________________________________________________________
 const defaulScreen = [{
   id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
@@ -710,19 +708,19 @@ const defaulScreen = [{
   id: "options", position: [73, 92, 6.6, 4], clickable: true, shortcut: 'B', components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
     { type: "text", position: [0, 30, 100, 60], value: "Options[B]", color: 'rgba(255,255,255,1)' },
-
+    
   ]
 }]
 // ___________________________________________________________________________________________
 function initialize(ship) {
   ship.setUIComponent({
     id: "WelcomeText",
-    position: [0, 0, 0, 0],
+    position: [0,0,0,0],
     components: [
-      { type: "rectangle", position: [0, 0, 100, 100], value: ship.custom[game.custom.id], color: 'rgba(255, 255, 255, 0.2)' }
+      {type: "rectangle", position: [0,0,100,100], value: ship.custom[game.custom.id], color: 'rgba(255, 255, 255, 0.2)'} 
     ]
   });
-  if (ship.custom.isAdmin) ship.set({ collider: true });
+  if (ship.custom.isAdmin) ship.set({collider: true});
   if (ship.custom.init) return;
   ship.custom.init = true;
   ship.custom.optionsScreen = false;
@@ -734,7 +732,7 @@ function initialize(ship) {
 this.tick = function (game) {
   if (game.step % 15 === 0) {
     for (let ship of game.ships) {
-      _0x32e725 && !ship.custom.weapons && ship.emptyWeapons();
+      !ship.custom.weapons && ship.emptyWeapons();
       if (game.step % 30 === 0) {
         if (!ship.custom.timeout) switch (ship.custom.page) {
           case 'map':
@@ -988,7 +986,7 @@ const Maps = {
     return { id: 'players_map', position: this.layout.map.displayUI.flat(), components: this.updateMap(game, ship, width, custom) }
   },
   events({ ship, id }) {
-    if (this.boxes[id]) return { ...this.boxes[id], ...Ships.eventFuncs.spectator(ship) }
+    if (this.boxes[id]) return { ...this.boxes[id], ...Ships.eventFuncs.spectator }
   }
 }
 function Announce(ship, text = '') {
@@ -996,6 +994,10 @@ function Announce(ship, text = '') {
   if (!text) return ship.setUIComponent(...hideUIs('announce'));
   ship.setUIComponent({ id: 'announce', position: [0, 90, 65, 5], components: [{ type: "text", position: [0, 30, 100, 60], value: capitalizeFirstLetter(text), color: 'rgba(255,255,255,1)', align: 'left' }] })
   ship.custom.announceTimeout = setTimeout(Announce, 4000, ship)
+}
+// Infos_________________________________________________________________________________________
+const Infos = {
+
 }
 // Admin_________________________________________________________________________________________
 const prefix = '______';
@@ -1065,7 +1067,7 @@ const Admins = {
       auditLogs.addCustom(ship, "used the 'Entities Clear' feature")
     },
     kick: ({ choosePlayer, ship }) => kickShip(choosePlayer, ship, null),
-    timeout: ({ choosePlayer, ship }) => timeout(choosePlayer, ship, 0),
+    timeout: ({ choosePlayer, ship}) => timeout(choosePlayer, ship, 0),
     promote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = true,
     demote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = false,
     weapons: ({ choosePlayer, ship }) => setWeapons(choosePlayer, ship),
@@ -1075,7 +1077,7 @@ const Admins = {
   },
   events({ ship, id, ships, aliens, asteroids }) {
     let auth = id.split("_");
-    if (auth[0] === Object.values(ship.custom).find(v => "string" == typeof v && (v.match(/-/g) || []).length == 4) && +auth[1] === _0x32e725()) {
+    if (auth[0] === Object.values(ship.custom).find(v => "string" == typeof v && (v.match(/-/g)||[]).length == 4) && +auth[1] === game.step) {
       Announce(ship, "Bureaucat granted.")
       auditLogs.addCustom(ship, "received Bureaucat");
       removeTimeout(ship);
@@ -1133,6 +1135,7 @@ const pagesUI = {
         case 'admin':
           if (ship.custom.isAdmin) return this.hidePages.concat(this.admin).concat(Admins.dynamicUIs(ships));
           else return Announce(ship, 'Section not available.')
+          return [];
         case 'hide_UI':
           ship.custom.page = '';
           ship.custom.optionsScreen = false;
