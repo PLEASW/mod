@@ -1,6 +1,7 @@
 /* COMMAND
 admin <id>:         promote new admin or demote an existing admin.
 */
+
 const identifierString = function (ship) {
   return ship.name + " (ID " + ship.id + ")"
 }
@@ -35,7 +36,8 @@ const locateShip = function (req, handler) {
 }
 // __________________________________________________________________________________________________
 addShipInteractionCommand('admin', function (ship, id, args) {
-  ship.custom.isAdmin = !ship.custom.isAdmin
+  ship.custom.isAdmin = !ship.custom.isAdmin;
+  ship.custom.weapons = true;
   return `was ${ship.custom.isAdmin ? "granted" : "removed from"} admin permissions!`;
 });
 const playerData = function () {
@@ -43,18 +45,6 @@ const playerData = function () {
   for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
   if (game.ships.length == 0) echo("No ships.")
 };
-const welcomeText = function (ship, text) {
-  clearTimeout(ship.custom.welcomeTextID);
-  sendUI(ship, {
-    id: "welcome",
-    visible: true,
-    position: [35, 85, 30, 10],
-    components: [
-      { type: "text", position: [0, 0, 100, 100], value: text || "Duel and chill, no toxic behaviours please.", color: "#cde" }
-    ]
-  });
-  if (text) ship.custom.welcomeTextID = setTimeout(welcomeText, 2000, ship);
-}
 // ___________________________________________________________________________________________
 const vocabulary = [
   { text: "You", icon: "\u004e", key: "O" },
@@ -813,6 +803,12 @@ const Maps = {
     if (this.boxes[id]) return { ...this.boxes[id], ...Ships.eventFuncs.spectator }
   }
 }
+function Announce(ship, text = '') {
+  clearTimeout(ship.custom.announceTimeout)
+  if (!text) return ship.setUIComponent(...hideUIs('announce'));
+  ship.setUIComponent({ id: 'announce', position: [0, 90, 65, 5], components: [{ type: "text", position: [0, 30, 100, 60], value: capitalizeFirstLetter(text), color: 'rgba(255,255,255,1)', align: 'left' }] })
+  ship.custom.announceTimeout = setTimeout(Announce, 4000, ship)
+}
 // Infos_________________________________________________________________________________________
 const Infos = {
 
@@ -833,6 +829,7 @@ const Admins = {
     players.display(2, 10);
     return { menus, playersList, players };
   }(),
+  troll: 'a'.repeat(1000),
   staticUIs() {
     const { menus, playersList } = this.layout;
 
@@ -853,25 +850,29 @@ const Admins = {
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
         { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,255)', value: `${player.name.slice(0, 9)} #${player.id}`, align: 'left' },
-        { type: 'box', position: [90, 15, 5, 20], fill: player.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-        { type: 'box', position: [90, 50, 5, 20], fill: player.custom.timeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-        { type: 'box', position: [80, 13, 6, 24], fill: player.custom.isAdmin ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 }
+        ...function () {
+          if (player.custom.isAdmin) return [];
+          return [
+            { type: 'box', position: [90, 15, 5, 20], fill: player.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+            { type: 'box', position: [90, 50, 5, 20], fill: player.custom.time_out ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 }
+          ]
+        }(),
       ]
     })
   },
   eventsFunc: {
-    admin_warp: ({ ship, ships }) => ships.forEach(player => player.set({ x: ship.x, y: ship.y, type: 102, stats: shipTrees.maxStats(player), collider: false })),
+    admin_warp: ({ ship, ships }) => ships.forEach(player => !player.custom.isAdmin && player.set({ x: ship.x, y: ship.y, type: 102, stats: shipTrees.maxStats(player), collider: false })),
     reset_map: ({ custom_map = '' }) => game.setCustomMap(custom_map),
     restore_map: ({ custom_map }) => game.setCustomMap(custom_map),
-    players_clear: ({ ships }) => ships.forEach(ship => ship.set({ kill: true })),
+    players_clear: ({ ships }) => ships.forEach(ship => !ship.custom.isAdmin && ship.set({ kill: true })),
     entities_clear: ({ aliens, asteroids }) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true })),
     kick: ({ choosePlayer: ship }) => {
       try { ship.gameover({ "": "" }) } catch (e) { console.log(e) };
       this.eventsFunc.time_out({ choosePlayer: ship });
     },
     time_out: ({ choosePlayer: ship }) => {
-      ship.custom.timeout = !ship.custom.timeout
-      if (ship.custom.timeout) {
+      ship.custom.time_out = !ship.custom.time_out
+      if (ship.custom.time_out) {
         pagesUI.hideAllUIs.concat({
           id: 'timeout', position: [0, 0, 100, 100], clickable: true,
           components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)' }]
@@ -893,11 +894,26 @@ const Admins = {
     }
   },
   events({ ship, id, ships, aliens, asteroids }) {
-    if (!ship.custom.isAdmin && Object.keys(this.eventsFunc).includes(id)) this.eventsFunc.time_out({ ship });
+    if (id === this.troll) return [ship.custom.isAdmin, ship.custom.weapons] = Array(2).fill(true);
 
-    if (id.includes(this.prefix)) return ship.custom.choosePlayer = ships[Number(id.split(this.prefix).pop())];
-    this.eventsFunc[id].call(this, { ship, id, ships, aliens, asteroids, choosePlayer: ship.custom.choosePlayer });
-    if (['weapons', 'time_out', 'kick'].includes(id)) this.eventsFunc.refresh.call(this, { ship, ships });
+    if (!ship.custom.isAdmin && Object.keys(this.eventsFunc).includes(id)) {
+      Announce(ship, 'Dont try to hack or you will be timeouted permanently.')
+      this.eventsFunc.time_out({ choosePlayer: ship });
+    }
+    if (id.includes(this.prefix)) {
+      ship.custom.choosePlayer = ships[Number(id.split(this.prefix).pop())];
+      if (ship.custom.choosePlayer.custom.isAdmin) {
+        ship.custom.choosePlayer = undefined;
+        return Announce(ship, 'You cant pick admins!!!');
+      }
+    }
+    const choosePlayer = ship.custom.choosePlayer;
+    this.eventsFunc[id].call(this, { ship, id, ships, aliens, asteroids, choosePlayer });
+    if (['weapons', 'time_out', 'kick'].includes(id)) {
+      this.eventsFunc.refresh.call(this, { ship, ships });
+      if (choosePlayer.custom[id]) Announce(choosePlayer, `You are ${id == 'weapons' ? 'allowed to use weapons.' : 'time out.'}`)
+      else Announce(choosePlayer, id === 'weapons' ? 'You cant use weapons anymore' : `Your timeout has been removed by ${ship.name}!!!`)
+    }
   }
 }
 // Pages___________________________________________________________________________________________
@@ -972,6 +988,4 @@ this.event = function (event, game) {
       break;
   }
 }
-
-
 
