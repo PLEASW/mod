@@ -702,7 +702,7 @@ this.options = {
   max_players: 16
 }
 // ________________________________________________________________________________________
-const defaulScreen = [{
+const defaultScreen = [{
   id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
     { type: "text", position: [0, 30, 100, 60], value: "Restore[J]", color: 'rgba(255,255,255,1)' },
