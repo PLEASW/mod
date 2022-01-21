@@ -32,6 +32,8 @@ auditlog:                 Show audit logs.
 
 */
 
+const buttonsDelay = 30; // buttons Delay (in ticks)
+
 const identifierString = function (ship) {
   ship = ship || { name: "Console (Mod host)", id: null };
   return ship.name + (ship.id != null ? (" (ID " + ship.id + ")") : "");
@@ -755,7 +757,7 @@ this.tick = function (game) {
             ship.setUIComponent(Maps.dynamicUIs(game, ship));
             break;
           case 'admin':
-            hideUIs(Admins.getShipsUIList()).concat(Admins.dynamicUIs(game.ships)).forEach(ui => ship.setUIComponent(ui));
+            if (ship.custom.isAdmin) hideUIs(Admins.getShipsUIList()).concat(Admins.dynamicUIs(game.ships)).forEach(ui => ship.setUIComponent(ui));
             break;
         }
       }
@@ -1183,7 +1185,19 @@ this.event = function (event, game) {
   const { ship } = event;
   switch (event.name) {
     case 'ui_component_clicked':
-      uiEvents(event, game);
+      if (ship.custom.isAdmin || !ship.custom.lastClicked || game.step - ship.custom.lastClicked >= buttonsDelay) {
+        ship.custom.lastClicked = game.step;
+        ship.custom.spamCount = 0;
+        uiEvents(event, game);
+      }
+      else {
+        ship.custom.spamCount = (+ship.custom.spamCount || 0) + 1;
+        if (ship.custom.spamCount >= 3) {
+          removeTimeout(ship);
+          timeout(ship, null, 5)
+        }
+        else Announce(ship, "Don't spam buttons dude");
+      }
       break;
     case 'ship_destroyed':
       Object.assign(ship.custom, { last_x: ship.x, last_y: ship.y });
