@@ -84,18 +84,18 @@ const timeout = function (ship, admin, duration) {
     return showNotif(ship, "removed from timeout", admin)
   }
   else {
-    let data = addTimeout(ship, admin, duration);
+    let data = addTimeout(ship, duration);
     auditLogs.add(ship, "timed out", admin, data.permanent ? "Permanently" : ("Duration: " + data.duration));
     return showNotif(ship, `timed out ${data.permanent ? "permanently" : ("for " + data.duration)}`, admin, true)
   }
 
 }
 
-const addTimeout = function (ship, admin, duration) {
+const addTimeout = function (ship, duration) {
   duration = Number(duration);
   let permanent = Number.isNaN(duration) || duration <= 0;
   ship.custom.timeout = true;
-  pagesUI.hideAllUIs.concat({
+  pagesUI.hideAllUIs().concat({
     id: 'timeoutblock', position: [0, 0, 100, 100], clickable: true,
     components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0)' }]
   }, hideUIs('announce', 'show_ui')).forEach(ui => ship.setUIComponent(ui));
@@ -755,7 +755,7 @@ this.tick = function (game) {
             ship.setUIComponent(Maps.dynamicUIs(game, ship));
             break;
           case 'admin':
-            Admins.dynamicUIs(game.ships).forEach(ui => ship.setUIComponent(ui));
+            hideUIs(Admins.getShipsUIList()).concat(Admins.dynamicUIs(game.ships)).forEach(ui => ship.setUIComponent(ui));
             break;
         }
       }
@@ -1029,6 +1029,9 @@ const Admins = {
     players.display(2, 10);
     return { menus, playersList, players };
   }(),
+  getShipsUIList() {
+    return Array(game.custom.maxID + 1).fill(0).map((i, j) => this.prefix + j)
+  },
   staticUIs() {
     const { menus, playersList } = this.layout;
 
@@ -1044,12 +1047,13 @@ const Admins = {
     ].flat()
   },
   dynamicUIs(ships) {
-    return [Array(game.custom.maxID + 1).fill(0).map((i, j) => ({ id: this.prefix + j, visible: false, position: [0, 0, 0, 0] })),
-    this.layout.players.buttonLayoutGenerate(ships.map((player, index) => this.prefix + player.id), ships, {}, (id, player) => {
-      const fontSize = 60;
+    return this.layout.players.buttonLayoutGenerate(ships.map(player => this.prefix + player.id), ships, {}, (id, player) => {
+      const fontSize = 60, digits = 90 - (Math.trunc(Math.log10(game.custom.maxID)) + 1) * 10;
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,255)', value: `${player.name.slice(0, 9)} #${player.id}`, align: 'left' },
+        { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,255)', value: `${player.name}`, align: 'left' },
+        { type: 'box', position: [digits - 5, 0, 100 - digits + 5, 100], fill: 'gray' },
+        { type: 'text', position: [digits, 50 - fontSize / 2, 100 - digits, fontSize], color: 'rgb(255,255,0)', value: `#${player.id}`, align: 'left' },
         ...function () {
           if (player.custom.isAdmin) return [];
           return [
@@ -1058,7 +1062,7 @@ const Admins = {
           ]
         }(),
       ]
-    })].flat()
+    })
   },
   eventsFunc: {
     admin_warp: ({ ship, ships }) => {
@@ -1125,16 +1129,18 @@ const pagesUI = {
   ship: Ships.staticUIs(),
   map: Maps.staticUIs(),
   admin: Admins.staticUIs(),
-  hideUIs, hidePages: hideUIs(
-    Ships.otherIDs, Ships.shipFuncIDs, Ships.shiptreeIDs,
-    Maps.otherIDs, Object.keys(Maps.boxes).map(i => i.toLowerCase()),
-    Admins.funcIDs, Admins.shipFuncIDs, Array(16).fill(0).map((a, i) => Admins.prefix + i)
-  ),
-  hideAllUIs: hideUIs(
+  hideUIs, hidePages: () => hideUIs(
     Ships.otherIDs, Ships.shipFuncIDs, Ships.shiptreeIDs,
     Maps.otherIDs, Object.keys(Maps.boxes).map(i => i.toLowerCase()),
     Admins.funcIDs, Admins.shipFuncIDs, Array(16).fill(0).map((a, i) => Admins.prefix + i),
-    'overlay', Options.ids, defaultScreen.map(ui => ui.id)
+    Admins.getShipsUIList()
+  ),
+  hideAllUIs: () => hideUIs(
+    Ships.otherIDs, Ships.shipFuncIDs, Ships.shiptreeIDs,
+    Maps.otherIDs, Object.keys(Maps.boxes).map(i => i.toLowerCase()),
+    Admins.funcIDs, Admins.shipFuncIDs, Array(16).fill(0).map((a, i) => Admins.prefix + i),
+    'overlay', Options.ids, defaultScreen.map(ui => ui.id),
+    Admins.getShipsUIList()
   ),
   displayUIs({ ships, id, ship }) {
     if (Options.ids.includes(id)) {
@@ -1142,16 +1148,16 @@ const pagesUI = {
       ship.custom.page = id;
       switch (id) {
         case 'map':
-          return this.hidePages.concat(this.map);
+          return this.hidePages().concat(this.map);
         case 'ship':
-          return this.hidePages.concat(this.ship);
+          return this.hidePages().concat(this.ship);
         case 'admin':
-          if (ship.custom.isAdmin) return this.hidePages.concat(this.admin).concat(Admins.dynamicUIs(ships));
+          if (ship.custom.isAdmin) return this.hidePages().concat(this.admin).concat(Admins.dynamicUIs(ships));
           else return Announce(ship, 'Section not available.')
         case 'hide_UI':
           ship.custom.page = '';
           ship.custom.optionsScreen = false;
-          return this.hideAllUIs.concat([
+          return this.hideAllUIs().concat([
             { id: 'show_ui', position: [0, 0, 0, 0], shortcut: 'B', clickable: true },
             { id: 'announce', position: [0, 90, 20, 5], components: [{ type: "text", position: [0, 30, 100, 60], value: "Press B to show UI", color: 'rgba(255,255,255,1)', align: 'left' }] },
           ])
@@ -1160,8 +1166,8 @@ const pagesUI = {
       ship.custom.optionsScreen = !ship.custom.optionsScreen;
       ship.custom.page = 'ship';
       if (ship.custom.optionsScreen) return this.options.concat(this.ship);
-      return this.hidePages.concat(this.hideUIs(Options.otherIDs, Options.ids)).concat(defaultScreen)
-    } else if (id === 'show_ui') return defaultScreen.concat(this.hideUIs('show_ui', 'announce'))
+      return this.hidePages().concat(this.hideUIs(Options.otherIDs, Options.ids)).concat(defaultScreen)
+    } else if (id === 'show_ui') return defaultScreen.concat(this.hideUIs('show_ui', 'announce'));
     return [];
   },
 }
