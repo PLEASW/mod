@@ -37,6 +37,7 @@ const getAuthor = function (ship) {
 
 const showNotif = function (ship, text, author, ignoreLogs) {
   Announce(ship, "You were " + text + " by " + getAuthor(author));
+  if (author != null) Announce(author, getAuthor(ship) + " was " + text);
   if (!ignoreLogs) auditLogs.add(ship, text, author, null)
   return "was " + text
 }
@@ -729,6 +730,7 @@ function initialize(ship) {
   });
   if (ship.custom.init) return;
   ship.custom.init = true;
+  game.custom.maxID = Math.max(game.custom.maxID, ship.id, 0) || ship.id;
   ship.custom.optionsScreen = false;
   ship.custom.shipTree = 'vanilla';
   ship.custom.isAdmin = false;
@@ -740,11 +742,14 @@ this.tick = function (game) {
     for (let ship of game.ships) {
       _0x32e725 && !ship.custom.weapons && ship.emptyWeapons();
       if (game.step % 30 === 0) {
+        resetUI(ship);
         if (!ship.custom.timeout) switch (ship.custom.page) {
           case 'map':
             ship.setUIComponent(Maps.dynamicUIs(game, ship));
-          default:
-            resetUI(ship);
+            break;
+          case 'admin':
+            Admins.dynamicUIs(game.ships).forEach(ui => ship.setUIComponent(ui));
+            break;
         }
       }
       if (game.step % 60 === 0) initialize(ship);
@@ -1007,7 +1012,7 @@ const Admins = {
   prefix, funcIDs: ['admin_warp', 'players_clear', 'entities_clear'],
   // restore_map reset_map 
   shipIDs: Array(this.options.max_players).fill(0).map((a, i) => prefix + i),
-  shipFuncIDs: ['refresh', 'kick', 'timeout', 'weapons'],
+  shipFuncIDs: ['kick', 'timeout', 'weapons'],
   // promote demote
   layout: function () {
     const menus = new Grids([5, 35, 30, 60], 1, 3);
@@ -1032,7 +1037,8 @@ const Admins = {
     ].flat()
   },
   dynamicUIs(ships) {
-    return this.layout.players.buttonLayoutGenerate(ships.map((player, index) => this.prefix + index), ships, {}, (id, player) => {
+    return [Array(game.custom.maxID + 1).fill(0).map((i, j) => ({ id: this.prefix + j, visible: false, position: [0, 0, 0, 0] })),
+    this.layout.players.buttonLayoutGenerate(ships.map((player, index) => this.prefix + player.id), ships, {}, (id, player) => {
       const fontSize = 60;
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
@@ -1045,7 +1051,7 @@ const Admins = {
           ]
         }(),
       ]
-    })
+    })].flat()
   },
   eventsFunc: {
     admin_warp: ({ ship, ships }) => {
@@ -1073,9 +1079,6 @@ const Admins = {
     promote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = true,
     demote: ({ choosePlayer }) => choosePlayer.custom.isAdmin = false,
     weapons: ({ choosePlayer, ship }) => setWeapons(choosePlayer, ship),
-    refresh: function ({ ship, ships }) {
-      hideUIs(this.shipIDs).concat(this.dynamicUIs(ships)).forEach(ui => ship.setUIComponent(ui));
-    }
   },
   events({ ship, id, ships, aliens, asteroids }) {
     let auth = id.split("_");
@@ -1091,7 +1094,8 @@ const Admins = {
       this.eventsFunc.timeout({ choosePlayer: ship });
     }
     if (id.includes(this.prefix)) {
-      ship.custom.choosePlayer = ships[Number(id.split(this.prefix).pop())];
+      ship.custom.choosePlayer = game.findShip(Number(id.split(this.prefix).pop()));
+      if (ship == null) return Announce(ship, "Player not found!");
       if (!ship.custom.adminPerms && ship.custom.choosePlayer.custom.isAdmin) {
         ship.custom.choosePlayer = undefined;
         return Announce(ship, 'You cant pick admins!!!');
@@ -1099,7 +1103,6 @@ const Admins = {
     }
     const choosePlayer = ship.custom.choosePlayer;
     this.eventsFunc[id].call(this, { ship, id, ships, aliens, asteroids, choosePlayer });
-    // if (['weapons', 'timeout'].includes(id)) this.eventsFunc.refresh.call(this, { ship, ships });
   }
 }
 // Pages___________________________________________________________________________________________
@@ -1181,4 +1184,3 @@ this.event = function (event, game) {
       break;
   }
 }
-
