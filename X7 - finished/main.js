@@ -734,7 +734,7 @@ function initialize(ship) {
   ship.custom.optionsScreen = false;
   ship.custom.shipTree = 'vanilla';
   ship.custom.isAdmin = false;
-  defaulScreen.forEach(ui => ship.setUIComponent(ui));
+  defaultScreen.forEach(ui => ship.setUIComponent(ui));
 }
 // ________________________________________________________________________________________
 this.tick = function (game) {
@@ -1042,8 +1042,8 @@ const Admins = {
         ...function () {
           if (player.custom.isAdmin) return [];
           return [
-            { type: 'box', position: [90, 15, 5, 20], fill: player.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-            { type: 'box', position: [90, 50, 5, 20], fill: player.custom.timeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 }
+            { type: 'box', position: [90, 50, 5, 20], fill: player.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+            { type: 'box', position: [90, 15, 5, 20], fill: player.custom.timeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 }
           ]
         }(),
       ]
@@ -1101,6 +1101,7 @@ const Admins = {
     }
     const choosePlayer = ship.custom.choosePlayer;
     this.eventsFunc[id].call(this, { ship, id, ships, aliens, asteroids, choosePlayer });
+    // if (['weapons', 'timeout'].includes(id)) this.eventsFunc.refresh.call(this, { ship, ships });
   }
 }
 // Pages___________________________________________________________________________________________
@@ -1125,7 +1126,7 @@ const pagesUI = {
     Ships.otherIDs, Ships.shipFuncIDs, Ships.shiptreeIDs,
     Maps.otherIDs, Object.keys(Maps.boxes).map(i => i.toLowerCase()),
     Admins.funcIDs, Admins.shipFuncIDs, Array(16).fill(0).map((a, i) => Admins.prefix + i),
-    'overlay', Options.ids, defaulScreen.map(ui => ui.id)
+    'overlay', Options.ids, defaultScreen.map(ui => ui.id)
   ),
   displayUIs({ ships, id, ship }) {
     if (Options.ids.includes(id)) {
@@ -1151,8 +1152,8 @@ const pagesUI = {
       ship.custom.optionsScreen = !ship.custom.optionsScreen;
       ship.custom.page = 'ship';
       if (ship.custom.optionsScreen) return this.options.concat(this.ship);
-      return this.hidePages.concat(this.hideUIs(Options.otherIDs, Options.ids)).concat(defaulScreen)
-    } else if (id === 'show_ui') return defaulScreen.concat(this.hideUIs('show_ui', 'announce'))
+      return this.hidePages.concat(this.hideUIs(Options.otherIDs, Options.ids)).concat(defaultScreen)
+    } else if (id === 'show_ui') return defaultScreen.concat(this.hideUIs('show_ui', 'announce'))
     return [];
   },
 }
