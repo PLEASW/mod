@@ -727,7 +727,6 @@ function initialize(ship) {
       { type: "rectangle", position: [0, 0, 100, 100], value: ship.custom[game.custom.id], color: 'rgba(255, 255, 255, 0.2)' }
     ]
   });
-  if (ship.custom.isAdmin) ship.set({ collider: true });
   if (ship.custom.init) return;
   ship.custom.init = true;
   ship.custom.optionsScreen = false;
