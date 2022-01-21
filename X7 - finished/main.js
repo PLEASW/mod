@@ -103,7 +103,7 @@ const removeTimeout = function (ship) {
   clearTimeout(ship.custom.timeoutID);
   ship.setUIComponent(...hideUIs('timeoutblock'));
   ship.set({ ...shipTrees.reset(ship), idle: false });
-  defaulScreen.forEach(ui => ship.setUIComponent(ui));
+  defaultScreen.forEach(ui => ship.setUIComponent(ui));
 }
 
 const kickShip = function (ship, admin, args) {
@@ -716,7 +716,6 @@ const defaultScreen = [{
   id: "options", position: [73, 92, 6.6, 4], clickable: true, shortcut: 'B', components: [
     { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
     { type: "text", position: [0, 30, 100, 60], value: "Options[B]", color: 'rgba(255,255,255,1)' },
-
   ]
 }]
 // ___________________________________________________________________________________________
