@@ -932,23 +932,25 @@ const Ships = {
     stats: ({ ship }) => { return { ...shipTrees.restore(ship), stats: shipTrees.maxStats(ship) * !ship.stats } },
     reset: ({ ship }) => shipTrees.reset(ship),
     warp: function ({ ship, ships }) {
+      if (ships.length <= 1) return;
       const { custom } = ship;
       custom.warpIndex ??= ships.indexOf(ship);
 
       do ships[++custom.warpIndex] ?? (custom.warpIndex = 0);
-      while (game.ships.length > 1 && ships[custom.warpIndex] === ship);
+      while (ships[custom.warpIndex] === ship);
 
       const { x, y } = ships[custom.warpIndex];
-      return { x, y, collider: false, type: 102, crystals: 0 };
+      
+      return { x, y, ...this.spectate() }
     },
     next: ({ ship }) => shipTrees.changeShip(ship),
     previous: ({ ship }) => shipTrees.changeShip(ship, true),
-    spectator: () => { return { type: 102, collider: false, crystals: 0 } }
+    spectate: () => ({ type: 102, collider: false, crystals: 0 })
   },
   events({ ship, id, ships }) {
     if (this.shiptreeIDs.includes(id)) return shipTrees.changeShipTree({ ship, id });
     if (ship.type === 102 && ['restore', 'stats'].includes(id)) return;
-    return this.eventFuncs[id]?.call(this, { ship, ships });
+    return this.eventFuncs[id]?.call(this.eventFuncs, { ship, ships });
   }
 }
 // Map___________________________________________________________________________________________
@@ -1196,15 +1198,21 @@ this.event = function (event, game) {
       if (ship.custom.isAdmin || !ship.custom.lastClicked || game.step - ship.custom.lastClicked >= buttonsDelay) {
         ship.custom.lastClicked = game.step;
         ship.custom.spamCount = 0;
+        ship.custom.buttons_warned = false;
+        ship.custom.buttons_punished = false;
         uiEvents(event, game);
       }
-      else {
+      else if (event.id != "timeoutblock" && !ship.custom.buttons_punished) {
         ship.custom.spamCount = (+ship.custom.spamCount || 0) + 1;
         if (ship.custom.spamCount >= 3) {
+          ship.custom.buttons_punished = true;
           removeTimeout(ship);
           timeout(ship, null, 5)
         }
-        else Announce(ship, "Don't spam buttons dude");
+        else if (!ship.custom.buttons_warned) {
+          Announce(ship, "Don't spam buttons dude");
+          ship.custom.buttons_warned = true
+        }
       }
       break;
     case 'ship_destroyed':
