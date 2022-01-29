@@ -754,7 +754,6 @@ this.tick = function (game) {
         resetUI(ship);
         if (!ship.custom.timeout) switch (ship.custom.page) {
           case 'map':
-            console.log('helo')
             ship.setUIComponent(Maps.dynamicUIs(game, ship));
             break;
           case 'admin':
@@ -1197,22 +1196,25 @@ this.event = function (event, game) {
   const { ship } = event;
   switch (event.name) {
     case 'ui_component_clicked':
-      if (ship.custom.isAdmin || !ship.custom.lastClicked || game.step - ship.custom.lastClicked >= buttonsDelay) {
-        ship.custom.lastClicked = game.step;
-        ship.custom.spamCount = 0;
-        ship.custom.buttons_warned = false;
-        ship.custom.buttons_punished = false;
-        uiEvents(event, game);
-      }
-      else if (event.id != "timeoutblock" && !ship.custom.buttons_punished) {
-        ship.custom.spamCount++;
-        if (ship.custom.spamCount >= 3) {
-          ship.custom.buttons_punished = true;
-          timeout(ship, null, 5);
+      if (!ship.custom.timeout && event.id != "timeoutblock") {
+        if (ship.custom.isAdmin || !ship.custom.lastClicked || game.step - ship.custom.lastClicked >= buttonsDelay) {
+          ship.custom.lastClicked = game.step;
+          ship.custom.spamCount = 0;
+          ship.custom.buttons_warned = false;
+          ship.custom.buttons_punished = false;
+          uiEvents(event, game);
         }
-        else if (!ship.custom.buttons_warned) {
-          Announce(ship, "Don't spam buttons dude");
-          ship.custom.buttons_warned = true
+        else if (!ship.custom.buttons_punished) {
+          ++ship.custom.spamCount;
+          if (ship.custom.spamCount >= 3) {
+            ship.custom.buttons_punished = true;
+            removeTimeout(ship); // in case they are in timeout since the next function is a switcher
+            timeout(ship, null, 5); // to log in audit logs
+          }
+          else if (!ship.custom.buttons_warned) {
+            Announce(ship, "Don't spam buttons dude");
+            ship.custom.buttons_warned = true
+          }
         }
       }
       break;
