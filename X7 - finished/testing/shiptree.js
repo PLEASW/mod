@@ -29,16 +29,11 @@ class shipTree {
     const shiptrees = { ...this.initShiptree };
     for (let shiptree of Object.values(shiptrees)) this.#generateShipPath(shiptree);
     return Object.values(shiptrees).flat().sort((a, b) => a.level - b.level).map((ship, code) => {
-      if (code < 101) {
-        ship.typespec.code = code;
-        ship.typespec.model = ship.model = code - ship.level * 100;
-      } else if (code >= 101) {
-        ship.typespec.code = ++code;
-        ship.typespec.model = ship.model = code - ship.level * 100;
-      }
+      ship.typespec.code = code >= 101 ? ++code : code;
+      ship.typespec.model = ship.model = code - ship.level * 100;
       return ship;
     }).map(ship => {
-      ship.next = ship.typespec.next = ship.next?.map(code => code.typespec.code)
+      ship.next = ship.typespec.next = ship.next?.map(code => code?.typespec.code)
       return JSON.stringify(ship);
     }).concat(this.placeHolder);
   }
