@@ -103,6 +103,7 @@ const addTimeout = function (ship, duration) {
   }, hideUIs('announce', 'show_ui')).forEach(ui => ship.setUIComponent(ui));
   ship.set({ collider: false, idle: true, crystals: 0 });
   ship.custom.page = '';
+  ship.custom.optionsScreen = false;
   if (!permanent) ship.custom.timeoutID = setTimeout(removeTimeout, duration * 1000, ship);
   return { permanent, duration: duration + " second(s)" }
 }
@@ -753,6 +754,7 @@ this.tick = function (game) {
         resetUI(ship);
         if (!ship.custom.timeout) switch (ship.custom.page) {
           case 'map':
+            console.log('helo')
             ship.setUIComponent(Maps.dynamicUIs(game, ship));
             break;
           case 'admin':
@@ -939,9 +941,9 @@ const Ships = {
       do ships[++custom.warpIndex] ?? (custom.warpIndex = 0);
       while (ships[custom.warpIndex] === ship);
 
-      const { x, y } = ships[custom.warpIndex];
-      
-      return { x, y, ...this.spectate() }
+      const { x, y, vx, vy } = ships[custom.warpIndex];
+
+      return { x, y, vx, vy, ...this.spectate() }
     },
     next: ({ ship }) => shipTrees.changeShip(ship),
     previous: ({ ship }) => shipTrees.changeShip(ship, true),
@@ -950,7 +952,7 @@ const Ships = {
   events({ ship, id, ships }) {
     if (this.shiptreeIDs.includes(id)) return shipTrees.changeShipTree({ ship, id });
     if (ship.type === 102 && ['restore', 'stats'].includes(id)) return;
-    return this.eventFuncs[id]?.call(this.eventFuncs, { ship, ships });
+    return this.eventFuncs[id]?.({ ship, ships });
   }
 }
 // Map___________________________________________________________________________________________
@@ -1007,13 +1009,13 @@ const Maps = {
     return { id: 'players_map', position: this.layout.map.displayUI.flat(), components: this.updateMap(game, ship, width, custom) }
   },
   events({ ship, id }) {
-    if (this.boxes[id]) return { ...this.boxes[id], ...Ships.eventFuncs.spectator(ship) }
+    if (this.boxes[id]) return { ...this.boxes[id], ...Ships.eventFuncs.spectate(ship) }
   }
 }
 function Announce(ship, text = '') {
   clearTimeout(ship.custom.announceTimeout)
   if (!text) return ship.setUIComponent(...hideUIs('announce'));
-  ship.setUIComponent({ id: 'announce', position: [0, 90, 65, 5], components: [{ type: "text", position: [0, 30, 100, 60], value: capitalizeFirstLetter(text), color: 'rgba(255,255,255,1)', align: 'left' }] })
+  ship.setUIComponent({ id: 'announce', position: [36, 90, 65, 5], components: [{ type: "text", position: [0, 30, 100, 60], value: capitalizeFirstLetter(text), color: 'rgba(255,255,255,1)', align: 'left' }] })
   ship.custom.announceTimeout = setTimeout(Announce, 4000, ship)
 }
 // Admin_________________________________________________________________________________________
@@ -1141,7 +1143,7 @@ const pagesUI = {
     Ships.otherIDs, Ships.shipFuncIDs, Ships.shiptreeIDs,
     Maps.otherIDs, Object.keys(Maps.boxes).map(i => i.toLowerCase()),
     Admins.funcIDs, Admins.shipFuncIDs, Admins.getShipsUIList(),
-    'overlay', Options.ids, defaultScreen.map(ui => ui.id),
+    'overlay', Options.ids, defaultScreen.map(ui => ui.id), 'announce', 'hide_shortcut'
   ),
   displayUIs({ ships, id, ship }) {
     if (Options.ids.includes(id)) {
@@ -1164,7 +1166,7 @@ const pagesUI = {
         if (ship.custom.optionsScreen) return this.options.concat(this.ship);
         return this.hidePages().concat(this.hideUIs(Options.otherIDs, Options.ids)).concat(defaultScreen)
       case 'show_ui':
-        return defaultScreen.concat(this.hideUIs('show_ui', 'announce'));
+        return this.hideUIs('show_ui', 'hide_shortcut', 'restore').concat(defaultScreen);
       case 'hide_UI':
         ship.custom.page = '';
         ship.custom.optionsScreen = false;
@@ -1172,7 +1174,7 @@ const pagesUI = {
           { id: 'show_ui', position: [0, 0, 0, 0], shortcut: 'V', clickable: true },
           { id: 'restore', position: [0, 0, 0, 0], shortcut: 'J', clickable: true },
           {
-            id: 'announce', position: [0, 90, 20, 5], components: [
+            id: 'hide_shortcut', position: [0, 90, 20, 5], components: [
               { type: "text", position: [0, 0, 100, 50], value: "Show UI [V]", color: 'rgba(255,255,255,1)', align: 'left' },
               { type: "text", position: [0, 50, 100, 50], value: "Restore [J]", color: 'rgba(255,255,255,1)', align: 'left' }
             ]
@@ -1203,11 +1205,10 @@ this.event = function (event, game) {
         uiEvents(event, game);
       }
       else if (event.id != "timeoutblock" && !ship.custom.buttons_punished) {
-        ship.custom.spamCount = (+ship.custom.spamCount || 0) + 1;
+        ship.custom.spamCount++;
         if (ship.custom.spamCount >= 3) {
           ship.custom.buttons_punished = true;
-          removeTimeout(ship);
-          timeout(ship, null, 5)
+          timeout(ship, null, 5);
         }
         else if (!ship.custom.buttons_warned) {
           Announce(ship, "Don't spam buttons dude");
