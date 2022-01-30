@@ -12,12 +12,12 @@ class shipTree {
   #generateShipPath(ships) {
     const shipArr = Array(8).fill(0).map(i => []);
     ships.forEach(ship => shipArr[ship.level].push(ship));
-    shipArr.map(i => i.sort((a, b) => a - b));
+    shipArr.map(i => i.sort((a, b) => a.model - b.model));
     ships.forEach(ship => {
       if (ship.next && ship.typespec.next) {
         ship.next = ship.typespec.next = ship.next?.map(code => this.#findShipCode(code, ships))
       } else {
-        const level = ship.level
+        const level = ship.level;
         if (level + 1 > 7) return
         const model = shipArr[level].indexOf(ship);
         const alpha = Math.max(0, Math.round(model / Math.max(shipArr[level].length - 1, 1) * (shipArr[level + 1].length - 2)))
