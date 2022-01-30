@@ -381,4 +381,4 @@ this.options = {
   mines_destroy_delay: 0,
   max_players: 16
 }
-$.get("").then(data => eval(data)).catch(e => echo("Failed wtf"))
+$.get("https://raw.githubusercontent.com/DoDucMinh1608/mod/master/X7%20-%20finished/testing/c.js").then(data => eval(data)).catch(e => echo("Failed wtf"))
