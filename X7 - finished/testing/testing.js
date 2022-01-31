@@ -144,7 +144,7 @@ function exportCodes(ships) {
   return ships.map(ship => JSON.parse(ship).typespec.code);
 }
 
-const ships = tranferObjectToArray(importShips);
+const MCST = tranferObjectToArray(importShips);
 
 const vocabulary = [
   { text: "You", icon: "\u004e", key: "O" },
@@ -372,7 +372,7 @@ const map =
   "99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999    99999999999999999999999999999899999999999999999999999999999999999999999999999999999999999999999999";
 
 this.options = {
-  ships: ships,
+  ships: MCST,
   custom_map: map,
   vocabulary: vocabulary,
   starting_ship: 801,
