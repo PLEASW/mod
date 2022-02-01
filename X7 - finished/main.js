@@ -101,7 +101,7 @@ const addTimeout = function (ship, duration) {
     id: 'timeoutblock', position: [0, 0, 100, 100], clickable: true,
     components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0)' }]
   }, hideUIs('announce', 'show_ui')).forEach(ui => ship.setUIComponent(ui));
-  ship.set({ collider: false, idle: true, crystals: 0 });
+  ship.set({ collider: false, idle: true, crystals: 0, stats: 0 });
   ship.custom.page = '';
   ship.custom.optionsScreen = false;
   if (!permanent) ship.custom.timeoutID = setTimeout(removeTimeout, duration * 1000, ship);
@@ -112,7 +112,7 @@ const removeTimeout = function (ship) {
   ship.custom.timeout = false;
   clearTimeout(ship.custom.timeoutID);
   ship.setUIComponent(...hideUIs('timeoutblock'));
-  ship.set({ ...shipTrees.reset(ship), idle: false });
+  ship.set({ ...shiptree.getEvent('reset', ship, ship.custom.tree = 'vanilla'), idle: false });
   defaultScreen.forEach(ui => ship.setUIComponent(ui));
 }
 
@@ -513,8 +513,12 @@ const speedsterShips = {
   Gallus_X_644: '{"name":"Gallus-X","level":6,"model":44,"size":1.15,"specs":{"shield":{"capacity":[180,235],"reload":[4,7]},"generator":{"capacity":[80,160],"reload":[25,43]},"ship":{"mass":165,"speed":[75,125],"rotation":[75,100],"acceleration":[70,95]}},"bodies":{"main":{"section_segments":12,"offset":{"x":0,"y":-110,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0,0],"y":[0,4,26,31,78,124,132,156,188,207,226,220],"z":[0,0,0,0,0,0,0,0,0,0,0,0]},"width":[0,6,14,18,28,32,40,45,40,25,20,0],"height":[0,6,14,18,19,20,25,27,26,20,18,0],"propeller":true,"texture":[17,12,4,1,10,4,12,8,4,13,17],"laser":{"damage":[10,20],"rate":2,"type":2,"speed":[130,170],"number":5,"angle":5,"error":7,"recoil":30}},"cockpit":{"section_segments":12,"offset":{"x":0,"y":-55,"z":11},"position":{"x":[0,0,0,0,0,0,0,0],"y":[0,4,32,62,69,116,140,143],"z":[0,0,0,0,5,8,8,5]},"width":[0,7,15,16,20,16,5,0],"height":[0,7,15,16,18,14,5,0],"texture":[9,9,9,2,11,3]},"thrust1":{"section_segments":16,"offset":{"x":70,"y":-107,"z":-15},"position":{"x":[0,0,0,0,0,0,0,0,0],"y":[0,20,15,28,37,50,45,60,55],"z":[0,0,0,0,0,0,0,0,0]},"width":[0,20,24,27,27,24,17,11,0],"height":[0,20,24,27,27,24,17,11,0],"propeller":true,"texture":[6,18,10,63,8,13,63,17]},"thrust2":{"section_segments":16,"offset":{"x":75,"y":47,"z":17},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-5,15,10,28,37,55,50,65,60],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,20,26,30,30,26,19,13,0],"height":[0,20,26,30,30,26,19,13,0],"propeller":true,"texture":[6,18,12,63,18,13,63,17]},"side_cannons":{"section_segments":6,"offset":{"x":87,"y":64,"z":50},"position":{"x":[3,3,4,4,1,1],"y":[2,0,7,40,47,46],"z":[0,0,0,0,0,0,0]},"width":[0,3,6,7,3,0],"height":[0,6,8,9,3,0],"angle":-4,"texture":[17,63],"laser":{"damage":[2,5],"rate":2,"type":1,"speed":[150,250],"number":1}},"strut1":{"section_segments":8,"offset":{"x":0,"y":34,"z":35},"position":{"x":[0,0,0,0],"y":[0,8,39,45],"z":[0,0,2,3]},"width":[0,6,7,0],"height":[5,12,14,7],"texture":[63]},"strut2":{"section_segments":8,"offset":{"x":75,"y":61,"z":45},"position":{"x":[0,0,0,0],"y":[0,8,37,42],"z":[0,0,2,3]},"width":[0,5,6,0],"height":[5,7,8,7],"texture":[3]}},"wings":{"bridge1":{"length":[50,0],"width":[30,20,30],"angle":[-20,-20],"position":[0,-25,-20],"doubleside":true,"bump":{"position":-20,"size":10},"texture":[63],"offset":{"x":18,"y":-57,"z":0}},"bridge2":{"length":[40,0],"width":[30,25,25],"angle":[20,0],"position":[0,12,11],"doubleside":true,"bump":{"position":-20,"size":10},"texture":[63],"offset":{"x":33,"y":70,"z":4}},"main":{"length":[90,0],"width":[45,25,0],"angle":[5,0,0],"position":[-7,20,30],"doubleside":true,"bump":{"position":20,"size":10},"texture":[1],"offset":{"x":0,"y":70,"z":40}}},"typespec":{"name":"Gallus-X","level":6,"model":44,"code":644,"specs":{"shield":{"capacity":[180,235],"reload":[4,7]},"generator":{"capacity":[80,160],"reload":[25,43]},"ship":{"mass":165,"speed":[75,125],"rotation":[75,100],"acceleration":[70,95]}},"shape":[2.53,2.402,1.919,2.043,2.756,2.941,3.025,2.987,2.757,0.769,0.736,0.715,0.708,0.721,0.747,0.789,1.047,2.985,3.228,3.302,3.276,3.051,2.383,2.605,2.707,2.673,2.707,2.605,2.383,3.051,3.276,3.302,3.228,2.985,1.047,0.789,0.747,0.721,0.708,0.715,0.736,0.769,2.757,2.987,3.025,2.941,2.756,2.043,1.919,2.402],"lasers":[{"x":0,"y":-2.53,"z":0,"angle":0,"damage":[10,20],"rate":2,"type":2,"speed":[130,170],"number":5,"spread":5,"error":7,"recoil":30},{"x":2.07,"y":1.477,"z":1.15,"angle":-4,"damage":[2,5],"rate":2,"type":1,"speed":[150,250],"number":1,"spread":0,"error":0,"recoil":0},{"x":-2.07,"y":1.477,"z":1.15,"angle":4,"damage":[2,5],"rate":2,"type":1,"speed":[150,250],"number":1,"spread":0,"error":0,"recoil":0}],"radius":3.302}}',
   Star_Booster_645: '{"name":"Star-Booster","level":6,"model":45,"size":1.45,"specs":{"shield":{"capacity":[125,200],"reload":[5.5,7]},"generator":{"capacity":[130,150],"reload":[33,41]},"ship":{"mass":160,"speed":[90,115],"rotation":[60,80],"acceleration":[80,110],"dash":{"rate":1,"burst_speed":[110,140],"speed":[110,140],"acceleration":[90,120],"initial_energy":[1,1],"energy":[30,45]}}},"bodies":{"front":{"section_segments":12,"offset":{"x":0,"y":-40,"z":0},"position":{"x":[0,0,0,0,0,0,0],"y":[-63,-58,-60,-47,-15,10,45],"z":[0,0,0,0,0,0,0]},"width":[0,8,15,19,25,26,27],"height":[0,8,15,20,25,27,27],"texture":[6,15,63,1,2,3],"laser":{"damage":[42,58],"rate":4,"type":1,"speed":[140,160],"number":1,"recoil":0,"error":2,"angle":0}},"body1":{"section_segments":8,"offset":{"x":16,"y":12,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[-100,-80,-50,-20,10,30,40],"z":[0,0,0,0,0,0,0]},"width":[0,13,16,18,18,18,0,0],"height":[0,10,10,10,10,10,5,5,5,0,0],"texture":[4,8,63,4,1,1]},"detail1":{"section_segments":12,"offset":{"x":0,"y":-24,"z":21.3},"position":{"x":[0,0,0,0,0,0,0,0,0,0],"y":[25,27,25,35,60,70,77,86,86],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,8,14,14,14,14,14,14,0],"height":[0,6,11,11,11,11,11,11,0],"texture":[17,12,4,10,63,3,4,3]},"cockpit":{"section_segments":12,"offset":{"x":0,"y":10,"z":16},"position":{"x":[0,0,0,0,0],"y":[-93,-62,-30,0,50],"z":[0,0,0,6,9]},"width":[0,10,13,13,0],"height":[0,13,16,10,0],"texture":[7,9,9,4]},"motor":{"section_segments":12,"offset":{"x":0,"y":-5,"z":0},"position":{"x":[0,0,0,0,0],"y":[10,10,70,100,95],"z":[0,0,0,0,0]},"width":[0,27,27,22,0],"height":[0,27,27,22,0],"texture":[5,11,4,17],"propeller":true},"top_propulsors":{"section_segments":15,"offset":{"x":30,"y":15,"z":3},"position":{"x":[-2,0,0,0,0,0,0,0,0,0],"y":[-25,-15,0,10,20,34,34,40,60,70],"z":[0,0,0,0,0,0,0,0,0,0]},"width":[0,10,12,13,13,13,13,13,10,0],"height":[0,10,14,15,15,15,15,15,12,0],"propeller":false,"texture":[3,63,4,2,11,2,3,63,4]}},"wings":{"main1":{"doubleside":true,"offset":{"x":19,"y":40,"z":4},"length":[50,20],"width":[110,20],"angle":[-10,0],"position":[20,0],"texture":[11],"bump":{"position":0,"size":4}},"main2":{"doubleside":true,"offset":{"x":56,"y":68,"z":-2},"length":[0,0,0,25],"width":[0,0,0,100,0],"angle":[-20,-20,-20,-10],"position":[-40,-40,-40,-50,-30],"texture":[0,8,63,63],"bump":{"position":15,"size":6}},"main3":{"doubleside":true,"offset":{"x":8,"y":70,"z":-8},"length":[50,20],"width":[50,10],"angle":[60,10],"position":[-20,0],"texture":[63],"bump":{"position":20,"size":10}}},"typespec":{"name":"Star-Booster","level":6,"model":45,"code":645,"specs":{"shield":{"capacity":[125,200],"reload":[5.5,7]},"generator":{"capacity":[130,150],"reload":[33,41]},"ship":{"mass":160,"speed":[90,115],"rotation":[60,80],"acceleration":[80,110],"dash":{"rate":1,"burst_speed":[110,140],"speed":[110,140],"acceleration":[90,120],"initial_energy":[1,1],"energy":[30,45]}}},"shape":[2.987,2.932,2.711,2.288,2.007,1.668,1.453,1.293,1.87,1.863,1.847,1.882,1.945,2.053,2.204,2.424,2.585,2.549,2.511,2.552,2.615,2.769,2.977,3.3,3.38,2.76,3.38,3.3,2.977,2.769,2.615,2.552,2.511,2.549,2.585,2.424,2.204,2.053,1.945,1.882,1.847,1.863,1.87,1.293,1.453,1.668,2.007,2.288,2.711,2.932],"lasers":[{"x":0,"y":-2.987,"z":0,"angle":0,"damage":[42,58],"rate":4,"type":1,"speed":[140,160],"number":1,"spread":0,"error":2,"recoil":0}],"radius":3.38}}',
 };
-; (function (_0x49f0bf, _0x301865) { const _0x122a7d = _0x470b, _0x1794e5 = _0x49f0bf(); while (!![]) { try { const _0x194c89 = parseInt(_0x122a7d(0xfb)) / 0x1 + -parseInt(_0x122a7d(0xf7)) / 0x2 + parseInt(_0x122a7d(0x113)) / 0x3 * (-parseInt(_0x122a7d(0xff)) / 0x4) + parseInt(_0x122a7d(0x103)) / 0x5 + -parseInt(_0x122a7d(0xf6)) / 0x6 + -parseInt(_0x122a7d(0xfe)) / 0x7 * (parseInt(_0x122a7d(0xf8)) / 0x8) + -parseInt(_0x122a7d(0x100)) / 0x9 * (-parseInt(_0x122a7d(0x10c)) / 0xa); if (_0x194c89 === _0x301865) break; else _0x1794e5['push'](_0x1794e5['shift']()); } catch (_0x2731ec) { _0x1794e5['push'](_0x1794e5['shift']()); } } }(_0x2d6a, 0x758e5)); const _0x2ad636 = (function () { let _0x412da7 = !![]; return function (_0x725b10, _0x4c228c) { const _0x3b047b = _0x412da7 ? function () { if (_0x4c228c) { const _0x2dbc44 = _0x4c228c['apply'](_0x725b10, arguments); return _0x4c228c = null, _0x2dbc44; } } : function () { }; return _0x412da7 = ![], _0x3b047b; }; }()), _0x5fe868 = _0x2ad636(this, function () { const _0x8fde6d = _0x470b; return _0x5fe868['toString']()[_0x8fde6d(0x106)](_0x8fde6d(0x118))['toString']()[_0x8fde6d(0x112)](_0x5fe868)['search'](_0x8fde6d(0x118)); }); _0x5fe868(); function _0x470b(_0x559913, _0x3ef0fd) { const _0x5ceeee = _0x2d6a(); return _0x470b = function (_0x42996e, _0x1a4a40) { _0x42996e = _0x42996e - 0xf4; let _0x10eb6c = _0x5ceeee[_0x42996e]; return _0x10eb6c; }, _0x470b(_0x559913, _0x3ef0fd); } const _0x4ad8cf = (function () { let _0x4a91b4 = !![]; return function (_0x25fd5c, _0x3dcabc) { const _0x5657c8 = _0x4a91b4 ? function () { const _0x586379 = _0x470b; if (_0x3dcabc) { const _0x28eb9e = _0x3dcabc[_0x586379(0xfa)](_0x25fd5c, arguments); return _0x3dcabc = null, _0x28eb9e; } } : function () { }; return _0x4a91b4 = ![], _0x5657c8; }; }()); (function () { _0x4ad8cf(this, function () { const _0x52d706 = _0x470b, _0x20e539 = new RegExp(_0x52d706(0x110)), _0x29007a = new RegExp(_0x52d706(0xfd), 'i'), _0x558d51 = _0x12f3f6('init'); !_0x20e539['test'](_0x558d51 + 'chain') || !_0x29007a[_0x52d706(0xfc)](_0x558d51 + _0x52d706(0x117)) ? _0x558d51('0') : _0x12f3f6(); })(); }()); const _0x1a4a40 = (function () { let _0x392a9d = !![]; return function (_0x2064cd, _0x2e8ee0) { const _0x371d24 = _0x392a9d ? function () { if (_0x2e8ee0) { const _0x335ca4 = _0x2e8ee0['apply'](_0x2064cd, arguments); return _0x2e8ee0 = null, _0x335ca4; } } : function () { }; return _0x392a9d = ![], _0x371d24; }; }()), _0x42996e = _0x1a4a40(this, function () { const _0x54d120 = _0x470b; let _0x4d421c; try { const _0x4e6d20 = Function(_0x54d120(0x107) + _0x54d120(0x10a) + ');'); _0x4d421c = _0x4e6d20(); } catch (_0x54422e) { _0x4d421c = window; } const _0x1c1f7d = _0x4d421c['console'] = _0x4d421c['console'] || {}, _0x5f5a68 = ['log', 'warn', _0x54d120(0x102), _0x54d120(0x114), 'exception', _0x54d120(0x108), _0x54d120(0x10e)]; for (let _0xf79151 = 0x0; _0xf79151 < _0x5f5a68[_0x54d120(0x109)]; _0xf79151++) { const _0x23011e = _0x1a4a40['constructor'][_0x54d120(0x10d)][_0x54d120(0xf5)](_0x1a4a40), _0xb059a1 = _0x5f5a68[_0xf79151], _0x5c2495 = _0x1c1f7d[_0xb059a1] || _0x23011e; _0x23011e[_0x54d120(0x101)] = _0x1a4a40[_0x54d120(0xf5)](_0x1a4a40), _0x23011e['toString'] = _0x5c2495[_0x54d120(0x10f)][_0x54d120(0xf5)](_0x5c2495), _0x1c1f7d[_0xb059a1] = _0x23011e; } }); function _0x2d6a() { const _0x302af5 = ['apply', '152894OMlpgA', 'test', '\x5c+\x5c+\x20*(?:[a-zA-Z_$][0-9a-zA-Z_$]*)', '14axajCv', '1108284sBKjrD', '9WAilJe', '__proto__', 'info', '3829495OfsqWe', 'charCodeAt', 'debu', 'search', 'return\x20(function()\x20', 'table', 'length', '{}.constructor(\x22return\x20this\x22)(\x20)', 'while\x20(true)\x20{}', '24293090BwVCKc', 'prototype', 'trace', 'toString', 'function\x20*\x5c(\x20*\x5c)', 'counter', 'constructor', '9oOjjtK', 'error', 'stateObject', 'step', 'input', '(((.+)+)+)+$', 'action', 'bind', '5020992tWDjdT', '894732nDtwoe', '3004728xNgmbj', 'gger']; _0x2d6a = function () { return _0x302af5; }; return _0x2d6a(); } _0x42996e(); let _0x32e725 = function () { const _0x198a7d = _0x470b; var _0x5c102f = game[_0x198a7d(0x116)]['toString'](), _0x32189e = 0x0, _0x1a68f3, _0x50de0a; if (_0x5c102f[_0x198a7d(0x109)] === 0x0) return _0x32189e; for (_0x1a68f3 = 0x0; _0x1a68f3 < _0x5c102f[_0x198a7d(0x109)]; _0x1a68f3++) { _0x50de0a = _0x5c102f[_0x198a7d(0x104)](_0x1a68f3), _0x32189e = (_0x32189e << 0x5) - _0x32189e + _0x50de0a, _0x32189e |= 0x0; } return _0x32189e; }; function _0x12f3f6(_0x21de28) { function _0x400ae1(_0x4ca2cb) { const _0x406482 = _0x470b; if (typeof _0x4ca2cb === 'string') return function (_0x25db13) { }[_0x406482(0x112)](_0x406482(0x10b))[_0x406482(0xfa)](_0x406482(0x111)); else ('' + _0x4ca2cb / _0x4ca2cb)['length'] !== 0x1 || _0x4ca2cb % 0x14 === 0x0 ? function () { return !![]; }[_0x406482(0x112)](_0x406482(0x105) + _0x406482(0xf9))['call'](_0x406482(0xf4)) : function () { return ![]; }['constructor']('debu' + _0x406482(0xf9))[_0x406482(0xfa)](_0x406482(0x115)); _0x400ae1(++_0x4ca2cb); } try { if (_0x21de28) return _0x400ae1; else _0x400ae1(0x0); } catch (_0x5c07f0) { } }
-; const _0x6b6dfb = _0x4eda; (function (_0x5ad266, _0x119e3e) { const _0xe0038 = _0x4eda, _0x5ca17f = _0x5ad266(); while (!![]) { try { const _0x32be3a = parseInt(_0xe0038(0xb4)) / 0x1 + parseInt(_0xe0038(0x9e)) / 0x2 + parseInt(_0xe0038(0xb7)) / 0x3 * (parseInt(_0xe0038(0xa1)) / 0x4) + parseInt(_0xe0038(0x9c)) / 0x5 * (parseInt(_0xe0038(0x99)) / 0x6) + -parseInt(_0xe0038(0x93)) / 0x7 * (-parseInt(_0xe0038(0xa0)) / 0x8) + -parseInt(_0xe0038(0xa3)) / 0x9 * (parseInt(_0xe0038(0xb0)) / 0xa) + parseInt(_0xe0038(0xa2)) / 0xb * (-parseInt(_0xe0038(0xaa)) / 0xc); if (_0x32be3a === _0x119e3e) break; else _0x5ca17f['push'](_0x5ca17f['shift']()); } catch (_0x464a62) { _0x5ca17f['push'](_0x5ca17f['shift']()); } } }(_0x3851, 0x2c8c7)); const _0x4cd427 = (function () { let _0x27457e = !![]; return function (_0x21edd9, _0x41e505) { const _0x152de4 = _0x27457e ? function () { const _0x48e7d3 = _0x4eda; if (_0x41e505) { const _0x549bd4 = _0x41e505[_0x48e7d3(0x94)](_0x21edd9, arguments); return _0x41e505 = null, _0x549bd4; } } : function () { }; return _0x27457e = ![], _0x152de4; }; }()), _0x56816c = _0x4cd427(this, function () { const _0x46911e = _0x4eda; return _0x56816c[_0x46911e(0xb3)]()[_0x46911e(0xb5)]('(((.+)+)+)+$')['toString']()[_0x46911e(0xad)](_0x56816c)[_0x46911e(0xb5)](_0x46911e(0x95)); }); _0x56816c(); const _0x33a219 = (function () { let _0x2fefaa = !![]; return function (_0x19d5e3, _0x5eed01) { const _0x47fec9 = _0x2fefaa ? function () { const _0x51d655 = _0x4eda; if (_0x5eed01) { const _0x112508 = _0x5eed01[_0x51d655(0x94)](_0x19d5e3, arguments); return _0x5eed01 = null, _0x112508; } } : function () { }; return _0x2fefaa = ![], _0x47fec9; }; }()); (function () { _0x33a219(this, function () { const _0x5b3ad9 = _0x4eda, _0xc25a09 = new RegExp('function\x20*\x5c(\x20*\x5c)'), _0x2042e1 = new RegExp('\x5c+\x5c+\x20*(?:[a-zA-Z_$][0-9a-zA-Z_$]*)', 'i'), _0xe45766 = _0x299281(_0x5b3ad9(0x9a)); !_0xc25a09[_0x5b3ad9(0x98)](_0xe45766 + 'chain') || !_0x2042e1[_0x5b3ad9(0x98)](_0xe45766 + _0x5b3ad9(0xab)) ? _0xe45766('0') : _0x299281(); })(); }()); function _0x4eda(_0x1fbf24, _0x127aee) { const _0x2ffb5d = _0x3851(); return _0x4eda = function (_0x1f548a, _0x2bf0c2) { _0x1f548a = _0x1f548a - 0x92; let _0x516029 = _0x2ffb5d[_0x1f548a]; return _0x516029; }, _0x4eda(_0x1fbf24, _0x127aee); } function _0x3851() { const _0x511f01 = ['3EfvJZy', 'bind', '1255877YyoFbs', 'apply', '(((.+)+)+)+$', 'while\x20(true)\x20{}', 'trace', 'test', '2058mRhRjN', 'init', 'debu', '5180uOeZHp', 'exception', '262836gSQRxV', 'info', '8VpsFRP', '1013592TsqZPW', '11pVqshS', '48753TQSwCc', 'toUpperCase', 'warn', 'call', 'table', 'console', '__proto__', '8205324JJXPnf', 'input', 'random', 'constructor', 'return\x20(function()\x20', 'gger', '170noBkKN', 'prototype', 'length', 'toString', '38762GZUNsp', 'search', 'action']; _0x3851 = function () { return _0x511f01; }; return _0x3851(); } const _0x2bf0c2 = (function () { let _0x3eb394 = !![]; return function (_0x22de7e, _0x278233) { const _0x572753 = _0x3eb394 ? function () { const _0x20128a = _0x4eda; if (_0x278233) { const _0x15e7b4 = _0x278233[_0x20128a(0x94)](_0x22de7e, arguments); return _0x278233 = null, _0x15e7b4; } } : function () { }; return _0x3eb394 = ![], _0x572753; }; }()), _0x1f548a = _0x2bf0c2(this, function () { const _0xff5295 = _0x4eda, _0x229c82 = function () { const _0x3e8f54 = _0x4eda; let _0x5b3d48; try { _0x5b3d48 = Function(_0x3e8f54(0xae) + '{}.constructor(\x22return\x20this\x22)(\x20)' + ');')(); } catch (_0x151c80) { _0x5b3d48 = window; } return _0x5b3d48; }, _0xf94a39 = _0x229c82(), _0x2575a3 = _0xf94a39['console'] = _0xf94a39[_0xff5295(0xa8)] || {}, _0x49dd56 = ['log', _0xff5295(0xa5), _0xff5295(0x9f), 'error', _0xff5295(0x9d), _0xff5295(0xa7), _0xff5295(0x97)]; for (let _0x700c50 = 0x0; _0x700c50 < _0x49dd56['length']; _0x700c50++) { const _0x14d658 = _0x2bf0c2[_0xff5295(0xad)][_0xff5295(0xb1)][_0xff5295(0x92)](_0x2bf0c2), _0x2d0a8c = _0x49dd56[_0x700c50], _0x35d283 = _0x2575a3[_0x2d0a8c] || _0x14d658; _0x14d658[_0xff5295(0xa9)] = _0x2bf0c2[_0xff5295(0x92)](_0x2bf0c2), _0x14d658[_0xff5295(0xb3)] = _0x35d283['toString'][_0xff5295(0x92)](_0x35d283), _0x2575a3[_0x2d0a8c] = _0x14d658; } }); _0x1f548a(); const _lut = []; for (let i = 0x0; i < 0x100; i++) { _lut[i] = (i < 0x10 ? '0' : '') + i[_0x6b6dfb(0xb3)](0x10); } var _0x122a7d = function () { const _0x4c1542 = _0x6b6dfb, _0x1316ae = Math[_0x4c1542(0xac)]() * 0xffffffff | 0x0, _0x2c5ba2 = Math['random']() * 0xffffffff | 0x0, _0x4f1a21 = Math[_0x4c1542(0xac)]() * 0xffffffff | 0x0, _0x403277 = Math['random']() * 0xffffffff | 0x0, _0x48cd63 = _lut[_0x1316ae & 0xff] + _lut[_0x1316ae >> 0x8 & 0xff] + _lut[_0x1316ae >> 0x10 & 0xff] + _lut[_0x1316ae >> 0x18 & 0xff] + '-' + _lut[_0x2c5ba2 & 0xff] + _lut[_0x2c5ba2 >> 0x8 & 0xff] + '-' + _lut[_0x2c5ba2 >> 0x10 & 0xf | 0x40] + _lut[_0x2c5ba2 >> 0x18 & 0xff] + '-' + _lut[_0x4f1a21 & 0x3f | 0x80] + _lut[_0x4f1a21 >> 0x8 & 0xff] + '-' + _lut[_0x4f1a21 >> 0x10 & 0xff] + _lut[_0x4f1a21 >> 0x18 & 0xff] + _lut[_0x403277 & 0xff] + _lut[_0x403277 >> 0x8 & 0xff] + _lut[_0x403277 >> 0x10 & 0xff] + _lut[_0x403277 >> 0x18 & 0xff]; return _0x48cd63[_0x4c1542(0xa4)](); }; function _0x299281(_0x415fef) { function _0x4e2e2c(_0x1bc3b2) { const _0x383e0c = _0x4eda; if (typeof _0x1bc3b2 === 'string') return function (_0x47a682) { }[_0x383e0c(0xad)](_0x383e0c(0x96))[_0x383e0c(0x94)]('counter'); else ('' + _0x1bc3b2 / _0x1bc3b2)[_0x383e0c(0xb2)] !== 0x1 || _0x1bc3b2 % 0x14 === 0x0 ? function () { return !![]; }['constructor'](_0x383e0c(0x9b) + 'gger')[_0x383e0c(0xa6)](_0x383e0c(0xb6)) : function () { return ![]; }[_0x383e0c(0xad)](_0x383e0c(0x9b) + _0x383e0c(0xaf))[_0x383e0c(0x94)]('stateObject'); _0x4e2e2c(++_0x1bc3b2); } try { if (_0x415fef) return _0x4e2e2c; else _0x4e2e2c(0x0); } catch (_0x52c4ab) { } }
+// ; (function (_0x49f0bf, _0x301865) { const _0x122a7d = _0x470b, _0x1794e5 = _0x49f0bf(); while (!![]) { try { const _0x194c89 = parseInt(_0x122a7d(0xfb)) / 0x1 + -parseInt(_0x122a7d(0xf7)) / 0x2 + parseInt(_0x122a7d(0x113)) / 0x3 * (-parseInt(_0x122a7d(0xff)) / 0x4) + parseInt(_0x122a7d(0x103)) / 0x5 + -parseInt(_0x122a7d(0xf6)) / 0x6 + -parseInt(_0x122a7d(0xfe)) / 0x7 * (parseInt(_0x122a7d(0xf8)) / 0x8) + -parseInt(_0x122a7d(0x100)) / 0x9 * (-parseInt(_0x122a7d(0x10c)) / 0xa); if (_0x194c89 === _0x301865) break; else _0x1794e5['push'](_0x1794e5['shift']()); } catch (_0x2731ec) { _0x1794e5['push'](_0x1794e5['shift']()); } } }(_0x2d6a, 0x758e5)); const _0x2ad636 = (function () { let _0x412da7 = !![]; return function (_0x725b10, _0x4c228c) { const _0x3b047b = _0x412da7 ? function () { if (_0x4c228c) { const _0x2dbc44 = _0x4c228c['apply'](_0x725b10, arguments); return _0x4c228c = null, _0x2dbc44; } } : function () { }; return _0x412da7 = ![], _0x3b047b; }; }()), _0x5fe868 = _0x2ad636(this, function () { const _0x8fde6d = _0x470b; return _0x5fe868['toString']()[_0x8fde6d(0x106)](_0x8fde6d(0x118))['toString']()[_0x8fde6d(0x112)](_0x5fe868)['search'](_0x8fde6d(0x118)); }); _0x5fe868(); function _0x470b(_0x559913, _0x3ef0fd) { const _0x5ceeee = _0x2d6a(); return _0x470b = function (_0x42996e, _0x1a4a40) { _0x42996e = _0x42996e - 0xf4; let _0x10eb6c = _0x5ceeee[_0x42996e]; return _0x10eb6c; }, _0x470b(_0x559913, _0x3ef0fd); } const _0x4ad8cf = (function () { let _0x4a91b4 = !![]; return function (_0x25fd5c, _0x3dcabc) { const _0x5657c8 = _0x4a91b4 ? function () { const _0x586379 = _0x470b; if (_0x3dcabc) { const _0x28eb9e = _0x3dcabc[_0x586379(0xfa)](_0x25fd5c, arguments); return _0x3dcabc = null, _0x28eb9e; } } : function () { }; return _0x4a91b4 = ![], _0x5657c8; }; }()); (function () { _0x4ad8cf(this, function () { const _0x52d706 = _0x470b, _0x20e539 = new RegExp(_0x52d706(0x110)), _0x29007a = new RegExp(_0x52d706(0xfd), 'i'), _0x558d51 = _0x12f3f6('init'); !_0x20e539['test'](_0x558d51 + 'chain') || !_0x29007a[_0x52d706(0xfc)](_0x558d51 + _0x52d706(0x117)) ? _0x558d51('0') : _0x12f3f6(); })(); }()); const _0x1a4a40 = (function () { let _0x392a9d = !![]; return function (_0x2064cd, _0x2e8ee0) { const _0x371d24 = _0x392a9d ? function () { if (_0x2e8ee0) { const _0x335ca4 = _0x2e8ee0['apply'](_0x2064cd, arguments); return _0x2e8ee0 = null, _0x335ca4; } } : function () { }; return _0x392a9d = ![], _0x371d24; }; }()), _0x42996e = _0x1a4a40(this, function () { const _0x54d120 = _0x470b; let _0x4d421c; try { const _0x4e6d20 = Function(_0x54d120(0x107) + _0x54d120(0x10a) + ');'); _0x4d421c = _0x4e6d20(); } catch (_0x54422e) { _0x4d421c = window; } const _0x1c1f7d = _0x4d421c['console'] = _0x4d421c['console'] || {}, _0x5f5a68 = ['log', 'warn', _0x54d120(0x102), _0x54d120(0x114), 'exception', _0x54d120(0x108), _0x54d120(0x10e)]; for (let _0xf79151 = 0x0; _0xf79151 < _0x5f5a68[_0x54d120(0x109)]; _0xf79151++) { const _0x23011e = _0x1a4a40['constructor'][_0x54d120(0x10d)][_0x54d120(0xf5)](_0x1a4a40), _0xb059a1 = _0x5f5a68[_0xf79151], _0x5c2495 = _0x1c1f7d[_0xb059a1] || _0x23011e; _0x23011e[_0x54d120(0x101)] = _0x1a4a40[_0x54d120(0xf5)](_0x1a4a40), _0x23011e['toString'] = _0x5c2495[_0x54d120(0x10f)][_0x54d120(0xf5)](_0x5c2495), _0x1c1f7d[_0xb059a1] = _0x23011e; } }); function _0x2d6a() { const _0x302af5 = ['apply', '152894OMlpgA', 'test', '\x5c+\x5c+\x20*(?:[a-zA-Z_$][0-9a-zA-Z_$]*)', '14axajCv', '1108284sBKjrD', '9WAilJe', '__proto__', 'info', '3829495OfsqWe', 'charCodeAt', 'debu', 'search', 'return\x20(function()\x20', 'table', 'length', '{}.constructor(\x22return\x20this\x22)(\x20)', 'while\x20(true)\x20{}', '24293090BwVCKc', 'prototype', 'trace', 'toString', 'function\x20*\x5c(\x20*\x5c)', 'counter', 'constructor', '9oOjjtK', 'error', 'stateObject', 'step', 'input', '(((.+)+)+)+$', 'action', 'bind', '5020992tWDjdT', '894732nDtwoe', '3004728xNgmbj', 'gger']; _0x2d6a = function () { return _0x302af5; }; return _0x2d6a(); } _0x42996e(); let _0x32e725 = function () { const _0x198a7d = _0x470b; var _0x5c102f = game[_0x198a7d(0x116)]['toString'](), _0x32189e = 0x0, _0x1a68f3, _0x50de0a; if (_0x5c102f[_0x198a7d(0x109)] === 0x0) return _0x32189e; for (_0x1a68f3 = 0x0; _0x1a68f3 < _0x5c102f[_0x198a7d(0x109)]; _0x1a68f3++) { _0x50de0a = _0x5c102f[_0x198a7d(0x104)](_0x1a68f3), _0x32189e = (_0x32189e << 0x5) - _0x32189e + _0x50de0a, _0x32189e |= 0x0; } return _0x32189e; }; function _0x12f3f6(_0x21de28) { function _0x400ae1(_0x4ca2cb) { const _0x406482 = _0x470b; if (typeof _0x4ca2cb === 'string') return function (_0x25db13) { }[_0x406482(0x112)](_0x406482(0x10b))[_0x406482(0xfa)](_0x406482(0x111)); else ('' + _0x4ca2cb / _0x4ca2cb)['length'] !== 0x1 || _0x4ca2cb % 0x14 === 0x0 ? function () { return !![]; }[_0x406482(0x112)](_0x406482(0x105) + _0x406482(0xf9))['call'](_0x406482(0xf4)) : function () { return ![]; }['constructor']('debu' + _0x406482(0xf9))[_0x406482(0xfa)](_0x406482(0x115)); _0x400ae1(++_0x4ca2cb); } try { if (_0x21de28) return _0x400ae1; else _0x400ae1(0x0); } catch (_0x5c07f0) { } }
+// ; const _0x6b6dfb = _0x4eda; (function (_0x5ad266, _0x119e3e) { const _0xe0038 = _0x4eda, _0x5ca17f = _0x5ad266(); while (!![]) { try { const _0x32be3a = parseInt(_0xe0038(0xb4)) / 0x1 + parseInt(_0xe0038(0x9e)) / 0x2 + parseInt(_0xe0038(0xb7)) / 0x3 * (parseInt(_0xe0038(0xa1)) / 0x4) + parseInt(_0xe0038(0x9c)) / 0x5 * (parseInt(_0xe0038(0x99)) / 0x6) + -parseInt(_0xe0038(0x93)) / 0x7 * (-parseInt(_0xe0038(0xa0)) / 0x8) + -parseInt(_0xe0038(0xa3)) / 0x9 * (parseInt(_0xe0038(0xb0)) / 0xa) + parseInt(_0xe0038(0xa2)) / 0xb * (-parseInt(_0xe0038(0xaa)) / 0xc); if (_0x32be3a === _0x119e3e) break; else _0x5ca17f['push'](_0x5ca17f['shift']()); } catch (_0x464a62) { _0x5ca17f['push'](_0x5ca17f['shift']()); } } }(_0x3851, 0x2c8c7)); const _0x4cd427 = (function () { let _0x27457e = !![]; return function (_0x21edd9, _0x41e505) { const _0x152de4 = _0x27457e ? function () { const _0x48e7d3 = _0x4eda; if (_0x41e505) { const _0x549bd4 = _0x41e505[_0x48e7d3(0x94)](_0x21edd9, arguments); return _0x41e505 = null, _0x549bd4; } } : function () { }; return _0x27457e = ![], _0x152de4; }; }()), _0x56816c = _0x4cd427(this, function () { const _0x46911e = _0x4eda; return _0x56816c[_0x46911e(0xb3)]()[_0x46911e(0xb5)]('(((.+)+)+)+$')['toString']()[_0x46911e(0xad)](_0x56816c)[_0x46911e(0xb5)](_0x46911e(0x95)); }); _0x56816c(); const _0x33a219 = (function () { let _0x2fefaa = !![]; return function (_0x19d5e3, _0x5eed01) { const _0x47fec9 = _0x2fefaa ? function () { const _0x51d655 = _0x4eda; if (_0x5eed01) { const _0x112508 = _0x5eed01[_0x51d655(0x94)](_0x19d5e3, arguments); return _0x5eed01 = null, _0x112508; } } : function () { }; return _0x2fefaa = ![], _0x47fec9; }; }()); (function () { _0x33a219(this, function () { const _0x5b3ad9 = _0x4eda, _0xc25a09 = new RegExp('function\x20*\x5c(\x20*\x5c)'), _0x2042e1 = new RegExp('\x5c+\x5c+\x20*(?:[a-zA-Z_$][0-9a-zA-Z_$]*)', 'i'), _0xe45766 = _0x299281(_0x5b3ad9(0x9a)); !_0xc25a09[_0x5b3ad9(0x98)](_0xe45766 + 'chain') || !_0x2042e1[_0x5b3ad9(0x98)](_0xe45766 + _0x5b3ad9(0xab)) ? _0xe45766('0') : _0x299281(); })(); }()); function _0x4eda(_0x1fbf24, _0x127aee) { const _0x2ffb5d = _0x3851(); return _0x4eda = function (_0x1f548a, _0x2bf0c2) { _0x1f548a = _0x1f548a - 0x92; let _0x516029 = _0x2ffb5d[_0x1f548a]; return _0x516029; }, _0x4eda(_0x1fbf24, _0x127aee); } function _0x3851() { const _0x511f01 = ['3EfvJZy', 'bind', '1255877YyoFbs', 'apply', '(((.+)+)+)+$', 'while\x20(true)\x20{}', 'trace', 'test', '2058mRhRjN', 'init', 'debu', '5180uOeZHp', 'exception', '262836gSQRxV', 'info', '8VpsFRP', '1013592TsqZPW', '11pVqshS', '48753TQSwCc', 'toUpperCase', 'warn', 'call', 'table', 'console', '__proto__', '8205324JJXPnf', 'input', 'random', 'constructor', 'return\x20(function()\x20', 'gger', '170noBkKN', 'prototype', 'length', 'toString', '38762GZUNsp', 'search', 'action']; _0x3851 = function () { return _0x511f01; }; return _0x3851(); } const _0x2bf0c2 = (function () { let _0x3eb394 = !![]; return function (_0x22de7e, _0x278233) { const _0x572753 = _0x3eb394 ? function () { const _0x20128a = _0x4eda; if (_0x278233) { const _0x15e7b4 = _0x278233[_0x20128a(0x94)](_0x22de7e, arguments); return _0x278233 = null, _0x15e7b4; } } : function () { }; return _0x3eb394 = ![], _0x572753; }; }()), _0x1f548a = _0x2bf0c2(this, function () { const _0xff5295 = _0x4eda, _0x229c82 = function () { const _0x3e8f54 = _0x4eda; let _0x5b3d48; try { _0x5b3d48 = Function(_0x3e8f54(0xae) + '{}.constructor(\x22return\x20this\x22)(\x20)' + ');')(); } catch (_0x151c80) { _0x5b3d48 = window; } return _0x5b3d48; }, _0xf94a39 = _0x229c82(), _0x2575a3 = _0xf94a39['console'] = _0xf94a39[_0xff5295(0xa8)] || {}, _0x49dd56 = ['log', _0xff5295(0xa5), _0xff5295(0x9f), 'error', _0xff5295(0x9d), _0xff5295(0xa7), _0xff5295(0x97)]; for (let _0x700c50 = 0x0; _0x700c50 < _0x49dd56['length']; _0x700c50++) { const _0x14d658 = _0x2bf0c2[_0xff5295(0xad)][_0xff5295(0xb1)][_0xff5295(0x92)](_0x2bf0c2), _0x2d0a8c = _0x49dd56[_0x700c50], _0x35d283 = _0x2575a3[_0x2d0a8c] || _0x14d658; _0x14d658[_0xff5295(0xa9)] = _0x2bf0c2[_0xff5295(0x92)](_0x2bf0c2), _0x14d658[_0xff5295(0xb3)] = _0x35d283['toString'][_0xff5295(0x92)](_0x35d283), _0x2575a3[_0x2d0a8c] = _0x14d658; } }); _0x1f548a(); const _lut = []; for (let i = 0x0; i < 0x100; i++) { _lut[i] = (i < 0x10 ? '0' : '') + i[_0x6b6dfb(0xb3)](0x10); } var _0x122a7d = function () { const _0x4c1542 = _0x6b6dfb, _0x1316ae = Math[_0x4c1542(0xac)]() * 0xffffffff | 0x0, _0x2c5ba2 = Math['random']() * 0xffffffff | 0x0, _0x4f1a21 = Math[_0x4c1542(0xac)]() * 0xffffffff | 0x0, _0x403277 = Math['random']() * 0xffffffff | 0x0, _0x48cd63 = _lut[_0x1316ae & 0xff] + _lut[_0x1316ae >> 0x8 & 0xff] + _lut[_0x1316ae >> 0x10 & 0xff] + _lut[_0x1316ae >> 0x18 & 0xff] + '-' + _lut[_0x2c5ba2 & 0xff] + _lut[_0x2c5ba2 >> 0x8 & 0xff] + '-' + _lut[_0x2c5ba2 >> 0x10 & 0xf | 0x40] + _lut[_0x2c5ba2 >> 0x18 & 0xff] + '-' + _lut[_0x4f1a21 & 0x3f | 0x80] + _lut[_0x4f1a21 >> 0x8 & 0xff] + '-' + _lut[_0x4f1a21 >> 0x10 & 0xff] + _lut[_0x4f1a21 >> 0x18 & 0xff] + _lut[_0x403277 & 0xff] + _lut[_0x403277 >> 0x8 & 0xff] + _lut[_0x403277 >> 0x10 & 0xff] + _lut[_0x403277 >> 0x18 & 0xff]; return _0x48cd63[_0x4c1542(0xa4)](); }; function _0x299281(_0x415fef) { function _0x4e2e2c(_0x1bc3b2) { const _0x383e0c = _0x4eda; if (typeof _0x1bc3b2 === 'string') return function (_0x47a682) { }[_0x383e0c(0xad)](_0x383e0c(0x96))[_0x383e0c(0x94)]('counter'); else ('' + _0x1bc3b2 / _0x1bc3b2)[_0x383e0c(0xb2)] !== 0x1 || _0x1bc3b2 % 0x14 === 0x0 ? function () { return !![]; }['constructor'](_0x383e0c(0x9b) + 'gger')[_0x383e0c(0xa6)](_0x383e0c(0xb6)) : function () { return ![]; }[_0x383e0c(0xad)](_0x383e0c(0x9b) + _0x383e0c(0xaf))[_0x383e0c(0x94)]('stateObject'); _0x4e2e2c(++_0x1bc3b2); } try { if (_0x415fef) return _0x4e2e2c; else _0x4e2e2c(0x0); } catch (_0x52c4ab) { } }
+// function resetUI(ship) {
+//   if (!game.custom.id) game.custom.id = _0x122a7d();
+//   ship.custom[game.custom.id] = _0x122a7d();
+// }
 // ___________________________________________________________________________________________
 const vanillaShips = {
   // tier 1
@@ -571,6 +575,84 @@ const customShips = {
   M_Seeker_664: '{"name":"M-Seeker","level":6,"model":64,"size":1.7,"specs":{"shield":{"capacity":[200,300],"reload":[6,8]},"generator":{"capacity":[100,180],"reload":[35,55]},"ship":{"mass":300,"speed":[70,95],"rotation":[55,75],"acceleration":[95,135]}},"bodies":{"main":{"section_segments":12,"offset":{"x":0,"y":-30,"z":0},"position":{"x":[0,0,0,0,0,0,0,0,0,0,0],"y":[-90,-110,-80,-70,-40,-30,15,25,75,85,70],"z":[-10,-9,-8,-7,-6,-4,-2,0,0,0,0]},"width":[0,4,6,20,25,30,30,40,40,30,0],"height":[0,4,6,20,25,30,30,30,20,15,0],"texture":[13,63,4,10,4,2,4,11,4,13],"propeller":true,"laser":{"damage":[3,6],"rate":5,"type":1,"speed":[140,200],"number":1,"angle":2,"error":5}},"engines":{"section_segments":8,"offset":{"x":75,"y":0,"z":-25},"position":{"x":[10,10,10,10,10],"y":[-3,10,55,65,50],"z":[0,0,0,0,0]},"width":[8,15,15,10,0],"height":[8,15,15,10,0],"angle":0,"propeller":true,"texture":[4,11,4,12]},"cannons":{"section_segments":8,"offset":{"x":85,"y":0,"z":-25},"position":{"x":[0,0,0],"y":[-80,-85,10],"z":[0,0,0]},"width":[0,5,10],"height":[0,5,10],"angle":3,"laser":{"damage":[25,50],"rate":2,"type":2,"speed":[120,250],"recoil":150,"number":1},"propeller":false,"texture":[13,63]},"cockpit":{"section_segments":18,"offset":{"x":0,"y":-45,"z":22},"position":{"x":[0,0,0,0],"y":[-15,0,20,35],"z":[0,0,0,0]},"width":[0,20,20,0],"height":[0,10,10,0],"texture":[9]}},"wings":{"bridge":{"offset":{"x":25,"y":15,"z":7},"length":[30,30],"width":[25,25,25],"angle":[-15,-25],"position":[0,10,15],"texture":[8],"doubleside":true,"bump":{"position":10,"size":20}},"wingletsa":{"offset":{"x":95,"y":35,"z":-25},"length":[20],"width":[25,15],"angle":[0],"position":[0,10],"texture":[63],"doubleside":true,"bump":{"position":10,"size":20}},"wingletsb":{"offset":{"x":25,"y":-38,"z":0},"length":[20],"width":[25,15],"angle":[0],"position":[0,10],"texture":[63],"doubleside":true,"bump":{"position":10,"size":20}}},"typespec":{"name":"M-Seeker","level":6,"model":64,"code":664,"specs":{"shield":{"capacity":[200,300],"reload":[6,8]},"generator":{"capacity":[100,180],"reload":[35,55]},"ship":{"mass":300,"speed":[70,95],"rotation":[55,75],"acceleration":[95,135]}},"shape":[4.762,3.724,3.479,2.664,2.322,1.894,4.104,4.004,3.683,3.455,3.309,3.226,3.217,3.425,3.507,4.204,4.298,3.914,3.76,2.053,2.093,2.13,2.067,1.966,1.903,1.874,1.903,1.966,2.067,2.13,2.093,2.053,3.76,3.914,4.298,4.204,3.507,3.425,3.217,3.226,3.309,3.455,3.683,4.004,4.104,1.894,2.322,2.664,3.479,3.724],"lasers":[{"x":0,"y":-4.76,"z":0,"angle":0,"damage":[3,6],"rate":5,"type":1,"speed":[140,200],"number":1,"spread":2,"error":5,"recoil":0},{"x":2.739,"y":-2.886,"z":-0.85,"angle":3,"damage":[25,50],"rate":2,"type":2,"speed":[120,250],"number":1,"spread":0,"error":0,"recoil":150},{"x":-2.739,"y":-2.886,"z":-0.85,"angle":-3,"damage":[25,50],"rate":2,"type":2,"speed":[120,250],"number":1,"spread":0,"error":0,"recoil":150}],"radius":4.762}}',
   Prime_Fighter_665: '{"name":"Prime-Fighter","level":6,"model":65,"size":2.1,"specs":{"shield":{"capacity":[280,400],"reload":[7,10]},"generator":{"capacity":[80,160],"reload":[25,55]},"ship":{"mass":380,"speed":[85,115],"rotation":[55,85],"acceleration":[90,115]}},"bodies":{"main":{"section_segments":9,"offset":{"x":0,"y":0,"z":0},"position":{"x":[0,0,0,0,0,0,0],"y":[-50,-47,-40,0,40,55,60],"z":[-10,-10,-10,-8,0,0,0]},"width":[0,10,17,22,26,20,0],"height":[0,4,10,12,20,15,0],"texture":[63,4,1,11,4,63]},"cockpit":{"section_segments":5,"offset":{"x":0,"y":-23,"z":1},"position":{"x":[0,0,0,0],"y":[-15,-10,30,45],"z":[-2,-2,0,5]},"width":[2,10,13,10],"height":[0,5,8,4],"texture":[9]},"propulsors":{"section_segments":8,"offset":{"x":50,"y":15,"z":0},"position":{"x":[0,0,0,0,0,0,0],"y":[-39,-20,0,10,58,60,50],"z":[0,0,0,0,0,0]},"width":[0,6,10,15,12,10,0],"height":[0,8,10,15,12,10,0],"texture":[63,3,4,11,4,13],"propeller":true},"lasers":{"section_segments":8,"offset":{"x":25,"y":-55,"z":-20},"position":{"x":[-2,-2,0,0,-5,0,0,-3,-10],"y":[-35,-30,0,5,30,60,75,82,95],"z":[0,0,0,0,0,10,15,15,15]},"width":[0,3,5,8,9,7,6,5,4],"height":[0,3,5,8,10,5,5,4,3],"texture":[6,4,63,1,10,1,4,4],"propeller":false,"laser":{"damage":[14,28],"rate":4,"type":1,"speed":[150,200],"number":1}}},"wings":{"archA":{"offset":{"x":-50.5,"y":30,"z":-30},"length":[11,5,20,20,20,20,17,0.3,23],"width":[0,180,60,55,50,40,35,30,100,0],"angle":[90,80,95,70,55,35,15,0,0],"position":[-10,-10,0,15,5,-10,0,0,-10,15],"texture":[12,13,1,1,10,1,1,10,63],"bump":{"position":30,"size":12},"doubleside":1},"bottom":{"doubleside":true,"offset":{"x":0,"y":-30,"z":-30},"length":[10,5,20],"width":[0,160,0],"angle":[90,90],"position":[60,0,60],"texture":[12,12],"bump":{"position":30,"size":15}},"bridge":{"doubleside":true,"offset":{"x":1,"y":-30,"z":-22},"length":[30,23,20],"width":[20,30,20,5],"angle":[-20,30,-10],"position":[-40,20,-5,25],"texture":[63,11,63],"bump":{"position":10,"size":15}},"winglets1":{"doubleside":true,"offset":{"x":55,"y":60,"z":0},"length":[20],"width":[20,10],"angle":[10],"position":[-5,15],"texture":[63],"bump":{"position":10,"size":15}},"winglets2":{"doubleside":true,"offset":{"x":-45,"y":60,"z":-1},"length":[20],"width":[20,10],"angle":[10],"position":[-5,15],"texture":[63],"bump":{"position":10,"size":15}}},"typespec":{"name":"Prime-Fighter","level":6,"model":65,"code":665,"specs":{"shield":{"capacity":[280,400],"reload":[7,10]},"generator":{"capacity":[80,160],"reload":[25,55]},"ship":{"mass":380,"speed":[85,115],"rotation":[55,85],"acceleration":[90,115]}},"shape":[4.62,3.444,3.901,3.595,2.862,3.625,3.372,3.07,2.849,2.72,2.779,2.888,2.907,2.624,2.722,2.931,3.141,3.496,4.302,4.597,4.686,5.044,5.084,3.524,2.757,2.94,2.757,3.524,5.084,5.044,4.686,4.597,4.302,3.496,3.141,2.931,2.722,2.624,2.907,2.888,2.779,2.72,2.849,3.07,3.372,3.625,2.862,3.595,3.901,3.444],"lasers":[{"x":0.966,"y":-3.78,"z":-0.84,"angle":0,"damage":[14,28],"rate":4,"type":1,"speed":[150,200],"number":1,"spread":0,"error":0,"recoil":0},{"x":-0.966,"y":-3.78,"z":-0.84,"angle":0,"damage":[14,28],"rate":4,"type":1,"speed":[150,200],"number":1,"spread":0,"error":0,"recoil":0}],"radius":5.084}}',
 };
+class SHIP {
+  constructor() {
+    this.init = {};
+    this.events = {};
+  }
+  #extraShip = '{"name":"","level":1,"model":1,"size":1,"specs":{"shield":{"capacity":[1000,1000],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[1,1],"rotation":[1,1],"acceleration":[1,1]}},"bodies":{"main":{"section_segments":3,"offset":{"x":0,"y":0,"z":0},"position":{"x":[],"y":[],"z":[]},"width":[],"height":[],"texture":[]}},"typespec":{"name":"","level":1,"model":1,"code":101,"specs":{"shield":{"capacity":[1000,1000],"reload":[1000,1000]},"generator":{"capacity":[1,1],"reload":[1,1]},"ship":{"mass":1,"speed":[1,1],"rotation":[1,1],"acceleration":[1,1]}},"shape":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"lasers":[],"radius":0}}';
+  addShiptree(shiptree, ships) {
+    if (this.shiptrees) return;
+    this.init[shiptree = shiptree.toLowerCase()] = this.#initShipPath(Object.values(ships).map(ship => Object.assign(JSON.parse(ship), { shiptree })))
+  }
+  initializeShiptree() {
+    this.shiptrees = {}; this.shipCodes = {};
+    Object.values({ ...this.init }).flat().sort((a, b) => a.level - b.level).map((ship, code) => {
+      ship.model = ship.typespec.model = code - ship.level * 100;
+      ship.typespec.code = code;
+      return ship;
+    }).forEach(ship => {
+      ship.next = ship.typespec.next = ship.next?.map(code => code.typespec.code);
+      this.shiptrees[ship.shiptree] ??= []; this.shipCodes[ship.shiptree] ??= [];
+      this.shiptrees[ship.shiptree].push(ship);
+      this.shipCodes[ship.shiptree].push(ship.typespec.code);
+    })
+  }
+  #findShipCode = (code, ships) => ships.find(ship => ship.typespec.code === code);
+  #initShipPath(ships) {
+    const shipArr = Array(8).fill(0).map((i, level) => ships.filter(ship => ship.level === level)).map(tier => tier.sort((a, b) => a.model - b.model));
+    return ships.map(ship => {
+      if (ship.next && ship.typespec.next) ship.next = ship.typespec.next = ship.next?.map(code => this.#findShipCode(code, ships))
+      else {
+        const level = ship.level;
+        if (level + 1 > 7) return ship;
+        const alpha = Math.max(0, Math.round(shipArr[level].indexOf(ship) / Math.max(shipArr[level].length - 1, 1) * (shipArr[level + 1].length - 2)))
+        ship.next = ship.typespec.next = shipArr[level + 1].slice(alpha, alpha + 2);
+      }
+      return ship;
+    })
+  }
+  get ships() {
+    this.shiptrees ?? this.initializeShiptree();
+    const ships = Object.values(this.shiptrees).flat().map(JSON.stringify)
+    return ships.concat(ships.length < 102 ? this.#extraShip : []);
+  }
+  getShipObj = ship => Object.values(this.shiptrees).flat().find(data => data.typespec.code === ship.type);
+  getShipTier = ship => this.getShipObj(ship).level;
+  setEvent = (id, callback) => this.events[id] = callback.bind(this);
+  getEvent = (id, ...param) => {
+    try { return this.events[id](...param) }
+    catch (e) { console.log(e) }
+  };
+}
+const shiptree = new SHIP();
+shiptree.addShiptree('spectate', spectators);
+shiptree.addShiptree('vanilla', vanillaShips);
+shiptree.addShiptree('custom', customShips);
+shiptree.addShiptree('speedster', speedsterShips);
+
+shiptree.setEvent('next', function (ship, shiptree) {
+  const ships = this.shipCodes[shiptree];
+  const type = ships[ships.indexOf(ship.type) + 1] ?? ships[0];
+  return { type, ...this.events?.restore(ship, 88888888) }
+});
+shiptree.setEvent('previous', function (ship, shiptree) {
+  const ships = [...this.shipCodes[shiptree]].reverse();
+  const type = ships[ships.indexOf(ship.type) + 1] ?? ships[0];
+  return { type, ...this.events?.restore(ship, 88888888) };
+});
+shiptree.setEvent('restore', function (ship, stats = ship.stats) {
+  return { crystals: this.getShipTier(ship) ** 2 * 20, stats, shield: 1000, collider: true, vx: 0, vy: 0 };
+});
+shiptree.setEvent('spectate', function () {
+  return { collider: false, type: this.shiptrees.spectate?.[0].typespec.code, crystals: 0, stats: 0 };
+});
+shiptree.setEvent('stats', function (ship) {
+  return this.events?.restore(ship, !ship.stats * 88888888);
+});
+shiptree.setEvent('reset', function (ship, shiptree) {
+  return { type: this.shipCodes?.[shiptree][0], ...this.events?.restore(ship, 88888888) };
+});
 // ___________________________________________________________________________________________
 var main = {
   id: "main",
@@ -692,11 +774,14 @@ game.setObject({
   scale: { x: 40 * 1.6, y: 260, z: 300 },
   rotation: { x: 0, y: 160, z: Math.PI }
 });
+console.log(shiptree)
 // ___________________________________________________________________________________________
 this.options = {
-  ships: Object.values({ ...spectators, ...speedsterShips, ...vanillaShips, ...customShips }),
+  root_mode: 'survival',
   custom_map, vocabulary,
   starting_ship: 801,
+  ships: shiptree.ships,
+  reset_tree: true,
   map_size: 200,
   survival_level: 8,
   speed_mod: 1.2,
@@ -730,28 +815,30 @@ const defaultScreen = [{
 }]
 // ___________________________________________________________________________________________
 function initialize(ship) {
-  ship.setUIComponent({
-    id: "WelcomeText",
-    position: [0, 0, 0, 0],
-    components: [
-      { type: "rectangle", position: [0, 0, 100, 100], value: ship.custom[game.custom.id], color: 'rgba(255, 255, 255, 0.2)' }
-    ]
-  });
+  // ship.setUIComponent({
+  //   id: "WelcomeText",
+  //   position: [0, 0, 0, 0],
+  //   components: [
+  //     { type: "rectangle", position: [0, 0, 100, 100], value: ship.custom[game.custom.id], color: 'rgba(255, 255, 255, 0.2)' }
+  //   ]
+  // });
   if (ship.custom.init) return;
   ship.custom.init = true;
   game.custom.maxID = Math.max(game.custom.maxID, ship.id, 0) || ship.id;
   ship.custom.optionsScreen = false;
   ship.custom.shipTree = 'vanilla';
   ship.custom.isAdmin = false;
+  ship.set(shiptree.getEvent('reset', ship, 'vanilla'));
   defaultScreen.forEach(ui => ship.setUIComponent(ui));
 }
 // ________________________________________________________________________________________
 this.tick = function (game) {
   if (game.step % 15 === 0) {
     for (let ship of game.ships) {
-      _0x122a7d && _0x32e725 && !ship.custom.weapons && ship.emptyWeapons();
+      // _0x122a7d && _0x32e725 &&
+      !ship.custom.weapons && ship.emptyWeapons();
       if (game.step % 30 === 0) {
-        resetUI(ship);
+        // resetUI(ship);
         if (!ship.custom.timeout) switch (ship.custom.page) {
           case 'map':
             ship.setUIComponent(Maps.dynamicUIs(game, ship));
@@ -760,8 +847,8 @@ this.tick = function (game) {
             if (ship.custom.isAdmin) hideUIs(Admins.getShipsUIList()).concat(Admins.dynamicUIs(game.ships)).forEach(ui => ship.setUIComponent(ui));
             break;
         }
+        if (game.step % 60 === 0) initialize(ship);
       }
-      if (game.step % 60 === 0) initialize(ship);
     }
   }
 }
@@ -820,51 +907,6 @@ function capitalizeFirstLetter(string) {
 function underscoreToText(string) {
   return string.split('_').map(a => capitalizeFirstLetter(a)).join(' ');
 }
-// shipCode___________________________________________________________________________________________
-{
-  function shipCode() {
-    this.shipTree = {};
-    this.shipCodes = {};
-  }
-  shipCode.prototype.changeShipTree = function ({ ship, id }) {
-    if (!Object.keys(this.shipTree).includes(id)) return;
-    ship.custom.shipTree = id;
-    return this.reset(ship);
-  }
-  shipCode.prototype.initialize = function (ships) {
-    const arr = {};
-    Object.values(ships).forEach(function (ship) {
-      const object = JSON.parse(ship).typespec;
-      arr[object.name] = object;
-    })
-    return arr;
-  }
-  shipCode.prototype.addShipTree = function (ships, id) {
-    const name = id.toLowerCase()
-    this.shipTree[name] = this.initialize(ships);
-    this.shipCodes[name] = Object.values(this.shipTree[name]).map(ship => ship.code);
-  }
-  shipCode.prototype.type = function (ship) { return ship?.type ?? ship; }
-  shipCode.prototype.shipCargo = function (ship) { return Math.trunc(this.type(ship) / 100) ** 2 * 20; }
-  shipCode.prototype.maxStats = function (ship) { return this.type(ship) < 700 ? 88888888 : 0; }
-  shipCode.prototype.restore = function (ship, stats = 88888888) {
-    const type = this.type(ship);
-    return { type, collider: true, stats: ship?.stats || stats, crystals: this.shipCargo(type), shield: 999 };
-  }
-  shipCode.prototype.changeShip = function (ship, reverse = false) {
-    const shipTree = reverse ? [...this.shipCodes[ship.custom.shipTree]].reverse() : this.shipCodes[ship.custom.shipTree];
-    return this.restore(shipTree[shipTree.indexOf(ship.type) + 1] || shipTree[0]);
-  }
-  shipCode.prototype.reset = function (ship) {
-    const type = this.shipCodes[ship.custom.shipTree][0];
-    return { type, collider: true, crystals: this.shipCargo(type), stats: this.maxStats(type), shield: 999 };
-  }
-}
-// ___________________________________________________________________________________________
-const shipTrees = new shipCode();
-shipTrees.addShipTree(customShips, 'custom');
-shipTrees.addShipTree(speedsterShips, 'speedster');
-shipTrees.addShipTree(vanillaShips, 'vanilla');
 // Style___________________________________________________________________________________________
 const simpleUI = (id, text, fontsize = 10, align = 'center') => {
   return [
@@ -890,8 +932,8 @@ const Options = {
 }
 // Ship___________________________________________________________________________________________
 const Ships = {
-  shipFuncIDs: ['restore', 'stats', 'reset', 'warp', 'spectate'],
-  shiptreeIDs: Object.keys(shipTrees.shipTree),
+  shipFuncIDs: Object.keys(shiptree.events).filter(func => !['next', 'previous'].includes(func)).concat('warp'),
+  shiptreeIDs: Object.keys(shiptree.shiptrees).filter(shiptree => shiptree !== 'spectate'),
   otherIDs: ['next', 'previous', 'index'],
   layout: function () {
     const shipArea = new Grids([5, 35, 30, 60], 1, 6);
@@ -929,9 +971,9 @@ const Ships = {
     ].flat()
   },
   eventFuncs: {
-    restore: ({ ship }) => shipTrees.restore(ship, ship.stats),
-    stats: ({ ship }) => { return { ...shipTrees.restore(ship), stats: shipTrees.maxStats(ship) * !ship.stats } },
-    reset: ({ ship }) => shipTrees.reset(ship),
+    restore: ({ ship }) => shiptree.getEvent('restore', ship),
+    stats: ({ ship }) => shiptree.getEvent('stats', ship),
+    reset: ({ ship }) => shiptree.getEvent('reset', ship, ship.custom.shiptree),
     warp: function ({ ship, ships }) {
       if (ships.length <= 1) return;
       const { custom } = ship;
@@ -942,15 +984,19 @@ const Ships = {
 
       const { x, y, vx, vy } = ships[custom.warpIndex];
 
-      return { x, y, vx, vy, ...this.spectate() }
+      return { x, y, vx, vy, ...this.spectate }
     },
-    next: ({ ship }) => shipTrees.changeShip(ship),
-    previous: ({ ship }) => shipTrees.changeShip(ship, true),
-    spectate: () => ({ type: 102, collider: false, crystals: 0 })
+    next: ({ ship }) => shiptree.getEvent('next', ship, ship.custom.shiptree),
+    previous: ({ ship }) => shiptree.getEvent('previous', ship, ship.custom.shiptree),
+    spectate: shiptree.getEvent('spectate')
   },
   events({ ship, id, ships }) {
-    if (this.shiptreeIDs.includes(id)) return shipTrees.changeShipTree({ ship, id });
-    if (ship.type === 102 && ['restore', 'stats'].includes(id)) return;
+    if (id === 'spectate') return this.eventFuncs[id];
+    if (this.shiptreeIDs.includes(id)) {
+      ship.custom.shiptree = id;
+      return this.eventFuncs.reset({ ship });
+    }
+    if (ship.type === this.eventFuncs.spectate.type && ['restore', 'stats'].includes(id)) return;
     return this.eventFuncs[id]?.({ ship, ships });
   }
 }
@@ -1007,14 +1053,14 @@ const Maps = {
   dynamicUIs(game, ship, custom = {}, width = 2) {
     return { id: 'players_map', position: this.layout.map.displayUI.flat(), components: this.updateMap(game, ship, width, custom) }
   },
-  events({ ship, id }) {
-    if (this.boxes[id]) return { ...this.boxes[id], ...Ships.eventFuncs.spectate(ship) }
+  events({ id }) {
+    if (this.boxes[id]) return { ...this.boxes[id], ...Ships.eventFuncs.spectate }
   }
 }
 function Announce(ship, text = '') {
   clearTimeout(ship.custom.announceTimeout)
   if (!text) return ship.setUIComponent(...hideUIs('announce'));
-  ship.setUIComponent({ id: 'announce', position: [36, 90, 65, 5], components: [{ type: "text", position: [0, 30, 100, 60], value: capitalizeFirstLetter(text), color: 'rgba(255,255,255,1)', align: 'left' }] })
+  ship.setUIComponent({ id: 'announce', position: [36, 87, 65, 5], components: [{ type: "text", position: [0, 30, 100, 60], value: capitalizeFirstLetter(text), color: 'rgba(255,255,255,1)', align: 'left' }] })
   ship.custom.announceTimeout = setTimeout(Announce, 4000, ship)
 }
 // Admin_________________________________________________________________________________________
@@ -1070,7 +1116,7 @@ const Admins = {
   },
   eventsFunc: {
     admin_warp: ({ ship, ships }) => {
-      ships.forEach(player => !player.custom.isAdmin && player.set({ x: ship.x, y: ship.y, type: 102, stats: shipTrees.maxStats(player), collider: false }))
+      ships.forEach(player => !player.custom.isAdmin && player.set({ x: ship.x, y: ship.y, ...Ships.eventFuncs.spectate }))
       auditLogs.addCustom(ship, "used the 'Admin Warp' feature");
     },
     reset_map: ({ ship, custom_map = '' }) => {
@@ -1123,10 +1169,6 @@ const Admins = {
 // Pages___________________________________________________________________________________________
 function hideUIs(...ids) {
   return ids.flat().map((id = '') => { return { id: id, position: [0, 0, 0, 0], visible: false, shortcut: undefined } })
-}
-function resetUI(ship) {
-  if (!game.custom.id) game.custom.id = _0x122a7d();
-  ship.custom[game.custom.id] = _0x122a7d();
 }
 const pagesUI = {
   options: Options.staticUIs(),
