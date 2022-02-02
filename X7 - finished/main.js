@@ -634,16 +634,17 @@ shiptree.addShiptree('speedster', speedsterShips);
 shiptree.setEvent('next', function (ship, shiptree) {
   const ships = this.shipCodes[shiptree];
   const type = ships[ships.indexOf(ship.type) + 1] ?? ships[0];
-  return { type, ...this.events?.restore({ type }, 88888888) }
+  return { type, ...this.events?.restore({ type, stats: 88888888 },) }
 });
 shiptree.setEvent('previous', function (ship, shiptree) {
   const ships = [...this.shipCodes[shiptree]].reverse();
   const type = ships[ships.indexOf(ship.type) + 1] ?? ships[0];
-  return { type, ...this.events?.restore({ type }, 88888888) };
+  return { type, ...this.events?.restore({ type, stats: 88888888 }) };
 });
-shiptree.setEvent('restore', function (ship, stats = ship.stats) {
+shiptree.setEvent('restore', function (ship, stats) {
   const shipTier = this.getShipTier(ship);
-  return { crystals: shipTier ** 2 * 20, stats: shipTier === 7 ? 0 : stats, shield: 1000, collider: true, vx: 0, vy: 0 };
+  stats = shipTier < 7 ? stats : 0;
+  return { crystals: shipTier ** 2 * 20, stats: stats ?? ship.stats, shield: 1000, collider: true, vx: 0, vy: 0 };
 });
 shiptree.setEvent('spectate', function () {
   return { collider: false, type: this.shiptrees.spectate?.[0].typespec.code, crystals: 0, stats: 0 };
@@ -652,7 +653,8 @@ shiptree.setEvent('stats', function (ship) {
   return this.events?.restore(ship, !ship.stats * 88888888);
 });
 shiptree.setEvent('reset', function (ship, shiptree) {
-  return { type: this.shipCodes?.[shiptree][0], ...this.events?.restore(ship, 88888888) };
+  const type = this.shipCodes?.[shiptree][0]
+  return { type, ...this.events?.restore({ type, stats: 88888888 }) };
 });
 // ___________________________________________________________________________________________
 var main = {
@@ -777,7 +779,6 @@ game.setObject({
 });
 // ___________________________________________________________________________________________
 this.options = {
-  root_mode: 'survival',
   custom_map, vocabulary,
   starting_ship: 801,
   ships: shiptree.ships,
@@ -828,7 +829,7 @@ function initialize(ship) {
   ship.custom.optionsScreen = false;
   ship.custom.shiptree = 'vanilla';
   ship.custom.isAdmin = false;
-  ship.set(shiptree.getEvent('reset', ship, 'vanilla'));
+  ship.set({ x: 0, y: 0, ...shiptree.getEvent('reset', ship, 'vanilla') });
   defaultScreen.forEach(ui => ship.setUIComponent(ui));
 }
 // ________________________________________________________________________________________
