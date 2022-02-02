@@ -2,7 +2,7 @@
  * CREDITS__________________________________________________________________________________
  * Main coder: Bhpsngum, ___
  * Helper coder: X7
- * Ships: Robonuko, 45rfew, Neuronailty, KEST, SDC
+ * Ships: Robonuko, 45rfew, Neuronailty, KEST, SDC, Nautic, AI, MCST
  */
 
 /*
