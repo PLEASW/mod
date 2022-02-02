@@ -634,15 +634,16 @@ shiptree.addShiptree('speedster', speedsterShips);
 shiptree.setEvent('next', function (ship, shiptree) {
   const ships = this.shipCodes[shiptree];
   const type = ships[ships.indexOf(ship.type) + 1] ?? ships[0];
-  return { type, ...this.events?.restore(ship, 88888888) }
+  return { type, ...this.events?.restore({ type }, 88888888) }
 });
 shiptree.setEvent('previous', function (ship, shiptree) {
   const ships = [...this.shipCodes[shiptree]].reverse();
   const type = ships[ships.indexOf(ship.type) + 1] ?? ships[0];
-  return { type, ...this.events?.restore(ship, 88888888) };
+  return { type, ...this.events?.restore({ type }, 88888888) };
 });
 shiptree.setEvent('restore', function (ship, stats = ship.stats) {
-  return { crystals: this.getShipTier(ship) ** 2 * 20, stats, shield: 1000, collider: true, vx: 0, vy: 0 };
+  const shipTier = this.getShipTier(ship);
+  return { crystals: shipTier ** 2 * 20, stats: shipTier === 7 ? 0 : stats, shield: 1000, collider: true, vx: 0, vy: 0 };
 });
 shiptree.setEvent('spectate', function () {
   return { collider: false, type: this.shiptrees.spectate?.[0].typespec.code, crystals: 0, stats: 0 };
@@ -774,7 +775,6 @@ game.setObject({
   scale: { x: 40 * 1.6, y: 260, z: 300 },
   rotation: { x: 0, y: 160, z: Math.PI }
 });
-console.log(shiptree)
 // ___________________________________________________________________________________________
 this.options = {
   root_mode: 'survival',
@@ -826,7 +826,7 @@ function initialize(ship) {
   ship.custom.init = true;
   game.custom.maxID = Math.max(game.custom.maxID, ship.id, 0) || ship.id;
   ship.custom.optionsScreen = false;
-  ship.custom.shipTree = 'vanilla';
+  ship.custom.shiptree = 'vanilla';
   ship.custom.isAdmin = false;
   ship.set(shiptree.getEvent('reset', ship, 'vanilla'));
   defaultScreen.forEach(ui => ship.setUIComponent(ui));
@@ -994,6 +994,7 @@ const Ships = {
     if (id === 'spectate') return this.eventFuncs[id];
     if (this.shiptreeIDs.includes(id)) {
       ship.custom.shiptree = id;
+      console.log(this.eventFuncs.reset({ ship }));
       return this.eventFuncs.reset({ ship });
     }
     if (ship.type === this.eventFuncs.spectate.type && ['restore', 'stats'].includes(id)) return;
