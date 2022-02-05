@@ -54,8 +54,5 @@ class SHIP {
   getShipObj = ship => Object.values(this.shiptrees).flat().find(data => data.typespec.code === ship.type);
   getShipTier = ship => this.getShipObj(ship).level;
   setEvent = (id, callback) => this.events[id] = callback.bind(this);
-  getEvent = (id, ...param) => {
-    try { return this.events[id](...param) }
-    catch (e) { console.log(e) }
-  };
+  getEvent = (id, ...param) => { try { return this.events[id](...param) } catch (e) { console.log(e) } };
 }
