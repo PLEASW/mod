@@ -47,9 +47,7 @@ class SHIP {
   }
   get tier1() {
     this.shiptrees ?? this.initializeShiptree();
-    const ships = Object.values(this.shiptrees).flat();
-    this.#extraShips.forEach(data => ships.find(ship => ship.typespec.code === data.typespec.code) ?? ships.push(data))
-    return ships.filter(ship => ship.level === 1 && ship.name).map(ship => ship.typespec.code);
+    return Object.values(this.shiptrees).flat().filter(ship => ship.level === 1 && ship.name).map(ship => ship.typespec.code)
   }
   getShipObj = ship => Object.values(this.shiptrees).flat().find(data => data.typespec.code === ship.type);
   getShipTier = ship => this.getShipObj(ship).level;
