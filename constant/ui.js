@@ -1,3 +1,4 @@
+
 class Grids {
   constructor(layout) {
     this.layout = layout;
@@ -23,6 +24,9 @@ class Grids {
     width *= 1 - horizontal / 100; height *= 1 - vertical / 100;
     return this.#generatePos({ x, y, width, height });
   }
+  getGrids(type, vertical = false) {
+    return this.grids[type]?.flat().sort((a, b) => a.position[Number(vertical)] - b.position[Number(vertical)]).map(pos => pos.position);
+  }
 }
 
 class UIs {
@@ -30,7 +34,7 @@ class UIs {
     this.uis = {}
   }
   setFontSize = size => [0, 50 - size / 2, 100, size];
-  initUI({ id, position, visible, clickable }, layout = this.simpleLayout) {
+  initUI({ id, position, visible = true, clickable = false }, layout = this.simpleLayout) {
     return this.uis[id] = { id, position, visible, clickable, components: layout(id) };
   }
   simpleLayout = id => [
@@ -41,8 +45,7 @@ class UIs {
     return ids.map(id => { return { id: this.uis[id]?.id ?? id, position: [0, 0, 0, 0], visible: false, shortcut: undefined } })
   }
   resetUI(id, change, layout = this.simpleLayout) {
-    const ui = this.uis[id];
-    ui.components = layout(id);
+    const ui = this.uis[id]; ui.components = layout(id);
     Object.assign(ui, Object.assign(change, { id }));
   }
 }
