@@ -1,11 +1,3 @@
-
-
-this.options = {
-  // see documentation for options reference
-  root_mode: "survival",
-  map_size: 30
-};
-
 class Grids {
   constructor(layout) {
     this.layout = layout;
@@ -56,21 +48,11 @@ class UIs {
     Object.assign(ui, Object.assign(change, { id }));
   }
 }
+const shipFuncs = {};
 
-const menuSections = new Grids({ x: 4, y: 29, width: 30, height: 5 })
-menuSections.createGrids(5, 2);
-menuSections.createGrids(4, 2);
-menuSections.createGrids(4, 1);
-// console.log(menuSections.getGrids('4x2', true));
-const pos = menuSections.getGrids('4x1')
-const menuSectionsFunc = new UIs();
-for (let [i, id] of ['a', 'b', 'c', 'd'].entries()) {
-  menuSectionsFunc.initUI({ id, position: menuSections.addMargin(5, 1, pos[i]).position, fontSize: 50 })
-}
-console.log(menuSectionsFunc.uis);
-this.tick = function (game) {
-  // do mod stuff here ; see documentation
-  if (game.step % 60 === 0) {
-    Object.values(menuSectionsFunc.uis).forEach(ui => game.ships[0].setUIComponent(ui))
-  }
-}
+const teleportSections = {};
+const serverMap = {};
+
+const shipsListSections = {};
+const adminGlobalFuncs = {};
+const adminFuncs = {};
