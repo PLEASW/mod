@@ -1,4 +1,3 @@
-
 class Grids {
   constructor(layout) {
     this.layout = layout;
@@ -34,12 +33,12 @@ class UIs {
     this.uis = {}
   }
   setFontSize = size => [0, 50 - size / 2, 100, size];
-  initUI({ id, position, visible = true, clickable = false }, layout = this.simpleLayout) {
-    return this.uis[id] = { id, position, visible, clickable, components: layout(id) };
+  initUI({ id, position, visible = true, clickable = false, fontSize }, layout = this.simpleLayout) {
+    return this.uis[id] = { id, position, visible, clickable, components: layout(id, fontSize) };
   }
-  simpleLayout = id => [
+  simpleLayout = (id, fontSize = 40) => [
     { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 5 },
-    { type: 'text', position: this.setFontSize(40), value: (id ?? '').toUpperCase(), color: 'rgb(255,255,255)' }
+    { type: 'text', position: this.setFontSize(fontSize), value: (id ?? '').toUpperCase(), color: 'rgb(255,255,255)' }
   ]
   hideUIs(...ids) {
     return ids.map(id => { return { id: this.uis[id]?.id ?? id, position: [0, 0, 0, 0], visible: false, shortcut: undefined } })
