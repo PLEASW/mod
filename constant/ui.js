@@ -29,8 +29,37 @@ class Grids {
   }
   getGrids([rows, cols], vertical = false) {
     const type = rows + this.prefix + cols
-    this.grids[type] ?? this.#createGrids(rows, cols);
-    try { return this.grids[type].flat().flatMap(pos => [pos.position]).sort((a, b) => a[Number(vertical)] - b[Number(vertical)]); }
+    try {
+      this.grids[type] ?? this.#createGrids(rows, cols);
+      return this.grids[type].flat().flatMap(pos => [pos.position]).sort((a, b) => a[Number(vertical)] - b[Number(vertical)]);
+    }
     catch (error) { console.log(error); }
   }
+}
+class UI {
+  constructor(ui) {
+    this.ui = ui;
+  }
+  #customDesign = {};
+  simpleDesign(...text) { };
+  addDesign(name, callback) {
+    if (typeof callback !== 'function') return;
+    return this.customDesign[name.toLowerCase()] = callback.bind(this);
+  }
+  getDesign(name) { return this.customDesign[name] ?? this.simpleDesign; }
+  setDesign(name, ...param) { return this.ui.components = (this.#customDesign[name] ?? this.simpleDesign)(...param) }
+  display(ship, visible) {
+    try {
+      if (visible) return ship.setUIComponent(this.ui);
+      ship.setUIComponent({ id: this.ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible, clickable: false });
+    } catch (error) { console.log(error); }
+  }
+}
+class LIST_UI extends UI {
+  constructor(uis, pos) {
+    super(undefined);
+    this.uis = uis ?? [];
+    this.layout = new Grids(pos);
+  }
+
 }
