@@ -27,39 +27,71 @@ class Grids {
       return this.#generatePos({ x, y, width, height });
     } catch (error) { console.log(error) };
   }
-  getGrids([rows, cols], vertical = false) {
-    const type = rows + this.prefix + cols
+  getGrids(rows, cols, vertical = false) {
     try {
+      const type = rows + this.prefix + cols
       this.grids[type] ?? this.#createGrids(rows, cols);
       return this.grids[type].flat().flatMap(pos => [pos.position]).sort((a, b) => a[Number(vertical)] - b[Number(vertical)]);
-    }
-    catch (error) { console.log(error); }
-  }
-}
-class UI {
-  constructor(ui) {
-    this.ui = ui;
-  }
-  #customDesign = {};
-  simpleDesign(...text) { };
-  addDesign(name, callback) {
-    if (typeof callback !== 'function') return;
-    return this.customDesign[name.toLowerCase()] = callback.bind(this);
-  }
-  getDesign(name) { return this.customDesign[name] ?? this.simpleDesign; }
-  setDesign(name, ...param) { return this.ui.components = (this.#customDesign[name] ?? this.simpleDesign)(...param) }
-  display(ship, visible) {
-    try {
-      if (visible) return ship.setUIComponent(this.ui);
-      ship.setUIComponent({ id: this.ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible, clickable: false });
     } catch (error) { console.log(error); }
   }
 }
-class LIST_UI extends UI {
-  constructor(uis, pos) {
-    super(undefined);
-    this.uis = uis ?? [];
-    this.layout = new Grids(pos);
+class UI {
+  constructor({ id = '', position = [], visible = true, shortcut, clickable = false, components }) {
+    this.variety = {};
+    this.ui = (function () {
+      this.variety['default'] = components ?? this.simpleDesign(id || '');
+      return { id, position, visible, clickable, shortcut };
+    }).call(this);
   }
-
+  get id() { return this.ui.id }
+  get position() { return this.ui.position }
+  get visible() { return this.ui.visible }
+  get clickable() { return this.ui.clickable }
+  set visible(value) { return this.ui.visible = !!value }
+  set clickable(value) { return this.ui.clickable = !!value }
+  colors = {
+    white: 'rgb(255,255,255)', black: 'rgb(0,0,0)',
+    red: 'rgb(255,0,0)', green: 'rgb(0,255,0)', blue: 'rgb(0,0,255)',
+    cyan: 'rgb(0,255,255)'
+  }
+  customDesigns = {};
+  simpleDesign(text, fontSize = 60) {
+    fontSize = Number(fontSize) || 60;
+    return [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: this.colors.white, width: 5 },
+      { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: this.colors.white }
+    ];
+  }
+  addDesign(name, callback) {
+    if (typeof callback !== 'function') return;
+    return this.customDesigns[name.toLowerCase()] = callback.bind(this);
+  }
+  setDesign(name, design, ...param) {
+    name = name.toLowerCase();
+    if (typeof design === 'function') return this.addDesign(design.name, design), this.variety[name] = design.call(this, ...param);
+    if (typeof design === 'object') return this.variety[name] = design;
+    this.variety[name] = { components: this.customDesigns[design](...param) };
+  }
+  hide = (ship, ...ids) => ids.forEach(id => ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false }))
+  display(ship, version) {
+    const ui = Object.assign({ ...this.ui }, this.variety[version]);
+    return ship.setUIComponent(ui), ui;
+  }
 }
+class LIST_UI {
+  constructor(list = '', [x, y, width, height]) {
+    this.list = typeof list === 'string' ? list.toLowerCase() : String(Math.trunc(Math.random() * 1000));
+    this.layout = new Grids({ x, y, width, height });
+    this.uis = {};
+  }
+  addUI([rows, cols, vertical = false], ...uis) {
+    const grids = this.layout.getGrids(rows, cols, vertical);
+
+  }
+  hide() { }
+  display() { }
+}
+a = new UI({ id: '12' })
+c = new LIST_UI('', [0, 0, 100, 100])
+c.addUI([10, 10, false], {}, {})
+
