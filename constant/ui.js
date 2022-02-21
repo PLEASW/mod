@@ -81,17 +81,23 @@ class UI {
 class LIST_UI {
   constructor(list = '', [x, y, width, height]) {
     this.list = typeof list === 'string' ? list.toLowerCase() : String(Math.trunc(Math.random() * 1000));
-    this.layout = new Grids({ x, y, width, height });
-    this.uis = {};
+    this.grids = new Grids({ x, y, width, height });
+    this.layouts = {};
   }
-  addUI([rows, cols, vertical = false], ...uis) {
-    const grids = this.layout.getGrids(rows, cols, vertical);
-
+  addUI([rows, cols, vertical = false], name, ...uis) {
+    const layout = this.layouts[name.toLowerCase()] ??= [], length = layout.length;
+    const grids = this.grids.getGrids(rows, cols, vertical);
+    uis.forEach((ui, index) => !!grids.at(index + length) && layout.push((ui.position = grids.at(index + length), ui)))
   }
-  hide() { }
-  display() { }
+  hideAll(ship, type) { this.layouts[type].forEach(ui => ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })) }
+  displayAll(ship, type) { this.layouts[type].forEach(ui => ship.setUIComponent(ui)); }
+  setUI(ship, type, filter, design) {
+    if (typeof design !== 'function' || typeof filter !== 'function' || !!ship) return;
+    const uis = this.layouts[type.toLowerCase()].filter(filter);
+    uis.forEach(ui => ship.setUIComponent(ui));
+  }
+  hideUI(ship, type, filter) {
+    if (typeof filter !== 'function') return;
+    ship.setUIComponent({ ...this.layouts[type].find(filter), position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
+  }
 }
-a = new UI({ id: '12' })
-c = new LIST_UI('', [0, 0, 100, 100])
-c.addUI([10, 10, false], {}, {})
-
