@@ -27,11 +27,11 @@ class Grids {
       return this.#generatePos({ x, y, width, height });
     } catch (error) { console.log(error) };
   }
-  getGrids(rows, cols, vertical = false) {
+  getGrids(rows, cols, horizontal = false) {
     try {
       const type = rows + this.prefix + cols
       this.grids[type] ?? this.#createGrids(rows, cols);
-      return this.grids[type].flat().flatMap(pos => [pos.position]).sort((a, b) => a[Number(vertical)] - b[Number(vertical)]);
+      return this.grids[type].flat().flatMap(pos => [pos.position]).sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
     } catch (error) { console.log(error); }
   }
 }
