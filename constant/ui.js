@@ -124,4 +124,11 @@ class LIST_UI {
     uis.splice(uis.indexOf(id), 1);
     ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
   }
+  test(ship, layout) {
+    return this.grids.getGrids(...layout).map((position, id) => ({
+      id: id + (ship.custom.uis?.length ?? 0), position,
+      components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }]
+    }))
+  }
+
 }
