@@ -1,4 +1,4 @@
-class Grids {
+class GRIDS {
   constructor([x = 0, y = 0, width = 100, height = 100], prefix = 'x') {
     this.layout = { x, y, width, height };
     this.prefix = prefix;
@@ -89,7 +89,7 @@ class UI {
 class LIST_UI {
   constructor(list = '', position) {
     this.list = typeof list === 'string' ? list.toLowerCase() : String(Math.trunc(Math.random() * 1000));
-    this.grids = new Grids(position);
+    this.grids = new GRIDS(position);
     this.layouts = {};
   }
   addMargin(layout, horizontal = 0, vertical = 0) {
@@ -125,10 +125,9 @@ class LIST_UI {
     ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
   }
   test(ship, layout) {
-    return this.grids.getGrids(...layout).map((position, id) => ({
+    return this.grids.getGrids(...layout).forEach((position, id) => ship.setUIComponent({
       id: id + (ship.custom.uis?.length ?? 0), position,
       components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }]
     }))
   }
-
 }
