@@ -39,7 +39,7 @@ class UI {
   constructor({ id = '', position = [], visible = true, shortcut, clickable = false, components }) {
     this.variety = {};
     this.ui = (function () {
-      this.variety['default'] = components ?? this.simpleDesign(id || '');
+      this.variety['default'] = { components: components ?? this.simpleDesign(id || '') };
       return { id, position, visible, clickable, shortcut };
     }).call(this);
   }
@@ -72,9 +72,16 @@ class UI {
     if (typeof design === 'object') return this.variety[name] = design;
     this.variety[name] = { components: this.customDesigns[design](...param) };
   }
-  hide = (ship, ...ids) => ids.forEach(id => ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false }))
+  hide = ship => {
+    const uis = ship.custom.uis ??= [], id = this.id;
+    if (!uis.includes(this.id)) return;
+    uis.splice(uis.indexOf(id), 1);
+    ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
+  }
   display(ship, version) {
-    const ui = Object.assign({ ...this.ui }, this.variety[version]);
+    const uis = ship.custom.uis ??= [];
+    const ui = Object.assign({ ...this.ui }, this.variety[version] ?? this.variety.default);
+    !uis.includes(ui.id) && uis.push(ui.id);
     return ship.setUIComponent(ui), ui;
   }
 }
