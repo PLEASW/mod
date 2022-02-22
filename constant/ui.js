@@ -1,6 +1,6 @@
 class Grids {
-  constructor(layout, prefix = 'x') {
-    this.layout = layout;
+  constructor([x = 0, y = 0, width = 100, height = 100], prefix = 'x') {
+    this.layout = { x, y, width, height };
     this.prefix = prefix;
     this.grids = {};
   }
@@ -14,7 +14,7 @@ class Grids {
   mergeCell(type, pos) {
     try {
       const [x0, y0, numX, numY] = pos;
-      let [x, y, width, height] = this.grids[type][x0][y0].position;
+      let [x, y, width, height] = this.grids[type.join(this.prefix)][x0][y0].position;
       width *= numX; height *= numY;
       return this.#generatePos({ x, y, width, height });
     } catch (error) { console.log(error); }
@@ -87,9 +87,9 @@ class UI {
   }
 }
 class LIST_UI {
-  constructor(list = '', [x, y, width, height]) {
+  constructor(list = '', position) {
     this.list = typeof list === 'string' ? list.toLowerCase() : String(Math.trunc(Math.random() * 1000));
-    this.grids = new Grids({ x, y, width, height });
+    this.grids = new Grids(position);
     this.layouts = {};
   }
   addMargin(layout, horizontal = 0, vertical = 0) {
