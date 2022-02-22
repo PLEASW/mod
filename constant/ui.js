@@ -49,6 +49,7 @@ class UI {
   get clickable() { return this.ui.clickable }
   set visible(value) { return this.ui.visible = !!value }
   set clickable(value) { return this.ui.clickable = !!value }
+  set position(position = [0, 0, 100, 100]) { return this.ui.position = position }
   colors = {
     white: 'rgb(255,255,255)', black: 'rgb(0,0,0)',
     red: 'rgb(255,0,0)', green: 'rgb(0,255,0)', blue: 'rgb(0,0,255)',
@@ -91,20 +92,36 @@ class LIST_UI {
     this.grids = new Grids({ x, y, width, height });
     this.layouts = {};
   }
-  addUI([rows, cols, vertical = false], name, ...uis) {
-    const layout = this.layouts[name.toLowerCase()] ??= [], length = layout.length;
-    const grids = this.grids.getGrids(rows, cols, vertical);
-    uis.forEach((ui, index) => !!grids.at(index + length) && layout.push((ui.position = grids.at(index + length), ui)))
+  addMargin(layout, horizontal = 0, vertical = 0) {
+    this.layouts[layout].uis.forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
   }
-  hideAll(ship, type) { this.layouts[type].forEach(ui => ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })) }
-  displayAll(ship, type) { this.layouts[type].forEach(ui => ship.setUIComponent(ui)); }
+  addUI([rows, cols, vertical = false], name, ...uis) {
+    const layout = this.layouts[name.toLowerCase()] ??= { rows, cols, uis: [] }, length = layout.uis.length;
+    const grids = this.grids.getGrids(rows, cols, vertical);
+    uis.forEach((ui, index) => !!grids.at(index + length) && layout.uis.push((ui.position = grids.at(index + length), ui)))
+  }
+  hideAll(ship, type) {
+    const uis = ship.custom.uis ??= [];
+    this.layouts[type.toLowerCase()].uis.forEach(ui => {
+      uis.includes(ui.id) && uis.splice(uis.indexOf(ui.id), 1);
+      ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
+    })
+  }
+  displayAll(ship, type, version) {
+    ship.custom.uis.concat(this.layouts[type.toLowerCase()].uis.map(ui => {
+      if (typeof ui.display === 'function') return ui.display(ship, version), ui;
+      return ship.setUIComponent(ui), ui;
+    }))
+  }
   setUI(ship, type, filter, design) {
     if (typeof design !== 'function' || typeof filter !== 'function' || !!ship) return;
-    const uis = this.layouts[type.toLowerCase()].filter(filter);
-    uis.forEach(ui => ship.setUIComponent(ui));
+    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui => ship.setUIComponent(ui));
   }
   hideUI(ship, type, filter) {
     if (typeof filter !== 'function') return;
-    ship.setUIComponent({ ...this.layouts[type].find(filter), position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
+    const id = this.layouts[type.toLowerCase()].uis.find(filter.bind(this)).id;
+    const uis = ship.custom.uis ??= [];
+    uis.splice(uis.indexOf(id), 1);
+    ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
   }
 }
