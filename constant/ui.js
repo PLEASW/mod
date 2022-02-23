@@ -111,8 +111,7 @@ class LIST_UI {
   }
   setUI(ship, type, filter, trackers, design = () => [], ...param) {
     if (typeof filter !== 'function' || !!ship) return;
-    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui =>
-      trackers.has(ui.id) && ship.setUIComponent(Object.assign({ ...ui }, { components: design.call(this, ...param) })));
+    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui => trackers.has(ui.id) && ship.setUIComponent(Object.assign({ ...ui }, { components: design.call(this, ...param) })));
   }
   hideUI(ship, type, filter, trackers) {
     if (typeof filter !== 'function') return;
