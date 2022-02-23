@@ -38,10 +38,10 @@ class GRIDS {
 class UI {
   constructor({ id = '', position = [], visible = true, shortcut, clickable = false, components }) {
     this.variety = {};
-    this.ui = (function () {
+    this.ui = function () {
       this.variety['default'] = { components: components ?? this.simpleDesign(id || '') };
       return { id, position, visible, clickable, shortcut };
-    }).call(this);
+    }.call(this);
   }
   get id() { return this.ui.id }
   get position() { return this.ui.position }
@@ -73,23 +73,19 @@ class UI {
     if (typeof design === 'object') return this.variety[name] = design;
     this.variety[name] = { components: this.customDesigns[design](...param) };
   }
-  hide = ship => {
-    const uis = ship.custom.uis ??= [], id = this.id;
-    if (!uis.includes(this.id)) return;
-    uis.splice(uis.indexOf(id), 1);
-    ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
+  hide(ship, trackers) {
+    ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] })
+    typeof trackers?.delete === 'function' ?? trackers.delete(this.id);
   }
-  display(ship, version) {
-    const uis = ship.custom.uis ??= [];
-    const ui = Object.assign({ ...this.ui }, this.variety[version] ?? this.variety.default);
-    !uis.includes(ui.id) && uis.push(ui.id);
-    return ship.setUIComponent(ui), ui;
+  display(ship, version, trackers) {
+    ship.setUIComponent(Object.assign({ ...this.ui }, this.variety[version] ?? this.variety.default));
+    typeof trackers?.add === 'function' ?? trackers.add(this.id);
   }
 }
 class LIST_UI {
-  constructor(list = '', position) {
+  constructor(position, list = '',) {
     this.list = typeof list === 'string' ? list.toLowerCase() : String(Math.trunc(Math.random() * 1000));
-    this.grids = new GRIDS(position);
+    this.grids = new GRIDS(Object.assign(position));
     this.layouts = {};
   }
   addMargin(layout, horizontal = 0, vertical = 0) {
@@ -100,34 +96,51 @@ class LIST_UI {
     const grids = this.grids.getGrids(rows, cols, vertical);
     uis.forEach((ui, index) => !!grids.at(index + length) && layout.uis.push((ui.position = grids.at(index + length), ui)))
   }
-  hideAll(ship, type) {
-    const uis = ship.custom.uis ??= [];
+  hideAll(ship, type, trackers) {
     this.layouts[type.toLowerCase()].uis.forEach(ui => {
-      uis.includes(ui.id) && uis.splice(uis.indexOf(ui.id), 1);
-      ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
+      ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] })
+      typeof trackers?.delete === 'function' && trackers.delete(ui.id);
     })
   }
-  displayAll(ship, type, version) {
-    ship.custom.uis.concat(this.layouts[type.toLowerCase()].uis.map(ui => {
+  displayAll(ship, type, trackers, version = '') {
+    this.layouts[type.toLowerCase()].uis.forEach(ui => {
+      typeof trackers?.add === 'function' && trackers.add(ui.id);
       if (typeof ui.display === 'function') return ui.display(ship, version), ui;
-      return ship.setUIComponent(ui), ui;
-    }))
+      ship.setUIComponent(ui);
+    })
   }
-  setUI(ship, type, filter, design) {
-    if (typeof design !== 'function' || typeof filter !== 'function' || !!ship) return;
-    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui => ship.setUIComponent(ui));
+  setUI(ship, type, filter, trackers, design = () => [], ...param) {
+    if (typeof filter !== 'function' || !!ship) return;
+    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui =>
+      trackers.has(ui.id) && ship.setUIComponent(Object.assign({ ...ui }, { components: design.call(this, ...param) })));
   }
-  hideUI(ship, type, filter) {
+  hideUI(ship, type, filter, trackers) {
     if (typeof filter !== 'function') return;
-    const id = this.layouts[type.toLowerCase()].uis.find(filter.bind(this)).id;
-    const uis = ship.custom.uis ??= [];
-    uis.splice(uis.indexOf(id), 1);
-    ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false })
+    const ui = this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
+    if (typeof ui.hide === 'function') return ui.hide(ship, trackers);
+    typeof trackers?.delete === 'function' && trackers.delete(ui.id);
+    ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] })
   }
-  test(ship, layout) {
-    return this.grids.getGrids(...layout).forEach((position, id) => ship.setUIComponent({
-      id: id + (ship.custom.uis?.length ?? 0), position,
-      components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }]
-    }))
+}
+class TEST {
+  constructor() {
+    this.uis = [];
+    this.length = 0
+  }
+  addUIs(...uis) {
+    this.uis.concat(uis.map(ui => Object.values(ui.position ?? ui)))
+    this.length = Math.max(this.uis.length, this.length);
+  }
+  removeUIs(...uis) {
+    uis.forEach(ui => {
+      const index = this.uis.findIndex(a => a.every((value, index) => value === ui[index]));
+      if (index > -1) this.uis.splice(index, 1);
+    })
+  }
+  display(ship) {
+    this.uis.forEach((position, id) => ship.setUIComponent({ id, position, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }] }))
+  }
+  hide(ship) {
+    for (let i = 0; i < this.length; i++)ship.setUIComponent({ id, position: [0, 0, 0, 0], components: [], visible: false })
   }
 }
