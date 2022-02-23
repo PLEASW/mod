@@ -91,7 +91,8 @@ class LIST_UI {
   addMargin(layout, horizontal = 0, vertical = 0) {
     this.layouts[layout].uis.forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
   }
-  addUI([rows, cols, vertical = false], name, ...uis) {
+  addUI([rows = 0, cols = 0, vertical = false], name, ...uis) {
+    if (!rows || !cols) return this.layouts[name.toLowerCase()] = { uis };
     const layout = this.layouts[name.toLowerCase()] ??= { rows, cols, uis: [] }, length = layout.uis.length;
     const grids = this.grids.getGrids(rows, cols, vertical);
     uis.forEach((ui, index) => !!grids.at(index + length) && layout.uis.push((ui.position = grids.at(index + length), ui)))
