@@ -14,7 +14,7 @@ class GRIDS {
   mergeCell(type, pos) {
     try {
       const [x0, y0, numX, numY] = pos;
-      let [x, y, width, height] = this.grids[type.join(this.prefix)][x0][y0].position;
+      let [x, y, width, height] = (this.grids[type.join(this.prefix)] ?? this.#createGrids(...type))[x0][y0].position;
       width *= numX; height *= numY;
       return this.#generatePos({ x, y, width, height });
     } catch (error) { console.log(error); }
@@ -125,22 +125,14 @@ class LIST_UI {
 class TEST {
   constructor() {
     this.uis = [];
-    this.length = 0
   }
-  addUIs(...uis) {
-    this.uis.concat(uis.map(ui => Object.values(ui.position ?? ui)))
-    this.length = Math.max(this.uis.length, this.length);
-  }
+  addUIs(...uis) { this.uis.push(...uis.map(ui => Object.values(ui.position ?? ui))) }
   removeUIs(...uis) {
     uis.forEach(ui => {
       const index = this.uis.findIndex(a => a.every((value, index) => value === ui[index]));
       if (index > -1) this.uis.splice(index, 1);
     })
   }
-  display(ship) {
-    this.uis.forEach((position, id) => ship.setUIComponent({ id, position, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }] }))
-  }
-  hide(ship) {
-    for (let i = 0; i < this.length; i++)ship.setUIComponent({ id, position: [0, 0, 0, 0], components: [], visible: false })
-  }
+  display(ship) { this.uis.forEach((position, id) => ship.setUIComponent({ id, position, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }] })) }
+  hide(ship) { for (let id = 0; id < 1000; id++) ship.setUIComponent({ id, position: [0, 0, 0, 0], components: [], visible: false }) }
 }
