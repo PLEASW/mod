@@ -1058,18 +1058,22 @@ class UI {
     return this.customDesigns[name.toLowerCase()] = callback.bind(this);
   }
   setDesign(name, design, ...param) {
-    name = name.toLowerCase();
-    if (typeof design === 'function') return this.addDesign(design.name, design), this.variety[name] = design.call(this, ...param);
-    if (typeof design === 'object') return this.variety[name] = design;
-    this.variety[name] = { components: this.customDesigns[design](...param) };
+    name = name.toLowerCase(); let components = this.variety[name];
+    if (typeof design === 'function') {
+      this.addDesign(design.name, design);
+      components = design.call(this, ...param);
+    }
+    if (typeof design === 'object') components = design;
+    this.variety[name] = { components: components };
+    return components;
   }
-  hide(ship, trackers) {
-    ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] })
-    typeof trackers?.delete === 'function' ?? trackers.delete(this.id);
+  hide(ship) {
+    return ship.setUIComponent({
+      id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: []
+    }), this.id;
   }
-  display(ship, version, trackers) {
-    ship.setUIComponent(Object.assign({ ...this.ui }, this.variety[version] ?? this.variety.default));
-    typeof trackers?.add === 'function' ?? trackers.add(this.id);
+  display(ship, version = 'default') {
+    return ship.setUIComponent(Object.assign({ ...this.ui }, this.variety[version])), this.id;
   }
 }
 class LIST_UI {
@@ -1082,48 +1086,91 @@ class LIST_UI {
     this.layouts[layout].uis.forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
   }
   addUI([rows = 0, cols = 0, vertical = false], name, ...uis) {
-    if (!rows || !cols) this.layouts[name.toLowerCase()] = { uis };
+    if (!rows || !cols) return this.layouts[name.toLowerCase()] = { uis };
     const layout = this.layouts[name.toLowerCase()] ??= { rows, cols, uis: [] }, length = layout.uis.length;
     const grids = this.grids.getGrids(rows, cols, vertical);
     uis.forEach((ui, index) => !!grids.at(index + length) && layout.uis.push((ui.position = grids.at(index + length), ui)))
   }
-  hideAll(ship, type, trackers) {
-    this.layouts[type.toLowerCase()].uis.forEach(ui => {
-      ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] })
-      typeof trackers?.delete === 'function' && trackers.delete(ui.id);
-    })
+  hideAll(ship, type) {
+    return this.layouts[type.toLowerCase()].uis.map(ui => (ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }), ui.id))
   }
-  displayAll(ship, type, trackers, version = '') {
-    this.layouts[type.toLowerCase()].uis.forEach(ui => {
-      typeof trackers?.add === 'function' && trackers.add(ui.id);
-      if (typeof ui.display === 'function') return ui.display(ship, version), ui;
-      ship.setUIComponent(ui);
-    })
+  displayAll(ship, type, version = 'default') {
+    return this.layouts[type.toLowerCase()].uis.map(ui => (typeof ui.display === 'function' ? ui.display(ship, version) : ship.setUIComponent(ui), ui.id))
   }
-  setUI(ship, type, filter, trackers, design = () => [], ...param) {
+  setUI(ship, type, filter, design = () => [], ...param) {
     if (typeof filter !== 'function' || !!ship) return;
-    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui => trackers.has(ui.id) && ship.setUIComponent(Object.assign({ ...ui }, { components: design.call(this, ...param) })));
+    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui => ship.setUIComponent(Object.assign({ ...ui }, { components: design.call(this, ...param) })));
   }
-  hideUI(ship, type, filter, trackers) {
+  hideUI(ship, type, filter) {
     if (typeof filter !== 'function') return;
-    const ui = this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
-    if (typeof ui.hide === 'function') return ui.hide(ship, trackers);
-    typeof trackers?.delete === 'function' && trackers.delete(ui.id);
-    ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] })
+    const id = this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
+    return ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }), id
   }
 }
-const options = function () { }();
+class UI_TRACKER {
+  constructor() { this._uis = new Set() }
+  add(...uis) { uis.forEach(this.uis.add) }
+  delete(...uis) { uis.forEach(this.uis.delete) }
+  get uis() { return Array(this._uis); }
+  clear() { this.uis.clear(); }
+}
 const ships = function () { }();
 const maps = function () { }();
 const admins = function () { }();
-const defaultScreen = function () { }();
+const { overlay, pages } = function () {
+  const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
+
+  const shipPage = new UI({ id: 'ship', clickable: true });
+  const adminPage = new UI({ id: 'admin', clickable: true });
+  const mapPage = new UI({ id: 'map', clickable: true });
+  const pages = new LIST_UI([4, 29, 30, 5], 'pages');
+  pages.addUI([4, 1], 'standard', shipPage, adminPage, mapPage);
+
+  return { pages, overlay };
+}();
+const { defaultScreen, restore, hide, options } = function () {
+  const restore = new UI({
+    id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
+      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+      { type: "text", position: [0, 30, 100, 60], value: "Restore", color: 'rgba(255,255,255,1)' },
+    ]
+  })
+  const hide = new UI({
+    id: "hide_UI", position: [73, 88, 6.6, 4], clickable: true, shortcut: "V", components: [
+      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+      { type: "text", position: [0, 30, 100, 60], value: "HideUI", color: 'rgba(255,255,255,1)' },
+    ]
+  })
+  const options = new UI({
+    id: "options", position: [73, 92, 6.6, 4], clickable: true, components: [
+      { type: "box", position: [0, 0, 100, 100], fill: "rgba(0, 0, 0, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+      { type: "text", position: [0, 30, 100, 60], value: "Options", color: 'rgba(255,255,255,1)' },
+    ]
+  })
+  options.setDesign('active', function active(text) {
+    return [
+      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+      { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
+    ];
+  }, 'hello')
+  return {
+    defaultScreen: function (ship) {
+      restore.display(ship);
+      hide.display(ship);
+      options.display(ship);
+    }, restore, hide, options
+  }
+}();
 function init(ship) {
   if (ship.custom.init) return;
   ship.custom = {
-    init: true, uis: new Set(),
+    init: true, uis: new UI_TRACKER(),
     options: false, weapons: false, admin: false
   }
+  defaultScreen(ship);
 }
+const aaadfasdf = { custom: {}, setUIComponent: function () { } }
+
 this.tick = function (game) {
   if (game.step % 15 === 0) { // 4 per s
 
@@ -1144,7 +1191,16 @@ this.event = function (event, game) {
   switch (name) {
     case 'ui_component_clicked':
       switch (id) {
-        case '':
+        case 'options':
+          ship.custom.options = !ship.custom.options;
+          if (ship.custom.options) {
+            options.display(ship, 'active');
+          } else {
+            options.display(ship)
+          }
+          break;
+        case 'restore':
+          ship.set(SHIP.getEvent('restore', ship))
           break;
         default:
           console.log(id);
