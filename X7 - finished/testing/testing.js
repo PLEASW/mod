@@ -1094,17 +1094,12 @@ class LIST_UI {
   hideAll(ship, type) {
     return this.layouts[type.toLowerCase()].uis.map(ui => (ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }), ui.id))
   }
-  displayAll(ship, type, version = 'default') {
-    return this.layouts[type.toLowerCase()].uis.map(ui => (typeof ui.display === 'function' ? ui.display(ship, version) : ship.setUIComponent(ui), ui.id))
+  displayAll(ship, type, version = (ui, index, arr) => 'default') {
+    return this.layouts[type.toLowerCase()].uis.map((ui, index, arr) => (typeof ui.display === 'function' ? ui.display(ship, version(ui, index, arr)) : ship.setUIComponent(ui), ui.id))
   }
-  setUI(ship, type, filter, design = () => [], ...param) {
-    if (typeof filter !== 'function' || !!ship) return;
-    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui => ship.setUIComponent(Object.assign({ ...ui }, { components: design.call(this, ...param) })));
-  }
-  hideUI(ship, type, filter) {
+  getUI(type, filter) {
     if (typeof filter !== 'function') return;
-    const id = this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
-    return ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }), id
+    return this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
   }
 }
 class UI_TRACKER {
@@ -1114,21 +1109,7 @@ class UI_TRACKER {
   get uis() { return Array(this._uis); }
   clear() { this.uis.clear(); }
 }
-const ships = function () { }();
-const maps = function () { }();
-const admins = function () { }();
-const { overlay, pages } = function () {
-  const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
-
-  const shipPage = new UI({ id: 'ship', clickable: true });
-  const adminPage = new UI({ id: 'admin', clickable: true });
-  const mapPage = new UI({ id: 'map', clickable: true });
-  const pages = new LIST_UI([4, 29, 30, 5], 'pages');
-  pages.addUI([4, 1], 'standard', shipPage, adminPage, mapPage);
-
-  return { pages, overlay };
-}();
-const { defaultScreen, restore, hide, options } = function () {
+const { defaultScreen, restore, hide, options: layout } = function () {
   const restore = new UI({
     id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
       { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
@@ -1147,12 +1128,7 @@ const { defaultScreen, restore, hide, options } = function () {
       { type: "text", position: [0, 30, 100, 60], value: "Options", color: 'rgba(255,255,255,1)' },
     ]
   })
-  options.setDesign('active', function active(text) {
-    return [
-      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
-      { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
-    ];
-  }, 'hello')
+  options.setDesign('active', active, 'hello')
   return {
     defaultScreen: function (ship) {
       restore.display(ship);
@@ -1161,22 +1137,44 @@ const { defaultScreen, restore, hide, options } = function () {
     }, restore, hide, options
   }
 }();
+function active(text) {
+  return [
+    { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
+  ];
+}
+const ships = function () { }();
+const maps = function () { }();
+const admins = function () { }();
+const { overlay, pages } = function () {
+  const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
+
+  const shipPage = new UI({ id: 'ship', clickable: true });
+  shipPage.setDesign('active', active, 'aaaaa');
+
+  const adminPage = new UI({ id: 'admin', clickable: true });
+  adminPage.setDesign('active', active, 'bbb');
+
+  const mapPage = new UI({ id: 'map', clickable: true });
+  mapPage.setDesign('active', active, 'des');
+
+  const pages = new LIST_UI([4, 29, 30, 5], 'pages');
+  pages.addUI([4, 1], 'full', shipPage, adminPage, mapPage);
+  return { pages, overlay };
+}();
+
 function init(ship) {
   if (ship.custom.init) return;
   ship.custom = {
     init: true, uis: new UI_TRACKER(),
-    options: false, weapons: false, admin: false
+    options: false, weapons: false, admin: false,
+    page: 'ship'
   }
   defaultScreen(ship);
 }
-const aaadfasdf = { custom: {}, setUIComponent: function () { } }
-
 this.tick = function (game) {
   if (game.step % 15 === 0) { // 4 per s
-
     if (game.step % 30 === 0) { // 2 per s
-
-
       if (game.step % 60 === 0) { // 1 per s
         game.ships.forEach(ship => {
           init(ship);
@@ -1185,6 +1183,26 @@ this.tick = function (game) {
     };
   }
 };
+function changePage(ship, id) {
+  pages.getUI('full', ui => ui.id === ship.custom.page).display(ship);
+  pages.getUI('full', ui => ui.id === id).display(ship, 'active');
+  ship.custom.page = id;
+}
+function displayOptionScreen(ship) {
+  ship.custom.options = !ship.custom.options;
+  if (ship.custom.options) {
+    layout.display(ship, 'active');
+    overlay.display(ship);
+    pages.displayAll(ship, 'full');
+    changePage(ship, 'ship');
+    return;
+  }
+  layout.display(ship);
+  overlay.hide(ship);
+  pages.hideAll(ship, 'full');
+
+}
+console.log(pages.getUI('full', function (ui) { return ui.id === 'ship' }))
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships } = game;
@@ -1192,12 +1210,12 @@ this.event = function (event, game) {
     case 'ui_component_clicked':
       switch (id) {
         case 'options':
-          ship.custom.options = !ship.custom.options;
-          if (ship.custom.options) {
-            options.display(ship, 'active');
-          } else {
-            options.display(ship)
-          }
+          displayOptionScreen(ship)
+          break;
+        case 'admin':
+        case 'map':
+        case 'ship':
+          changePage(ship, id);
           break;
         case 'restore':
           ship.set(SHIP.getEvent('restore', ship))

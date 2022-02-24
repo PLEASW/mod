@@ -104,17 +104,12 @@ class LIST_UI {
   hideAll(ship, type) {
     return this.layouts[type.toLowerCase()].uis.map(ui => (ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }), ui.id))
   }
-  displayAll(ship, type, version = 'default') {
-    return this.layouts[type.toLowerCase()].uis.map(ui => (typeof ui.display === 'function' ? ui.display(ship, version) : ship.setUIComponent(ui), ui.id))
+  displayAll(ship, type, version = (ui, index, arr) => 'default') {
+    return this.layouts[type.toLowerCase()].uis.map((ui, index, arr) => (typeof ui.display === 'function' ? ui.display(ship, version(ui, index, arr)) : ship.setUIComponent(ui), ui.id))
   }
-  setUI(ship, type, filter, design = () => [], ...param) {
-    if (typeof filter !== 'function' || !!ship) return;
-    this.layouts[type.toLowerCase()].uis.filter(filter.bind(this)).forEach(ui => ship.setUIComponent(Object.assign({ ...ui }, { components: design.call(this, ...param) })));
-  }
-  hideUI(ship, type, filter) {
+  getUI(type, filter) {
     if (typeof filter !== 'function') return;
-    const id = this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
-    return ship.setUIComponent({ id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }), id
+    return this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
   }
 }
 class UI_TRACKER {

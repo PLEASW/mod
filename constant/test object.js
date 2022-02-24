@@ -67,3 +67,17 @@ const ship = {
   showInstructor() { },
   set() { }
 }
+class TEST {
+  constructor() {
+    this.uis = [];
+  }
+  addUIs(...uis) { this.uis.push(...uis.map(ui => Object.values(ui.position ?? ui))) }
+  removeUIs(...uis) {
+    uis.forEach(ui => {
+      const index = this.uis.findIndex(a => a.every((value, index) => value === ui[index]));
+      if (index > -1) this.uis.splice(index, 1);
+    })
+  }
+  display(ship) { this.uis.forEach((position, id) => ship.setUIComponent({ id, position, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }] })) }
+  hide(ship) { for (let id = 0; id < 1000; id++) ship.setUIComponent({ id, position: [0, 0, 0, 0], components: [], visible: false }) }
+}
