@@ -56,11 +56,12 @@ class UI {
     cyan: 'rgb(0,255,255)'
   }
   customDesigns = {};
-  simpleDesign(text, fontSize = 60) {
+  simpleDesign(text = '', fontSize = 60) {
     fontSize = Number(fontSize) || 60;
+    const white = this.colors.white;
     return [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: this.colors.white, width: 5 },
-      { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: this.colors.white }
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: white, width: 5 },
+      { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: white }
     ];
   }
   addDesign(name, callback) {
@@ -95,7 +96,7 @@ class LIST_UI {
   addMargin(layout, horizontal = 0, vertical = 0) {
     this.layouts[layout].uis.forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
   }
-  addUI([rows = 0, cols = 0, vertical = false], name, ...uis) {
+  addUI(name, [rows = 0, cols = 0, vertical = false], ...uis) {
     if (!rows || !cols) return this.layouts[name.toLowerCase()] = { uis };
     const layout = this.layouts[name.toLowerCase()] ??= { rows, cols, uis: [] }, length = layout.uis.length;
     const grids = this.grids.getGrids(rows, cols, vertical);
