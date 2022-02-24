@@ -1,3 +1,14 @@
+/**
+ * separate colors for each page (activate + non-activate)
+ * finish admin
+ * separate shiptree into color distinction
+ * add cooldown
+ * add commands
+ * add map area highligh into the radar
+ * radar button will be highligh and disable when ship are in that area  
+ * implement hide/show ui mechanism 
+ * 
+ */
 const SHIP = (function () {
   class SHIP {
     constructor() {
@@ -1058,13 +1069,13 @@ class UI {
     return this.customDesigns[name.toLowerCase()] = callback.bind(this);
   }
   setDesign(name, design, ...param) {
-    name = name.toLowerCase(); let components = this.variety[name];
+    name = name.toLowerCase(); let components = (this.customDesigns[String(design).toLowerCase()] ?? function () { })(...param);
     if (typeof design === 'function') {
       this.addDesign(design.name, design);
       components = design.call(this, ...param);
     }
     if (typeof design === 'object') components = design;
-    this.variety[name] = { components: components };
+    this.variety[name] = { components };
     return components;
   }
   hide(ship) {
@@ -1192,9 +1203,41 @@ const { changeShips, previous, next, index, shiptrees, shipFuncs } = function ()
   shipFuncs.addMargin('full', 10, 40);
   return { changeShips, previous, next, index, shiptrees, shipFuncs }
 }();
-const maps = function () {
+const { boxes: map, radar, ceils: boxes } = function () {
+  const mapSize = this.options.map_size, width = 1.5;
+  const ceils = {
+    spawn: { x: 0, y: 0 },
+    aow_pattern: { x: -855, y: -835 },
+    nexus_pattern: { x: -525, y: -855 },
+    light_pattern: { x: -195, y: -855 },
+    zebra_pattern: { x: 195, y: -855 },
+    rumble: { x: -845, y: 845 },
+    plinko: { x: -515, y: 855 },
+    standoff: { x: -195, y: 845 },
+    waffle: { x: 195, y: 845 },
+    open_arena: { x: 515, y: 845 },
+    maze: { x: 515, y: -845 },
+    empty_circle: { x: 845, y: 845 },
+    empty_box: { x: 845, y: -845 },
+  }
+  const [aow_pattern, empty_box, empty_circle, light_pattern, maze, nexus_pattern, open_arena, plinko, rumble, spawn, standoff, waffle, zebra_pattern] = Object.keys(ceils).sort().map(id => new UI({ id, clickable }))
 
-}();
+  const boxes = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 2]).position);
+  boxes.addUI('full', [4, 5], aow_pattern, empty_box, empty_circle, light_pattern, maze, nexus_pattern, open_arena, plinko, rumble, spawn, standoff, waffle, zebra_pattern);
+  boxes.addMargin('full', 10, 20);
+
+  const mapToComponent = (x, y) => [x, -y].map((i, b) => (i + mapSize * 5 - b) / mapSize * 10 - width * 0.5);
+  const radar = new UI({ id: 'radar', position: grids.mergeCell([1, 6], [0, 2, 1, 4]).position })
+  radar.position = addMargin((1080 / 1920) * 10 * 2.5, 5, radar.position).position;
+  radar.addDesign('radar', function (ship, ships) {
+    return [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255', width: 5 },
+      ...ships.map(a => a.id !== ship.id && { type: 'box', position: [...mapToComponent(a.x, a.y), width, width], fill: 'rgba(0,0,0,0)', stroke: 'rgb(255,0,0)', width }),
+      { type: 'box', position: [...mapToComponent(ship.x, ship.y), width, width], fill: 'rgba(0,0,0,0)', stroke: 'rgb(0,255,255)', width },
+    ]
+  })
+  return { radar, boxes, ceils };
+}.call(this);
 const admins = function () { }();
 function init(ship) {
   if (ship.custom.init) return;
@@ -1211,11 +1254,13 @@ function init(ship) {
 this.tick = function (game) {
   if (game.step % 15 === 0) { // 4 per s
     if (game.step % 30 === 0) { // 2 per s
-      if (game.step % 60 === 0) { // 1 per s
-        game.ships.forEach(ship => {
-          init(ship);
-        })
-      };
+      game.ships.forEach(ship => {
+        init(ship);
+        if (ship.custom.page === 'map') {
+          radar.setDesign('radar', 'radar', ship, game.ships);
+          radar.display(ship, 'radar');
+        }
+      })
     };
   }
 };
@@ -1235,7 +1280,13 @@ const page = {
   },
   map: {
     show(ship) {
-    }, hide(ship) { }
+      map.displayAll(ship, 'full')
+      ship.custom.page = 'map'
+    }, hide(ship) {
+      map.hideAll(ship, 'full');
+      radar.hide(ship);
+      delete ship.custom.page;
+    }
   },
   admin: {
     show(ship) {
