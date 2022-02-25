@@ -1143,7 +1143,7 @@ const { defaultScreen, restore, hide, options: layout } = function () {
       { type: "text", position: [0, 30, 100, 60], value: "Options", color: 'rgba(255,255,255,1)' },
     ]
   })
-  options.setDesign('active', active, 'hello')
+  options.setDesign('active', active, 'Options')
   return {
     defaultScreen: function (ship) {
       restore.display(ship);
