@@ -34,7 +34,7 @@ class GRIDS {
       return this.grids[type].flat().flatMap(pos => [pos.position]).sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
     } catch (error) { console.log(error); }
   }
-}
+};
 class UI {
   constructor({ id = '', position = [], visible = true, shortcut, clickable = false, components }) {
     this.variety = {};
@@ -42,6 +42,8 @@ class UI {
       this.variety['default'] = { components: components ?? this.simpleDesign(id || '') };
       return { id, position, visible, clickable, shortcut };
     }.call(this);
+    this.custom = {};
+    this.isDisplay = false;
   }
   get id() { return this.ui.id }
   get position() { return this.ui.position }
@@ -69,27 +71,28 @@ class UI {
     return this.customDesigns[name.toLowerCase()] = callback.bind(this);
   }
   setDesign(name, design, ...param) {
-    name = name.toLowerCase(); let components = this.variety[name];
+    name = name.toLowerCase(); let components = (this.customDesigns[String(design).toLowerCase()] ?? function () { })(...param);
     if (typeof design === 'function') {
       this.addDesign(design.name, design);
       components = design.call(this, ...param);
     }
     if (typeof design === 'object') components = design;
-    this.variety[name] = { components: components };
+    this.variety[name] = { components };
     return components;
   }
   hide(ship) {
+    this.isDisplay = false;
     return ship.setUIComponent({
       id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: []
     }), this.id;
   }
   display(ship, version = 'default') {
+    this.isDisplay = true;
     return ship.setUIComponent(Object.assign({ ...this.ui }, this.variety[version])), this.id;
   }
 }
 class LIST_UI {
-  constructor(position, list = '',) {
-    this.list = typeof list === 'string' ? list.toLowerCase() : String(Math.trunc(Math.random() * 1000));
+  constructor(position) {
     this.grids = new GRIDS(Object.assign(position));
     this.layouts = {};
   }
