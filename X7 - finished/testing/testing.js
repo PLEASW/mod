@@ -1092,8 +1092,7 @@ class UI {
   }
 }
 class LIST_UI {
-  constructor(position, list = '') {
-    this.list = typeof list === 'string' ? list.toLowerCase() : String(Math.trunc(Math.random() * 1000));
+  constructor(position) {
     this.grids = new GRIDS(Object.assign(position));
     this.layouts = {};
   }
@@ -1176,7 +1175,7 @@ const { overlay, pages: pageFuncs } = function () {
   const mapPage = new UI({ id: 'map', clickable });
   mapPage.setDesign('active', active, 'map');
 
-  const pages = new LIST_UI([4, 29, 30, 5], 'pages');
+  const pages = new LIST_UI([4, 29, 30, 5]);
   pages.addUI('full', [4, 1], shipPage, mapPage, adminPage);
   pages.addMargin('full', 10, 30);
 
@@ -1194,7 +1193,7 @@ const { changeShips, previous, next, index, shiptrees, shipFuncs } = function ()
 
   const [_45rfew, ai, fighter, heavy, kest, nautic, others, robonuko, sdc, spectate, speedster, support, vanilla] = Object.keys(SHIP.init).sort().map(id => new UI({ id, clickable: true }))
 
-  const shiptrees = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 3]).position, 'shiptree');
+  const shiptrees = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 3]).position);
   shiptrees.addUI('full', [4, 5], vanilla, ai, nautic, sdc, fighter, heavy, speedster, support, kest, _45rfew, robonuko, others)
   shiptrees.addMargin('full', 10, 30);
 
@@ -1203,7 +1202,7 @@ const { changeShips, previous, next, index, shiptrees, shipFuncs } = function ()
   const restore = new UI({ id: 'restore', clickable });
   const reset = new UI({ id: 'reset', clickable });
 
-  const shipFuncs = new LIST_UI(grids.mergeCell([1, 6], [0, 4, 1, 2]).position, 'shipFunc');
+  const shipFuncs = new LIST_UI(grids.mergeCell([1, 6], [0, 4, 1, 2]).position);
   shipFuncs.addUI('full', [4, 3], warp, stats, reset, restore, spectate);
   shipFuncs.addMargin('full', 10, 40);
   return { changeShips, previous, next, index, shiptrees, shipFuncs }
@@ -1246,7 +1245,7 @@ const { boxes: map, radar, ceils: boxes } = function () {
 const { globalAdminFunc, playerFuncs, playerList } = function () {
   const layout = new GRIDS(grids.mergeCell([1, 3], [0, 0, 1, 2]).position);
 
-  const playerList = new LIST_UI(layout.mergeCell([5, 1], [0, 0, 4, 1]).position, 'player_list');
+  const playerList = new LIST_UI(layout.mergeCell([5, 1], [0, 0, 4, 1]).position);
   playerList.addUI('full', [2, 8], ...Array(16).fill(0).map((i, id) => {
     const ui = new UI({ id: adminPrefix + id, clickable })
     ui.addDesign('player', function (ship, fontSize = 60) {
@@ -1277,7 +1276,7 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
   const weapons = new UI({ id: 'weapons', clickable });
   const teleport = new UI({ id: 'teleport', clickable });
 
-  const playerFuncs = new LIST_UI(layout.mergeCell([5, 1], [4, 0, 1, 1]).position, 'player_func')
+  const playerFuncs = new LIST_UI(layout.mergeCell([5, 1], [4, 0, 1, 1]).position)
   playerFuncs.addUI('full', [1, 10], kick, timeout, teleport, weapons);
   playerFuncs.addMargin('full', 3, 20);
 
@@ -1285,7 +1284,7 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
   const players_clear = new UI({ id: 'players_clear', clickable });
   const entities_clear = new UI({ id: 'entities_clear', clickable });
 
-  const globalAdminFunc = new LIST_UI(grids.mergeCell([1, 3], [0, 2, 1, 1]).position, 'global_func');
+  const globalAdminFunc = new LIST_UI(grids.mergeCell([1, 3], [0, 2, 1, 1]).position);
   globalAdminFunc.addUI('full', [4, 5], admin_warp, players_clear, entities_clear);
   globalAdminFunc.addMargin('full', 10, 20);
   return { globalAdminFunc, playerFuncs, playerList };
@@ -1328,8 +1327,6 @@ this.tick = function (game) {
             break;
           case 'admin':
             if (game.step % 120 === 0) displayPlayerList(ship, ships);
-            break
-          default:
             break;
         }
       })
