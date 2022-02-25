@@ -1163,7 +1163,6 @@ const clickable = true;
 const grids = new GRIDS([5, 35, 30, 60]);
 const adminPrefix = '###';
 const spectatorType = SHIP.init.spectate[0].typespec.code;
-
 const { overlay, pages: pageFuncs } = function () {
   const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
 
@@ -1188,11 +1187,15 @@ const { changeShips, previous, next, index, shiptrees, shipFuncs } = function ()
   const index = new UI({ id: 'index', position: changeShips.mergeCell([5, 1], [2, 0, 1, 1]).position, components: simpleDesign() });
   index.position = addMargin(5, 55, index.position).position;
 
-  const next = new UI({ id: 'next', position: changeShips.mergeCell([5, 1], [3, 0, 2, 1]).position, clickable: true, components: simpleDesign('>>>') });
-  const previous = new UI({ id: 'previous', position: changeShips.mergeCell([5, 1], [0, 0, 2, 1]).position, clickable: true, components: simpleDesign('<<<') });
+  const next = new UI({ id: 'next', position: changeShips.mergeCell([5, 1], [3, 0, 2, 1]).position, clickable: true, components: simpleDesign('>>>', 100) });
+  const previous = new UI({ id: 'previous', position: changeShips.mergeCell([5, 1], [0, 0, 2, 1]).position, clickable: true, components: simpleDesign('<<<', 100) });
   [previous, next].forEach(ui => ui.position = addMargin(10, 40, ui.position).position);
 
-  const [_45rfew, ai, fighter, heavy, kest, nautic, others, robonuko, sdc, spectate, speedster, support, vanilla] = Object.keys(SHIP.init).sort().map(id => new UI({ id, clickable: true }))
+  const [_45rfew, ai, fighter, heavy, kest, nautic, others, robonuko, sdc, spectate, speedster, support, vanilla] = Object.keys(SHIP.init).sort().map(id => {
+    const ui = new UI({ id, clickable: true });
+    ui.setDesign('active', active(id));
+    return ui;
+  })
 
   const shiptrees = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 3]).position);
   shiptrees.addUI('full', [4, 5], vanilla, ai, nautic, sdc, fighter, heavy, speedster, support, kest, _45rfew, robonuko, others)
@@ -1341,6 +1344,7 @@ const page = {
       shipFuncs.displayAll(ship, type);
       [next, previous].forEach(ui => ui.display(ship));
       showShipIndex(ship, ship.type);
+      shiptrees.getUI(type, ui => ui.id === ship.custom.shiptree).display(ship, 'active');
       ship.custom.page = 'ship';
     }, hide(ship, type) {
       shiptrees.hideAll(ship, type);
@@ -1400,9 +1404,15 @@ function displayOptionScreen(ship, type) {
   defaultScreen(ship);
 }
 function showShipIndex(ship, type) {
+  if (type === spectatorType) return index.display(ship);
   const shiptree = SHIP.init[ship.custom.shiptree].map(i => i.typespec.code)
   index.setDesign('index', simpleDesign(`${shiptree.indexOf(type) + 1}/${shiptree.length}`))
   index.display(ship, 'index');
+}
+function changeShiptree(ship, id) {
+  if (ship.custom.shiptree === id) return;
+  shiptrees.getUI(ship.custom.layout, ui => ui.id === ship.custom.shiptree).display(ship);
+  shiptrees.getUI(ship.custom.layout, ui => ui.id === id).display(ship, 'active');
 }
 this.event = function (event, game) {
   const { ship, name, id } = event;
@@ -1413,19 +1423,21 @@ this.event = function (event, game) {
       switch (id) {
         case 'options':
           displayOptionScreen(ship, ship.custom.layout);
+          if (ship.custom.options) changeShiptree(ship, ship.custom.shiptree);
           break;
         case 'admin':
         case 'map':
         case 'ship':
           changePage(ship, id, ship.custom.layout);
+          if (id === 'ship') changeShiptree(ship, ship.custom.shiptree);
           break;
         case 'restore':
         case 'stats':
           ship.set(SHIP.getEvent(id, ship))
           break;
         case 'spectate':
+          index.display(ship);
           ship.set(SHIP.getEvent(id));
-          index.display(ship, 'default');
           break;
         case 'reset':
           ship.set(value = SHIP.getEvent(id, ship.custom.shiptree));
@@ -1450,6 +1462,7 @@ this.event = function (event, game) {
         default:
           if (Object.keys(boxes).includes(id)) return ship.set({ ...boxes[id], ...SHIP.getEvent('spectate') });
           if (Object.keys(SHIP.init).includes(id)) {
+            changeShiptree(ship, id);
             ship.set(value = SHIP.getEvent('reset', ship.custom.shiptree = id))
             return showShipIndex(ship, value.type);
           }
