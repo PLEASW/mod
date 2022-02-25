@@ -1162,6 +1162,7 @@ const addMargin = GRIDS.prototype.addMargin.bind(new GRIDS([]));
 const clickable = true;
 const grids = new GRIDS([5, 35, 30, 60]);
 const adminPrefix = '###';
+const spectatorType = SHIP.init.spectate[0].typespec.code;
 
 const { overlay, pages: pageFuncs } = function () {
   const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
@@ -1332,14 +1333,14 @@ this.tick = function (game) {
       })
     };
   }
-};
-
+}
 const page = {
   ship: {
     show(ship, type) {
       shiptrees.displayAll(ship, type);
       shipFuncs.displayAll(ship, type);
-      [next, index, previous].forEach(ui => ui.display(ship));
+      [next, previous].forEach(ui => ui.display(ship));
+      showShipIndex(ship, ship.type);
       ship.custom.page = 'ship';
     }, hide(ship, type) {
       shiptrees.hideAll(ship, type);
@@ -1398,11 +1399,17 @@ function displayOptionScreen(ship, type) {
   overlay.hide(ship);
   defaultScreen(ship);
 }
+function showShipIndex(ship, type) {
+  const shiptree = SHIP.init[ship.custom.shiptree].map(i => i.typespec.code)
+  index.setDesign('index', simpleDesign(`${shiptree.indexOf(type) + 1}/${shiptree.length}`))
+  index.display(ship, 'index');
+}
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships } = game;
   switch (name) {
     case 'ui_component_clicked':
+      if (ship.type === spectatorType && ['stats', 'restore'].includes(id)) return;
       switch (id) {
         case 'options':
           displayOptionScreen(ship, ship.custom.layout);
@@ -1413,10 +1420,39 @@ this.event = function (event, game) {
           changePage(ship, id, ship.custom.layout);
           break;
         case 'restore':
-          ship.set(SHIP.getEvent('restore', ship))
+        case 'stats':
+          ship.set(SHIP.getEvent(id, ship))
+          break;
+        case 'spectate':
+          ship.set(SHIP.getEvent(id));
+          index.display(ship, 'default');
+          break;
+        case 'reset':
+          ship.set(value = SHIP.getEvent(id, ship.custom.shiptree));
+          showShipIndex(ship, value.type);
+          break;
+        case 'next':
+        case 'previous':
+          ship.set(value = SHIP.getEvent(id, ship, ship.custom.shiptree));
+          showShipIndex(ship, value.type);
+          break;
+        case 'warp':
+          if (ships.length <= 1) return;
+          const { custom } = ship;
+          custom.warpIndex ??= ships.indexOf(ship);
+
+          do ships[++custom.warpIndex] ?? (custom.warpIndex = 0);
+          while (ships[custom.warpIndex] === ship);
+
+          const { x, y, vx, vy } = ships[custom.warpIndex];
+          ship.set({ x, y, vx, vy, ...SHIP.getEvent('spectate') })
           break;
         default:
-          console.log(id);
+          if (Object.keys(boxes).includes(id)) return ship.set({ ...boxes[id], ...SHIP.getEvent('spectate') });
+          if (Object.keys(SHIP.init).includes(id)) {
+            ship.set(value = SHIP.getEvent('reset', ship.custom.shiptree = id))
+            return showShipIndex(ship, value.type);
+          }
       }
       break;
     case 'ship_destroyed':
@@ -1427,4 +1463,4 @@ this.event = function (event, game) {
       ship.set({ x, y, invulnerable: 300, ...SHIP.getEvent('restore', ship, 88888888) });
       break;
   }
-};
+}
