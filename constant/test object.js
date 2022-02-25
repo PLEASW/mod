@@ -60,12 +60,12 @@ const ship = {
   stats: 0,
   crystals: 0,
   custom: {},
-  emptyWeapons() { },
-  gameover() { },
-  intermission() { },
-  setUIComponent() { },
-  showInstructor() { },
-  set() { }
+  emptyWeapons(a) { console.log(a); },
+  gameover(a) { console.log(a); },
+  intermission(a) { console.log(a); },
+  setUIComponent(a) { console.log(a); },
+  showInstructor(a) { console.log(a); },
+  set(a) { console.log(a); }
 }
 class TEST {
   constructor() {
