@@ -868,105 +868,69 @@ const custom_map = function () {
 (function setObjects() {
   try {
     const main = {
-      id: "main",
+      id: "main", transparent: true,
       obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
       emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/pds.png",
-      transparent: true
     }
     game.setObject({
-      id: "main",
-      type: main,
+      id: "main", type: main,
       position: { x: -0, y: -10, z: -20 },
       scale: { x: 75, y: 75, z: 20 },
       rotation: { x: 0, y: 9.4, z: Math.PI }
     });
     const credit = {
-      id: "credit",
+      id: "credit", transparent: true,
       obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
       emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/credits.png",
-      transparent: true
     }
     game.setObject({
-      id: "credit",
-      type: credit,
+      id: "credit", type: credit,
       position: { x: -0, y: -60, z: -20 },
       scale: { x: 40, y: 40, z: 20 },
       rotation: { x: 0, y: 9.4, z: Math.PI }
     });
     const UwU = {
-      id: "UwU",
+      id: "UwU", transparent: true,
       obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
       emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/UwU.png",
-      transparent: true
     }
     game.setObject({
-      id: "UwU",
-      type: UwU,
+      id: "UwU", type: UwU,
       position: { x: -830, y: 630, z: -10 },
       scale: { x: 145, y: 120, z: 20 },
       rotation: { x: 0, y: 9.4, z: Math.PI }
     });
     const barrier = {
-      id: "barrier",
+      id: "barrier", transparent: true,
       obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
       emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
-      transparent: true
     }
     game.setObject({
-      id: "barrier",
-      type: barrier,
+      id: "barrier", type: barrier,
       position: { x: -1000, y: 0, z: -10 },
       scale: { x: 40 * 1.6, y: 260, z: 300 },
       rotation: { x: 0, y: 160, z: Math.PI }
     });
-    const barrier2 = {
-      id: "barrier2",
-      obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
-      emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
-      transparent: true
-    }
     game.setObject({
-      id: "barrier2",
-      type: barrier2,
+      id: "barrier2", type: barrier,
       position: { x: -1000, y: 260, z: -10 },
       scale: { x: 40 * 1.6, y: 260, z: 300 },
       rotation: { x: 0, y: 160, z: Math.PI }
     });
-    const barrier3 = {
-      id: "barrier3",
-      obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
-      emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
-      transparent: true
-    }
     game.setObject({
-      id: "barrier3",
-      type: barrier3,
+      id: "barrier3", type: barrier,
       position: { x: -1000, y: -260, z: -10 },
       scale: { x: 40 * 1.6, y: 260, z: 300 },
       rotation: { x: 0, y: 160, z: Math.PI }
     });
-    const barrier4 = {
-      id: "barrier4",
-      obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
-      emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
-      transparent: true
-    }
     game.setObject({
-      id: "barrier4",
-      type: barrier4,
+      id: "barrier4", type: barrier,
       position: { x: -1000, y: -520, z: -10 },
       scale: { x: 40 * 1.6, y: 260, z: 300 },
       rotation: { x: 0, y: 160, z: Math.PI }
     });
-    const barrier5 = {
-      id: "barrier5",
-      obj: "https://starblast.data.neuronality.com/mods/objects/plane.obj",
-      emissive: "https://raw.githubusercontent.com/superpissboy/piss/main/the%20great%20barrier.png",
-      transparent: true
-    }
     game.setObject({
-      id: "barrier5",
-      type: barrier5,
+      id: "barrier5", type: barrier,
       position: { x: -1000, y: 520, z: -10 },
       scale: { x: 40 * 1.6, y: 260, z: 300 },
       rotation: { x: 0, y: 160, z: Math.PI }
@@ -1048,18 +1012,11 @@ class UI {
   set visible(value) { return this.ui.visible = !!value }
   set clickable(value) { return this.ui.clickable = !!value }
   set position(position = [0, 0, 100, 100]) { return this.ui.position = position }
-  colors = {
-    white: 'rgb(255,255,255)', black: 'rgb(0,0,0)',
-    red: 'rgb(255,0,0)', green: 'rgb(0,255,0)', blue: 'rgb(0,0,255)',
-    cyan: 'rgb(0,255,255)'
-  }
   customDesigns = {};
   simpleDesign(text = '', fontSize = 60) {
-    fontSize = Number(fontSize) || 60;
-    const white = this.colors.white;
     return [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: white, width: 5 },
-      { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: white }
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 },
+      { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: 'rgb(255,255,255)' }
     ];
   }
   addDesign(name, callback) {
