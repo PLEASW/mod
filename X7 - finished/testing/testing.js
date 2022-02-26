@@ -3,7 +3,6 @@
  * separate shiptree into color distinction
  * add cooldown
  * add commands
- * add map area highligh into the radar
  * implement hide/show ui mechanism 
  * 
  */
