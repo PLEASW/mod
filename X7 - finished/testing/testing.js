@@ -1126,19 +1126,19 @@ class UI_TRACKER {
 const { defaultScreen, restore, hide, options: layout } = function () {
   const restore = new UI({
     id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
-      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+      { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
       { type: "text", position: [0, 30, 100, 60], value: "Restore", color: 'rgba(255,255,255,1)' },
     ]
   })
   const hide = new UI({
     id: "hide_UI", position: [73, 88, 6.6, 4], clickable: true, shortcut: "V", components: [
-      { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+      { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
       { type: "text", position: [0, 30, 100, 60], value: "HideUI", color: 'rgba(255,255,255,1)' },
     ]
   })
   const options = new UI({
     id: "options", position: [73, 92, 6.6, 4], clickable: true, components: [
-      { type: "box", position: [0, 0, 100, 100], fill: "rgba(0, 0, 0, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
+      { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
       { type: "text", position: [0, 30, 100, 60], value: "Options", color: 'rgba(255,255,255,1)' },
     ]
   })
@@ -1211,40 +1211,56 @@ const { changeShips, previous, next, index, shiptrees, shipFuncs } = function ()
   shipFuncs.addMargin('full', 10, 40);
   return { changeShips, previous, next, index, shiptrees, shipFuncs }
 }();
-const { boxes: map, radar, ceils: boxes } = function () {
+const { boxes: map, radar, ceils: boxes, radar_spots, box_size } = function () {
   const mapSize = this.options.map_size, width = 1.5;
+  const box_size = { map: 320, ui: 16 };
   const ceils = {
     spawn: { x: 0, y: 0 },
-    aow_pattern: { x: -855, y: -835 },
-    nexus_pattern: { x: -525, y: -855 },
-    light_pattern: { x: -195, y: -855 },
-    zebra_pattern: { x: 195, y: -855 },
-    rumble: { x: -845, y: 845 },
-    plinko: { x: -515, y: 855 },
-    standoff: { x: -195, y: 845 },
-    waffle: { x: 195, y: 845 },
-    open_arena: { x: 515, y: 845 },
-    maze: { x: 515, y: -845 },
-    empty_circle: { x: 845, y: 845 },
-    empty_box: { x: 845, y: -845 },
+    rumble: { x: -840, y: 840 },
+    plinko: { x: -520, y: 840 },
+    standoff: { x: -200, y: 840 },
+    waffle: { x: 200, y: 840 },
+    open_arena: { x: 520, y: 840 },
+    empty_circle: { x: 840, y: 840 },
+    empty_box: { x: 840, y: -840 },
+    maze: { x: 520, y: -840 },
+    zebra_pattern: { x: 200, y: -840 },
+    light_pattern: { x: -200, y: -840 },
+    nexus_pattern: { x: -520, y: -840 },
+    aow_pattern: { x: -840, y: -840 },
   }
-  const [aow_pattern, empty_box, empty_circle, light_pattern, maze, nexus_pattern, open_arena, plinko, rumble, spawn, standoff, waffle, zebra_pattern] = Object.keys(ceils).sort().map(id => new UI({ id, clickable }))
+  const [aow_pattern, empty_box, empty_circle, light_pattern, maze, nexus_pattern, open_arena, plinko, rumble, spawn, standoff, waffle, zebra_pattern] = Object.keys(ceils).sort().map(id => {
+    const ui = new UI({ id, clickable });
+    ui.setDesign('active', active(id));
+    return ui;
+  })
 
   const boxes = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 2]).position);
   boxes.addUI('full', [4, 5], aow_pattern, empty_box, empty_circle, light_pattern, maze, nexus_pattern, open_arena, plinko, rumble, spawn, standoff, waffle, zebra_pattern);
   boxes.addMargin('full', 10, 20);
 
-  const mapToComponent = (x, y) => [x, -y].map((i, b) => (i + mapSize * 5 - b) / mapSize * 10 - width * 0.5);
-  const radar = new UI({ id: 'radar', position: grids.mergeCell([1, 6], [0, 2, 1, 4]).position })
-  radar.position = addMargin((1080 / 1920) * 10 * 2.5, 5, radar.position).position;
-  radar.addDesign('radar', function (ship, ships) {
-    return [
+  const mapToComponent = (x, y, width = 0) => [x, -y].map((i, b) => (i + mapSize * 5 - b) / mapSize * 10 - width * 0.5);
+  const radar_spots = new UI({
+    id: 'radar_spots', position: grids.mergeCell([1, 6], [0, 2, 1, 4]).position, components: [
       { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255', width: 5 },
-      ...ships.map(a => a.id !== ship.id && { type: 'box', position: [...mapToComponent(a.x, a.y), width, width], fill: 'rgba(0,0,0,0)', stroke: 'rgb(255,0,0)', width }),
-      { type: 'box', position: [...mapToComponent(ship.x, ship.y), width, width], fill: 'rgba(0,0,0,0)', stroke: 'rgb(0,255,255)', width },
+      ...Object.keys(ceils).map((pos, index) => {
+        const { x, y } = ceils[pos];
+        const text = simpleDesign(index, 30)[1];
+        text.color = 'rgba(255,255,255,0.5)';
+        const position = text.position = [...mapToComponent(x - box_size.map / 2, y + box_size.map / 2), box_size.ui, box_size.ui];
+        return [{ type: 'box', position, stroke: 'rgb(255,255,255)', width: 2 }, pos === 'spawn' || text];
+      }).flat().filter(ui => ui)
     ]
   })
-  return { radar, boxes, ceils };
+  radar_spots.position = addMargin((1080 / 1920) * 10 * 2.5, 5, radar_spots.position).position;
+
+  const radar = new UI({ id: 'radar', position: grids.mergeCell([1, 6], [0, 2, 1, 4]).position })
+  radar.position = addMargin((1080 / 1920) * 10 * 2.5, 5, radar.position).position;
+  radar.addDesign('radar', (ship, ships) => ships.map(a => a.id !== ship.id ?
+    { type: 'box', position: [...mapToComponent(a.x, a.y, width), width, width], stroke: 'rgb(255,0,0)', width } :
+    { type: 'box', position: [...mapToComponent(ship.x, ship.y, width), width, width], stroke: 'rgb(0,255,255)', width })
+  )
+  return { radar, boxes, ceils, radar_spots, box_size };
 }.call(this);
 const { globalAdminFunc, playerFuncs, playerList } = function () {
   const layout = new GRIDS(grids.mergeCell([1, 3], [0, 0, 1, 2]).position);
@@ -1319,6 +1335,21 @@ function displayPlayerList(ship, ships) {
   });
   displays.forEach(ui => ui.hide(ship));
 }
+function checkPos(ship) {
+  const key = Object.keys(boxes).find(key => boxes[key] === Object.values(boxes).find(({ x, y }) => {
+    x -= box_size.map / 2; y -= box_size.map / 2;
+    return x < ship.x && ship.x < x + box_size.map && y < ship.y && ship.y < y + box_size.map;
+  }));
+  if (!key) {
+    map.getUI(ship.custom.layout, ui => ui.id === ship.custom.boxes_position)?.display(ship);
+    delete ship.custom.boxes_position;
+    return;
+  }
+  if (key === ship.custom.boxes_position) return
+  map.getUI(ship.custom.layout, ui => ui.id === ship.custom.boxes_position)?.display(ship);
+  map.getUI(ship.custom.layout, ui => key === ui.id)?.display(ship, 'active');
+  ship.custom.boxes_position = key;
+}
 this.tick = function (game) {
   if (game.step % 15 === 0) { // 4 per s
     if (game.step % 30 === 0) { // 2 per s
@@ -1326,6 +1357,7 @@ this.tick = function (game) {
         init(ship);
         switch (ship.custom.page) {
           case 'map':
+            checkPos(ship);
             radar.setDesign('radar', 'radar', ship, ships);
             radar.display(ship, 'radar');
             break;
@@ -1356,10 +1388,12 @@ const page = {
   map: {
     show(ship, type) {
       map.displayAll(ship, type)
+      radar_spots.display(ship);
       ship.custom.page = 'map'
     }, hide(ship, type) {
       map.hideAll(ship, type);
       radar.hide(ship);
+      radar_spots.hide(ship);
       delete ship.custom.page;
     }
   },
@@ -1436,7 +1470,7 @@ this.event = function (event, game) {
           ship.set(SHIP.getEvent(id, ship))
           break;
         case 'spectate':
-          index.display(ship);
+          index.display(ship)
           ship.set(SHIP.getEvent(id));
           break;
         case 'reset':
@@ -1458,6 +1492,7 @@ this.event = function (event, game) {
 
           const { x, y, vx, vy } = ships[custom.warpIndex];
           ship.set({ x, y, vx, vy, ...SHIP.getEvent('spectate') })
+          index.display(ship);
           break;
         default:
           if (Object.keys(boxes).includes(id)) return ship.set({ ...boxes[id], ...SHIP.getEvent('spectate') });
