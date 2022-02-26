@@ -1269,19 +1269,26 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
       this.custom.id = ship.id;
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,255)', value: `${ship.name}`, align: 'left' },
+        { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+        { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
+        { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+        { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
       ]
     })
     ui.addDesign('admin', function (ship, fontSize = 60) {
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,0)', value: `${ship.name}`, align: 'left' },
+        { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,0)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+        { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' }
       ]
     })
     ui.addDesign('active', function (ship, fontSize = 60) {
       return [
-        { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,0)', value: `${ship.name}*`, align: 'left' },
+        { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 2 },
+        { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+        { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
+        { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+        { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
       ]
     })
     return ui;
@@ -1362,6 +1369,7 @@ this.tick = function (game) {
             break;
           case 'admin':
             if (game.step % 120 === 0) displayPlayerList(ship, ships);
+            if (!ship.custom.admin) displayOptionScreen(ship, ship.custom.layout);
             break;
         }
       })
@@ -1494,6 +1502,7 @@ this.event = function (event, game) {
         case 'map':
         case 'ship':
           changePage(ship, id, ship.custom.layout);
+          if (ship.custom.page === 'admin' && ship.custom.admin) displayPlayerList(ship, ships);
           break;
         case 'restore':
         case 'stats':
@@ -1525,17 +1534,17 @@ this.event = function (event, game) {
           index.display(ship);
           break;
         case 'admin_warp':
-          ships.forEach(player => {
+          if (ship.custom.admin) ships.forEach(player => {
             if (player.custom.admin) return
             if (ship.custom.options) displayOptionScreen(player, player.custom.layout);
             player.set({ x: ship.x, y: ship.y, ...SHIP.getEvent('spectate') })
           })
           break;
         case 'players_clear':
-          ships.forEach(a => !a.custom.admin && a.set({ kill: true }));
+          if (ship.custom.admin) ships.forEach(a => !a.custom.admin && a.set({ kill: true }));
           break;
         case 'entities_clear':
-          [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
+          if (ship.custom.admin) [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
           break;
         case 'timeout':
         case 'kick':
@@ -1543,6 +1552,7 @@ this.event = function (event, game) {
         case 'teleport':
         case 'deselect':
           if (ship.custom.admin) adminFuncs[id](ship, ships);
+          displayPlayerList(ship, ships);
           break;
         default:
           if (Object.keys(boxes).includes(id)) {
