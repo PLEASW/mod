@@ -5,7 +5,6 @@
  * add cooldown
  * add commands
  * add map area highligh into the radar
- * radar button will be highligh and disable when ship are in that area  
  * implement hide/show ui mechanism 
  * 
  */
