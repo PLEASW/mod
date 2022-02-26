@@ -3,8 +3,7 @@
  * separate shiptree into color distinction
  * add cooldown
  * add commands
- * implement hide/show ui mechanism 
- * 
+ * add ship's name
  */
 const SHIP = (function () {
   class SHIP {
@@ -972,7 +971,7 @@ const custom_map = function () {
       scale: { x: 40 * 1.6, y: 260, z: 300 },
       rotation: { x: 0, y: 160, z: Math.PI }
     });
-  } catch (error) { console.log(error) }
+  } catch (error) { }
 })();
 this.options = {
   root_mode: "",
@@ -1113,53 +1112,32 @@ class LIST_UI {
     return this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
   }
 }
-class UI_TRACKER {
-  constructor() { this._uis = new Set() }
-  add(...uis) { uis.forEach(this.uis.add) }
-  delete(...uis) { uis.forEach(this.uis.delete) }
-  get uis() { return Array(this._uis); }
-  clear() { this.uis.clear(); }
-}
-const { defaultScreen, restore, hide, options: layout } = function () {
-  const restore = new UI({
-    id: "restore", position: [66.5, 92, 6.6, 4], clickable: true, shortcut: 'J', components: [
-      { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
-      { type: "text", position: [0, 30, 100, 60], value: "Restore", color: 'rgba(255,255,255,1)' },
-    ]
-  })
-  const hide = new UI({
-    id: "hide_UI", position: [73, 88, 6.6, 4], clickable: true, shortcut: "V", components: [
-      { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
-      { type: "text", position: [0, 30, 100, 60], value: "HideUI", color: 'rgba(255,255,255,1)' },
-    ]
-  })
-  const options = new UI({
-    id: "options", position: [73, 92, 6.6, 4], clickable: true, components: [
-      { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
-      { type: "text", position: [0, 30, 100, 60], value: "Options", color: 'rgba(255,255,255,1)' },
-    ]
-  })
-  options.setDesign('active', active, 'Options')
-  return {
-    defaultScreen: function (ship) {
-      restore.display(ship);
-      hide.display(ship);
-      options.display(ship);
-    }, restore, hide, options
-  }
-}();
-function active(text) {
-  return [
-    { type: "box", position: [0, 0, 100, 100], fill: "rgba(68, 85, 102, 0)", stroke: 'rgba(255,255,255,1)', width: 5 },
-    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
-  ];
-}
 const simpleDesign = UI.prototype.simpleDesign.bind(new UI({}));
 const addMargin = GRIDS.prototype.addMargin.bind(new GRIDS([]));
 const clickable = true;
 const grids = new GRIDS([5, 35, 30, 60]);
 const adminPrefix = '###';
 const spectatorType = SHIP.init.spectate[0].typespec.code;
+function optionsDesign(text) {
+  return [
+    { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
+    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,255,255,1)' },
+  ]
+}
+const { defaultScreen, restore, hide, options: layout, show } = function () {
+  const restore = new UI({ id: "restore", position: [66.5, 92, 6.6, 4], clickable, shortcut: 'J', components: optionsDesign('Restore') })
+  const hide = new UI({ id: "hide", position: [73, 88, 6.6, 4], clickable, shortcut: "V", components: optionsDesign('Hide') })
+  const options = new UI({ id: "options", position: [73, 92, 6.6, 4], clickable, components: optionsDesign('Options') })
+  const show = new UI({ id: 'show', position: [0, 0, 0, 0], clickable, shortcut: 'V', components: [] })
+  options.setDesign('active', active, 'Options')
+  return { defaultScreen: ship => [restore, hide, options].forEach(ui => ui.display(ship)), restore, hide, options, show }
+}();
+function active(text) {
+  return [
+    { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
+    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
+  ];
+}
 const { overlay, pages: pageFuncs } = function () {
   const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
 
@@ -1253,10 +1231,7 @@ const { boxes: map, radar, ceils: boxes, radar_spots, box_size } = function () {
 
   const radar = new UI({ id: 'radar', position: grids.mergeCell([1, 6], [0, 2, 1, 4]).position })
   radar.position = addMargin((1080 / 1920) * 10 * 2.5, 5, radar.position).position;
-  radar.addDesign('radar', (ship, ships) => ships.map(a => a.id !== ship.id ?
-    { type: 'box', position: [...mapToComponent(a.x, a.y, width), width, width], stroke: 'rgb(255,0,0)', width } :
-    { type: 'box', position: [...mapToComponent(ship.x, ship.y, width), width, width], stroke: 'rgb(0,255,255)', width })
-  )
+  radar.addDesign('radar', (ship, ships) => ships.map(a => ({ type: 'box', position: [...mapToComponent(a.x, a.y, width), width, width], stroke: a.id !== ship.id ? 'rgb(255,0,0)' : 'rgb(0,255,255)', width })).sort(a => Number(a.id === ship.id) - 1))
   return { radar, boxes, ceils, radar_spots, box_size };
 }.call(this);
 const { globalAdminFunc, playerFuncs, playerList } = function () {
@@ -1266,7 +1241,6 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
   playerList.addUI('full', [2, 8], ...Array(16).fill(0).map((i, id) => {
     const ui = new UI({ id: adminPrefix + id, clickable })
     ui.addDesign('player', function (ship, fontSize = 60) {
-      this.custom.id = ship.id;
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
         { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
@@ -1316,16 +1290,7 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
 }();
 function init(ship) {
   if (ship.custom.init) return;
-  ship.custom = {
-    init: true,
-    uis: new UI_TRACKER(),
-    options: false,
-    weapons: false,
-    admin: false,
-    isTimeout: false,
-    layout: 'full',
-    shiptree: 'vanilla'
-  }
+  ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
   defaultScreen(ship);
 }
 function displayPlayerList(ship, ships) {
@@ -1348,8 +1313,7 @@ function checkPos(ship) {
   }));
   if (!key) {
     map.getUI(ship.custom.layout, ui => ui.id === ship.custom.boxes_position)?.display(ship);
-    delete ship.custom.boxes_position;
-    return;
+    return delete ship.custom.boxes_position;
   }
   if (key === ship.custom.boxes_position) return
   map.getUI(ship.custom.layout, ui => ui.id === ship.custom.boxes_position)?.display(ship);
@@ -1369,7 +1333,7 @@ this.tick = function (game) {
             break;
           case 'admin':
             if (game.step % 120 === 0) displayPlayerList(ship, ships);
-            if (!ship.custom.admin) displayOptionScreen(ship, ship.custom.layout);
+            if (!ship.custom.admin && pageFuncs.getUI(ship.custom.layout, ui => ui.id === 'admin').isDisplay) displayOptionScreen(ship, ship.custom.layout);
             break;
         }
       })
@@ -1379,19 +1343,16 @@ this.tick = function (game) {
 const page = {
   ship: {
     show(ship, type) {
-      shiptrees.displayAll(ship, type);
-      shipFuncs.displayAll(ship, type);
+      [shipFuncs, shiptrees].forEach(ui => ui.displayAll(ship, type));
       [next, previous].forEach(ui => ui.display(ship));
       showShipIndex(ship, ship.type);
       shiptrees.getUI(type, ui => ui.id === ship.custom.shiptree).display(ship, 'active');
       changeShiptree(ship, ship.custom.shiptree);
       ship.custom.page = 'ship';
     }, hide(ship, type) {
-      shiptrees.hideAll(ship, type);
-      shipFuncs.hideAll(ship, type);
+      [shipFuncs, shiptrees].forEach(ui => ui.hideAll(ship, type));
       [next, index, previous].forEach(ui => ui.hide(ship));
       delete ship.custom.page;
-
     }
   },
   map: {
@@ -1402,21 +1363,18 @@ const page = {
       ship.custom.page = 'map'
     }, hide(ship, type) {
       map.hideAll(ship, type);
-      radar.hide(ship);
-      radar_spots.hide(ship);
+      [radar, radar_spots].forEach(i => i.hide(ship))
       delete ship.custom.page;
       delete ship.custom.boxes_position;
     }
   },
   admin: {
     show(ship, type) {
-      playerFuncs.displayAll(ship, type);
-      globalAdminFunc.displayAll(ship, type);
+      if (!ship.custom.admin) return;
+      [playerFuncs, globalAdminFunc].forEach(i => i.displayAll(ship, type))
       ship.custom.page = 'admin'
     }, hide(ship, type) {
-      playerFuncs.hideAll(ship, type);
-      globalAdminFunc.hideAll(ship, type);
-      playerList.hideAll(ship, type);
+      [playerFuncs, globalAdminFunc, playerList].forEach(i => i.hideAll(ship, type));
       delete ship.custom.page;
     }
   },
@@ -1495,6 +1453,22 @@ this.event = function (event, game) {
     case 'ui_component_clicked':
       if (ship.type === spectatorType && ['stats', 'restore'].includes(id)) return;
       switch (id) {
+        case 'hide':
+          show.display(ship); layout.hide(ship); hide.hide(ship);
+          ship.setUIComponent({ id: 'restore', position: [0, 0, 0, 0], clickable, shortcut: 'J', components: [] });
+          ship.setUIComponent({
+            id: 'hide_shortcut', position: [0, 90, 20, 5], components: [
+              { type: "text", position: [0, 0, 100, 50], value: "Show UI [V]", color: 'rgba(255,255,255,1)', align: 'left' },
+              { type: "text", position: [0, 50, 100, 50], value: "Restore [J]", color: 'rgba(255,255,255,1)', align: 'left' }
+            ]
+          });
+          if (ship.custom.options) displayOptionScreen(ship, ship.custom.layout);
+          break;
+        case 'show':
+          show.hide(ship);
+          defaultScreen(ship);
+          ship.setUIComponent({ id: 'hide_shortcut', position: [0, 0, 0, 0], components: [] })
+          break;
         case 'options':
           displayOptionScreen(ship, ship.custom.layout);
           break;
