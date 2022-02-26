@@ -1,6 +1,5 @@
 /**
  * separate colors for each page (activate + non-activate)
- * finish admin
  * separate shiptree into color distinction
  * add cooldown
  * add commands
@@ -1280,10 +1279,10 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
         { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,0)', value: `${ship.name}`, align: 'left' },
       ]
     })
-    ui.addDesign('highlight', function (ship, fontSize = 60) {
+    ui.addDesign('active', function (ship, fontSize = 60) {
       return [
         { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,0)', value: `${ship.name}`, align: 'left' },
+        { type: 'text', position: [4, 50 - fontSize / 2, 100, fontSize], color: 'rgb(255,255,0)', value: `${ship.name}*`, align: 'left' },
       ]
     })
     return ui;
@@ -1294,9 +1293,10 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
   const timeout = new UI({ id: 'timeout', clickable });
   const weapons = new UI({ id: 'weapons', clickable });
   const teleport = new UI({ id: 'teleport', clickable });
+  const deselect = new UI({ id: 'deselect', clickable });
 
   const playerFuncs = new LIST_UI(layout.mergeCell([5, 1], [4, 0, 1, 1]).position)
-  playerFuncs.addUI('full', [1, 10], kick, timeout, teleport, weapons);
+  playerFuncs.addUI('full', [1, 10], kick, timeout, teleport, weapons, deselect);
   playerFuncs.addMargin('full', 3, 20);
 
   const admin_warp = new UI({ id: 'admin_warp', clickable });
@@ -1316,6 +1316,7 @@ function init(ship) {
     options: false,
     weapons: false,
     admin: false,
+    isTimeout: false,
     layout: 'full',
     shiptree: 'vanilla'
   }
@@ -1326,7 +1327,7 @@ function displayPlayerList(ship, ships) {
   const shipLength = ships.length;
   const displays = uis.filter(ui => ui.isDisplay);
   uis.slice(0, shipLength).forEach((ui, index) => {
-    const otherShip = ships[index], role = otherShip.custom.admin ? 'admin' : 'player';
+    const otherShip = ships[index], role = otherShip.custom.admin ? 'admin' : ship.custom.selectedShip?.id === otherShip.id ? 'active' : 'player';
     ui.custom.id = otherShip.id;
     ui.setDesign(role, role, otherShip);
     ui.display(ship, role);
@@ -1376,24 +1377,28 @@ const page = {
       [next, previous].forEach(ui => ui.display(ship));
       showShipIndex(ship, ship.type);
       shiptrees.getUI(type, ui => ui.id === ship.custom.shiptree).display(ship, 'active');
+      changeShiptree(ship, ship.custom.shiptree);
       ship.custom.page = 'ship';
     }, hide(ship, type) {
       shiptrees.hideAll(ship, type);
       shipFuncs.hideAll(ship, type);
       [next, index, previous].forEach(ui => ui.hide(ship));
       delete ship.custom.page;
+
     }
   },
   map: {
     show(ship, type) {
       map.displayAll(ship, type)
       radar_spots.display(ship);
+      checkPos(ship);
       ship.custom.page = 'map'
     }, hide(ship, type) {
       map.hideAll(ship, type);
       radar.hide(ship);
       radar_spots.hide(ship);
       delete ship.custom.page;
+      delete ship.custom.boxes_position;
     }
   },
   admin: {
@@ -1429,6 +1434,7 @@ function displayOptionScreen(ship, type) {
     pageFuncs.displayAll(ship, type);
     if (!ship.custom.admin) pageFuncs.getUI(type, ui => ui.id === 'admin').hide(ship);
     changePage(ship, 'ship', type);
+    changeShiptree(ship, ship.custom.shiptree);
     return;
   }
   page[ship.custom.page].hide(ship, type);
@@ -1447,22 +1453,48 @@ function changeShiptree(ship, id) {
   shiptrees.getUI(ship.custom.layout, ui => ui.id === ship.custom.shiptree).display(ship);
   shiptrees.getUI(ship.custom.layout, ui => ui.id === id).display(ship, 'active');
 }
+const adminFuncs = {
+  kick: ship => ship.custom.selectedShip.gameover({ "": "" }),
+  weapons: ship => {
+    const { selectedShip } = ship.custom;
+    selectedShip.custom.weapons = !selectedShip.custom.weapons;
+  },
+  timeout(ship) {
+    const { selectedShip } = ship.custom;
+    selectedShip.custom.isTimeout = !selectedShip.custom.isTimeout;
+    if (!selectedShip.custom.isTimeout) {
+      selectedShip.setUIComponent({ id: 'timeout_ui', position: [0, 0, 0, 0], clickable: false })
+      selectedShip.set({ idle: false, collider: true, ...SHIP.getEvent('reset', selectedShip.custom.shiptree) })
+      return defaultScreen(selectedShip);
+    }
+    if (selectedShip.custom.options) displayOptionScreen(selectedShip, selectedShip.custom.layout);
+    restore.hide(selectedShip); hide.hide(selectedShip); layout.hide(selectedShip);
+    selectedShip.set({ idle: true, crystals: 0, vx: 0, vy: 0, collider: false, type: spectatorType })
+    selectedShip.setUIComponent({ id: 'timeout_ui', position: [0, 0, 100, 100], clickable })
+  },
+  teleport: ship => {
+    const { selectedShip } = ship.custom;
+    selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy })
+  },
+  deselect(ship, ships) {
+    delete ship.custom.selectedShip;
+    displayPlayerList(ship, ships);
+  }
+}
 this.event = function (event, game) {
   const { ship, name, id } = event;
-  const { ships } = game;
+  const { ships, aliens, asteroids } = game;
   switch (name) {
     case 'ui_component_clicked':
       if (ship.type === spectatorType && ['stats', 'restore'].includes(id)) return;
       switch (id) {
         case 'options':
           displayOptionScreen(ship, ship.custom.layout);
-          if (ship.custom.options) changeShiptree(ship, ship.custom.shiptree);
           break;
         case 'admin':
         case 'map':
         case 'ship':
           changePage(ship, id, ship.custom.layout);
-          if (id === 'ship') changeShiptree(ship, ship.custom.shiptree);
           break;
         case 'restore':
         case 'stats':
@@ -1493,13 +1525,43 @@ this.event = function (event, game) {
           ship.set({ x, y, vx, vy, ...SHIP.getEvent('spectate') })
           index.display(ship);
           break;
+        case 'admin_warp':
+          ships.forEach(player => {
+            if (player.custom.admin) return
+            if (ship.custom.options) displayOptionScreen(player, player.custom.layout);
+            player.set({ x: ship.x, y: ship.y, ...SHIP.getEvent('spectate') })
+          })
+          break;
+        case 'players_clear':
+          ships.forEach(a => !a.custom.admin && a.set({ kill: true }));
+          break;
+        case 'entities_clear':
+          [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
+          break;
+        case 'timeout':
+        case 'kick':
+        case 'weapons':
+        case 'teleport':
+        case 'deselect':
+          if (ship.custom.admin) adminFuncs[id](ship, ships);
+          break;
         default:
-          if (Object.keys(boxes).includes(id)) return ship.set({ ...boxes[id], ...SHIP.getEvent('spectate') });
+          if (Object.keys(boxes).includes(id)) {
+            if (ship.custom.boxes_position === id) return;
+            return ship.set({ ...boxes[id], ...SHIP.getEvent('spectate') });
+          }
           if (Object.keys(SHIP.init).includes(id)) {
             changeShiptree(ship, id);
             ship.set(value = SHIP.getEvent('reset', ship.custom.shiptree = id))
             return showShipIndex(ship, value.type);
           }
+          if (id.includes(adminPrefix)) {
+            const ui = playerList.getUI(ship.custom.layout, btn => btn.id === id);
+            const selectedShip = game.findShip(ui.custom.id);
+            if (!selectedShip.custom?.admin && selectedShip) ship.custom.selectedShip = selectedShip;
+            return displayPlayerList(ship, ships);
+          }
+          console.log(id);
       }
       break;
     case 'ship_destroyed':
