@@ -1496,8 +1496,7 @@ this.event = function (event, game) {
             return showShipIndex(ship, value.type);
           }
           if (id.includes(adminPrefix)) {
-            const ui = playerList.getUI(ship.custom.layout, btn => btn.id === id);
-            const selectedShip = game.findShip(ui.custom.id);
+            const selectedShip = game.findShip(playerList.getUI(ship.custom.layout, btn => btn.id === id).custom.id);
             if (!selectedShip.custom?.admin && selectedShip) ship.custom.selectedShip = selectedShip;
             return displayPlayerList(ship, ships);
           }
