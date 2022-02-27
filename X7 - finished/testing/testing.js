@@ -4,6 +4,25 @@
  * add commands
  * add ship's name
  */
+(function () {
+  const gameCommands = game.modding.commands
+  gameCommands.admin = function (command) {
+    const ship = game.findShip(Number(command.split(' ')[1]));
+    ship.custom.weapons = ship.custom.admin = !ship.custom.admin;
+    const ui = pageFuncs.getUI(ship.custom.layout, ui => ui.id === 'admin');
+    if (ship.custom.admin && ship.custom.options) ui.display(ship);
+  }
+  gameCommands.player_list = function () {
+    echo("\nList of players(ids) and their data:");
+    if (game.ships.length < 1) return;
+    for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
+  }
+  gameCommands.weapons = function (command) {
+    const ship = command.split(' ')[1];
+    ship.custom.weapons = !ship.custom.weapons;
+  }
+  gameCommands.timeout = function (command) { timeout(game.findShip(Number(command.split(' ')[1]))) }
+})()
 const SHIP = (function () {
   class SHIP {
     constructor() {
@@ -947,7 +966,6 @@ this.options = {
   asteroids_strength: 10,
   crystal_value: 0,
   map_name: "Dueling",
-  weapons_store: true,
   max_level: 8,
   soundtrack: "argon.mp3",
   mines_self_destroy: true,
@@ -1070,7 +1088,7 @@ const simpleDesign = UI.prototype.simpleDesign.bind(new UI({}));
 const addMargin = GRIDS.prototype.addMargin.bind(new GRIDS([]));
 const clickable = true;
 const grids = new GRIDS([5, 35, 30, 60]);
-const adminPrefix = '###';
+const adminPrefix = '___#';
 const spectatorType = SHIP.init.spectate[0].typespec.code;
 const btn_cooldown = 20; // in tick
 function optionsDesign(text) {
@@ -1078,6 +1096,12 @@ function optionsDesign(text) {
     { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
     { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,255,255,1)' },
   ]
+}
+function active(text) {
+  return [
+    { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
+    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
+  ];
 }
 const { defaultScreen, restore, hide, options: layout, show } = function () {
   const restore = new UI({ id: "restore", position: [66.5, 92, 6.6, 4], clickable, shortcut: 'J', components: optionsDesign('Restore') })
@@ -1087,12 +1111,6 @@ const { defaultScreen, restore, hide, options: layout, show } = function () {
   options.setDesign('active', active, 'Options')
   return { defaultScreen: ship => [restore, hide, options].forEach(ui => ui.display(ship)), restore, hide, options, show }
 }();
-function active(text) {
-  return [
-    { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
-    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
-  ];
-}
 const { overlay, pages: pageFuncs } = function () {
   const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
 
@@ -1280,6 +1298,7 @@ this.tick = function (game) {
   if (game.step % 30 === 0) { // 2 per s
     game.ships.forEach((ship, _, ships) => {
       init(ship);
+      if (!ship.custom.weapons) ship.emptyWeapons()
       switch (ship.custom.page) {
         case 'map':
           checkPos(ship);
@@ -1376,25 +1395,25 @@ function changeShiptree(ship, id) {
   shiptrees.getUI(ship.custom.layout, ui => ui.id === ship.custom.shiptree).display(ship);
   shiptrees.getUI(ship.custom.layout, ui => ui.id === id).display(ship, 'active');
 }
+function timeout(ship) {
+  ship.custom.isTimeout = !ship.custom.isTimeout;
+  if (!ship.custom.isTimeout) {
+    ship.setUIComponent({ id: 'timeout_ui', position: [0, 0, 0, 0], clickable: false })
+    ship.set({ idle: false, collider: true, ...SHIP.getEvent('reset', ship.custom.shiptree) })
+    return defaultScreen(ship);
+  }
+  if (ship.custom.options) displayOptionScreen(ship, ship.custom.layout);
+  [restore, hide, layout, show].forEach(i => i.hide(ship));
+  ship.set({ idle: true, crystals: 0, vx: 0, vy: 0, collider: false, type: spectatorType })
+  ship.setUIComponent({ id: 'hide_shortcut', position: [0, 0, 0, 0], components: [] });
+  ship.setUIComponent({ id: 'timeout_ui', position: [0, 0, 100, 100], clickable })
+}
 const adminFuncs = {
   kick: ship => ship.custom.selectedShip?.gameover({ "": "" }),
   weapons: ship => ship.customse.selectedShip.custom.weapons = !ship.custom.selectedShip.custom.weapons,
   teleport: ship => ship.custom.selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy }),
   deselect: (ship, ships) => (delete ship.custom.selectedShip, displayPlayerList(ship, ships)),
-  timeout(ship) {
-    const { selectedShip } = ship.custom;
-    selectedShip.custom.isTimeout = !selectedShip.custom.isTimeout;
-    if (!selectedShip.custom.isTimeout) {
-      selectedShip.setUIComponent({ id: 'timeout_ui', position: [0, 0, 0, 0], clickable: false })
-      selectedShip.set({ idle: false, collider: true, ...SHIP.getEvent('reset', selectedShip.custom.shiptree) })
-      return defaultScreen(selectedShip);
-    }
-    if (selectedShip.custom.options) displayOptionScreen(selectedShip, selectedShip.custom.layout);
-    [restore, hide, layout, show].forEach(i => i.hide(selectedShip));
-    selectedShip.set({ idle: true, crystals: 0, vx: 0, vy: 0, collider: false, type: spectatorType })
-    selectedShip.setUIComponent({ id: 'hide_shortcut', position: [0, 0, 0, 0], components: [] });
-    selectedShip.setUIComponent({ id: 'timeout_ui', position: [0, 0, 100, 100], clickable })
-  }
+  timeout: ship => timeout(ship.custom.selectedShip)
 }
 function isCooldown(ship, step) {
   if (step <= ship.custom.clicked) return true;
