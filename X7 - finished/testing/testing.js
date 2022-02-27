@@ -18,10 +18,10 @@
     for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
   }
   gameCommands.weapons = function (command) {
-    const ship = command.split(' ')[1];
+    const ship = game.findShip(command.split(' ')[1]);
     ship.custom.weapons = !ship.custom.weapons;
   }
-  gameCommands.timeout = function (command) { timeout(game.findShip(Number(command.split(' ')[1]))) }
+  gameCommands.timeout = command => timeout(game.findShip(Number(command.split(' ')[1])))
 })()
 const SHIP = (function () {
   class SHIP {
