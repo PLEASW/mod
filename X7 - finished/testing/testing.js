@@ -1,7 +1,6 @@
 /**
  * separate colors for each page (activate + non-activate)
  * separate shiptree into color distinction
- * add cooldown
  * add commands
  * add ship's name
  */
@@ -1278,27 +1277,25 @@ function checkPos(ship) {
   ship.custom.boxes_position = key;
 }
 this.tick = function (game) {
-  if (game.step % 15 === 0) { // 4 per s
-    if (game.step % 30 === 0) { // 2 per s
-      game.ships.forEach((ship, index, ships) => {
-        init(ship);
-        switch (ship.custom.page) {
-          case 'map':
-            checkPos(ship);
-            radar.setDesign('radar', 'radar', ship, ships);
-            radar.display(ship, 'radar');
-            break;
-          case 'admin':
-            if (game.step % 120 === 0) displayPlayerList(ship, ships);
-            if (!ship.custom.admin && pageFuncs.getUI(ship.custom.layout, ui => ui.id === 'admin').isDisplay) displayOptionScreen(ship, ship.custom.layout);
-            break;
-          case 'ship':
-            if (ship.custom.type !== ship.type) showShipIndex(ship, ship.type)
-            break;
-        }
-      })
-    };
-  }
+  if (game.step % 30 === 0) { // 2 per s
+    game.ships.forEach((ship, _, ships) => {
+      init(ship);
+      switch (ship.custom.page) {
+        case 'map':
+          checkPos(ship);
+          radar.setDesign('radar', 'radar', ship, ships);
+          radar.display(ship, 'radar');
+          break;
+        case 'admin':
+          if (game.step % 120 === 0) displayPlayerList(ship, ships);
+          if (!ship.custom.admin && pageFuncs.getUI(ship.custom.layout, ui => ui.id === 'admin').isDisplay) displayOptionScreen(ship, ship.custom.layout);
+          break;
+        case 'ship':
+          if (ship.custom.type !== ship.type) showShipIndex(ship, ship.type)
+          break;
+      }
+    })
+  };
 }
 const page = {
   ship: {
@@ -1423,11 +1420,10 @@ this.event = function (event, game) {
               { type: "text", position: [0, 50, 100, 50], value: "Restore [J]", color: 'rgba(255,255,255,1)', align: 'left' }
             ]
           });
-          show.display(ship); layout.hide(ship); hide.hide(ship);
+          show.display(ship), [layout, hide].forEach(i => i.hide(ship));
           break;
         case 'show':
-          show.hide(ship);
-          defaultScreen(ship);
+          show.hide(ship), defaultScreen(ship);
           ship.setUIComponent({ id: 'hide_shortcut', position: [0, 0, 0, 0], components: [] })
           break;
         case 'options':
@@ -1472,7 +1468,7 @@ this.event = function (event, game) {
           if (ship.custom.admin) ships.forEach(player => {
             if (player.custom.admin) return
             if (ship.custom.options) displayOptionScreen(player, player.custom.layout);
-            player.set({ x: ship.x, y: ship.y, ...SHIP.getEvent('spectate') })
+            player.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy, ...SHIP.getEvent('spectate') })
           })
           break;
         case 'players_clear':
