@@ -1,8 +1,9 @@
 /**
  * separate colors for each page (activate + non-activate)
  * separate shiptree into color distinction
- * add commands
  * add ship's name
+ * add announcement 
+ * add light version
  */
 (function () {
   const gameCommands = game.modding.commands
@@ -961,10 +962,11 @@ this.options = {
   reset_tree: true,
   map_size: 200,
   survival_level: 8,
-  speed_mod: 1.2,
+  speed_mod: 1.25,
   starting_ship_maxed: true,
   asteroids_strength: 10,
   crystal_value: 0,
+  weapons_store: true,
   map_name: "Dueling",
   max_level: 8,
   soundtrack: "argon.mp3",
