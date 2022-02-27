@@ -1073,6 +1073,7 @@ const clickable = true;
 const grids = new GRIDS([5, 35, 30, 60]);
 const adminPrefix = '###';
 const spectatorType = SHIP.init.spectate[0].typespec.code;
+const btn_cooldown = 20; // in tick
 function optionsDesign(text) {
   return [
     { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
@@ -1380,10 +1381,9 @@ function changeShiptree(ship, id) {
 }
 const adminFuncs = {
   kick: ship => ship.custom.selectedShip?.gameover({ "": "" }),
-  weapons: ship => {
-    const { selectedShip } = ship.custom;
-    selectedShip.custom.weapons = !selectedShip.custom.weapons;
-  },
+  weapons: ship => ship.customse.selectedShip.custom.weapons = !ship.custom.selectedShip.custom.weapons,
+  teleport: ship => ship.custom.selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy }),
+  deselect: (ship, ships) => (delete ship.custom.selectedShip, displayPlayerList(ship, ships)),
   timeout(ship) {
     const { selectedShip } = ship.custom;
     selectedShip.custom.isTimeout = !selectedShip.custom.isTimeout;
@@ -1397,22 +1397,22 @@ const adminFuncs = {
     selectedShip.set({ idle: true, crystals: 0, vx: 0, vy: 0, collider: false, type: spectatorType })
     selectedShip.setUIComponent({ id: 'hide_shortcut', position: [0, 0, 0, 0], components: [] });
     selectedShip.setUIComponent({ id: 'timeout_ui', position: [0, 0, 100, 100], clickable })
-  },
-  teleport: ship => {
-    const { selectedShip } = ship.custom;
-    selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy })
-  },
-  deselect(ship, ships) {
-    delete ship.custom.selectedShip;
-    displayPlayerList(ship, ships);
   }
+}
+function isCooldown(ship, step) {
+  if (step <= ship.custom.clicked) return true;
+  return !(ship.custom.clicked = Math.max(step + btn_cooldown, 1));
 }
 this.event = function (event, game) {
   const { ship, name, id } = event;
-  const { ships, aliens, asteroids } = game;
+  const { ships, aliens, asteroids, step } = game;
   switch (name) {
     case 'ui_component_clicked':
-      if (ship.type === spectatorType && ['stats', 'restore'].includes(id)) return;
+      if (!ship.custom.admin && isCooldown(ship, step)) return;
+      if (ship.type === spectatorType) {
+        if (['stats', 'restore'].includes(id)) return;
+        else if (['reset', 'next', 'previous'].includes(id)) ship.set({ vx: 0, vy: 0 });
+      }
       switch (id) {
         case 'hide':
           if (ship.custom.options) displayOptionScreen(ship, ship.custom.layout);
