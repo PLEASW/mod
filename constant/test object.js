@@ -81,3 +81,11 @@ class TEST {
   display(ship) { this.uis.forEach((position, id) => ship.setUIComponent({ id, position, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 }] })) }
   hide(ship) { for (let id = 0; id < 1000; id++) ship.setUIComponent({ id, position: [0, 0, 0, 0], components: [], visible: false }) }
 }
+class DESIGN {
+  constructor() {
+    this.testcase = { id: 'test', position: [40, 40, 20, 20] }
+  }
+  test(ship, design, ...param) {
+    ship.setUIComponent(Object.assign({ ...this.testcase }, { components: design(...param) }))
+  }
+}
