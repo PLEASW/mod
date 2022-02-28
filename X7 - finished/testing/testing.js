@@ -2,7 +2,6 @@
  * separate colors for each page (activate + non-activate)
  * separate shiptree into color distinction
  * add ship's name
- * add announcement 
  * add light version
  */
 (function () {
@@ -1130,6 +1129,35 @@ function active(text) {
     { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
   ];
 }
+function playerDesign(ship, fontSize = 60) {
+  return [
+    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
+    { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+    { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+  ]
+}
+function adminDesign(ship, fontSize = 60) {
+  return [
+    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,0)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' }
+  ]
+}
+function selectedShipDesign(ship, fontSize = 60) {
+  return [
+    { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 2 },
+    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
+    { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+    { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+  ]
+}
+function setFontSize([x, y, width, height], size = 60) {
+  size *= height / 100;
+  return [x, y + (height - size) / 2, width, size];
+}
 const { defaultScreen, restore, hide, options: layout, show } = function () {
   const restore = new UI({ id: "restore", position: [66.5, 92, 6.6, 4], clickable, shortcut: 'J', components: optionsDesign('Restore') })
   const hide = new UI({ id: "hide", position: [73, 88, 6.6, 4], clickable, shortcut: "V", components: optionsDesign('Hide') })
@@ -1222,7 +1250,8 @@ const { boxes: map, radar, ceils: boxes, radar_spots, box_size } = function () {
         const { x, y } = ceils[pos];
         const text = simpleDesign(index, 30)[1];
         text.color = 'rgba(255,255,255,0.5)';
-        const position = text.position = [...mapToComponent(x - box_size.map / 2, y + box_size.map / 2), box_size.ui, box_size.ui];
+        const position = [...mapToComponent(x - box_size.map / 2, y + box_size.map / 2), box_size.ui, box_size.ui];
+        text.position = setFontSize(position);
         return [{ type: 'box', position, stroke: 'rgb(255,255,255)', width: 2 }, pos === 'spawn' || text];
       }).flat().filter(ui => ui)
     ]
@@ -1240,31 +1269,9 @@ const { globalAdminFunc, playerFuncs, playerList } = function () {
   const playerList = new LIST_UI(layout.mergeCell([5, 1], [0, 0, 4, 1]).position);
   playerList.addUI('full', [2, 8], ...Array(16).fill(0).map((i, id) => {
     const ui = new UI({ id: adminPrefix + id, clickable })
-    ui.addDesign('player', function (ship, fontSize = 60) {
-      return [
-        { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
-        { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
-        { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-        { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-      ]
-    })
-    ui.addDesign('admin', function (ship, fontSize = 60) {
-      return [
-        { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,0)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
-        { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' }
-      ]
-    })
-    ui.addDesign('active', function (ship, fontSize = 60) {
-      return [
-        { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 2 },
-        { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
-        { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
-        { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-        { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-      ]
-    })
+    ui.addDesign('player', playerDesign)
+    ui.addDesign('admin', adminDesign)
+    ui.addDesign('active', selectedShipDesign)
     return ui;
   }));
   playerList.addMargin('full', 2, 12);
