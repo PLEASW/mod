@@ -6,12 +6,20 @@
  * add light version
  */
 (function () {
-  const gameCommands = game.modding.commands
-  gameCommands.admin = function (command) {
+  const gameCommands = game.modding.commands;
+  function findShip(command) {
     const ship = game.findShip(Number(command.split(' ')[1]));
+    if (ship) return ship;
+    echo(`Failed finding ship (ID: ${ship.id})`);
+  }
+  gameCommands.admin = function (command) {
+    const ship = findShip(command); if (!ship) return;
     ship.custom.weapons = ship.custom.admin = !ship.custom.admin;
     const ui = pageFuncs.getUI(ship.custom.layout, ui => ui.id === 'admin');
     if (ship.custom.admin && ship.custom.options) ui.display(ship);
+    ship.custom.admin ?
+      echo(`${ship.name}(${ship.id}) have been promoted to Admin.`) :
+      echo(`${ship.name}(${ship.id}) have been demoted to Player.`)
   }
   gameCommands.player_list = function () {
     echo("\nList of players(ids) and their data:");
@@ -19,11 +27,19 @@
     for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
   }
   gameCommands.weapons = function (command) {
-    const ship = game.findShip(command.split(' ')[1]);
+    const ship = findShip(command); if (!ship) return;
     ship.custom.weapons = !ship.custom.weapons;
+    echo(`${ship.name}(${ship.id}) have been given permission to use weapons.`)
   }
-  gameCommands.timeout = command => timeout(game.findShip(Number(command.split(' ')[1])))
-})()
+  gameCommands.timeout = function (command) {
+    const ship = findShip(command); if (!ship) return;
+    timeout(ship), echo(`${ship.name}(${ship.id}) have been timeouted.`);
+  }
+  gameCommands.kick = function (command) {
+    const ship = findShip(command); if (!ship) return;
+    kick(ship), echo(`${ship.name}(${ship.id}) have been kick.`);
+  };
+})();
 const SHIP = (function () {
   class SHIP {
     constructor() {
@@ -1086,6 +1102,15 @@ class LIST_UI {
     return this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
   }
 }
+function announcement(ship, text) {
+  if (!text || !ship) return;
+  clearTimeout(ship.custom.announceTimeout);
+  ship.custom.announceTimeout = setTimeout(() => ship.setUIComponent({ id: 'announceText', position: [0, 0, 0, 0], components: [] }), 4000)
+  ship.setUIComponent({
+    id: 'announceText', position: [35.5, 87, 37, 4],
+    components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)', align: 'left' }]
+  })
+}
 const simpleDesign = UI.prototype.simpleDesign.bind(new UI({}));
 const addMargin = GRIDS.prototype.addMargin.bind(new GRIDS([]));
 const clickable = true;
@@ -1111,7 +1136,7 @@ const { defaultScreen, restore, hide, options: layout, show } = function () {
   const options = new UI({ id: "options", position: [73, 92, 6.6, 4], clickable, components: optionsDesign('Options') })
   const show = new UI({ id: 'show', position: [0, 0, 0, 0], clickable, shortcut: 'V', components: [] })
   options.setDesign('active', active, 'Options')
-  return { defaultScreen: ship => [restore, hide, options].forEach(ui => ui.display(ship)), restore, hide, options, show }
+  return { defaultScreen: (ship, display = true) => [restore, hide, options].forEach(ui => display ? ui.display(ship) : ui.hide(ship)), restore, hide, options, show }
 }();
 const { overlay, pages: pageFuncs } = function () {
   const overlay = new UI({ id: 'overlay', position: [5, 35, 30, 60], components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
@@ -1389,7 +1414,7 @@ function showShipIndex(ship, type) {
   ship.custom.type = type;
   if (type === spectatorType) return index.display(ship);
   const shiptree = SHIP.init[ship.custom.shiptree].map(i => i.typespec.code)
-  index.setDesign('index', simpleDesign(`${Math.max(shiptree.indexOf(type) + 1, 1)}/${shiptree.length}`))
+  index.setDesign('index', simpleDesign(`${Math.max(shiptree.indexOf(type) + 1, 1)}/${shiptree.length}`));
   index.display(ship, 'index');
 }
 function changeShiptree(ship, id) {
@@ -1402,6 +1427,7 @@ function timeout(ship) {
   if (!ship.custom.isTimeout) {
     ship.setUIComponent({ id: 'timeout_ui', position: [0, 0, 0, 0], clickable: false })
     ship.set({ idle: false, collider: true, ...SHIP.getEvent('reset', ship.custom.shiptree) })
+    announcement(ship, 'Your timeout have been removed.');
     return defaultScreen(ship);
   }
   if (ship.custom.options) displayOptionScreen(ship, ship.custom.layout);
@@ -1409,11 +1435,16 @@ function timeout(ship) {
   ship.set({ idle: true, crystals: 0, vx: 0, vy: 0, collider: false, type: spectatorType })
   ship.setUIComponent({ id: 'hide_shortcut', position: [0, 0, 0, 0], components: [] });
   ship.setUIComponent({ id: 'timeout_ui', position: [0, 0, 100, 100], clickable })
+  announcement(ship, `You was putted in timeout.`);
 }
+const kick = ship => ship.gameover({ "": "" });
 const adminFuncs = {
-  kick: ship => ship.custom.selectedShip?.gameover({ "": "" }),
-  weapons: ship => ship.customse.selectedShip.custom.weapons = !ship.custom.selectedShip.custom.weapons,
-  teleport: ship => ship.custom.selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy }),
+  kick: ship => kick(ship.custom.selectedShip),
+  weapons(ship) {
+    const { selectedShip: player } = ship.custom;
+    player.custom.weapons = !player.custom.weapons;
+    announcement(player, `You was ${player.custom.weapons ? 'given permission' : 'taken permission'} to use weapons in the mod.`)
+  }, teleport: ship => ship.custom.selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy }),
   deselect: (ship, ships) => (delete ship.custom.selectedShip, displayPlayerList(ship, ships)),
   timeout: ship => timeout(ship.custom.selectedShip)
 }
@@ -1434,6 +1465,8 @@ this.event = function (event, game) {
       switch (id) {
         case 'hide':
           if (ship.custom.options) displayOptionScreen(ship, ship.custom.layout);
+          defaultScreen(ship, false);
+          show.display(ship)
           ship.setUIComponent({ id: 'restore', position: [0, 0, 0, 0], clickable, shortcut: 'J', components: [] });
           ship.setUIComponent({
             id: 'hide_shortcut', position: [0, 90, 20, 5], components: [
@@ -1441,7 +1474,6 @@ this.event = function (event, game) {
               { type: "text", position: [0, 50, 100, 50], value: "Restore [J]", color: 'rgba(255,255,255,1)', align: 'left' }
             ]
           });
-          show.display(ship), [layout, hide].forEach(i => i.hide(ship));
           break;
         case 'show':
           show.hide(ship), defaultScreen(ship);
