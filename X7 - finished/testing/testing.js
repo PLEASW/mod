@@ -5,39 +5,41 @@
  * add light version
  */
 (function () {
-  const gameCommands = game.modding.commands;
-  function findShip(command) {
-    const ship = game.findShip(Number(command.split(' ')[1]));
-    if (ship) return ship;
-    echo(`Failed finding ship (ID: ${ship.id})`);
-  }
-  gameCommands.admin = function (command) {
-    const ship = findShip(command); if (!ship) return;
-    ship.custom.weapons = ship.custom.admin = !ship.custom.admin;
-    const ui = pageFuncs.getUI(ship.custom.layout, ui => ui.id === 'admin');
-    if (ship.custom.admin && ship.custom.options) ui.display(ship);
-    ship.custom.admin ?
-      echo(`${ship.name}(${ship.id}) have been promoted to Admin.`) :
-      echo(`${ship.name}(${ship.id}) have been demoted to Player.`)
-  }
-  gameCommands.player_list = function () {
-    echo("\nList of players(ids) and their data:");
-    if (game.ships.length < 1) return;
-    for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
-  }
-  gameCommands.weapons = function (command) {
-    const ship = findShip(command); if (!ship) return;
-    ship.custom.weapons = !ship.custom.weapons;
-    echo(`${ship.name}(${ship.id}) have been given permission to use weapons.`)
-  }
-  gameCommands.timeout = function (command) {
-    const ship = findShip(command); if (!ship) return;
-    timeout(ship), echo(`${ship.name}(${ship.id}) have been timeouted.`);
-  }
-  gameCommands.kick = function (command) {
-    const ship = findShip(command); if (!ship) return;
-    kick(ship), echo(`${ship.name}(${ship.id}) have been kick.`);
-  };
+  try {
+    const gameCommands = game.modding.commands;
+    function findShip(command) {
+      const ship = game.findShip(Number(command.split(' ')[1]));
+      if (ship) return ship;
+      echo(`Failed finding ship (ID: ${ship.id})`);
+    }
+    gameCommands.admin = function (command) {
+      const ship = findShip(command); if (!ship) return;
+      ship.custom.weapons = ship.custom.admin = !ship.custom.admin;
+      const ui = pageFuncs.getUI(ship.custom.layout, ui => ui.id === 'admin');
+      if (ship.custom.admin && ship.custom.options) ui.display(ship);
+      ship.custom.admin ?
+        echo(`${ship.name}(${ship.id}) have been promoted to Admin.`) :
+        echo(`${ship.name}(${ship.id}) have been demoted to Player.`)
+    }
+    gameCommands.player_list = function () {
+      echo("\nList of players(ids) and their data:");
+      if (game.ships.length < 1) return;
+      for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
+    }
+    gameCommands.weapons = function (command) {
+      const ship = findShip(command); if (!ship) return;
+      ship.custom.weapons = !ship.custom.weapons;
+      echo(`${ship.name}(${ship.id}) have been given permission to use weapons.`)
+    }
+    gameCommands.timeout = function (command) {
+      const ship = findShip(command); if (!ship) return;
+      timeout(ship), echo(`${ship.name}(${ship.id}) have been timeouted.`);
+    }
+    gameCommands.kick = function (command) {
+      const ship = findShip(command); if (!ship) return;
+      kick(ship), echo(`${ship.name}(${ship.id}) have been kick.`);
+    };
+  } catch (error) { }
 })();
 const SHIP = (function () {
   class SHIP {
