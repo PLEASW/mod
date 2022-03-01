@@ -54,7 +54,7 @@ playerclear:              kill all players.
       const ship = findShip(command); if (!ship) return;
       kick(ship), echo(`${ship.name}(${ship.id}) have been kick.`);
     };
-    gameCommands.announce = command => game.ships.forEach(ship => announcement(ship, command.split(' ')[1]))
+    gameCommands.announce = command => game.ships.forEach(ship => announcement(ship, command.split(' ').slice(1).join(' ')))
     gameCommands.entities_clear = () => entities_clear(game);
     gameCommands.playerclear = () => players_clear(game.ships);
   } catch (error) { }
