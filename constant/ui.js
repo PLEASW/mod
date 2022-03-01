@@ -59,7 +59,7 @@ class UI {
 }
 class LIST_UI {
   constructor(position) {
-    this.grids = new GRIDS(Object.assign(position));
+    this.grids = new GRIDS(position);
     this.layouts = {};
   }
   addMargin = (type, horizontal = 0, vertical = 0) => this.getLayout(type).forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
