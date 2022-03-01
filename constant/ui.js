@@ -4,11 +4,10 @@ class GRIDS {
     this.prefix = prefix;
     this.grids = {};
   }
-  #generatePos(data) { return { ...data, position: Object.values(data) } }
   #createGrids(rows = 1, cols = 1) {
     try {
       const layout = this.layout;
-      return this.grids[rows + this.prefix + cols] = Array(rows).fill(0).map((a, x) => Array(cols).fill(0).map((b, y) => this.#generatePos({ x: layout.x + x * layout.width / rows, y: layout.y + y * layout.height / cols, width: layout.width / rows, height: layout.height / cols })));
+      return this.grids[rows + this.prefix + cols] = Array(rows).fill(0).map((a, x) => Array(cols).fill(0).map((b, y) => [layout.x + x * layout.width / rows, layout.y + y * layout.height / cols, layout.width / rows, layout.height / cols]));
     } catch (error) { console.log(error); }
   }
   mergeCell(type, pos) {
@@ -16,7 +15,7 @@ class GRIDS {
       const [x0, y0, numX, numY] = pos;
       let [x, y, width, height] = (this.grids[type.join(this.prefix)] ?? this.#createGrids(...type))[x0][y0].position;
       width *= numX; height *= numY;
-      return this.#generatePos({ x, y, width, height });
+      return [x, y, width, height];
     } catch (error) { console.log(error); }
   }
   addMargin(horizontal = 0, vertical = 0, layout) {
@@ -24,24 +23,22 @@ class GRIDS {
       let [x, y, width, height] = Object.values(layout);
       x += horizontal / 200 * width; y += vertical / 200 * height;
       width *= 1 - horizontal / 100; height *= 1 - vertical / 100;
-      return this.#generatePos({ x, y, width, height });
+      return [x, y, width, height];
     } catch (error) { console.log(error) };
   }
   getGrids(rows, cols, horizontal = false) {
+    if (!(rows || cols)) return;
     try {
       const type = rows + this.prefix + cols
       this.grids[type] ?? this.#createGrids(rows, cols);
-      return this.grids[type].flat().flatMap(pos => [pos.position]).sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
+      return this.grids[type].flat().sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
     } catch (error) { console.log(error); }
   }
 };
 class UI {
-  constructor({ id = '', position = [], visible = true, shortcut, clickable = false, components }) {
-    this.variety = {};
-    this.ui = function () {
-      this.variety['default'] = { components: components ?? this.simpleDesign(id || '') };
-      return { id, position, visible, clickable, shortcut };
-    }.call(this);
+  constructor({ id = '', position = [0, 0, 100, 100], visible = true, shortcut, clickable = false, components }) {
+    this.variety = components ? { components } : {};
+    this.ui = { id, position, visible, shortcut, clickable }
     this.custom = {};
     this.isDisplay = false;
   }
@@ -52,69 +49,29 @@ class UI {
   set visible(value) { return this.ui.visible = !!value }
   set clickable(value) { return this.ui.clickable = !!value }
   set position(position = [0, 0, 100, 100]) { return this.ui.position = position }
-  colors = {
-    white: 'rgb(255,255,255)', black: 'rgb(0,0,0)',
-    red: 'rgb(255,0,0)', green: 'rgb(0,255,0)', blue: 'rgb(0,0,255)',
-    cyan: 'rgb(0,255,255)'
-  }
-  customDesigns = {};
-  simpleDesign(text = '', fontSize = 60) {
-    fontSize = Number(fontSize) || 60;
-    const white = this.colors.white;
-    return [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: white, width: 5 },
-      { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: white }
-    ];
-  }
-  addDesign(name, callback) {
-    if (typeof callback !== 'function') return;
-    return this.customDesigns[name.toLowerCase()] = callback.bind(this);
-  }
-  setDesign(name, design, ...param) {
-    name = name.toLowerCase(); let components = (this.customDesigns[String(design).toLowerCase()] ?? function () { })(...param);
-    if (typeof design === 'function') {
-      this.addDesign(design.name, design);
-      components = design.call(this, ...param);
-    }
-    if (typeof design === 'object') components = design;
-    this.variety[name] = { components };
-    return components;
-  }
-  hide(ship) {
-    this.isDisplay = false;
-    return ship.setUIComponent({
-      id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: []
-    }), this.id;
-  }
-  display(ship, version = 'default') {
-    this.isDisplay = true;
-    return ship.setUIComponent(Object.assign({ ...this.ui }, this.variety[version])), this.id;
-  }
+  simpleDesign = (text, fontSize = 60) => [
+    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 },
+    text ?? { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: 'rgb(255,255,255)' }
+  ];
+  setDesign = (name, components) => this.variety[name.toLowerCase()] = { components }
+  hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
+  display = (ship, version) => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
 }
 class LIST_UI {
   constructor(position) {
     this.grids = new GRIDS(Object.assign(position));
     this.layouts = {};
   }
-  addMargin(layout, horizontal = 0, vertical = 0) {
-    this.layouts[layout].uis.forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
+  addMargin = (type, horizontal = 0, vertical = 0) => this.getLayout(type).forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
+  addUI(name, [rows = 0, cols = 0, vertical], ...uis) {
+    const _ = this.layouts[name.toLowerCase()] ??= {}, layout = _[rows + this.grids.prefix + cols] ??= [], length = layout.length, __ = this.grids.getGrids(rows, cols, vertical);
+    if (!__) return uis.forEach(ui => layout.push(new UI(ui)));
+    uis.forEach((ui, index) => __[index + length] && layout.push(new UI({ ...ui, position: __[index + length] })))
   }
-  addUI(name, [rows = 0, cols = 0, vertical = false], ...uis) {
-    if (!rows || !cols) return this.layouts[name.toLowerCase()] = { uis };
-    const layout = this.layouts[name.toLowerCase()] ??= { rows, cols, uis: [] }, length = layout.uis.length;
-    const grids = this.grids.getGrids(rows, cols, vertical);
-    uis.forEach((ui, index) => !!grids.at(index + length) && layout.uis.push((ui.position = grids.at(index + length), ui)))
-  }
-  hideAll(ship, type) {
-    return this.layouts[type.toLowerCase()].uis.map(ui => (ship.setUIComponent({ id: ui.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }), ui.id))
-  }
-  displayAll(ship, type, version = (ui, index, arr) => 'default') {
-    return this.layouts[type.toLowerCase()].uis.map((ui, index, arr) => (typeof ui.display === 'function' ? ui.display(ship, version(ui, index, arr)) : ship.setUIComponent(ui), ui.id))
-  }
-  getUI(type, filter) {
-    if (typeof filter !== 'function') return;
-    return this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
-  }
+  getLayout = type => Object.values(this.layouts[type]).flat();
+  hideAll = (ship, type) => this.getLayout(type).map(ui => ui.hide(ship))
+  displayAll = (ship, type, version = function () { }) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version(ui, index, arr)))
+  getUI = (type, filter = () => true) => this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
 }
 class UI_TRACKER {
   constructor() { this._uis = new Set() }
