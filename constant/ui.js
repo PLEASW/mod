@@ -49,10 +49,11 @@ class UI {
   set visible(value) { return this.ui.visible = !!value }
   set clickable(value) { return this.ui.clickable = !!value }
   set position(position = [0, 0, 100, 100]) { return this.ui.position = position }
-  simpleDesign = (text, fontSize = 60) => [
+  simpleDesign = (text, fontSize) => [
     { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 },
-    text ?? { type: 'text', position: [0, 50 - fontSize / 2, 100, fontSize], value: text, color: 'rgb(255,255,255)' }
-  ];
+    text && { type: 'text', position: this.setFontSize(fontSize, []), value: text, color: 'rgb(255,255,255)' }
+  ]
+  setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
   setDesign = (name, components) => this.variety[name.toLowerCase()] = { components }
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
   display = (ship, version) => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
@@ -72,11 +73,4 @@ class LIST_UI {
   hideAll = (ship, type) => this.getLayout(type).map(ui => ui.hide(ship))
   displayAll = (ship, type, version = function () { }) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version(ui, index, arr)))
   getUI = (type, filter = () => true) => this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
-}
-class UI_TRACKER {
-  constructor() { this._uis = new Set() }
-  add(...uis) { uis.forEach(this.uis.add) }
-  delete(...uis) { uis.forEach(this.uis.delete) }
-  get uis() { return Array(this._uis); }
-  clear() { this.uis.clear(); }
 }
