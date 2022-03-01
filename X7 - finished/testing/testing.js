@@ -1,4 +1,19 @@
-/**
+/* CONSOLE COMMANDS________________________________________________________________________________
+ 
+1. Ship interaction commands
+timeout <id>:             put someone into timeout for an amount of time (seconds).
+weapons <id>:             give perms to use weapons for user, use the same command again to remove perms.
+admin <id>:               grant perms to ship with id, use the same command again to remove perms.
+kick <id>:                kick someone with reason.
+ 
+2. Global commands
+playerlist:               show all ships' info along with their ID.
+announce <message>:       announce a message to everyone.
+entityclear:              clear all entities (except players).
+playerclear:              kill all players.
+ 
+*/
+/** in progress
  * separate colors for each page (activate + non-activate)
  * separate shiptree into color distinction
  * add ship's name
@@ -39,6 +54,9 @@
       const ship = findShip(command); if (!ship) return;
       kick(ship), echo(`${ship.name}(${ship.id}) have been kick.`);
     };
+    gameCommands.announce = command => game.ships.forEach(ship => announcement(ship, command.split(' ')[1]))
+    gameCommands.entities_clear = () => entities_clear(game);
+    gameCommands.playerclear = () => players_clear(game.ships);
   } catch (error) { }
 })();
 const SHIP = (function () {
@@ -1461,6 +1479,8 @@ function isCooldown(ship, step) {
   if (step <= ship.custom.clicked) return true;
   return !(ship.custom.clicked = Math.max(step + btn_cooldown, 1));
 }
+const entities_clear = ({ aliens, asteroids }) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
+const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships, aliens, asteroids, step } = game;
@@ -1534,10 +1554,10 @@ this.event = function (event, game) {
           })
           break;
         case 'players_clear':
-          if (ship.custom.admin) ships.forEach(a => !a.custom.admin && a.set({ kill: true }));
+          if (ship.custom.admin) players_clear(ships);
           break;
         case 'entities_clear':
-          if (ship.custom.admin) [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
+          if (ship.custom.admin) entities_clear(game);
           break;
         case 'timeout':
         case 'kick':
