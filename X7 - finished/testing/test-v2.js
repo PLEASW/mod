@@ -1034,9 +1034,12 @@ class UI {
     text && { type: 'text', position: this.setFontSize(fontSize, []), value: text, color: 'rgb(255,255,255)' }
   ]
   setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
-  setDesign = (name, components) => this.variety[name.toLowerCase()] = { components }
+  setDesign = (name, components) => this.variety[name.toLowerCase()] = components;
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
-  display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
+  display = (ship, version = 'default') => {
+    (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
+    console.log(this.id, this.variety[version]);
+  }
 }
 class LIST_UI {
   constructor(position = [0, 0, 0, 0]) {
@@ -1051,7 +1054,7 @@ class LIST_UI {
   }
   getLayout = type => Object.values(this.layouts[type]).flat();
   hideAll = (ship, type) => this.getLayout(type).map(ui => ui.hide(ship))
-  displayAll = (ship, type, version = function () { }) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version(ui, index, arr)))
+  displayAll = (ship, type, version) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version?.(ui, index, arr)))
   getUI = (type, id) => this.getLayout(type).find(ui => ui.id === id);
 }
 const grids = new GRIDS(mainPos), clickable = true, adminPrefix = '___#';
@@ -1117,14 +1120,10 @@ const { defaultScreen, hideScreen } = function () {
   return { hideScreen, defaultScreen };
 }();
 const { overlay, mainPages } = function () {
-  const overlay = new UI({ id: 'overlay', position: mainPos, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
-
-  const shipPage = { id: 'ship', clickable, components: simpleDesign('ship') };
-  const mapPage = { id: 'map', clickable, components: simpleDesign('map') };
-  const adminPage = { id: 'admin', clickable, components: simpleDesign('admin') };
+  const overlay = new UI({ id: 'overlay', position: mainPos })
 
   const mainPages = new LIST_UI([4, 29, 30, 5]);
-  mainPages.addUI('full', [4, 1], shipPage, mapPage, adminPage);
+  mainPages.addUI('full', [4, 1], ...['ship', 'map', 'admin'].map(id => ({ id, clickable, components: simpleDesign(id) })));
   mainPages.getUI('full', 'ship').setDesign('active', active('ship'));
   mainPages.getUI('full', 'admin').setDesign('active', active('admin'));
   mainPages.getUI('full', 'map').setDesign('active', active('map'));
@@ -1221,7 +1220,7 @@ function init(ship) {
   defaultScreen.displayAll(ship, ship.custom.layout);
 }
 this.tick = function (game) {
-  if (game.step % 30 === 0) { // 2 per s
+  if (game.step % 30 === 0) {
     game.ships.forEach((ship, _, ships) => {
       init(ship);
       if (!ship.custom.weapons) ship.emptyWeapons()
@@ -1235,6 +1234,58 @@ this.tick = function (game) {
       }
     })
   };
+}
+function checkPos() { }
+const pages = {
+  ship: {
+    display(ship, type) {
+      shiptrees.displayAll(ship, type, ui => ui.id === ship.custom.shiptree ? 'active' : 'default')
+      shipManipulate.displayAll(ship, type);
+      shipFuncs.displayAll(ship, type);
+      ship.custom.page = 'ship';
+    },
+    hide(ship, type) {
+      [shiptrees, shipFuncs, shipManipulate].forEach(_ => _.hideAll(ship, type));
+      delete ship.custom.page;
+    }
+  },
+  map: {
+    display(ship, type) {
+      boxes.displayAll(ship, type, checkPos)
+      radar_spots.display(ship);
+      ship.custom.page = 'map';
+    },
+    hide(ship, type) {
+      boxes.hideAll(ship, type);
+      [radar_spots, radar].forEach(_ => _.hide(ship));
+      delete ship.custom.page;
+    }
+  },
+  admin: {
+    display(ship, type) {
+      [playerFuncs, globalAdminFuncs].forEach(_ => _.displayAll(ship, type));
+      ship.custom.page = 'admin';
+    },
+    hide(ship, type) {
+      [playerList, globalAdminFuncs, playerFuncs].forEach(_ => _.hideAll(ship, type))
+      delete ship.custom.page;
+    }
+  }
+}
+function displayOptionScreen(ship, type) {
+  ship.custom.options = !ship.custom.options;
+  if (ship.custom.options) return overlay.display(ship), pages.ship.display(ship, type), mainPages.displayAll(ship, type, ui => ui.id === 'ship' ? 'active' : 'default')
+  overlay.hide(ship), mainPages.hideAll(ship, type), pages[ship.custom.page].hide(ship, type);
+}
+function changePage(ship, page) {
+  if (ship.custom.page === page) return;
+  const type = ship.custom.layout
+
+  mainPages.getUI(type, ship.custom.page).display(ship);
+  mainPages.getUI(type, page).display(ship, 'active');
+
+  pages[ship.custom.page].hide(ship, type);
+  pages[page].display(ship, type);
 }
 this.event = function (event, game) {
   const { ship, name, id } = event;
@@ -1252,10 +1303,12 @@ this.event = function (event, game) {
         case 'show':
           break;
         case 'options':
+          displayOptionScreen(ship, ship.custom.layout);
           break;
         case 'admin':
         case 'map':
         case 'ship':
+          changePage(ship, id)
           break;
         case 'restore':
         case 'stats':
