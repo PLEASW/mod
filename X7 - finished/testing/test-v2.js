@@ -1068,6 +1068,30 @@ function active(text) {
     { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
     { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
   ];
+} function playerDesign(ship, fontSize = 60) {
+  return [
+    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
+    { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+    { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+  ]
+}
+function adminDesign(ship, fontSize = 60) {
+  return [
+    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,0)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' }
+  ]
+}
+function selectedShipDesign(ship, fontSize = 60) {
+  return [
+    { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 2 },
+    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
+    { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+    { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+  ]
 }
 const mapToComponent = (x, y, width = 0) => [x, -y].map((i, b) => (i + this.options.map_size * 5 - b) / this.options.map_size * 10 - width * 0.5);
 const ship_radar = (ship, ships, width = 0) => ships.map(a => ({ type: 'box', position: [...mapToComponent(a.x, a.y, width), width, width], stroke: a.id !== ship.id ? 'rgb(255,0,0)' : 'rgb(0,255,255)', width })).sort(a => Number(a.id === ship.id) - 1)
@@ -1161,7 +1185,7 @@ const { boxes, ceils, radar, radar_spots } = function () {
       ...Object.keys(ceils).map((_, i) => {
         const [box, text] = simpleDesign(i);
         Object.assign(box, { width: 2, position: [...mapToComponent(ceils[_].x - box_size.map / 2, ceils[_].y + box_size.map / 2), box_size.ui, box_size.ui], })
-        text.position = setFontSize(60, box.position);
+        Object.assign(text, { color: 'rgba(255,255,255,0.3)', position: setFontSize(60, box.position) })
         return [box, text];
       }).flat()
     ]
@@ -1170,19 +1194,31 @@ const { boxes, ceils, radar, radar_spots } = function () {
 
   return { boxes, ceils, radar, radar_spots };
 }();
-const admin = function () { }();
+const { globalAdminFuncs, playerFuncs, playerList } = function () {
+  const layout = new GRIDS(grids.mergeCell([1, 3], [0, 0, 1, 2]));
+
+  const playerList = new LIST_UI(layout.mergeCell([5, 1], [0, 0, 4, 1]));
+  playerList.addUI('full', [2, 8], ...Array(16).fill(0).map((i, id) => ({ id: adminPrefix + id, clickable, components: simpleDesign() })));
+  playerList.addMargin('full', 2, 12);
+
+  const playerFuncs = new LIST_UI(layout.mergeCell([5, 1], [4, 0, 1, 1]))
+  playerFuncs.addUI('full', [1, 10], ...['kick', 'timeout', 'teleport', ' weapons', 'deselect'].map(id => ({ id, clickable, components: simpleDesign(id) })))
+  playerFuncs.addMargin('full', 3, 20);
+
+  const globalAdminFuncs = new LIST_UI(grids.mergeCell([1, 3], [0, 2, 1, 1]));
+  globalAdminFuncs.addUI('full', [4, 5], ...['admin_warp', 'players_clear', 'entities_clear'].map(id => ({ id, clickable, components: simpleDesign(id) })));
+  globalAdminFuncs.addMargin('full', 10, 20);
+
+  return { globalAdminFuncs, playerFuncs, playerList };
+}();
 const shipInfo = function () { }();
 const adminSetting = function () { }();
 const modInfo = function () { }();
 
 function init(ship) {
-  // if (ship.custom.init) return;
+  if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
   defaultScreen.displayAll(ship, ship.custom.layout);
-  overlay.display(ship);
-  mainPages.displayAll(ship, 'full')
-  radar_spots.display(ship);
-  boxes.displayAll(ship, 'full');
 }
 this.tick = function (game) {
   if (game.step % 30 === 0) { // 2 per s
@@ -1205,7 +1241,7 @@ this.event = function (event, game) {
   const { ships, step } = game;
   switch (name) {
     case 'ui_component_clicked':
-      if (!ship.custom.admin && isCooldown(ship, step)) return;
+      if (!ship.custom.admin && isCooldown(ship, step)) return announcement(ship, 'Click slow down!');
       if (ship.type === spectatorType) {
         if (['stats', 'restore'].includes(id)) return;
         else if (['reset', 'next', 'previous'].includes(id)) ship.set({ vx: 0, vy: 0 });
