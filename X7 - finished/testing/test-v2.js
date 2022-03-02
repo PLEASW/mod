@@ -967,7 +967,7 @@ function announcement(ship, text) {
     components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)', align: 'left' }]
   })
 }
-const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20;
+const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, mainPos = [5, 35, 30, 60];
 const kick = ship => ship.gameover({ "": "" });
 const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 const entities_clear = (aliens, asteroids) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
@@ -993,39 +993,31 @@ class GRIDS {
     this.grids = {};
   }
   #createGrids(rows = 1, cols = 1) {
-    try {
-      const layout = this.layout;
-      return this.grids[rows + this.prefix + cols] = Array(rows).fill(0).map((a, x) => Array(cols).fill(0).map((b, y) => [layout.x + x * layout.width / rows, layout.y + y * layout.height / cols, layout.width / rows, layout.height / cols]));
-    } catch (error) { console.log(error); }
+    const layout = this.layout;
+    return this.grids[rows + this.prefix + cols] = Array(rows).fill(0).map((a, x) => Array(cols).fill(0).map((b, y) => [layout.x + x * layout.width / rows, layout.y + y * layout.height / cols, layout.width / rows, layout.height / cols]));
   }
   mergeCell(type, pos) {
-    try {
-      const [x0, y0, numX, numY] = pos;
-      let [x, y, width, height] = (this.grids[type.join(this.prefix)] ?? this.#createGrids(...type))[x0][y0].position;
-      width *= numX; height *= numY;
-      return [x, y, width, height];
-    } catch (error) { console.log(error); }
+    const [x0, y0, numX, numY] = pos;
+    let [x, y, width, height] = (this.grids[type.join(this.prefix)] ?? this.#createGrids(...type))[x0][y0];
+    width *= numX; height *= numY;
+    return [x, y, width, height];
   }
   addMargin(horizontal = 0, vertical = 0, layout) {
-    try {
-      let [x, y, width, height] = Object.values(layout);
-      x += horizontal / 200 * width; y += vertical / 200 * height;
-      width *= 1 - horizontal / 100; height *= 1 - vertical / 100;
-      return [x, y, width, height];
-    } catch (error) { console.log(error) };
+    let [x, y, width, height] = Object.values(layout);
+    x += horizontal / 200 * width; y += vertical / 200 * height;
+    width *= 1 - horizontal / 100; height *= 1 - vertical / 100;
+    return [x, y, width, height];
   }
   getGrids(rows, cols, horizontal = false) {
     if (!(rows || cols)) return;
-    try {
-      const type = rows + this.prefix + cols
-      this.grids[type] ?? this.#createGrids(rows, cols);
-      return this.grids[type].flat().sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
-    } catch (error) { console.log(error); }
+    const type = rows + this.prefix + cols
+    this.grids[type] ?? this.#createGrids(rows, cols);
+    return this.grids[type].flat().sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
   }
 };
 class UI {
   constructor({ id = '', position = [0, 0, 100, 100], visible = true, shortcut, clickable = false, components }) {
-    this.variety = components ? { components } : {};
+    this.variety = components ? { default: components } : {};
     this.ui = { id, position, visible, shortcut, clickable }
     this.custom = {};
     this.isDisplay = false;
@@ -1044,14 +1036,14 @@ class UI {
   setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
   setDesign = (name, components) => this.variety[name.toLowerCase()] = { components }
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
-  display = (ship, version) => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
+  display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
 }
 class LIST_UI {
-  constructor(position) {
+  constructor(position = [0, 0, 0, 0]) {
     this.grids = new GRIDS(position);
     this.layouts = {};
   }
-  addMargin = (type, horizontal = 0, vertical = 0) => this.getLayout(type).forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
+  addMargin = (type, horizontal = 0, vertical = 0) => this.getLayout(type).forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position))
   addUI(name, [rows = 0, cols = 0, vertical], ...uis) {
     const _ = this.layouts[name.toLowerCase()] ??= {}, layout = _[rows + this.grids.prefix + cols] ??= [], length = layout.length, __ = this.grids.getGrids(rows, cols, vertical);
     if (!__) return uis.forEach(ui => layout.push(new UI(ui)));
@@ -1060,14 +1052,89 @@ class LIST_UI {
   getLayout = type => Object.values(this.layouts[type]).flat();
   hideAll = (ship, type) => this.getLayout(type).map(ui => ui.hide(ship))
   displayAll = (ship, type, version = function () { }) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version(ui, index, arr)))
-  getUI = (type, filter = () => true) => this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
+  getUI = (type, id) => this.getLayout(type).find(ui => ui.id === id);
 }
-const grids = new GRIDS([5, 35, 30, 60]), clickable = true, adminPrefix = '___#';
+const grids = new GRIDS(mainPos), clickable = true, adminPrefix = '___#';
 const { simpleDesign, setFontSize } = new UI({});
-const { addMargin } = new GRIDS([]);
+const { addMargin } = new GRIDS([0, 0, 0, 0]);
+function optionsDesign(text) {
+  return [
+    { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
+    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,255,255,1)' },
+  ]
+}
+function active(text) {
+  return [
+    { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
+    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
+  ];
+}
+const { defaultScreen, hideScreen } = function () {
+  const restore = { id: "restore", position: [66.5, 92, 6.6, 4], clickable, shortcut: 'J', components: optionsDesign('Restore') }
+  const hide = { id: "hide", position: [73, 88, 6.6, 4], clickable, shortcut: "V", components: optionsDesign('Hide') }
+  const options = { id: "options", position: [73, 92, 6.6, 4], clickable, components: optionsDesign('Options') }
+  const defaultScreen = new LIST_UI();
+  defaultScreen.addUI('full', [], restore, hide, options);
+  defaultScreen.getUI('full', 'options').setDesign('active', active('Options'));
 
-const defaultScreen = function () { }();
-const ship = function () { }();
+  const show = { id: 'show', position: [0, 0, 0, 0], clickable, shortcut: 'V', components: [] }
+  const restore2 = { id: "restore", position: [0, 0, 0, 0], clickable, shortcut: 'J', components: [] }
+  const hideAnnounce = {
+    id: 'hide_shortcut', position: [0, 90, 20, 5], components: [
+      { type: "text", position: [0, 0, 100, 50], value: "Show UI [V]", color: 'rgba(255,255,255,1)', align: 'left' },
+      { type: "text", position: [0, 50, 100, 50], value: "Restore [J]", color: 'rgba(255,255,255,1)', align: 'left' }
+    ]
+  };
+  const hideScreen = new LIST_UI();
+  hideScreen.addUI('full', [], show, restore2, hideAnnounce);
+
+  return { hideScreen, defaultScreen };
+}();
+const { overlay, mainPages } = function () {
+  const overlay = new UI({ id: 'overlay', position: mainPos, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
+
+  const shipPage = { id: 'ship', clickable };
+  const adminPage = { id: 'admin', clickable };
+  const mapPage = { id: 'map', clickable };
+
+  const mainPages = new LIST_UI([4, 29, 30, 5]);
+  mainPages.addUI('full', [4, 1], shipPage, mapPage, adminPage);
+  mainPages.getUI('full', 'ship').setDesign('active', active('ship'));
+  mainPages.getUI('full', 'admin').setDesign('active', active('admin'));
+  mainPages.getUI('full', 'map').setDesign('active', active('map'));
+  mainPages.addMargin('full', 10, 30);
+
+  return { overlay, mainPages };
+}();
+(function () {
+  const changeShips = new GRIDS(grids.mergeCell([1, 6], [0, 3, 1, 1]))
+
+  const index = { id: 'index', position: changeShips.mergeCell([5, 1], [2, 0, 1, 1]) };
+  index.position = addMargin(5, 55, index.position);
+
+  const next = { id: 'next', position: changeShips.mergeCell([5, 1], [3, 0, 2, 1]), clickable, components: simpleDesign('>>>', 100) }
+  const previous = { id: 'previous', position: changeShips.mergeCell([5, 1], [0, 0, 2, 1]), clickable, components: simpleDesign('<<<', 100) };
+  [previous, next].forEach(ui => ui.position = addMargin(10, 40, ui.position));
+
+  const shipManipulate = new LIST_UI([]);
+  shipManipulate.addUI('full', [], index, next, previous);
+  const [_45rfew, ai, fighter, heavy, kest, nautic, others, robonuko, sdc, spectate, speedster, support, vanilla] = Object.keys(SHIP.init).sort().map(id => ({ id, clickable }))
+
+  const shiptrees = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 3]));
+  shiptrees.addUI('full', [4, 5], vanilla, ai, nautic, sdc, fighter, heavy, speedster, support, kest, _45rfew, robonuko, others)
+  shiptrees.addMargin('full', 10, 30);
+
+  const warp = { id: 'warp', clickable };
+  const stats = { id: 'stats', clickable };
+  const restore = { id: 'restore', clickable };
+  const reset = { id: 'reset', clickable };
+  const info = { id: 'info', clickable };
+
+  const shipFuncs = new LIST_UI(grids.mergeCell([1, 6], [0, 4, 1, 2]));
+  shipFuncs.addUI('full', [4, 3], warp, stats, reset, restore, spectate, info);
+  shipFuncs.addMargin('full', 10, 40);
+  // return { changeShips, previous, next, index, shiptrees, shipFuncs }
+})();
 const map = function () { }();
 const admin = function () { }();
 const shipInfo = function () { }();
@@ -1077,6 +1144,7 @@ const modInfo = function () { }();
 function init(ship) {
   if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
+  defaultScreen.displayAll(ship, ship.custom.layout);
 }
 this.tick = function (game) {
   if (game.step % 30 === 0) { // 2 per s

@@ -5,39 +5,31 @@ class GRIDS {
     this.grids = {};
   }
   #createGrids(rows = 1, cols = 1) {
-    try {
-      const layout = this.layout;
-      return this.grids[rows + this.prefix + cols] = Array(rows).fill(0).map((a, x) => Array(cols).fill(0).map((b, y) => [layout.x + x * layout.width / rows, layout.y + y * layout.height / cols, layout.width / rows, layout.height / cols]));
-    } catch (error) { console.log(error); }
+    const layout = this.layout;
+    return this.grids[rows + this.prefix + cols] = Array(rows).fill(0).map((a, x) => Array(cols).fill(0).map((b, y) => [layout.x + x * layout.width / rows, layout.y + y * layout.height / cols, layout.width / rows, layout.height / cols]));
   }
   mergeCell(type, pos) {
-    try {
-      const [x0, y0, numX, numY] = pos;
-      let [x, y, width, height] = (this.grids[type.join(this.prefix)] ?? this.#createGrids(...type))[x0][y0].position;
-      width *= numX; height *= numY;
-      return [x, y, width, height];
-    } catch (error) { console.log(error); }
+    const [x0, y0, numX, numY] = pos;
+    let [x, y, width, height] = (this.grids[type.join(this.prefix)] ?? this.#createGrids(...type))[x0][y0];
+    width *= numX; height *= numY;
+    return [x, y, width, height];
   }
   addMargin(horizontal = 0, vertical = 0, layout) {
-    try {
-      let [x, y, width, height] = Object.values(layout);
-      x += horizontal / 200 * width; y += vertical / 200 * height;
-      width *= 1 - horizontal / 100; height *= 1 - vertical / 100;
-      return [x, y, width, height];
-    } catch (error) { console.log(error) };
+    let [x, y, width, height] = Object.values(layout);
+    x += horizontal / 200 * width; y += vertical / 200 * height;
+    width *= 1 - horizontal / 100; height *= 1 - vertical / 100;
+    return [x, y, width, height];
   }
   getGrids(rows, cols, horizontal = false) {
     if (!(rows || cols)) return;
-    try {
-      const type = rows + this.prefix + cols
-      this.grids[type] ?? this.#createGrids(rows, cols);
-      return this.grids[type].flat().sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
-    } catch (error) { console.log(error); }
+    const type = rows + this.prefix + cols
+    this.grids[type] ?? this.#createGrids(rows, cols);
+    return this.grids[type].flat().sort((a, b) => a[Number(!horizontal)] - b[Number(!horizontal)]);
   }
 };
 class UI {
   constructor({ id = '', position = [0, 0, 100, 100], visible = true, shortcut, clickable = false, components }) {
-    this.variety = components ? { components } : {};
+    this.variety = components ? { default: components } : {};
     this.ui = { id, position, visible, shortcut, clickable }
     this.custom = {};
     this.isDisplay = false;
@@ -56,14 +48,14 @@ class UI {
   setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
   setDesign = (name, components) => this.variety[name.toLowerCase()] = { components }
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
-  display = (ship, version) => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
+  display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
 }
 class LIST_UI {
-  constructor(position) {
+  constructor(position = [0, 0, 0, 0]) {
     this.grids = new GRIDS(position);
     this.layouts = {};
   }
-  addMargin = (type, horizontal = 0, vertical = 0) => this.getLayout(type).forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position).position)
+  addMargin = (type, horizontal = 0, vertical = 0) => this.getLayout(type).forEach(ui => ui.position = this.grids.addMargin(horizontal, vertical, ui.position))
   addUI(name, [rows = 0, cols = 0, vertical], ...uis) {
     const _ = this.layouts[name.toLowerCase()] ??= {}, layout = _[rows + this.grids.prefix + cols] ??= [], length = layout.length, __ = this.grids.getGrids(rows, cols, vertical);
     if (!__) return uis.forEach(ui => layout.push(new UI(ui)));
@@ -72,5 +64,5 @@ class LIST_UI {
   getLayout = type => Object.values(this.layouts[type]).flat();
   hideAll = (ship, type) => this.getLayout(type).map(ui => ui.hide(ship))
   displayAll = (ship, type, version = function () { }) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version(ui, index, arr)))
-  getUI = (type, filter = () => true) => this.layouts[type.toLowerCase()].uis.find(filter.bind(this));
+  getUI = (type, id) => this.getLayout(type).find(ui => ui.id === id);
 }
