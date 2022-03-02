@@ -988,7 +988,7 @@ function isCooldown(ship, step) {
 }
 class GRIDS {
   constructor([x = 0, y = 0, width = 100, height = 100], prefix = 'x') {
-    this.layout = { x, y, width, height };
+    this.layout = { x, y, width, height }; 9
     this.prefix = prefix;
     this.grids = {};
   }
@@ -1036,10 +1036,7 @@ class UI {
   setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
   setDesign = (name, components) => this.variety[name.toLowerCase()] = components;
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
-  display = (ship, version = 'default') => {
-    (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
-    console.log(this.id, this.variety[version]);
-  }
+  display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
 }
 class LIST_UI {
   constructor(position = [0, 0, 0, 0]) {
@@ -1071,33 +1068,34 @@ function active(text) {
     { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
     { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
   ];
-} function playerDesign(ship, fontSize = 60) {
-  return [
-    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
-    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
-    { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-    { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-  ]
 }
-function adminDesign(ship, fontSize = 60) {
-  return [
-    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
-    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,0)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
-    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' }
-  ]
-}
-function selectedShipDesign(ship, fontSize = 60) {
-  return [
-    { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 2 },
-    { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
-    { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
-    { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-    { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
-  ]
+const adminDesigns = {
+  admin(ship, fontSize = 60) {
+    return [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+      { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,0)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+      { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' }
+    ]
+  }, player(ship, fontSize = 60) {
+    return [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+      { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+      { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
+      { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+      { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+    ]
+  }, active(ship, fontSize = 60) {
+    return [
+      { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 2 },
+      { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
+      { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
+      { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+      { type: 'box', position: [93, 20, 5, 20], fill: ship.custom.isTimeout ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
+    ]
+  }
 }
 const mapToComponent = (x, y, width = 0) => [x, -y].map((i, b) => (i + this.options.map_size * 5 - b) / this.options.map_size * 10 - width * 0.5);
-const ship_radar = (ship, ships, width = 0) => ships.map(a => ({ type: 'box', position: [...mapToComponent(a.x, a.y, width), width, width], stroke: a.id !== ship.id ? 'rgb(255,0,0)' : 'rgb(0,255,255)', width })).sort(a => Number(a.id === ship.id) - 1)
+const ship_radar = (ship, ships, width = 0) => ships.map(a => ({ type: 'box', position: [...mapToComponent(a.x, a.y, width), width, width], stroke: a.id !== ship.id ? 'rgb(255,0,0)' : 'rgb(0,255,255)', width: 1.5 })).sort(a => Number(a.id === ship.id) - 1)
 const { defaultScreen, hideScreen } = function () {
   const restore = { id: "restore", position: [66.5, 92, 6.6, 4], clickable, shortcut: 'J', components: optionsDesign('Restore') }
   const hide = { id: "hide", position: [73, 88, 6.6, 4], clickable, shortcut: "V", components: optionsDesign('Hide') }
@@ -1155,9 +1153,8 @@ const { shipFuncs, shiptrees, shipManipulate } = function () {
 
   return { shipFuncs, shiptrees, shipManipulate };
 }();
-const { boxes, ceils, radar, radar_spots } = function () {
-  const box_size = { map: 320, ui: 16 };
-  const ceils = {
+const { boxes, ceils, radar, radar_spots, box_size } = function () {
+  const box_size = { map: 320, ui: 16 }, ceils = {
     spawn: { x: 0, y: 0 },
     rumble: { x: -840, y: 840 },
     plinko: { x: -520, y: 840 },
@@ -1191,7 +1188,7 @@ const { boxes, ceils, radar, radar_spots } = function () {
   })
   const radar = new UI({ id: 'radar', position: addMargin((1080 / 1920) * 10 * 2.5, 5, grids.mergeCell([1, 6], [0, 2, 1, 4])), components: [] })
 
-  return { boxes, ceils, radar, radar_spots };
+  return { boxes, ceils, radar, radar_spots, box_size };
 }();
 const { globalAdminFuncs, playerFuncs, playerList } = function () {
   const layout = new GRIDS(grids.mergeCell([1, 3], [0, 0, 1, 2]));
@@ -1217,7 +1214,21 @@ const modInfo = function () { }();
 function init(ship) {
   if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
+  // map_position, page, type
   defaultScreen.displayAll(ship, ship.custom.layout);
+}
+
+function displayPlayerList(ship, ships) {
+  const uis = playerList.getLayout(ship.custom.layout), shipLength = ships.length, displays = uis.filter(ui => ui.isDisplay);
+  uis.slice(0, shipLength).forEach((ui, index) => {
+    const otherShip = ships[index], role = otherShip.custom.admin ? 'admin' : ship.custom.selectedShip?.id === otherShip.id ? 'active' : 'player';
+    ui.custom.id = otherShip.id;
+    ui.clickable = !otherShip.custom.admin;
+    ui.setDesign(role, adminDesigns[role](otherShip));
+    ui.display(ship, role);
+    displays.shift();
+  });
+  displays.forEach(ui => ui.hide(ship));
 }
 this.tick = function (game) {
   if (game.step % 30 === 0) {
@@ -1226,16 +1237,35 @@ this.tick = function (game) {
       if (!ship.custom.weapons) ship.emptyWeapons()
       switch (ship.custom.page) {
         case 'map':
+          checkPos(ship);
+          radar.setDesign('default', ship_radar(ship, ships, 1.5))
+          radar.display(ship);
           break;
         case 'admin':
+          if (game.step % 120 === 0) displayPlayerList(ship, ships);
           break;
         case 'ship':
+          if (ship.type !== ship.custom.type) showShipIndex(ship, ship.type);
           break;
       }
     })
   };
 }
-function checkPos() { }
+function checkPos(ship) {
+  const key = Object.keys(ceils).find(key => ceils[key] === Object.values(ceils).find(({ x, y }) =>
+    (x -= box_size.map / 2) < ship.x && ship.x < x + box_size.map &&
+    (y -= box_size.map / 2) < ship.y && ship.y < y + box_size.map)
+  )
+  console.log(key);
+  if (!key) {
+    boxes.getUI(ship.custom.layout, ship.custom.map_position)?.display(ship);
+    return delete ship.custom.map_position;
+  }
+  if (key === ship.custom.map_position) return
+  boxes.getUI(ship.custom.layout, ship.custom.map_position)?.display(ship);
+  boxes.getUI(ship.custom.layout, key)?.display(ship, 'active');
+  ship.custom.map_position = key;
+}
 const pages = {
   ship: {
     display(ship, type) {
@@ -1251,7 +1281,7 @@ const pages = {
   },
   map: {
     display(ship, type) {
-      boxes.displayAll(ship, type, checkPos)
+      boxes.displayAll(ship, type)
       radar_spots.display(ship);
       ship.custom.page = 'map';
     },
@@ -1259,6 +1289,7 @@ const pages = {
       boxes.hideAll(ship, type);
       [radar_spots, radar].forEach(_ => _.hide(ship));
       delete ship.custom.page;
+      delete ship.custom.map_position;
     }
   },
   admin: {
@@ -1287,6 +1318,19 @@ function changePage(ship, page) {
   pages[ship.custom.page].hide(ship, type);
   pages[page].display(ship, type);
 }
+function showShipIndex(ship, type) {
+  ship.custom.type = type;
+  const ui = shipManipulate.getUI(ship.custom.layout, 'index');
+  if (type === spectatorType) return ui.display(ship);
+  const shiptree = SHIP.init[ship.custom.shiptree].map(i => i.typespec.code)
+  ui.setDesign('index', simpleDesign(`${Math.max(shiptree.indexOf(type) + 1, 1)}/${shiptree.length}`))
+  ui.display(ship, 'index');
+}
+function changeShiptree(ship, shiptree) {
+  if (ship.custom.shiptree === shiptree) return;
+  shiptrees.getUI(ship.custom.layout, ship.custom.shiptree).display(ship);
+  shiptrees.getUI(ship.custom.layout, shiptree).display(ship, 'active');
+}
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships, step } = game;
@@ -1304,11 +1348,15 @@ this.event = function (event, game) {
           break;
         case 'options':
           displayOptionScreen(ship, ship.custom.layout);
+          showShipIndex(ship, ship.type);
           break;
         case 'admin':
         case 'map':
         case 'ship':
-          changePage(ship, id)
+          changePage(ship, id);
+          if (id === 'ship') showShipIndex(ship, ship.type);
+          else if (id === 'map') checkPos(ship);
+          else if (id === 'admin') displayPlayerList(ship, ships);
           break;
         case 'restore':
         case 'stats':
@@ -1316,13 +1364,16 @@ this.event = function (event, game) {
           break;
         case 'spectate':
           ship.set(SHIP.getEvent(id));
+          showShipIndex(ship, spectatorType);
           break;
         case 'reset':
-          ship.set(SHIP.getEvent(id, ship.custom.shiptree));
+          ship.set(_ = SHIP.getEvent(id, ship.custom.shiptree));
+          showShipIndex(ship, _.type);
           break;
         case 'next':
         case 'previous':
-          ship.set(SHIP.getEvent(id, ship, ship.custom.shiptree));
+          ship.set(_ = SHIP.getEvent(id, ship, ship.custom.shiptree));
+          showShipIndex(ship, _.type);
           break;
         case 'warp':
           if (ships.length <= 1) return;
@@ -1334,16 +1385,16 @@ this.event = function (event, game) {
 
           const { x, y, vx, vy } = ships[custom.warpIndex];
           ship.set({ x, y, vx, vy, ...SHIP.getEvent('spectate') })
-          index.display(ship);
+          showShipIndex(ship, spectatorType);
           break;
         case 'admin_warp':
-          if (ship.custom.admin) ships.forEach(player => !player.custom.admin && player.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy, ...SHIP.getEvent('spectate') }))
+          ships.forEach(player => !player.custom.admin && player.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy, ...SHIP.getEvent('spectate') }))
           break;
         case 'players_clear':
-          if (ship.custom.admin) players_clear(ships);
+          players_clear(ships);
           break;
         case 'entities_clear':
-          if (ship.custom.admin) entities_clear(game);
+          entities_clear(game);
           break;
         case 'timeout':
         case 'kick':
@@ -1352,6 +1403,18 @@ this.event = function (event, game) {
         case 'deselect':
           break;
         default:
+          if (Object.keys(ceils).includes(id)) {
+            if (ship.custom.map_position === id) return;
+            return ship.set({ ...ceils[id], ...SHIP.getEvent('spectate') });
+          } else if (Object.keys(SHIP.init).includes(id)) {
+            changeShiptree(ship, id);
+            ship.set(_ = SHIP.getEvent('reset', ship.custom.shiptree = id))
+            return showShipIndex(ship, _.type);
+          } else if (id.includes(adminPrefix)) {
+            const selectedShip = game.findShip(playerList.getUI(ship.custom.layout, id).custom.id);
+            if (!selectedShip.custom?.admin && selectedShip) ship.custom.selectedShip = selectedShip;
+            return displayPlayerList(ship, ships);
+          }
           console.log(id);
       }
       break;
