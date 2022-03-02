@@ -1069,6 +1069,8 @@ function active(text) {
     { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
   ];
 }
+const mapToComponent = (x, y, width = 0) => [x, -y].map((i, b) => (i + this.options.map_size * 5 - b) / this.options.map_size * 10 - width * 0.5);
+const ship_radar = (ship, ships, width = 0) => ships.map(a => ({ type: 'box', position: [...mapToComponent(a.x, a.y, width), width, width], stroke: a.id !== ship.id ? 'rgb(255,0,0)' : 'rgb(0,255,255)', width })).sort(a => Number(a.id === ship.id) - 1)
 const { defaultScreen, hideScreen } = function () {
   const restore = { id: "restore", position: [66.5, 92, 6.6, 4], clickable, shortcut: 'J', components: optionsDesign('Restore') }
   const hide = { id: "hide", position: [73, 88, 6.6, 4], clickable, shortcut: "V", components: optionsDesign('Hide') }
@@ -1093,9 +1095,9 @@ const { defaultScreen, hideScreen } = function () {
 const { overlay, mainPages } = function () {
   const overlay = new UI({ id: 'overlay', position: mainPos, components: [{ type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgba(255,255,255,1)', width: 5 }] })
 
-  const shipPage = { id: 'ship', clickable };
-  const adminPage = { id: 'admin', clickable };
-  const mapPage = { id: 'map', clickable };
+  const shipPage = { id: 'ship', clickable, components: simpleDesign('ship') };
+  const mapPage = { id: 'map', clickable, components: simpleDesign('map') };
+  const adminPage = { id: 'admin', clickable, components: simpleDesign('admin') };
 
   const mainPages = new LIST_UI([4, 29, 30, 5]);
   mainPages.addUI('full', [4, 1], shipPage, mapPage, adminPage);
@@ -1106,7 +1108,7 @@ const { overlay, mainPages } = function () {
 
   return { overlay, mainPages };
 }();
-(function () {
+const { shipFuncs, shiptrees, shipManipulate } = function () {
   const changeShips = new GRIDS(grids.mergeCell([1, 6], [0, 3, 1, 1]))
 
   const index = { id: 'index', position: changeShips.mergeCell([5, 1], [2, 0, 1, 1]) };
@@ -1118,33 +1120,69 @@ const { overlay, mainPages } = function () {
 
   const shipManipulate = new LIST_UI([]);
   shipManipulate.addUI('full', [], index, next, previous);
-  const [_45rfew, ai, fighter, heavy, kest, nautic, others, robonuko, sdc, spectate, speedster, support, vanilla] = Object.keys(SHIP.init).sort().map(id => ({ id, clickable }))
 
   const shiptrees = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 3]));
-  shiptrees.addUI('full', [4, 5], vanilla, ai, nautic, sdc, fighter, heavy, speedster, support, kest, _45rfew, robonuko, others)
+  shiptrees.addUI('full', [4, 5], ...Object.keys(SHIP.init).filter(_ => _ !== 'spectate').map(id => ({ id, clickable, components: simpleDesign(id) })))
   shiptrees.addMargin('full', 10, 30);
-
-  const warp = { id: 'warp', clickable };
-  const stats = { id: 'stats', clickable };
-  const restore = { id: 'restore', clickable };
-  const reset = { id: 'reset', clickable };
-  const info = { id: 'info', clickable };
+  shiptrees.getLayout('full').forEach(ui => ui.setDesign('active', active(ui.id)))
 
   const shipFuncs = new LIST_UI(grids.mergeCell([1, 6], [0, 4, 1, 2]));
-  shipFuncs.addUI('full', [4, 3], warp, stats, reset, restore, spectate, info);
+  shipFuncs.addUI('full', [4, 3], ...['warp', 'stats', 'restore', 'reset', 'spectate', 'info'].map(id => ({ id, clickable, components: simpleDesign(id) })));
   shipFuncs.addMargin('full', 10, 40);
-  // return { changeShips, previous, next, index, shiptrees, shipFuncs }
-})();
-const map = function () { }();
+
+  return { shipFuncs, shiptrees, shipManipulate };
+}();
+const { boxes, ceils, radar, radar_spots } = function () {
+  const box_size = { map: 320, ui: 16 };
+  const ceils = {
+    spawn: { x: 0, y: 0 },
+    rumble: { x: -840, y: 840 },
+    plinko: { x: -520, y: 840 },
+    standoff: { x: -200, y: 840 },
+    waffle: { x: 200, y: 840 },
+    open_arena: { x: 520, y: 840 },
+    empty_circle: { x: 840, y: 840 },
+    empty_box: { x: 840, y: -840 },
+    maze: { x: 520, y: -840 },
+    zebra_pattern: { x: 200, y: -840 },
+    light_pattern: { x: -200, y: -840 },
+    nexus_pattern: { x: -520, y: -840 },
+    aow_pattern: { x: -840, y: -840 },
+  }
+
+  const boxes = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 2]));
+  boxes.addUI('full', [4, 5], ...Object.keys(ceils).map(id => ({ id, clickable, components: simpleDesign(id) })));
+  boxes.getLayout('full').forEach(ui => ui.setDesign('active', active(ui.id)))
+  boxes.addMargin('full', 10, 20);
+
+  const radar_spots = new UI({
+    id: 'radar_spots', position: addMargin((1080 / 1920) * 10 * 2.5, 5, grids.mergeCell([1, 6], [0, 2, 1, 4])), components: [
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255', width: 5 },
+      ...Object.keys(ceils).map((_, i) => {
+        const [box, text] = simpleDesign(i);
+        Object.assign(box, { width: 2, position: [...mapToComponent(ceils[_].x - box_size.map / 2, ceils[_].y + box_size.map / 2), box_size.ui, box_size.ui], })
+        text.position = setFontSize(60, box.position);
+        return [box, text];
+      }).flat()
+    ]
+  })
+  const radar = new UI({ id: 'radar', position: addMargin((1080 / 1920) * 10 * 2.5, 5, grids.mergeCell([1, 6], [0, 2, 1, 4])), components: [] })
+
+  return { boxes, ceils, radar, radar_spots };
+}();
 const admin = function () { }();
 const shipInfo = function () { }();
 const adminSetting = function () { }();
 const modInfo = function () { }();
 
 function init(ship) {
-  if (ship.custom.init) return;
+  // if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
   defaultScreen.displayAll(ship, ship.custom.layout);
+  overlay.display(ship);
+  mainPages.displayAll(ship, 'full')
+  radar_spots.display(ship);
+  boxes.displayAll(ship, 'full');
 }
 this.tick = function (game) {
   if (game.step % 30 === 0) { // 2 per s
