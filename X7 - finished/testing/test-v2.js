@@ -962,7 +962,7 @@ const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, ma
 const kick = ship => ship.gameover({ "": "" });
 const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 const entities_clear = (aliens, asteroids) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
-const weapons = ship => announcement(ship, `You was ${ship.custom.weapons = !ship.custom.weapons ? 'given permission' : 'taken permission'} to use weapons in the mod.`)
+const weapons = ship => announcement(ship, `You was ${(ship.custom.weapons = !ship.custom.weapons) ? 'given permission' : 'taken permission'} to use weapons in the mod.`)
 const isCooldown = (ship, step) => step <= ship.custom.clicked || !(ship.custom.clicked = step + btn_cooldown);
 function timeout(ship) {
   ship.custom.isTimeout = !ship.custom.isTimeout;
@@ -1103,7 +1103,6 @@ const { defaultScreen, hideScreen } = function () {
   };
   const hideScreen = new LIST_UI();
   hideScreen.addUI('full', [], show, restore2, hideAnnounce);
-
   return { hideScreen, defaultScreen };
 }();
 const { overlay, mainPages } = function () {
@@ -1184,7 +1183,7 @@ const { globalAdminFuncs, playerFuncs, playerList } = function () {
   playerList.addMargin('full', 2, 12);
 
   const playerFuncs = new LIST_UI(layout.mergeCell([5, 1], [4, 0, 1, 1]))
-  playerFuncs.addUI('full', [1, 10], ...['kick', 'timeout', 'teleport', ' weapons', 'deselect'].map(id => ({ id, clickable, components: simpleDesign(id) })))
+  playerFuncs.addUI('full', [1, 10], ...['kick', 'timeout', 'teleport', 'weapons', 'deselect'].map(id => ({ id, clickable, components: simpleDesign(id) })))
   playerFuncs.addMargin('full', 3, 20);
 
   const globalAdminFuncs = new LIST_UI(grids.mergeCell([1, 3], [0, 2, 1, 1]));
@@ -1200,7 +1199,7 @@ const modInfo = function () { }();
 function init(ship) {
   if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
-  // map_position, page, type, selectedShip, x, y
+  // map_position, page, type, selectedShip, x, y, warpIndex
   defaultScreen.displayAll(ship, ship.custom.layout);
 }
 
@@ -1219,16 +1218,19 @@ this.tick = function (game) {
     game.ships.forEach((ship, _, ships) => {
       init(ship);
       !ship.custom.weapons && ship.emptyWeapons()
-      switch (ship.custom.page) {
+      const { admin, layout, type, page } = ship.custom;
+      if (!admin) mainPages.getUI(layout, 'admin').hide(ship);
+      switch (page) {
         case 'map':
           radar.setDesign('default', ship_radar(ship, ships, 1.5));
           radar.display(ship), checkPos(ship);
           break;
         case 'admin':
           if (game.step % 120 === 0) displayPlayerList(ship, ships);
+          if (!admin) displayOptionScreen(ship, layout);
           break;
         case 'ship':
-          if (ship.type !== ship.custom.type) showShipIndex(ship, ship.type);
+          if (ship.type !== type) showShipIndex(ship, ship.type);
           break;
       }
     })
@@ -1248,7 +1250,6 @@ const pages = {
     display(ship, type) {
       shiptrees.displayAll(ship, type, ui => ui.id === ship.custom.shiptree ? 'active' : 'default');
       shipManipulate.displayAll(ship, type); shipFuncs.displayAll(ship, type);
-      // [shipManipulate, shipFuncs].forEach(_ => _.displayAll(ship, type));
       ship.custom.page = 'ship';
     },
     hide(ship, type) {
@@ -1316,20 +1317,28 @@ const adminFuncs = {
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships, step } = game;
+  const { layout, warpIndex, admin } = ship.custom;
   switch (name) {
     case 'ui_component_clicked':
-      if (!ship.custom.admin && isCooldown(ship, step)) return announcement(ship, 'Click slow down!');
+      if (!admin && isCooldown(ship, step)) return announcement(ship, 'Click slow down!');
+      if ((id.includes(adminPrefix) || playerFuncs.getLayout(layout).concat(globalAdminFuncs.getLayout(layout)).some(ui => ui.id === id)) && !admin) return;
       if (ship.type === spectatorType) {
         if (['stats', 'restore'].includes(id)) return;
         else if (['reset', 'next', 'previous'].includes(id)) ship.set({ vx: 0, vy: 0 });
       }
-      switch (id) {
+      switch (id.toLowerCase().trim()) {
         case 'hide':
+          if (ship.custom.options) displayOptionScreen(ship, layout);
+          defaultScreen.hideAll(ship, layout);
+          hideScreen.displayAll(ship, layout);
           break;
         case 'show':
+          hideScreen.hideAll(ship, layout);
+          defaultScreen.displayAll(ship, layout);
           break;
         case 'options':
-          displayOptionScreen(ship, ship.custom.layout);
+          displayOptionScreen(ship, layout);
+          if (admin) mainPages.getUI(layout, 'admin').hide(ship);
           if (ship.custom.options) showShipIndex(ship, ship.type);
           break;
         case 'admin':
@@ -1359,11 +1368,10 @@ this.event = function (event, game) {
           break;
         case 'warp':
           if (ships.length <= 1) return;
-          const { custom } = ship;
-          custom.warpIndex ??= ships.indexOf(ship);
-          do ships[++custom.warpIndex] ?? (custom.warpIndex = 0);
-          while (ships[custom.warpIndex] === ship);
-          const { x, y, vx, vy } = ships[custom.warpIndex];
+          warpIndex ??= ships.indexOf(ship);
+          do ships[++warpIndex] ?? (warpIndex = 0);
+          while (ships[warpIndex] === ship);
+          const { x, y, vx, vy } = ships[warpIndex];
           ship.set({ x, y, vx, vy, ...SHIP.getEvent('spectate') })
           showShipIndex(ship, spectatorType);
           break;
@@ -1393,7 +1401,7 @@ this.event = function (event, game) {
             ship.set(_ = SHIP.getEvent('reset', ship.custom.shiptree = id))
             return showShipIndex(ship, _.type);
           } else if (id.includes(adminPrefix)) {
-            const selectedShip = game.findShip(playerList.getUI(ship.custom.layout, id).custom.id);
+            const selectedShip = game.findShip(playerList.getUI(layout, id).custom.id);
             if (!selectedShip.custom?.admin && selectedShip) ship.custom.selectedShip = selectedShip;
             return displayPlayerList(ship, ships);
           }
@@ -1404,7 +1412,7 @@ this.event = function (event, game) {
       Object.assign(ship.custom, { x: ship.x, y: ship.y });
       break;
     case 'ship_spawned':
-      const { x, y } = ship.custom; ship.set({ x, y, invulnerable: 300 });
+      const { x = 0, y = 0 } = ship.custom; ship.set({ x, y, invulnerable: 300 });
       if (ship.type !== spectatorType) ship.set(SHIP.getEvent('restore', ship, 88888888));
       break;
   }
