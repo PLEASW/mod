@@ -3,34 +3,28 @@
     const gameCommands = game.modding.commands;
     function findShip(command) {
       const ship = game.findShip(Number(id = command.split(' ')[1]));
-      if (ship) return ship;
-      echo(`Failed finding ship (ID: ${id})`);
+      if (ship) return ship; else echo(`Failed finding ship (ID: ${id})`);
     }
     gameCommands.admin = function (command) {
       const ship = findShip(command); if (!ship) return;
       ship.custom.weapons = ship.custom.admin = !ship.custom.admin;
-      ship.custom.admin ?
-        echo(`${ship.name}(${ship.id}) have been promoted to Admin.`) :
-        echo(`${ship.name}(${ship.id}) have been demoted to Player.`)
+      echo(`${ship.name}(${ship.id}) have been ${ship.custom.admin ? 'promoted' : 'demoted'} to Admin.`)
     }
     gameCommands.player_list = function () {
       echo("\nList of players(ids) and their data:");
-      if (game.ships.length < 1) return;
-      for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
+      if (game.ships.length >= 1) for (let ship of game.ships) echo(`${ship.id}: ${ship.name}`);
     }
     gameCommands.weapons = function (command) {
-      const ship = findShip(command); if (!ship) return;
-      ship.custom.weapons = !ship.custom.weapons;
-      announcement(ship, `You are ${ship.custom.weapons ? '' : 'not'} allowed to use weapons`)
+      const ship = findShip(command); if (ship) weapons(ship); else return;
       echo(`${ship.name}(${ship.id}) have been ${ship.custom.weapons ? 'given permission' : 'remove permission'} to use weapons.`)
     }
     gameCommands.timeout = function (command) {
-      const ship = findShip(command); if (!ship) return;
-      timeout(ship), echo(`${ship.name}(${ship.id}) have been timeouted.`);
+      const ship = findShip(command); if (ship) timeout(ship); else return;
+      echo(`${ship.name}(${ship.id}) have been timeouted.`);
     }
     gameCommands.kick = function (command) {
-      const ship = findShip(command); if (!ship) return;
-      kick(ship), echo(`${ship.name}(${ship.id}) have been kick.`);
+      const ship = findShip(command); if (ship) kick(ship); else return;
+      echo(`${ship.name}(${ship.id}) have been kick.`);
     };
     gameCommands.announce = command => game.ships.forEach(ship => announcement(ship, command.split(' ').slice(1).join(' ')))
     gameCommands.entities_clear = () => entities_clear(game);
@@ -962,15 +956,14 @@ function announcement(ship, text) {
   if (!text || !ship) return;
   clearTimeout(ship.custom.announceTimeout);
   ship.custom.announceTimeout = setTimeout(() => ship.setUIComponent({ id: 'announceText', position: [0, 0, 0, 0], components: [] }), 4000)
-  ship.setUIComponent({
-    id: 'announceText', position: [35.5, 87, 37, 4],
-    components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)', align: 'left' }]
-  })
+  ship.setUIComponent({ id: 'announceText', position: [35.5, 87, 37, 4], components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)', align: 'left' }] })
 }
 const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, mainPos = [5, 35, 30, 60];
 const kick = ship => ship.gameover({ "": "" });
 const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 const entities_clear = (aliens, asteroids) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
+const weapons = ship => announcement(ship, `You was ${ship.custom.weapons = !ship.custom.weapons ? 'given permission' : 'taken permission'} to use weapons in the mod.`)
+const isCooldown = (ship, step) => step <= ship.custom.clicked || !(ship.custom.clicked = step + btn_cooldown);
 function timeout(ship) {
   ship.custom.isTimeout = !ship.custom.isTimeout;
   if (ship.custom.isTimeout) {
@@ -981,10 +974,6 @@ function timeout(ship) {
   ship.set({ idle: false, collider: true, ...SHIP.getEvent('reset', ship.custom.shiptree) })
   ship.setUIComponent({ id: 'timeout_ui', position: [0, 0, 0, 0], clickable: false })
   announcement(ship, 'Your timeout have been removed.');
-}
-function isCooldown(ship, step) {
-  if (step <= ship.custom.clicked) return true;
-  return !(ship.custom.clicked = Math.max(step + btn_cooldown, 1));
 }
 class GRIDS {
   constructor([x = 0, y = 0, width = 100, height = 100], prefix = 'x') {
@@ -1122,9 +1111,7 @@ const { overlay, mainPages } = function () {
 
   const mainPages = new LIST_UI([4, 29, 30, 5]);
   mainPages.addUI('full', [4, 1], ...['ship', 'map', 'admin'].map(id => ({ id, clickable, components: simpleDesign(id) })));
-  mainPages.getUI('full', 'ship').setDesign('active', active('ship'));
-  mainPages.getUI('full', 'admin').setDesign('active', active('admin'));
-  mainPages.getUI('full', 'map').setDesign('active', active('map'));
+  ['ship', 'map', 'admin'].forEach(_ => mainPages.getUI('full', _).setDesign('active', active(_)))
   mainPages.addMargin('full', 10, 30);
 
   return { overlay, mainPages };
@@ -1169,7 +1156,6 @@ const { boxes, ceils, radar, radar_spots, box_size } = function () {
     nexus_pattern: { x: -520, y: -840 },
     aow_pattern: { x: -840, y: -840 },
   }
-
   const boxes = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 2]));
   boxes.addUI('full', [4, 5], ...Object.keys(ceils).map(id => ({ id, clickable, components: simpleDesign(id) })));
   boxes.getLayout('full').forEach(ui => ui.setDesign('active', active(ui.id)))
@@ -1214,7 +1200,7 @@ const modInfo = function () { }();
 function init(ship) {
   if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
-  // map_position, page, type
+  // map_position, page, type, selectedShip, x, y
   defaultScreen.displayAll(ship, ship.custom.layout);
 }
 
@@ -1222,10 +1208,8 @@ function displayPlayerList(ship, ships) {
   const uis = playerList.getLayout(ship.custom.layout), shipLength = ships.length, displays = uis.filter(ui => ui.isDisplay);
   uis.slice(0, shipLength).forEach((ui, index) => {
     const otherShip = ships[index], role = otherShip.custom.admin ? 'admin' : ship.custom.selectedShip?.id === otherShip.id ? 'active' : 'player';
-    ui.custom.id = otherShip.id;
-    ui.clickable = !otherShip.custom.admin;
-    ui.setDesign(role, adminDesigns[role](otherShip));
-    ui.display(ship, role);
+    ui.custom.id = otherShip.id, ui.clickable = !otherShip.custom.admin;
+    ui.setDesign(role, adminDesigns[role](otherShip)), ui.display(ship, role);
     displays.shift();
   });
   displays.forEach(ui => ui.hide(ship));
@@ -1234,12 +1218,11 @@ this.tick = function (game) {
   if (game.step % 30 === 0) {
     game.ships.forEach((ship, _, ships) => {
       init(ship);
-      if (!ship.custom.weapons) ship.emptyWeapons()
+      !ship.custom.weapons && ship.emptyWeapons()
       switch (ship.custom.page) {
         case 'map':
-          checkPos(ship);
-          radar.setDesign('default', ship_radar(ship, ships, 1.5))
-          radar.display(ship);
+          radar.setDesign('default', ship_radar(ship, ships, 1.5));
+          radar.display(ship), checkPos(ship);
           break;
         case 'admin':
           if (game.step % 120 === 0) displayPlayerList(ship, ships);
@@ -1253,14 +1236,8 @@ this.tick = function (game) {
 }
 function checkPos(ship) {
   const key = Object.keys(ceils).find(key => ceils[key] === Object.values(ceils).find(({ x, y }) =>
-    (x -= box_size.map / 2) < ship.x && ship.x < x + box_size.map &&
-    (y -= box_size.map / 2) < ship.y && ship.y < y + box_size.map)
-  )
-  console.log(key);
-  if (!key) {
-    boxes.getUI(ship.custom.layout, ship.custom.map_position)?.display(ship);
-    return delete ship.custom.map_position;
-  }
+    (x -= box_size.map / 2) < ship.x && ship.x < x + box_size.map && (y -= box_size.map / 2) < ship.y && ship.y < y + box_size.map))
+  if (!key) return delete ship.custom.map_position, boxes.getUI(ship.custom.layout, ship.custom.map_position)?.display(ship);
   if (key === ship.custom.map_position) return
   boxes.getUI(ship.custom.layout, ship.custom.map_position)?.display(ship);
   boxes.getUI(ship.custom.layout, key)?.display(ship, 'active');
@@ -1269,9 +1246,9 @@ function checkPos(ship) {
 const pages = {
   ship: {
     display(ship, type) {
-      shiptrees.displayAll(ship, type, ui => ui.id === ship.custom.shiptree ? 'active' : 'default')
-      shipManipulate.displayAll(ship, type);
-      shipFuncs.displayAll(ship, type);
+      shiptrees.displayAll(ship, type, ui => ui.id === ship.custom.shiptree ? 'active' : 'default');
+      shipManipulate.displayAll(ship, type); shipFuncs.displayAll(ship, type);
+      // [shipManipulate, shipFuncs].forEach(_ => _.displayAll(ship, type));
       ship.custom.page = 'ship';
     },
     hide(ship, type) {
@@ -1281,31 +1258,29 @@ const pages = {
   },
   map: {
     display(ship, type) {
-      boxes.displayAll(ship, type)
+      boxes.displayAll(ship, type);
       radar_spots.display(ship);
       ship.custom.page = 'map';
     },
     hide(ship, type) {
       boxes.hideAll(ship, type);
       [radar_spots, radar].forEach(_ => _.hide(ship));
-      delete ship.custom.page;
-      delete ship.custom.map_position;
+      delete ship.custom.page, delete ship.custom.map_position;
     }
   },
   admin: {
-    display(ship, type) {
-      [playerFuncs, globalAdminFuncs].forEach(_ => _.displayAll(ship, type));
-      ship.custom.page = 'admin';
-    },
+    display: (ship, type) => ([playerFuncs, globalAdminFuncs].forEach(_ => _.displayAll(ship, type)), ship.custom.page = 'admin'),
     hide(ship, type) {
-      [playerList, globalAdminFuncs, playerFuncs].forEach(_ => _.hideAll(ship, type))
-      delete ship.custom.page;
+      [playerList, globalAdminFuncs, playerFuncs].forEach(_ => _.hideAll(ship, type));
+      delete ship.custom.page, delete ship.custom.selectedShip;
     }
   }
 }
 function displayOptionScreen(ship, type) {
-  ship.custom.options = !ship.custom.options;
-  if (ship.custom.options) return overlay.display(ship), pages.ship.display(ship, type), mainPages.displayAll(ship, type, ui => ui.id === 'ship' ? 'active' : 'default')
+  if (ship.custom.options = !ship.custom.options) {
+    mainPages.displayAll(ship, type, ui => ui.id === 'ship' ? 'active' : 'default')
+    return overlay.display(ship), pages.ship.display(ship, type);
+  }
   overlay.hide(ship), mainPages.hideAll(ship, type), pages[ship.custom.page].hide(ship, type);
 }
 function changePage(ship, page) {
@@ -1331,6 +1306,13 @@ function changeShiptree(ship, shiptree) {
   shiptrees.getUI(ship.custom.layout, ship.custom.shiptree).display(ship);
   shiptrees.getUI(ship.custom.layout, shiptree).display(ship, 'active');
 }
+const adminFuncs = {
+  kick: ship => kick(ship.custom.selectedShip),
+  weapons: ship => weapons(ship.custom.selectedShip),
+  teleport: ship => ship.custom.selectedShip.set({ x: ship.x, y: ship.y, vx: ship.vx, vy: ship.vy }),
+  deselect: ship => delete ship.custom.selectedShip,
+  timeout: ship => timeout(ship.custom.selectedShip)
+}
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships, step } = game;
@@ -1348,7 +1330,7 @@ this.event = function (event, game) {
           break;
         case 'options':
           displayOptionScreen(ship, ship.custom.layout);
-          showShipIndex(ship, ship.type);
+          if (ship.custom.options) showShipIndex(ship, ship.type);
           break;
         case 'admin':
         case 'map':
@@ -1379,10 +1361,8 @@ this.event = function (event, game) {
           if (ships.length <= 1) return;
           const { custom } = ship;
           custom.warpIndex ??= ships.indexOf(ship);
-
           do ships[++custom.warpIndex] ?? (custom.warpIndex = 0);
           while (ships[custom.warpIndex] === ship);
-
           const { x, y, vx, vy } = ships[custom.warpIndex];
           ship.set({ x, y, vx, vy, ...SHIP.getEvent('spectate') })
           showShipIndex(ship, spectatorType);
@@ -1401,6 +1381,8 @@ this.event = function (event, game) {
         case 'weapons':
         case 'teleport':
         case 'deselect':
+          adminFuncs[id](ship);
+          displayPlayerList(ship, ships);
           break;
         default:
           if (Object.keys(ceils).includes(id)) {
@@ -1419,11 +1401,11 @@ this.event = function (event, game) {
       }
       break;
     case 'ship_destroyed':
-      Object.assign(ship.custom, { last_x: ship.x, last_y: ship.y });
+      Object.assign(ship.custom, { x: ship.x, y: ship.y });
       break;
     case 'ship_spawned':
-      const { last_x: x = 0, last_y: y = 0 } = ship.custom;
-      ship.set({ x, y, invulnerable: 300, ...SHIP.getEvent('restore', ship, 88888888) });
+      const { x, y } = ship.custom; ship.set({ x, y, invulnerable: 300 });
+      if (ship.type !== spectatorType) ship.set(SHIP.getEvent('restore', ship, 88888888));
       break;
   }
 }
