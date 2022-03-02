@@ -46,9 +46,10 @@ class UI {
     text && { type: 'text', position: this.setFontSize(fontSize, []), value: text, color: 'rgb(255,255,255)' }
   ]
   setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
-  setDesign = (name, components) => this.variety[name.toLowerCase()] = { components }
+  setDesign = (name, components) => this.variety[name.toLowerCase()] = components;
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
   display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
+
 }
 class LIST_UI {
   constructor(position = [0, 0, 0, 0]) {
@@ -63,6 +64,6 @@ class LIST_UI {
   }
   getLayout = type => Object.values(this.layouts[type]).flat();
   hideAll = (ship, type) => this.getLayout(type).map(ui => ui.hide(ship))
-  displayAll = (ship, type, version = function () { }) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version(ui, index, arr)))
+  displayAll = (ship, type, version) => this.getLayout(type).map((ui, index, arr) => ui.display(ship, version?.(ui, index, arr)))
   getUI = (type, id) => this.getLayout(type).find(ui => ui.id === id);
 }
