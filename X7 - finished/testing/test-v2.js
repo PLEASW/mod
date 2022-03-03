@@ -627,13 +627,13 @@ const SHIP = (function () {
   a.addShiptree('kest', kest);
   a.addShiptree('ai', ai);
   a.addShiptree('nautic', nautic);
-  a.addShiptree('sdc', sdc);
 
   a.addShiptree('fighter', fighter);
   a.addShiptree('heavy', heavy);
   a.addShiptree('speedster', speedster);
   a.addShiptree('support', support);
 
+  a.addShiptree('sdc', sdc);
   a.addShiptree('robonuko', robonuko);
   a.addShiptree('45rfew', _45rfew);
   a.addShiptree('others', others);
@@ -1168,7 +1168,7 @@ const { boxes, ceils, radar, radar_spots, box_size } = function () {
     id: 'radar_spots', position: addMargin((1080 / 1920) * 10 * 2.5, 5, grids.mergeCell([1, 6], [0, 2, 1, 4])), components: [
       { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255', width: 5 },
       ...Object.keys(ceils).map((_, i) => {
-        const [box, text] = simpleDesign(i);
+        const [box, text] = simpleDesign(i); delete box.fill;
         Object.assign(box, { width: 2, position: [...mapToComponent(ceils[_].x - box_size.map / 2, ceils[_].y + box_size.map / 2), box_size.ui, box_size.ui], })
         Object.assign(text, { color: 'rgba(255,255,255,0.3)', position: setFontSize(60, box.position) })
         return [box, text];
