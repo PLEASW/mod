@@ -957,9 +957,9 @@ function announcement(ship, text) {
   if (!text || !ship) return;
   clearTimeout(ship.custom.announceTimeout);
   ship.custom.announceTimeout = setTimeout(() => ship.setUIComponent({ id: 'announceText', position: [0, 0, 0, 0], components: [] }), 4000)
-  ship.setUIComponent({ id: 'announceText', position: [35.5, 87, 37, 4], components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)', align: 'left' }] })
+  ship.setUIComponent({ id: 'announceText', position: [22, 10, 57, 5], components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)' }] })
 }
-const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, mainPos = [5, 35, 30, 60];
+const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, mainPos = [5, 35, 30, 60], pagePos = [4, 29, 30, 5];
 const kick = ship => ship.gameover({ "": "" });
 const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 const entities_clear = (aliens, asteroids) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
@@ -1112,8 +1112,8 @@ const { defaultScreen, hideScreen } = function () {
 const { overlay, mainPages } = function () {
   const overlay = new UI({ id: 'overlay', position: mainPos })
 
-  const mainPages = new LIST_UI([4, 29, 30, 5]);
-  mainPages.addUI('full', [4, 1], ...['ship', 'map', 'admin'].map(id => ({ id, clickable, components: simpleDesign(id) })));
+  const mainPages = new LIST_UI(pagePos);
+  mainPages.addUI('full', [5, 1], ...['ship', 'map', 'admin'].map(id => ({ id, clickable, components: simpleDesign(id) })));
   ['ship', 'map', 'admin'].forEach(_ => mainPages.getUI('full', _).setDesign('active', active(_)))
   mainPages.addMargin('full', 10, 30);
 
@@ -1196,7 +1196,19 @@ const { globalAdminFuncs, playerFuncs, playerList } = function () {
 
   return { globalAdminFuncs, playerFuncs, playerList };
 }();
-const shipInfo = function () { }();
+const shipInfo = function () {
+  const shipInfo = new LIST_UI(mainPos);
+  shipInfo.addUI('full', [1, 7], ...['ship_name', 'ship_shield', 'ship_energy', 'ship_mass', 'ship_speed', 'ship_acceleration', 'ship_rotation'].map(id => ({ id })));
+  shipInfo.addMargin('full', 5, 10);
+
+  const back = { id: 'back', clickable, components: simpleDesign('<<<') }
+  const info = { id: 'info', components: active('info') }
+  const shiptree = { id: 'show_shiptree', clickable, components: simpleDesign('shiptree') }
+
+  mainPages.addUI('fullship', [6, 1], back, info, shiptree);
+  mainPages.addMargin('fullship', 10, 30);
+  return shipInfo;
+}();
 const adminSetting = function () { }();
 const modInfo = function () { }();
 
@@ -1253,15 +1265,14 @@ const pages = {
   ship: {
     display(ship, type) {
       shiptrees.displayAll(ship, type, ui => ui.id === ship.custom.shiptree ? 'active' : 'default');
-      shipManipulate.displayAll(ship, type); shipFuncs.displayAll(ship, type);
+      shipManipulate.displayAll(ship, type); shipFuncs.displayAll(ship, type); showShipIndex(ship, ship.type);
       ship.custom.page = 'ship';
     },
     hide(ship, type) {
       [shiptrees, shipFuncs, shipManipulate].forEach(_ => _.hideAll(ship, type));
-      delete ship.custom.page;
+      delete ship.custom.page; delete ship.custom.type;
     }
-  },
-  map: {
+  }, map: {
     display(ship, type) {
       boxes.displayAll(ship, type);
       radar_spots.display(ship);
@@ -1272,12 +1283,26 @@ const pages = {
       [radar_spots, radar].forEach(_ => _.hide(ship));
       delete ship.custom.page, delete ship.custom.map_position;
     }
-  },
-  admin: {
+  }, admin: {
     display: (ship, type) => ([playerFuncs, globalAdminFuncs].forEach(_ => _.displayAll(ship, type)), ship.custom.page = 'admin'),
     hide(ship, type) {
       [playerList, globalAdminFuncs, playerFuncs].forEach(_ => _.hideAll(ship, type));
       delete ship.custom.page, delete ship.custom.selectedShip;
+    }
+  }, info: {
+    display(ship, type) {
+      mainPages.hideAll(ship, type);
+      mainPages.displayAll(ship, type + 'ship');
+      shipInfo.displayAll(ship, type);
+      ship.custom.page = 'info';
+    },
+    hide(ship, type) {
+      shipInfo.hideAll(ship, type);
+      mainPages.hideAll(ship, type + 'ship');
+      if (ship.custom.options) {
+        mainPages.displayAll(ship, type, ui => ui.id === 'ship' ? 'active' : 'default');
+        if (!ship.custom.admin) mainPages.getUI(type, 'admin').hide(ship);
+      } delete ship.custom.page;
     }
   }
 }
@@ -1334,6 +1359,14 @@ this.event = function (event, game) {
         if (['stats', 'restore'].includes(id)) return;
         if (['reset', 'next', 'previous'].includes(id)) ship.set({ vx: 0, vy: 0 });
       } switch (id.toLowerCase().trim()) {
+        case 'info':
+          pages.ship.hide(ship, layout);
+          pages.info.display(ship, layout);
+          break;
+        case 'back':
+          pages.info.hide(ship, layout);
+          pages.ship.display(ship, layout);
+          break;
         case 'hide':
           if (options) displayOptionScreen(ship, layout);
           defaultScreen.hideAll(ship, layout);
@@ -1350,9 +1383,6 @@ this.event = function (event, game) {
         case 'map':
         case 'ship':
           changePage(ship, id);
-          if (id === 'ship') showShipIndex(ship, ship.type);
-          else if (id === 'map') checkPos(ship);
-          else if (id === 'admin') displayPlayerList(ship, ships);
           break;
         case 'restore':
         case 'stats':
