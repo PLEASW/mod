@@ -1152,12 +1152,12 @@ const { boxes, ceils, radar, radar_spots, box_size } = function () {
     waffle: { x: 200, y: 840 },
     open_arena: { x: 520, y: 840 },
     empty_circle: { x: 840, y: 840 },
-    empty_box: { x: 840, y: -840 },
-    maze: { x: 520, y: -840 },
-    zebra_pattern: { x: 200, y: -840 },
-    light_pattern: { x: -200, y: -840 },
-    nexus_pattern: { x: -520, y: -840 },
     aow_pattern: { x: -840, y: -840 },
+    nexus_pattern: { x: -520, y: -840 },
+    light_pattern: { x: -200, y: -840 },
+    zebra_pattern: { x: 200, y: -840 },
+    maze: { x: 520, y: -840 },
+    empty_box: { x: 840, y: -840 },
   }
   const boxes = new LIST_UI(grids.mergeCell([1, 6], [0, 0, 1, 2]));
   boxes.addUI('full', [4, 5], ...Object.keys(ceils).map(id => ({ id, clickable, components: simpleDesign(id) })));
