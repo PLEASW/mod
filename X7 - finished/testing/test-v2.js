@@ -1206,7 +1206,6 @@ function init(ship) {
   // map_position, page, type, selectedShip, x, y, warpIndex
   defaultScreen.displayAll(ship, ship.custom.layout);
 }
-
 function displayPlayerList(ship, ships) {
   const uis = playerList.getLayout(ship.custom.layout), shipLength = ships.length, displays = uis.filter(ui => ui.isDisplay);
   uis.slice(0, shipLength).forEach((ui, index) => {

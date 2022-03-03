@@ -1,6 +1,6 @@
 class GRIDS {
   constructor([x = 0, y = 0, width = 100, height = 100], prefix = 'x') {
-    this.layout = { x, y, width, height };
+    this.layout = { x, y, width, height }; 9
     this.prefix = prefix;
     this.grids = {};
   }
@@ -49,7 +49,6 @@ class UI {
   setDesign = (name, components) => this.variety[name.toLowerCase()] = components;
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
   display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
-
 }
 class LIST_UI {
   constructor(position = [0, 0, 0, 0]) {
