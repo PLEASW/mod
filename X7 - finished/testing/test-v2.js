@@ -1310,7 +1310,8 @@ const pages = {
   ship: {
     display(ship, type) {
       shiptrees.displayAll(ship, type, ui => ui.id === ship.custom.shiptree ? 'active' : 'default');
-      shipManipulate.displayAll(ship, type); shipFuncs.displayAll(ship, type); showShipIndex(ship, ship.type);
+      [shipManipulate, shipFuncs].forEach(_ => _.displayAll(ship, type));
+      showShipIndex(ship, ship.type);
       ship.custom.page = 'ship';
     },
     hide(ship, type) {
