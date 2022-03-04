@@ -959,7 +959,7 @@ function announcement(ship, text) {
   ship.custom.announceTimeout = setTimeout(() => ship.setUIComponent({ id: 'announceText', position: [0, 0, 0, 0], components: [] }), 4000)
   ship.setUIComponent({ id: 'announceText', position: [22, 10, 57, 5], components: [{ type: 'text', position: [0, 10, 100, 80], value: text, color: 'rgb(255,255,255)' }] })
 }
-const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, mainPos = [5, 35, 30, 60], pagePos = [4, 29, 30, 5];
+const spectatorType = SHIP.init.spectate[0].typespec.code, btn_cooldown = 20, mainPos = [5, 35, 30, 60], pagePos = [4, 29, 30, 5], dataJoin = ' / ';
 const kick = ship => ship.gameover({ "": "" });
 const players_clear = ships => ships.forEach(ship => !ship.custom.admin && ship.set({ kill: true }));
 const entities_clear = (aliens, asteroids) => [aliens, asteroids].flat().forEach(entity => entity.set({ kill: true }));
@@ -1257,16 +1257,16 @@ this.tick = function (game) {
 }
 function nameDesign(data) {
   return [
-    { type: 'box', position: [-10, -10, 110, 110], stroke: 'rgb(255,255,255)', width: 5 },
-    { type: 'text', position: setFontSize(55, ...[0, 0, 60, 100]), color: 'rgb(255,255,255)', value: data.name.toUpperCase(), align: 'left' },
+    { type: 'box', position: [-10, -10, 110, 110], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 5 },
+    { type: 'text', position: setFontSize(55, ...[3, 0, 57, 100]), color: 'rgb(255,255,255)', value: data.name.toUpperCase(), align: 'left' },
     { type: 'text', position: setFontSize(60, ...[60, 0, 40, 50]), color: 'rgb(255,255,255)', value: `lv ${data.level}`, align: 'left' },
     { type: 'text', position: setFontSize(60, ...[60, 50, 40, 50]), color: 'rgb(255,255,255)', value: `Shiptree: ${data.shiptree.toUpperCase()}`, align: 'left' }
   ]
 }
 function dataDesign(data) {
   return [
-    { type: 'box', position: [-10, -10, 110, 110], stroke: 'rgb(255,255,255)', width: 5 },
-    { type: 'text', position: setFontSize(50, ...[0, 0, 60, 100]), color: 'rgb(255,255,255)', value: data.name.toUpperCase(), align: 'left' },
+    { type: 'box', position: [-10, -10, 110, 110], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 5 },
+    { type: 'text', position: setFontSize(50, ...[3, 0, 57, 100]), color: 'rgb(255,255,255)', value: data.name.toUpperCase(), align: 'left' },
     { type: 'text', position: setFontSize(45, ...[60, 0, 35, 100]), color: 'rgb(255,255,255)', value: data.value, align: 'right' }
   ]
 }
@@ -1274,12 +1274,12 @@ function displayShipInfo(ship, type) {
   if (ship.custom.dataType === ship.type) return;
   const { name, level, shiptree, specs: { shield, generator, ship: { mass, speed, rotation, acceleration } } } = SHIP.getShipObj(ship.type);
   shipInfo.getUI(type, 'ship_name').setDesign('default', nameDesign({ name, level, shiptree }))
-  shipInfo.getUI(type, 'ship_shield').setDesign('default', dataDesign({ name: 'Shield regen', value: shield.reload.join(' | ') }))
-  shipInfo.getUI(type, 'ship_energy').setDesign('default', dataDesign({ name: 'Energy regen', value: generator.reload.join(' | ') }))
+  shipInfo.getUI(type, 'ship_shield').setDesign('default', dataDesign({ name: 'Shield regen', value: shield.reload.join(dataJoin) }))
+  shipInfo.getUI(type, 'ship_energy').setDesign('default', dataDesign({ name: 'Energy regen', value: generator.reload.join(dataJoin) }))
   shipInfo.getUI(type, 'ship_mass').setDesign('default', dataDesign({ name: 'Mass', value: mass }))
-  shipInfo.getUI(type, 'ship_speed').setDesign('default', dataDesign({ name: 'Speed', value: speed.join(' | ') }))
-  shipInfo.getUI(type, 'ship_acceleration').setDesign('default', dataDesign({ name: 'Acceleration', value: acceleration.join(' | ') }))
-  shipInfo.getUI(type, 'ship_rotation').setDesign('default', dataDesign({ name: 'Rotation', value: rotation.join(' | ') }))
+  shipInfo.getUI(type, 'ship_speed').setDesign('default', dataDesign({ name: 'Speed', value: speed.join(dataJoin) }))
+  shipInfo.getUI(type, 'ship_acceleration').setDesign('default', dataDesign({ name: 'Acceleration', value: acceleration.join(dataJoin) }))
+  shipInfo.getUI(type, 'ship_rotation').setDesign('default', dataDesign({ name: 'Rotation', value: rotation.join(dataJoin) }))
   shipInfo.displayAll(ship, type); ship.custom.dataType = ship.type;
 }
 function checkPos(ship) {
