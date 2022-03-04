@@ -1313,8 +1313,7 @@ const pages = {
       [shipManipulate, shipFuncs].forEach(_ => _.displayAll(ship, type));
       showShipIndex(ship, ship.type);
       ship.custom.page = 'ship';
-    },
-    hide(ship, type) {
+    }, hide(ship, type) {
       [shiptrees, shipFuncs, shipManipulate].forEach(_ => _.hideAll(ship, type));
       delete ship.custom.page; delete ship.custom.type;
     }
@@ -1323,8 +1322,7 @@ const pages = {
       boxes.displayAll(ship, type);
       radar_spots.display(ship);
       ship.custom.page = 'map';
-    },
-    hide(ship, type) {
+    }, hide(ship, type) {
       boxes.hideAll(ship, type);
       [radar_spots, radar].forEach(_ => _.hide(ship));
       delete ship.custom.page, delete ship.custom.map_position;
@@ -1334,8 +1332,7 @@ const pages = {
       [playerFuncs, globalAdminFuncs].forEach(_ => _.displayAll(ship, type));
       displayPlayerList(ship, game.ships);
       ship.custom.page = 'admin';
-    },
-    hide(ship, type) {
+    }, hide(ship, type) {
       [playerList, globalAdminFuncs, playerFuncs].forEach(_ => _.hideAll(ship, type));
       delete ship.custom.page, delete ship.custom.selectedShip;
     }
