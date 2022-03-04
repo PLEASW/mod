@@ -1199,7 +1199,7 @@ const { globalAdminFuncs, playerFuncs, playerList } = function () {
 const shipInfo = function () {
   const shipInfo = new LIST_UI(mainPos);
   shipInfo.addUI('full', [1, 7], ...['ship_name', 'ship_shield', 'ship_energy', 'ship_mass', 'ship_speed', 'ship_acceleration', 'ship_rotation'].map(id => ({ id })));
-  shipInfo.addMargin('full', 5, 10);
+  shipInfo.addMargin('full', 4, 15);
 
   const back = { id: 'back', clickable, components: simpleDesign('<<<') }
   const info = { id: 'info', components: active('info') }
