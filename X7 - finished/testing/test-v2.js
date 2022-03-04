@@ -1259,7 +1259,7 @@ this.tick = function (game) {
           if (game.step % 120 === 0) displayPlayerList(ship, ships);
           break;
         case 'ship':
-          if (ship.type !== type) showShipIndex(ship, ship.type);
+          showShipIndex(ship, ship.type);
           break;
         case 'info':
           displayShipInfo(ship, layout);
@@ -1384,6 +1384,7 @@ function changePage(ship, page) {
   pages[page].display(ship, type);
 }
 function showShipIndex(ship, type) {
+  if (ship.type === type) return;
   ship.custom.type = type;
   const ui = shipManipulate.getUI(ship.custom.layout, 'index');
   if (type === spectatorType) return ui.display(ship);
