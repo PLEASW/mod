@@ -1203,9 +1203,11 @@ const shipInfo = function () {
 
   const back = { id: 'back', clickable, components: simpleDesign('<<<') }
   const info = { id: 'info', components: active('info') }
+  const previous = { id: 'previous', clickable, components: simpleDesign('<') };
+  const next = { id: 'next', clickable, components: simpleDesign('>') }
   const shiptree = { id: 'show_shiptree', clickable, components: simpleDesign('shiptree') }
 
-  mainPages.addUI('fullship', [6, 1], back, info, shiptree);
+  mainPages.addUI('fullship', [6, 1], back, info, previous, next, shiptree);
   mainPages.addMargin('fullship', 10, 30);
   return shipInfo;
 }();
@@ -1247,7 +1249,7 @@ this.tick = function (game) {
           if (ship.type !== type) showShipIndex(ship, ship.type);
           break;
         case 'info':
-          addShipInfo(ship, layout);
+          displayShipInfo(ship, layout);
           break;
       }
     })
@@ -1268,7 +1270,7 @@ function dataDesign(data) {
     { type: 'text', position: setFontSize(45, ...[60, 0, 35, 100]), color: 'rgb(255,255,255)', value: data.value, align: 'right' }
   ]
 }
-function addShipInfo(ship, type) {
+function displayShipInfo(ship, type) {
   if (ship.custom.dataType === ship.type) return;
   const { name, level, shiptree, specs: { shield, generator, ship: { mass, speed, rotation, acceleration } } } = SHIP.getShipObj(ship.type);
   shipInfo.getUI(type, 'ship_name').setDesign('default', nameDesign({ name, level, shiptree }))
@@ -1324,7 +1326,7 @@ const pages = {
     display(ship, type) {
       mainPages.hideAll(ship, type);
       mainPages.displayAll(ship, type + 'ship');
-      addShipInfo(ship, type);
+      displayShipInfo(ship, type);
       ship.custom.page = 'info';
     },
     hide(ship, type) {
@@ -1381,7 +1383,7 @@ const adminFuncs = {
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships, step, aliens, asteroids } = game;
-  let { layout, warpIndex, admin, options, isTimeout } = ship.custom;
+  let { layout, warpIndex, admin, options, isTimeout, page } = ship.custom;
   switch (name) {
     case 'ui_component_clicked':
       if ((id.includes(adminPrefix) || playerFuncs.getLayout(layout).concat(globalAdminFuncs.getLayout(layout)).some(ui => ui.id === id)) && !admin) return;
@@ -1430,7 +1432,7 @@ this.event = function (event, game) {
         case 'next':
         case 'previous':
           ship.set(_ = SHIP.getEvent(id, ship, ship.custom.shiptree));
-          showShipIndex(ship, _.type);
+          page === 'ship' ? showShipIndex(ship, _.type) : displayShipInfo(ship, layout)
           break;
         case 'warp':
           if (ships.length <= 1) return;
