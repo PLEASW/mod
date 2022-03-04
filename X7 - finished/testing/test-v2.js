@@ -1247,7 +1247,7 @@ this.tick = function (game) {
   if (game.step % 30 === 0) {
     game.ships.forEach((ship, _, ships) => {
       init(ship);
-      const { admin, layout, type, page, weapons, options } = ship.custom;
+      const { admin, layout, page, weapons, options } = ship.custom;
       !weapons && ship.emptyWeapons()
       if (options) switch (page) {
         case 'map':
@@ -1367,7 +1367,7 @@ function displayOptionScreen(ship, type) {
   if (ship.custom.options = !ship.custom.options) {
     mainPages.displayAll(ship, type, ui => ui.id === 'ship' ? 'active' : 'default')
     if (!ship.custom.admin) mainPages.getUI(type, 'admin').hide(ship);
-    pages.ship.display(ship, type); showShipIndex(ship, ship.type);
+    pages.ship.display(ship, type);
     return overlay.display(ship);
   }
   mainPages.hideAll(ship, type);
@@ -1385,7 +1385,7 @@ function changePage(ship, page) {
   pages[page].display(ship, type);
 }
 function showShipIndex(ship, type) {
-  if (ship.type === type) return;
+  if (ship.type === ship.custom.type) return;
   ship.custom.type = type;
   const ui = shipManipulate.getUI(ship.custom.layout, 'index');
   if (type === spectatorType) return ui.display(ship);
