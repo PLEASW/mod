@@ -84,8 +84,8 @@ const SHIP = (function () {
       this.shiptrees ?? this.initializeShiptree();
       return Object.values(this.shiptrees).flat().filter(ship => ship.level === 1 && ship.name).map(ship => ship.typespec.code)
     }
-    getShipObj = ship => Object.values(this.shiptrees).flat().find(data => data.typespec.code === ship.type);
-    getShipTier = ship => this.getShipObj(ship).level;
+    getShipObj = type => Object.values(this.shiptrees).flat().find(data => data.typespec.code === type);
+    getShipTier = ship => this.getShipObj(ship.type).level;
     setEvent = (id, callback) => this.events[id] = callback.bind(this);
     getEvent = (id, ...param) => { try { return this.events[id](...param) } catch (e) { console.log(e) } };
   }
@@ -1024,9 +1024,9 @@ class UI {
   set position(position = [0, 0, 100, 100]) { return this.ui.position = position }
   simpleDesign = (text, fontSize) => [
     { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 },
-    text && { type: 'text', position: this.setFontSize(fontSize, []), value: text, color: 'rgb(255,255,255)' }
+    text && { type: 'text', position: this.setFontSize(fontSize), value: text, color: 'rgb(255,255,255)' }
   ]
-  setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
+  setFontSize = (size = 60, x = 0, y = 0, width = 100, height = 100) => [x, y + (height - (size *= height / 100)) / 2, width, size];
   setDesign = (name, components) => this.variety[name.toLowerCase()] = components;
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
   display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
@@ -1170,7 +1170,7 @@ const { boxes, ceils, radar, radar_spots, box_size } = function () {
       ...Object.keys(ceils).map((_, i) => {
         const [box, text] = simpleDesign(i); delete box.fill;
         Object.assign(box, { width: 2, position: [...mapToComponent(ceils[_].x - box_size.map / 2, ceils[_].y + box_size.map / 2), box_size.ui, box_size.ui], })
-        Object.assign(text, { color: 'rgba(255,255,255,0.3)', position: setFontSize(60, box.position) })
+        Object.assign(text, { color: 'rgba(255,255,255,0.3)', position: setFontSize(60, ...box.position) })
         return [box, text];
       }).flat()
     ]
@@ -1215,7 +1215,7 @@ const modInfo = function () { }();
 function init(ship) {
   if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
-  // map_position, page, type, selectedShip, x, y, warpIndex
+  // map_position, page, type, selectedShip, x, y, warpIndex, dataType
   defaultScreen.displayAll(ship, ship.custom.layout);
 }
 function displayPlayerList(ship, ships) {
@@ -1246,9 +1246,40 @@ this.tick = function (game) {
         case 'ship':
           if (ship.type !== type) showShipIndex(ship, ship.type);
           break;
+        case 'info':
+          addShipInfo(ship, layout);
+          break;
       }
     })
   };
+}
+function nameDesign(data) {
+  return [
+    { type: 'box', position: [-10, -10, 110, 110], stroke: 'rgb(255,255,255)', width: 5 },
+    { type: 'text', position: setFontSize(55, ...[0, 0, 60, 100]), color: 'rgb(255,255,255)', value: data.name.toUpperCase(), align: 'left' },
+    { type: 'text', position: setFontSize(60, ...[60, 0, 40, 50]), color: 'rgb(255,255,255)', value: `lv ${data.level}`, align: 'left' },
+    { type: 'text', position: setFontSize(60, ...[60, 50, 40, 50]), color: 'rgb(255,255,255)', value: `Shiptree: ${data.shiptree.toUpperCase()}`, align: 'left' }
+  ]
+}
+function dataDesign(data) {
+  return [
+    { type: 'box', position: [-10, -10, 110, 110], stroke: 'rgb(255,255,255)', width: 5 },
+    { type: 'text', position: setFontSize(50, ...[0, 0, 60, 100]), color: 'rgb(255,255,255)', value: data.name.toUpperCase(), align: 'left' },
+    { type: 'text', position: setFontSize(45, ...[60, 0, 35, 100]), color: 'rgb(255,255,255)', value: data.value, align: 'right' }
+  ]
+}
+function addShipInfo(ship, type) {
+  if (ship.custom.dataType === ship.type) return;
+  const { name, level, shiptree, specs: { shield, generator, ship: { mass, speed, rotation, acceleration } } } = SHIP.getShipObj(ship.type);
+  shipInfo.getUI(type, 'ship_name').setDesign('default', nameDesign({ name, level, shiptree }))
+  shipInfo.getUI(type, 'ship_shield').setDesign('default', dataDesign({ name: 'Shield regen', value: shield.reload.join(' | ') }))
+  shipInfo.getUI(type, 'ship_energy').setDesign('default', dataDesign({ name: 'Energy regen', value: generator.reload.join(' | ') }))
+  shipInfo.getUI(type, 'ship_mass').setDesign('default', dataDesign({ name: 'Mass', value: mass }))
+  shipInfo.getUI(type, 'ship_speed').setDesign('default', dataDesign({ name: 'Speed', value: speed.join(' | ') }))
+  shipInfo.getUI(type, 'ship_acceleration').setDesign('default', dataDesign({ name: 'Acceleration', value: acceleration.join(' | ') }))
+  shipInfo.getUI(type, 'ship_rotation').setDesign('default', dataDesign({ name: 'Rotation', value: rotation.join(' | ') }))
+  shipInfo.displayAll(ship, type);
+  ship.custom.dataType = ship.type;
 }
 function checkPos(ship) {
   const key = Object.keys(ceils).find(key => ceils[key] === Object.values(ceils).find(({ x, y }) =>
@@ -1293,7 +1324,7 @@ const pages = {
     display(ship, type) {
       mainPages.hideAll(ship, type);
       mainPages.displayAll(ship, type + 'ship');
-      shipInfo.displayAll(ship, type);
+      addShipInfo(ship, type);
       ship.custom.page = 'info';
     },
     hide(ship, type) {
@@ -1302,7 +1333,7 @@ const pages = {
       if (ship.custom.options) {
         mainPages.displayAll(ship, type, ui => ui.id === 'ship' ? 'active' : 'default');
         if (!ship.custom.admin) mainPages.getUI(type, 'admin').hide(ship);
-      } delete ship.custom.page;
+      } delete ship.custom.page, delete ship.custom.dataType;
     }
   }
 }
