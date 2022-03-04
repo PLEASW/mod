@@ -1280,8 +1280,7 @@ function displayShipInfo(ship, type) {
   shipInfo.getUI(type, 'ship_speed').setDesign('default', dataDesign({ name: 'Speed', value: speed.join(' | ') }))
   shipInfo.getUI(type, 'ship_acceleration').setDesign('default', dataDesign({ name: 'Acceleration', value: acceleration.join(' | ') }))
   shipInfo.getUI(type, 'ship_rotation').setDesign('default', dataDesign({ name: 'Rotation', value: rotation.join(' | ') }))
-  shipInfo.displayAll(ship, type);
-  ship.custom.dataType = ship.type;
+  shipInfo.displayAll(ship, type); ship.custom.dataType = ship.type;
 }
 function checkPos(ship) {
   const key = Object.keys(ceils).find(key => ceils[key] === Object.values(ceils).find(({ x, y }) =>
