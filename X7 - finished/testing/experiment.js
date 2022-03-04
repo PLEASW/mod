@@ -48,9 +48,9 @@ class UI {
   set position(position = [0, 0, 100, 100]) { return this.ui.position = position }
   simpleDesign = (text, fontSize) => [
     { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 },
-    text && { type: 'text', position: this.setFontSize(fontSize, []), value: text, color: 'rgb(255,255,255)' }
+    text && { type: 'text', position: this.setFontSize(fontSize), value: text, color: 'rgb(255,255,255)' }
   ]
-  setFontSize = (size = 60, [x = 0, y = 0, width = 100, height = 100]) => [x, y + (height - (size *= height / 100)) / 2, width, size];
+  setFontSize = (size = 60, x = 0, y = 0, width = 100, height = 100) => [x, y + (height - (size *= height / 100)) / 2, width, size];
   setDesign = (name, components) => this.variety[name.toLowerCase()] = components;
   hide = ship => (this.isDisplay = false, ship.setUIComponent({ id: this.id, position: [0, 0, 0, 0], shortcut: undefined, visible: false, clickable: false, components: [] }))
   display = (ship, version = 'default') => (this.isDisplay = true, ship.setUIComponent({ ...this.ui, components: this.variety[version] ?? this.simpleDesign() }))
@@ -87,52 +87,9 @@ class TEST {
 }
 test = new TEST();
 const grids = new GRIDS([5, 35, 30, 60]);
-const shipname = grids.getGrids(1, 7)[0];
-const section = new GRIDS(grids.mergeCell([1, 7], [0, 1, 1, 6]));
-test.addUIs(shipname, ...section.getGrids(1, 1));
-
+test.addUIs(grids.getGrids(1, 1));
+// test.hide(game.ships[0])
 this.tick = function (game) {
   // do mod stuff here ; see documentation
   if (game.step % 30 === 0) game.ships.forEach(ship => test.display(ship));
-}
-
-
-
-
-
-const a = {
-  id: 1, position: [5, 35, 30, 60], components: [
-    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)' },
-    { type: 'text', position: [3, 2, 100, 8], color: 'rgb(255,255,255)', value: 'SHIP NAME', align: 'left' },
-    { type: 'text', position: [3, 10, 50, 4], color: 'rgb(255,255,255)', value: 'TIER: 6', align: 'left' },
-    { type: 'text', position: [53, 10, 50, 4], color: 'rgb(255,255,255)', value: 'SHIPTREE: VANILLA', align: 'left' },
-
-    { type: 'text', position: [3, 15, 100, 5], color: 'rgb(255,255,255)', value: 'SHIELD', align: 'left' },
-
-    { type: 'text', position: [5, 20, 20, 4], color: 'rgb(255,255,255)', value: 'CAPACITY', align: 'left' },
-    { type: 'text', position: [25, 20, 25, 4], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-
-    { type: 'text', position: [5, 24, 20, 4], color: 'rgb(255,255,255)', value: 'REGEN', align: 'left' },
-    { type: 'text', position: [25, 24, 25, 4], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-
-    { type: 'text', position: [53, 15, 100, 5], color: 'rgb(255,255,255)', value: 'ENERGY', align: 'left' },
-
-    { type: 'text', position: [55, 20, 20, 4], color: 'rgb(255,255,255)', value: 'CAPACITY', align: 'left' },
-    { type: 'text', position: [75, 20, 25, 4], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-
-    { type: 'text', position: [55, 24, 20, 4], color: 'rgb(255,255,255)', value: 'REGEN', align: 'left' },
-    { type: 'text', position: [75, 24, 25, 4], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-
-    { type: 'text', position: [3, 30, 20, 5], color: 'rgb(255,255,255)', value: 'SPEED', align: 'left' },
-    { type: 'text', position: [25, 30, 25, 5], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-
-    { type: 'text', position: [53, 30, 20, 5], color: 'rgb(255,255,255)', value: 'MASS', align: 'left' },
-    { type: 'text', position: [75, 30, 25, 5], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-
-    { type: 'text', position: [3, 35, 20, 5], color: 'rgb(255,255,255)', value: 'ROTATE', align: 'left' },
-    { type: 'text', position: [25, 35, 25, 5], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-
-    { type: 'text', position: [53, 35, 20, 5], color: 'rgb(255,255,255)', value: 'ACCE', align: 'left' },
-    { type: 'text', position: [75, 35, 25, 5], color: 'rgb(255,255,255)', value: '999 > 999', align: 'left' },
-  ]
 }

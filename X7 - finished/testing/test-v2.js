@@ -8,7 +8,7 @@
     gameCommands.admin = function (command) {
       const ship = findShip(command); if (!ship) return;
       ship.custom.weapons = ship.custom.admin = !ship.custom.admin;
-      if (ship.custom.options) mainPages.getUI(ship.custom.layout, 'admin').display(ship);
+      if (ship.custom.options && ship.custom.page !== 'info') mainPages.getUI(ship.custom.layout, 'admin').display(ship);
       echo(`${ship.name}(${ship.id}) have been ${ship.custom.admin ? 'promoted' : 'demoted'} to Admin.`)
     }
     gameCommands.player_list = function () {
@@ -971,6 +971,7 @@ function timeout(ship) {
     ship.set({ idle: true, crystals: 0, vx: 0, vy: 0, collider: false, type: spectatorType })
     ship.setUIComponent({ id: 'timeout_ui', position: [0, 0, 100, 100], clickable })
     if (ship.custom.options) displayOptionScreen(ship, ship.custom.layout);
+    if (ship.custom.page === 'shiptree') pages.shiptree.hide(ship, ship.custom.layout);
     [hideScreen, defaultScreen].forEach(_ => _.hideAll(ship, ship.custom.layout));
     return announcement(ship, 'You was putted in timeout.');
   }
@@ -1138,7 +1139,7 @@ const { shipFuncs, shiptrees, shipManipulate } = function () {
   shiptrees.getLayout('full').forEach(ui => ui.setDesign('active', active(ui.id)))
 
   const shipFuncs = new LIST_UI(grids.mergeCell([1, 6], [0, 4, 1, 2]));
-  shipFuncs.addUI('full', [4, 3], ...['warp', 'stats', 'restore', 'reset', 'spectate', 'info'].map(id => ({ id, clickable, components: simpleDesign(id) })));
+  shipFuncs.addUI('full', [4, 3], ...['warp', 'stats', 'restore', 'reset', 'spectate', 'info', 'shiptree'].map(id => ({ id, clickable, components: simpleDesign(id) })));
   shipFuncs.addMargin('full', 10, 40);
 
   return { shipFuncs, shiptrees, shipManipulate };
@@ -1205,12 +1206,24 @@ const shipInfo = function () {
   const info = { id: 'info', components: active('info') }
   const previous = { id: 'previous', clickable, components: simpleDesign('<') };
   const next = { id: 'next', clickable, components: simpleDesign('>') }
-  const shiptree = { id: 'show_shiptree', clickable, components: simpleDesign('shiptree') }
 
-  mainPages.addUI('fullship', [6, 1], back, info, previous, next, shiptree);
+  mainPages.addUI('fullship', [6, 1], back, info, previous, next);
   mainPages.addMargin('fullship', 10, 30);
   return shipInfo;
 }();
+const { shiptree, shiptreeMenu } = function () {
+  const shiptree = new LIST_UI([21, 17, 58, 70])
+  shiptree.addUI('full', [1, 1], { id: 'shiptree_overlay' });
+
+  const back = { id: 'shiptree_back', clickable, components: simpleDesign('X') };
+  const moveLeft = { id: 'move_left', clickable, components: simpleDesign('<') };
+  const moveRight = { id: 'move_right', clickable, components: simpleDesign('>') }
+
+  const shiptreeMenu = new LIST_UI([21, 87, 53, 5]);
+  shiptreeMenu.addUI('full', [10, 1], back, moveLeft, moveRight);
+  shiptreeMenu.addMargin('full', 5, 20);
+  return { shiptree, shiptreeMenu }
+}()
 const adminSetting = function () { }();
 const modInfo = function () { }();
 
@@ -1242,8 +1255,8 @@ this.tick = function (game) {
           radar.display(ship), checkPos(ship);
           break;
         case 'admin':
-          if (game.step % 120 === 0) displayPlayerList(ship, ships);
           if (!admin) displayOptionScreen(ship, layout);
+          if (game.step % 120 === 0) displayPlayerList(ship, ships);
           break;
         case 'ship':
           if (ship.type !== type) showShipIndex(ship, ship.type);
@@ -1316,7 +1329,11 @@ const pages = {
       delete ship.custom.page, delete ship.custom.map_position;
     }
   }, admin: {
-    display: (ship, type) => ([playerFuncs, globalAdminFuncs].forEach(_ => _.displayAll(ship, type)), ship.custom.page = 'admin'),
+    display: (ship, type) => {
+      [playerFuncs, globalAdminFuncs].forEach(_ => _.displayAll(ship, type));
+      displayPlayerList(ship, game.ships);
+      ship.custom.page = 'admin';
+    },
     hide(ship, type) {
       [playerList, globalAdminFuncs, playerFuncs].forEach(_ => _.hideAll(ship, type));
       delete ship.custom.page, delete ship.custom.selectedShip;
@@ -1327,14 +1344,21 @@ const pages = {
       mainPages.displayAll(ship, type + 'ship');
       displayShipInfo(ship, type);
       ship.custom.page = 'info';
-    },
-    hide(ship, type) {
+    }, hide(ship, type) {
       shipInfo.hideAll(ship, type);
       mainPages.hideAll(ship, type + 'ship');
       if (ship.custom.options) {
         mainPages.displayAll(ship, type, ui => ui.id === 'ship' ? 'active' : 'default');
         if (!ship.custom.admin) mainPages.getUI(type, 'admin').hide(ship);
       } delete ship.custom.page, delete ship.custom.dataType;
+    }
+  }, shiptree: {
+    display(ship, type) {
+      [shiptree, shiptreeMenu].forEach(_ => _.displayAll(ship, type));
+      ship.custom.page = 'shiptree';
+    }, hide(ship, type) {
+      [shiptree, shiptreeMenu].forEach(_ => _.hideAll(ship, type));
+      delete ship.custom.page;
     }
   }
 }
@@ -1346,7 +1370,7 @@ function displayOptionScreen(ship, type) {
     return overlay.display(ship);
   }
   mainPages.hideAll(ship, type);
-  pages[ship.custom.page].hide(ship, type); overlay.hide(ship);
+  pages[ship.custom.page].hide?.(ship, type); overlay.hide(ship);
   defaultScreen.getUI(type, 'restore').display(ship);
 }
 function changePage(ship, page) {
@@ -1391,6 +1415,14 @@ this.event = function (event, game) {
         if (['stats', 'restore'].includes(id)) return;
         if (['reset', 'next', 'previous'].includes(id)) ship.set({ vx: 0, vy: 0 });
       } switch (id.toLowerCase().trim()) {
+        case 'shiptree':
+          displayOptionScreen(ship, layout);
+          pages.shiptree.display(ship, layout);
+          break;
+        case 'shiptree_back':
+          pages.shiptree.hide(ship, layout)
+          displayOptionScreen(ship, layout);
+          break;
         case 'info':
           pages.ship.hide(ship, layout);
           pages.info.display(ship, layout);
@@ -1401,6 +1433,7 @@ this.event = function (event, game) {
           break;
         case 'hide':
           if (options) displayOptionScreen(ship, layout);
+          if (page === 'shiptree') pages.shiptree.hide(ship, layout);
           defaultScreen.hideAll(ship, layout);
           hideScreen.displayAll(ship, layout);
           break;
@@ -1409,6 +1442,7 @@ this.event = function (event, game) {
           defaultScreen.displayAll(ship, layout);
           break;
         case 'options':
+          if (page === 'shiptree') pages.shiptree.hide(ship, layout)
           displayOptionScreen(ship, layout);
           break;
         case 'admin':
