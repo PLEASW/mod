@@ -1082,7 +1082,7 @@ const adminDesigns = {
     ]
   }, active(ship, fontSize = 60) {
     return [
-      { type: 'box', position: [0, 0, 100, 100], stroke: 'rgb(255,255,255)', width: 2 },
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 2 },
       { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
       { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(100,100,100)' },
       { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
@@ -1536,9 +1536,10 @@ this.event = function (event, game) {
             changeShiptree(ship, id);
             ship.set(_ = SHIP.getEvent('reset', id))
             return showShipIndex(ship, _.type);
-          } else if (id.includes(adminPrefix))
-            if (_ = game.findShip(playerList.getUI(layout, id).custom.id)) return ship.custom.selectedShip = _;
-            else return displayPlayerList(ship, ships);
+          } else if (id.includes(adminPrefix)) {
+            if (_ = game.findShip(playerList.getUI(layout, id).custom.id)) ship.custom.selectedShip = _;
+            return displayPlayerList(ship, ships);
+          }
           console.log(id);
       }
       break;
