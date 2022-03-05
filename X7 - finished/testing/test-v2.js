@@ -1252,7 +1252,7 @@ function init(ship) {
   if (ship.custom.init) return;
   ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla', shiptree_pos: {} }
   Object.keys(SHIP.init).forEach(i => ship.custom.shiptree_pos[i] = 0);
-  // map_position, page, type, selectedShip, x, y, warpIndex, dataType, shiptree_x
+  // map_position, page, type, selectedShip, x, y, warpIndex, dataType
   defaultScreen.displayAll(ship, ship.custom.layout);
 }
 function displayPlayerList(ship, ships) {
