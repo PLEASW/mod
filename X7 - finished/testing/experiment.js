@@ -86,8 +86,8 @@ class TEST {
   hide(ship) { for (let id = 0; id < 1000; id++) ship.setUIComponent({ id, position: [0, 0, 0, 0], components: [], visible: false }) }
 }
 test = new TEST();
-const grids = new GRIDS([5, 35, 30, 60]);
-test.addUIs(grids.getGrids(1, 1));
+const grids = new GRIDS([5, 28, 75, 68]);
+test.addUIs(...grids.getGrids(10, 7));
 // test.hide(game.ships[0])
 this.tick = function (game) {
   // do mod stuff here ; see documentation

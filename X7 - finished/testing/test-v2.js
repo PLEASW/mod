@@ -36,6 +36,7 @@ const SHIP = (function () {
   class SHIP {
     constructor() {
       this.init = {};
+      this.oldShiptree = {};
       this.events = {};
     }
     #extraShips = [
@@ -46,6 +47,7 @@ const SHIP = (function () {
     addShiptree(shiptree, ships) {
       if (this.shiptrees) return;
       this.init[shiptree = shiptree.toLowerCase()] = this.#initShipPath(Object.values(ships).map(ship => Object.assign(JSON.parse(ship), { shiptree })))
+      this.oldShiptree[shiptree] = this.#initShipPath(Object.values(ships).map(ship => Object.assign(JSON.parse(ship), { shiptree })))
     }
     initializeShiptree() {
       this.shiptrees = {}; this.shipCodes = {};
@@ -64,7 +66,7 @@ const SHIP = (function () {
     #initShipPath(ships) {
       const shipArr = Array(8).fill(0).map((i, level) => ships.filter(ship => ship.level === level)).map(tier => tier.sort((a, b) => a.model - b.model));
       return ships.map(ship => {
-        if (ship.next && ship.typespec.next) ship.next = ship.typespec.next = ship.next?.map(code => this.#findShipCode(code, ships))
+        if (ship.next && ship.typespec.next) ship.next = ship.typespec.next = ship.next?.map(code => this.#findShipCode(code, ships)).filter(_ => _)
         else {
           const level = ship.level;
           if (level + 1 > 7) return ship;
@@ -1024,7 +1026,7 @@ class UI {
   set clickable(value) { return this.ui.clickable = !!value }
   set position(position = [0, 0, 100, 100]) { return this.ui.position = position }
   simpleDesign = (text, fontSize) => [
-    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.1)', stroke: 'rgb(255,255,255)', width: 5 },
+    { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 5 },
     text && { type: 'text', position: this.setFontSize(fontSize), value: text, color: 'rgb(255,255,255)' }
   ]
   setFontSize = (size = 60, x = 0, y = 0, width = 100, height = 100) => [x, y + (height - (size *= height / 100)) / 2, width, size];
@@ -1054,25 +1056,25 @@ const { addMargin } = new GRIDS([0, 0, 0, 0]);
 function optionsDesign(text) {
   return [
     { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
-    { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,255,255,1)' },
-  ]
+    text && { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,255,255,1)' },
+  ].filter(_ => _)
 }
 function active(text) {
   return [
-    { type: "box", position: [0, 0, 100, 100], stroke: 'rgba(255,255,255,1)', width: 5 },
+    { type: "box", position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.8)', stroke: 'rgba(255,255,255,1)', width: 5 },
     { type: "text", position: [0, 30, 100, 60], value: text, color: 'rgba(255,0,0,1)' },
   ];
 }
 const adminDesigns = {
   admin(ship, fontSize = 60) {
     return [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 2 },
       { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,0)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
       { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' }
     ]
   }, player(ship, fontSize = 60) {
     return [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255)', width: 2 },
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 2 },
       { type: 'text', position: [4, 50 - fontSize / 2, 200, fontSize], color: 'rgb(255,255,255)', value: `${ship.id}. ${ship.name.slice(0, 10)}`, align: 'left' },
       { type: 'box', position: [80, 0, 20, 100], fill: 'rgb(150,150,150)' },
       { type: 'box', position: [93, 55, 5, 20], fill: ship.custom.weapons ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)', stroke: 'rgb(255,255,255)', width: 1 },
@@ -1111,7 +1113,7 @@ const { defaultScreen, hideScreen } = function () {
   return { hideScreen, defaultScreen };
 }();
 const { overlay, mainPages } = function () {
-  const overlay = new UI({ id: 'overlay', position: mainPos })
+  const overlay = new UI({ id: 'overlay', position: mainPos, components: optionsDesign() })
 
   const mainPages = new LIST_UI(pagePos);
   mainPages.addUI('full', [5, 1], ...['ship', 'map', 'admin'].map(id => ({ id, clickable, components: simpleDesign(id) })));
@@ -1167,7 +1169,7 @@ const { boxes, ceils, radar, radar_spots, box_size } = function () {
 
   const radar_spots = new UI({
     id: 'radar_spots', position: addMargin((1080 / 1920) * 10 * 2.5, 5, grids.mergeCell([1, 6], [0, 2, 1, 4])), components: [
-      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(255,255,255,0.2)', stroke: 'rgb(255,255,255', width: 5 },
+      { type: 'box', position: [0, 0, 100, 100], fill: 'rgba(0,0,0,0.3)', stroke: 'rgb(255,255,255', width: 5 },
       ...Object.keys(ceils).map((_, i) => {
         const [box, text] = simpleDesign(i); delete box.fill;
         Object.assign(box, { width: 2, position: [...mapToComponent(ceils[_].x - box_size.map / 2, ceils[_].y + box_size.map / 2), box_size.ui, box_size.ui], })
@@ -1211,16 +1213,35 @@ const shipInfo = function () {
   mainPages.addMargin('fullship', 10, 30);
   return shipInfo;
 }();
+const [width, height] = [100 / 8, 100 / 7];
+function shipDesign(ship, position) {
+  const grids = new GRIDS(addMargin(5, 20, position))
+  return [
+    { type: 'box', position: grids.mergeCell([1, 1], [0, 0, 1, 1]), fill: 'rgba(0,0,0,0.8)', stroke: 'rgb(255,255,255)', width: 3 },
+    { type: 'text', position: setFontSize(80, ...grids.mergeCell([1, 2], [0, 0, 1, 1])), value: ship.name, color: 'rgb(230,230,0)' },
+    { type: 'text', position: setFontSize(60, ...grids.mergeCell([3, 2], [0, 1, 1, 1])), value: ship.typespec.code, color: 'rgb(0,255,255)' },
+    ship.next && { type: 'text', position: setFontSize(60, ...grids.mergeCell([3, 2], [1, 1, 2, 1])), value: ship.next.map(_ => _?.typespec.code).join('-'), color: 'rgb(255,0,0)' },
+  ].filter(i => i);
+}
+function generateShiptree(ships, x) {
+  const result = Array(7).fill(0).map((_, i) => ships.filter(ship => ship.level === i + 1));
+  const widths = result.map(i => i.length * width);
+  const maxWidth = Math.max(...widths)
+  const startPos = widths.map(i => (maxWidth - i) / 2);
+  return result.map((tier, pos) => tier.map((ship, model) => shipDesign(ship, [startPos[pos] + x + width * model, height * pos, width, height]))).flat(2)
+}
 const { shiptree, shiptreeMenu } = function () {
-  const shiptree = new LIST_UI([21, 17, 58, 70])
-  shiptree.addUI('full', [1, 1], { id: 'shiptree_overlay' });
+  const shiptree = new UI({ id: 'shiptree', position: [5, 28, 75, 68] })
+  Object.keys(SHIP.oldShiptree).forEach(key => key !== 'spectate' && shiptree.setDesign(key, generateShiptree(SHIP.oldShiptree[key], 0)));
 
   const back = { id: 'shiptree_back', clickable, components: simpleDesign('X') };
   const moveLeft = { id: 'move_left', clickable, components: simpleDesign('<') };
-  const moveRight = { id: 'move_right', clickable, components: simpleDesign('>') }
+  const moveRight = { id: 'move_right', clickable, components: simpleDesign('>') };
+  const reset = { id: 'reset_shiptree', clickable, components: simpleDesign('🗘') };
+  const restore = { id: 'restore', clickable, components: simpleDesign('💎') };
 
-  const shiptreeMenu = new LIST_UI([21, 87, 53, 5]);
-  shiptreeMenu.addUI('full', [10, 1], back, moveLeft, moveRight);
+  const shiptreeMenu = new LIST_UI([25, 23, 55, 5]);
+  shiptreeMenu.addUI('full', [10, 1], back, moveLeft, moveRight, reset, restore);
   shiptreeMenu.addMargin('full', 5, 20);
   return { shiptree, shiptreeMenu }
 }()
@@ -1229,8 +1250,9 @@ const modInfo = function () { }();
 
 function init(ship) {
   if (ship.custom.init) return;
-  ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla' }
-  // map_position, page, type, selectedShip, x, y, warpIndex, dataType
+  ship.custom = { init: true, options: false, weapons: false, admin: false, isTimeout: false, layout: 'full', shiptree: 'vanilla', shiptree_pos: {} }
+  Object.keys(SHIP.init).forEach(i => ship.custom.shiptree_pos[i] = 0);
+  // map_position, page, type, selectedShip, x, y, warpIndex, dataType, shiptree_x
   defaultScreen.displayAll(ship, ship.custom.layout);
 }
 function displayPlayerList(ship, ships) {
@@ -1352,10 +1374,12 @@ const pages = {
     }
   }, shiptree: {
     display(ship, type) {
-      [shiptree, shiptreeMenu].forEach(_ => _.displayAll(ship, type));
+      shiptreeMenu.displayAll(ship, type);
+      shiptree.display(ship, ship.custom.shiptree);
       ship.custom.page = 'shiptree';
     }, hide(ship, type) {
-      [shiptree, shiptreeMenu].forEach(_ => _.hideAll(ship, type));
+      shiptreeMenu.hideAll(ship, type);
+      shiptree.hide(ship);
       delete ship.custom.page;
     }
   }
@@ -1386,7 +1410,7 @@ function showShipIndex(ship, type) {
   ship.custom.type = type;
   const ui = shipManipulate.getUI(ship.custom.layout, 'index');
   if (type === spectatorType) return ui.display(ship);
-  const shiptree = SHIP.init[ship.custom.shiptree].map(i => i.typespec.code)
+  const shiptree = SHIP.shipCodes[ship.custom.shiptree]
   ui.setDesign('index', simpleDesign(`${Math.max(shiptree.indexOf(type) + 1, 1)}/${shiptree.length}`))
   ui.display(ship, 'index');
 }
@@ -1405,21 +1429,35 @@ const adminFuncs = {
 this.event = function (event, game) {
   const { ship, name, id } = event;
   const { ships, step, aliens, asteroids } = game;
-  let { layout, warpIndex, admin, options, isTimeout, page } = ship.custom;
+  let { layout, warpIndex, admin, options, isTimeout, page, shiptree: _shiptree, shiptree_pos } = ship.custom;
   switch (name) {
     case 'ui_component_clicked':
       if ((id.includes(adminPrefix) || playerFuncs.getLayout(layout).concat(globalAdminFuncs.getLayout(layout)).some(ui => ui.id === id)) && !admin) return;
-      if (!isTimeout && !admin && isCooldown(ship, step)) return announcement(ship, 'Click slow down!');
+      if (!isTimeout && !admin && !['move_right', 'move_left'].includes(id) && isCooldown(ship, step)) return announcement(ship, 'Click slow down!');
       if (ship.type === spectatorType) {
         if (['stats', 'restore'].includes(id)) return;
         if (['reset', 'next', 'previous'].includes(id)) ship.set({ vx: 0, vy: 0 });
       } switch (id.toLowerCase().trim()) {
+        case 'reset_shiptree':
+          shiptree.setDesign(_shiptree, generateShiptree(SHIP.oldShiptree[_shiptree], shiptree_pos[_shiptree] = 0))
+          shiptree.display(ship, _shiptree)
+          break;
+        case 'move_right':
+          shiptree.setDesign(_shiptree, generateShiptree(SHIP.oldShiptree[_shiptree], (shiptree_pos[_shiptree] -= 5)))
+          shiptree.display(ship, _shiptree)
+          break;
+        case 'move_left':
+          shiptree.setDesign(_shiptree, generateShiptree(SHIP.oldShiptree[_shiptree], (shiptree_pos[_shiptree] += 5)))
+          shiptree.display(ship, _shiptree)
+          break;
         case 'shiptree':
           displayOptionScreen(ship, layout);
+          defaultScreen.hideAll(ship, layout);
           pages.shiptree.display(ship, layout);
           break;
         case 'shiptree_back':
-          pages.shiptree.hide(ship, layout)
+          pages.shiptree.hide(ship, layout);
+          defaultScreen.displayAll(ship, layout);
           displayOptionScreen(ship, layout);
           break;
         case 'info':
@@ -1458,12 +1496,12 @@ this.event = function (event, game) {
           showShipIndex(ship, spectatorType);
           break;
         case 'reset':
-          ship.set(_ = SHIP.getEvent(id, ship.custom.shiptree));
+          ship.set(_ = SHIP.getEvent(id, _shiptree));
           showShipIndex(ship, _.type);
           break;
         case 'next':
         case 'previous':
-          ship.set(_ = SHIP.getEvent(id, ship, ship.custom.shiptree));
+          ship.set(_ = SHIP.getEvent(id, ship, _shiptree));
           page === 'ship' ? showShipIndex(ship, _.type) : displayShipInfo(ship, layout)
           break;
         case 'warp':
@@ -1493,17 +1531,14 @@ this.event = function (event, game) {
           displayPlayerList(ship, ships);
           break;
         default:
-          if (Object.keys(ceils).includes(id)) {
-            if (ship.custom.map_position === id) return;
-            return ship.set({ ...ceils[id], ...SHIP.getEvent('spectate') });
-          } else if (Object.keys(SHIP.init).includes(id)) {
+          if (Object.keys(ceils).includes(id) && ship.custom.map_position !== id) return ship.set({ ...ceils[id], ...SHIP.getEvent('spectate') });
+          else if (Object.keys(SHIP.init).includes(id) && id !== _shiptree) {
             changeShiptree(ship, id);
             ship.set(_ = SHIP.getEvent('reset', id))
             return showShipIndex(ship, _.type);
-          } else if (id.includes(adminPrefix)) {
-            if (_ = game.findShip(playerList.getUI(layout, id).custom.id)) ship.custom.selectedShip = _;
-            return displayPlayerList(ship, ships);
-          }
+          } else if (id.includes(adminPrefix))
+            if (_ = game.findShip(playerList.getUI(layout, id).custom.id)) return ship.custom.selectedShip = _;
+            else return displayPlayerList(ship, ships);
           console.log(id);
       }
       break;
