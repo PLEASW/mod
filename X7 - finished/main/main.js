@@ -26,7 +26,7 @@ If you want to have the full 1.5k of codes, check out this links: https://raw.gi
 
 $.get("https://raw.githubusercontent.com/DoDucMinh1608/mod/master/X7%20-%20finished/main/pre-init.js")
   .then(data => { eval(data); game.custom.preInitCompleted = true; })
-  .catch(e => game.modding.command.stop())
+  .catch(e => game.modding.commands.stop())
 if (!window.__ModdingInitPreInit) (function () {
   window.__ModdingInitPreInit = true;
   let t = Modding.prototype.tokenReceived;
