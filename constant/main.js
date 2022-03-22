@@ -5,14 +5,12 @@ const upgrades = [
 ];
 const radarRadius = (mapSize * 10) / radarZoom;
 game.modding.commands.command_name = function () { }
-let mapSize = 200;
-let width = 1;
-const mapToComponent = function (x, y) {
-  return [x, -y].map((i, b) => (i + mapSize * 5 - b) / mapSize * 10 - width * 0.5);
+const mapToComponent = function (x, y, size, width = 0) {
+  return [x, -y].map((i, b) => (i + size * 5 - b) / size * 10 - width * 0.5);
 };
-const componentToMap = function (x, y) {
+const componentToMap = function (x, y, size, width = 0) {
   [x, y] = [x, y].map(i => i + width * 0.5);
-  return [x - 50, 50 - y].map((i, b) => i * mapSize / 10 - b);
+  return [x - size / 2, size / 2 - y].map(i => i * size / 10);
 };
 ; (function (params) { })(); // custom command for use in mod development
 $.get("path/to/file.js").then(data => eval(data)).catch(e => echo("Failed wtf"))
